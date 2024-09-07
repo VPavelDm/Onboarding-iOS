@@ -16,7 +16,7 @@ let package = Package(
             targets: ["Onboarding"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/VPavelDm/SwiftExtensions", branch: "login")
+        .package(url: "https://github.com/VPavelDm/SwiftExtensions", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
