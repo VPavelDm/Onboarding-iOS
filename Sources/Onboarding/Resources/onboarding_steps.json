@@ -1,0 +1,80 @@
+[
+    {
+        "id": "C34BD07B-CA60-41CE-8377-D749D4B196F4",
+        "type": "multipleAnswer",
+        "nextStepID": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A",
+        "maxStepsInChain": 6,
+        "payload": {
+            "title": "What challenges did you face?",
+            "description": "Choose at least one option",
+            "answers": [
+                "🍟 Resting cravings",
+                "✨ Staying motivated",
+                "🥣 Reducing portion sizes",
+                "🥗 Knowing what to eat",
+                "⏰ Being too busy",
+                "💭 Something else",
+            ]
+        }
+    },
+    {
+        "id": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A",
+        "type": "oneAnswer",
+        "nextStepID": "D956D79D-5B4D-414A-8335-CFE957FD3FEF",
+        "maxStepsInChain": 6,
+        "payload": {
+            "title": "What's your main goal?",
+            "description": "Choose only one answer",
+            "answers": [
+                "📉 Lose weight",
+                "👀 Maintain weight",
+                "📈 Gain weight",
+                "💪 Build weight",
+                "💬 Something else",
+            ]
+        }
+    },
+    {
+        "id": "D956D79D-5B4D-414A-8335-CFE957FD3FEF",
+        "type": "description",
+        "nextStepID": "6021CABF-377B-4B9E-A488-1DF90888FDDD",
+        "maxStepsInChain": 6,
+        "payload": {
+            "title": "Awesome! That's a great starting point.",
+            "description": "Studies have shown that regularly tracking your calories is directly linked to the self-motivation needed to successfully lose weight!",
+            "image": {
+                "type": "named",
+                "value": "womanWithTeleskope"
+            }
+        }
+    },
+    {
+        "id": "6021CABF-377B-4B9E-A488-1DF90888FDDD",
+        "type": "binaryAnswer",
+        "nextStepID": "68A3D5D2-F4FD-4DDB-A818-B1FD0FE2BA3A",
+        "maxStepsInChain": 6,
+        "payload": {
+            "title": "What's your sex?",
+            "description": "Since the formula for an accurate calorie calculation differs based on sex, we need this information to calculate your daily calorie goal.",
+            "firstAnswer": {
+                "text": "Female",
+                "icon": "🚺"
+            },
+            "secondAnswer": {
+                "text": "Male",
+                "icon": "🚹"
+            }
+        }
+    },
+    {
+        "id": "68A3D5D2-F4FD-4DDB-A818-B1FD0FE2BA3A",
+        "type": "login",
+        "nextStepID": "DA2A564D-CA2C-4F5B-8938-3B4D8AAE31B7",
+        "maxStepsInChain": 6
+    },
+    {
+        "id": "DA2A564D-CA2C-4F5B-8938-3B4D8AAE31B7",
+        "type": "custom",
+        "maxStepsInChain": 6
+    },
+]

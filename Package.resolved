@@ -1,0 +1,15 @@
+{
+  "originHash" : "aaa30a135f923a326bd935b6322f813b9f3a43366a44bb383643b2df06630ab1",
+  "pins" : [
+    {
+      "identity" : "swiftextensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/VPavelDm/SwiftExtensions",
+      "state" : {
+        "branch" : "login",
+        "revision" : "4b5bbc40ebefd479112007eac06d5a533afc98a7"
+      }
+    }
+  ],
+  "version" : 3
+}
