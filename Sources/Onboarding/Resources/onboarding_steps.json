@@ -2,7 +2,7 @@
     {
         "id": "D5B8B0A2-E4F6-4641-BFA7-86C833FB95A0",
         "type": "welcome",
-        "maxStepsInChain": 7,
+        "passedPercent": 0.1,
         "payload": {
             "title": "Welcome to Lyncil",
             "description": "Unleash Your Songwriting Potential with Lyncil",
@@ -23,7 +23,7 @@
     {
         "id": "C34BD07B-CA60-41CE-8377-D749D4B196F4",
         "type": "multipleAnswer",
-        "maxStepsInChain": 7,
+        "passedPercent": 0.28,
         "payload": {
             "title": "What challenges did you face?",
             "description": "Choose at least one option",
@@ -58,7 +58,7 @@
     {
         "id": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A",
         "type": "oneAnswer",
-        "maxStepsInChain": 7,
+        "passedPercent": 0.42,
         "payload": {
             "title": "What's your main goal?",
             "description": "Choose only one answer",
@@ -89,7 +89,7 @@
     {
         "id": "D956D79D-5B4D-414A-8335-CFE957FD3FEF",
         "type": "description",
-        "maxStepsInChain": 7,
+        "passedPercent": 0.57,
         "payload": {
             "title": "Awesome! That's a great starting point.",
             "description": "Studies have shown that regularly tracking your calories is directly linked to the self-motivation needed to successfully lose weight!",
@@ -106,7 +106,7 @@
     {
         "id": "6021CABF-377B-4B9E-A488-1DF90888FDDD",
         "type": "binaryAnswer",
-        "maxStepsInChain": 7,
+        "passedPercent": 0.71,
         "payload": {
             "title": "What's your sex?",
             "description": "Since the formula for an accurate calorie calculation differs based on sex, we need this information to calculate your daily calorie goal.",
@@ -125,7 +125,7 @@
     {
         "id": "68A3D5D2-F4FD-4DDB-A818-B1FD0FE2BA3A",
         "type": "login",
-        "maxStepsInChain": 7,
+        "passedPercent": 0.85,
         "payload": {
             "answer": {
                 "title": "Next",
@@ -136,7 +136,7 @@
     {
         "id": "DA2A564D-CA2C-4F5B-8938-3B4D8AAE31B7",
         "type": "custom",
-        "maxStepsInChain": 7,
+        "passedPercent": 1,
         "payload": {
             "answer": {
                 "title": "Next"

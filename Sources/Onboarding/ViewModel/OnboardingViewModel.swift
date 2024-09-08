@@ -22,8 +22,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published var userAnswers: [UserAnswer] = []
 
     var passedStepsProcent: CGFloat {
-        guard let maxStepsInChain = passedSteps.last?.maxStepsInChain else { return 1 }
-        return min(CGFloat(passedSteps.count) / CGFloat(maxStepsInChain), 1)
+        passedSteps.last?.passedPercent ?? 0.05
     }
 
     var showBackButton: Bool {

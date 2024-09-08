@@ -10,7 +10,7 @@ import Foundation
 struct OnboardingStep: Sendable, Equatable, Hashable {
     var id: UUID
     var type: OnboardingStepType
-    var maxStepsInChain: Int
+    var passedPercent: Double
 
     enum OnboardingStepType: Sendable, Equatable, Hashable {
         case welcome(WelcomeStep)
@@ -58,7 +58,7 @@ extension OnboardingStep {
         self.init(
             id: response.id,
             type: type,
-            maxStepsInChain: response.maxStepsInChain
+            passedPercent: response.passedPercent
         )
     }
 }

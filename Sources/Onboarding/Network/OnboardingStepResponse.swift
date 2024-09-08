@@ -10,19 +10,19 @@ import Foundation
 struct OnboardingStepResponse: Decodable {
     let id: UUID
     let type: OnboardingStepType
-    let maxStepsInChain: Int
+    let passedPercent: Double
 
     enum CodingKeys: String, CodingKey {
         case id
         case type
-        case maxStepsInChain
+        case passedPercent
         case payload
     }
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
-        maxStepsInChain = try container.decode(Int.self, forKey: .maxStepsInChain)
+        passedPercent = try container.decode(Double.self, forKey: .passedPercent)
         let type = try container.decode(String.self, forKey: .type)
         switch type {
         case "multipleAnswer":
