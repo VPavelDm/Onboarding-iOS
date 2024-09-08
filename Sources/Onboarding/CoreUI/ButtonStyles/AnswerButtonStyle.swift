@@ -2,12 +2,12 @@
 //  File.swift
 //  
 //
-//  Created by Pavel Vaitsikhouski on 04.09.24.
+//  Created by Pavel Vaitsikhouski on 08.09.24.
 //
 
 import SwiftUI
 
-struct SecondaryButtonStyle: ButtonStyle {
+struct AnswerButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.colorPalette) private var colorPalette
 
@@ -15,7 +15,7 @@ struct SecondaryButtonStyle: ButtonStyle {
         configuration.label
             .foregroundStyle(colorPalette.secondaryButtonTextColor)
             .font(.system(size: 16, weight: .semibold))
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             .background(colorPalette.secondaryButtonBackgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))

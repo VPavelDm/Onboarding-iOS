@@ -46,6 +46,9 @@ struct OnboardingStepResponse: Decodable {
             self.type = .custom
         case "prime":
             self.type = .prime
+        case "welcome":
+            let payload = try container.decode(WelcomeStep.self, forKey: .payload)
+            self.type = .welcome(payload)
         default:
             self.type = .unknown
         }
@@ -59,6 +62,7 @@ struct OnboardingStepResponse: Decodable {
         case login
         case custom
         case prime
+        case welcome(WelcomeStep)
         case unknown
     }
 
@@ -95,5 +99,11 @@ struct OnboardingStepResponse: Decodable {
             let text: String
             let icon: String?
         }
+    }
+
+    struct WelcomeStep: Decodable {
+        let title: String
+        let description: String
+        let image: ImageResponse
     }
 }

@@ -53,7 +53,7 @@ struct OneAnswerView: View {
         } label: {
             Text(answer)
         }
-        .buttonStyle(SecondaryButtonStyle())
+        .buttonStyle(AnswerButtonStyle())
     }
 }
 
