@@ -9,7 +9,6 @@ import Foundation
 
 struct OnboardingStep: Sendable, Equatable, Hashable {
     var id: UUID
-    var nextStepID: UUID?
     var type: OnboardingStepType
     var maxStepsInChain: Int
 
@@ -19,9 +18,9 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case binaryAnswer(BinaryAnswerStep)
         case multipleAnswer(MultipleAnswerStep)
         case description(DescriptionStep)
-        case login
-        case custom
-        case prime
+        case login(StepAnswer)
+        case custom(StepAnswer)
+        case prime(StepAnswer)
         case unknown
     }
 }
@@ -50,15 +49,14 @@ extension OnboardingStep {
         case .multipleAnswer(let payload): .multipleAnswer(MultipleAnswerStep(response: payload))
         case .description(let payload): .description(DescriptionStep(response: payload))
         case .binaryAnswer(let payload): .binaryAnswer(BinaryAnswerStep(response: payload))
-        case .login: .login
-        case .custom: .custom
-        case .prime: .prime
+        case .login(let payload): .login(StepAnswer(response: payload))
+        case .custom(let payload): .custom(StepAnswer(response: payload))
+        case .prime(let payload): .prime(StepAnswer(response: payload))
         default: .unknown
         }
 
         self.init(
             id: response.id,
-            nextStepID: response.nextStepID,
             type: type,
             maxStepsInChain: response.maxStepsInChain
         )

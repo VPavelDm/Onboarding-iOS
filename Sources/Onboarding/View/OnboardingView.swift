@@ -100,7 +100,16 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     }
 
     private func handleOuterScreenCallback() {
-        viewModel.onAnswer()
+        switch viewModel.currentStep?.type {
+        case .custom(let stepAnswer):
+            viewModel.onAnswer(answers: [stepAnswer])
+        case .login(let stepAnswer):
+            viewModel.onAnswer(answers: [stepAnswer])
+        case .prime(let stepAnswer):
+            viewModel.onAnswer(answers: [stepAnswer])
+        default:
+            break
+        }
     }
 }
 

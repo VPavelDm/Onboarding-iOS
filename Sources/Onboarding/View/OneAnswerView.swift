@@ -47,11 +47,11 @@ struct OneAnswerView: View {
         }
     }
 
-    private func buttonView(answer: String) -> some View {
+    private func buttonView(answer: StepAnswer) -> some View {
         Button {
             viewModel.onAnswer(answers: [answer])
         } label: {
-            Text(answer)
+            Text(answer.title)
         }
         .buttonStyle(AnswerButtonStyle())
     }

@@ -9,13 +9,11 @@ import Foundation
 
 struct OnboardingStepResponse: Decodable {
     let id: UUID
-    let nextStepID: UUID?
     let type: OnboardingStepType
     let maxStepsInChain: Int
 
     enum CodingKeys: String, CodingKey {
         case id
-        case nextStepID
         case type
         case maxStepsInChain
         case payload
@@ -24,7 +22,6 @@ struct OnboardingStepResponse: Decodable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
-        nextStepID = try container.decodeIfPresent(UUID.self, forKey: .nextStepID)
         maxStepsInChain = try container.decode(Int.self, forKey: .maxStepsInChain)
         let type = try container.decode(String.self, forKey: .type)
         switch type {
@@ -41,11 +38,14 @@ struct OnboardingStepResponse: Decodable {
             let payload = try container.decode(DescriptionStep.self, forKey: .payload)
             self.type = .description(payload)
         case "login":
-            self.type = .login
+            let payload = try container.decode(CustomStep.self, forKey: .payload)
+            self.type = .login(payload.answer)
         case "custom":
-            self.type = .custom
+            let payload = try container.decode(CustomStep.self, forKey: .payload)
+            self.type = .custom(payload.answer)
         case "prime":
-            self.type = .prime
+            let payload = try container.decode(CustomStep.self, forKey: .payload)
+            self.type = .prime(payload.answer)
         case "welcome":
             let payload = try container.decode(WelcomeStep.self, forKey: .payload)
             self.type = .welcome(payload)
@@ -59,9 +59,9 @@ struct OnboardingStepResponse: Decodable {
         case multipleAnswer(MultipleAnswerStep)
         case description(DescriptionStep)
         case binaryAnswer(BinaryAnswer)
-        case login
-        case custom
-        case prime
+        case login(StepAnswer)
+        case custom(StepAnswer)
+        case prime(StepAnswer)
         case welcome(WelcomeStep)
         case unknown
     }
@@ -69,19 +69,20 @@ struct OnboardingStepResponse: Decodable {
     struct OneAnswerStep: Decodable {
         let title: String
         let description: String?
-        let answers: [String]
+        let answers: [StepAnswer]
     }
 
     struct MultipleAnswerStep: Decodable {
         let title: String
         let description: String?
-        let answers: [String]
+        let answers: [StepAnswer]
     }
 
     struct DescriptionStep: Decodable {
         let title: String
         let image: ImageResponse?
         let description: String?
+        let answer: StepAnswer
     }
 
     struct ImageResponse: Decodable {
@@ -92,18 +93,25 @@ struct OnboardingStepResponse: Decodable {
     struct BinaryAnswer: Decodable {
         let title: String
         let description: String?
-        let firstAnswer: Answer
-        let secondAnswer: Answer
-
-        struct Answer: Decodable {
-            let text: String
-            let icon: String?
-        }
+        let firstAnswer: StepAnswer
+        let secondAnswer: StepAnswer
     }
 
     struct WelcomeStep: Decodable {
         let title: String
         let description: String
         let image: ImageResponse
+        let firstAnswer: StepAnswer
+        let secondAnswer: StepAnswer
+    }
+
+    struct StepAnswer: Decodable {
+        let title: String
+        let icon: String?
+        let nextStepID: UUID?
+    }
+
+    struct CustomStep: Decodable {
+        let answer: StepAnswer
     }
 }

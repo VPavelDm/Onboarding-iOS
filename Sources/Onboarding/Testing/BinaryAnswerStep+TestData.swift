@@ -13,13 +13,15 @@ extension BinaryAnswerStep {
         Self(
             title: "What's your sex?",
             description: "Since the formula for an accurate calorie calculation differs based on sex, we need this information to calculate your daily calorie goal.",
-            firstAnswer: Answer(
-                text: "Female",
-                icon: "🚺"
+            firstAnswer: StepAnswer(
+                title: "Female",
+                icon: "🚺",
+                nextStepID: UUID()
             ),
-            secondAnswer: Answer(
-                text: "Male",
-                icon: "🚹"
+            secondAnswer: StepAnswer(
+                title: "Male",
+                icon: "🚹",
+                nextStepID: UUID()
             )
         )
     }

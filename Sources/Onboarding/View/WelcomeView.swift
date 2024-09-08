@@ -74,16 +74,18 @@ struct WelcomeView: View {
 
     private var getStartedButton: some View {
         Button {
-            viewModel.onAnswer()
+            viewModel.onAnswer(answers: [step.firstAnswer])
         } label: {
-            Text("Get Started")
+            Text(step.firstAnswer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
     }
 
     private var alreadyHaveAccountButton: some View {
-        Button {} label: {
-            Text("I Already Have an Account")
+        Button {
+            viewModel.onAnswer(answers: [step.secondAnswer])
+        } label: {
+            Text(step.secondAnswer.title)
         }
         .buttonStyle(SecondaryButtonStyle())
     }

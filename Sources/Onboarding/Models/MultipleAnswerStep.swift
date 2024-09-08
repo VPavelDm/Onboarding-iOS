@@ -10,7 +10,7 @@ import Foundation
 struct MultipleAnswerStep: Sendable, Equatable, Hashable {
     let title: String
     let description: String?
-    let answers: [String]
+    let answers: [StepAnswer]
 }
 
 // MARK: - Convert
@@ -21,7 +21,7 @@ extension MultipleAnswerStep {
         self.init(
             title: response.title,
             description: response.description,
-            answers: response.answers
+            answers: response.answers.map(StepAnswer.init(response:))
         )
     }
 }

@@ -47,14 +47,14 @@ struct BinaryAnswerView: View {
 
     private var firstAnswerButton: some View {
         Button {
-            viewModel.onAnswer(answers: [step.firstAnswer.text])
+            viewModel.onAnswer(answers: [step.firstAnswer])
         } label: {
             VStack {
                 if let icon = step.firstAnswer.icon {
                     Text(icon)
                         .font(.system(size: 32))
                 }
-                Text(step.firstAnswer.text)
+                Text(step.firstAnswer.title)
             }
         }
         .buttonStyle(BinaryAnswerButtonStyle())
@@ -62,14 +62,14 @@ struct BinaryAnswerView: View {
 
     private var secondAnswerButton: some View {
         Button {
-            viewModel.onAnswer(answers: [step.secondAnswer.text])
+            viewModel.onAnswer(answers: [step.secondAnswer])
         } label: {
             VStack {
                 if let icon = step.secondAnswer.icon {
                     Text(icon)
                         .font(.system(size: 32))
                 }
-                Text(step.secondAnswer.text)
+                Text(step.secondAnswer.title)
             }
         }
         .buttonStyle(BinaryAnswerButtonStyle())

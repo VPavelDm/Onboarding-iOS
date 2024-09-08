@@ -13,7 +13,15 @@ extension WelcomeStep {
         Self(
             title: "Welcome to Lyncil",
             description: "Unleash Your Songwriting Potential with Lyncil",
-            image: .named("womanWithTeleskope")
+            image: .named("womanWithTeleskope"),
+            firstAnswer: StepAnswer(
+                title: "Get Started",
+                nextStepID: UUID()
+            ),
+            secondAnswer: StepAnswer(
+                title: "I Have Already an Account",
+                nextStepID: UUID()
+            )
         )
     }
 }

@@ -57,7 +57,7 @@ struct DescriptionStepView: View {
 
     private var nextButton: some View {
         Button {
-            viewModel.onAnswer()
+            viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text("Next")
         }

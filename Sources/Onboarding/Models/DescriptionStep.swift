@@ -11,6 +11,7 @@ struct DescriptionStep: Sendable, Equatable, Hashable {
     let image: ImageType?
     let title: String
     let description: String?
+    let answer: StepAnswer
 }
 
 // MARK: - Convert
@@ -25,7 +26,8 @@ extension DescriptionStep {
         self.init(
             image: imageType,
             title: response.title,
-            description: response.description
+            description: response.description,
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

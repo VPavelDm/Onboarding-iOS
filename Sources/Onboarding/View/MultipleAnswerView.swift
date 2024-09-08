@@ -68,7 +68,7 @@ struct MultipleAnswerView: View {
             answer.wrappedValue.isChose.toggle()
         } label: {
             HStack {
-                Text(answer.wrappedValue.value)
+                Text(answer.wrappedValue.value.title)
                 Spacer()
                 CheckBox(isChose: answer.isChose)
                     .allowsHitTesting(false)
@@ -93,9 +93,9 @@ struct MultipleAnswerView: View {
 }
 
 private struct BoxModel: Identifiable {
-    var id: String { value }
+    var id: StepAnswer { value }
     var isChose: Bool = false
-    var value: String
+    var value: StepAnswer
 }
 
 private extension Array where Element == BoxModel {
