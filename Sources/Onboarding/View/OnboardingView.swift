@@ -47,7 +47,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
 
     @ViewBuilder
     private var contentView: some View {
-        VStack {
+        VStack(spacing: 12) {
             customToolbarView
             NavigationStack(path: $viewModel.passedSteps) {
                 navigationStackContentView(step: viewModel.steps.first)
@@ -58,15 +58,10 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     }
 
     private var customToolbarView: some View {
-        HStack {
-            backButton
-                .opacity(viewModel.showBackButton ? 1 : 0)
-                .animation(.easeInOut, value: viewModel.userAnswers.isEmpty)
-            ProgressBarView(completed: viewModel.passedStepsProcent)
-            backButton.opacity(0)
-        }
-        .padding([.horizontal, .top])
-        .background(colorPalette.backgroundColor)
+        ProgressBarView(completed: viewModel.passedStepsProcent)
+            .padding([.horizontal, .top])
+            .padding(.horizontal)
+            .background(colorPalette.backgroundColor)
     }
 
     private func navigationStackContentView(step: OnboardingStep?) -> some View {
@@ -95,12 +90,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             }
         }
         .toolbar(.hidden, for: .navigationBar)
-    }
-
-    var backButton: some View {
-        BackButton {
-            viewModel.onBack()
-        }
     }
 
     private var contentLoadingView: some View {
