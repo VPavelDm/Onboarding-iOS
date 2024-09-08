@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct BackButton: View {
     @Environment(\.colorPalette) private var colorPalette
+    @State private var isAnimationInProgress: Bool = false
 
     var action: () -> Void
 
     var body: some View {
-        Button {
+        AsyncButton {
             action()
+            isAnimationInProgress = true
+            try? await Task.sleep(for: .milliseconds(350))
+            isAnimationInProgress = false
         } label: {
             Image(systemName: "chevron.compact.left")
                 .resizable()
@@ -24,5 +29,6 @@ struct BackButton: View {
                 .foregroundStyle(colorPalette.primaryTextColor)
         }
         .buttonStyle(PlainButtonStyle())
+        .disabled(isAnimationInProgress)
     }
 }
