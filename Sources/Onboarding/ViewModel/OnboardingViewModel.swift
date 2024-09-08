@@ -26,6 +26,10 @@ final class OnboardingViewModel: ObservableObject {
         return min(CGFloat(passedSteps.count) / CGFloat(maxStepsInChain), 1)
     }
 
+    var showBackButton: Bool {
+        !userAnswers.isEmpty
+    }
+
     let configuration: OnboardingConfiguration
     let completion: ([UserAnswer]) -> Void
 

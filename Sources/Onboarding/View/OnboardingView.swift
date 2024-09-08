@@ -60,17 +60,20 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     private var customToolbarView: some View {
         HStack {
             backButton
-                .opacity(viewModel.userAnswers.isEmpty ? 0 : 1)
+                .opacity(viewModel.showBackButton ? 1 : 0)
                 .animation(.easeInOut, value: viewModel.userAnswers.isEmpty)
             ProgressBarView(completed: viewModel.passedStepsProcent)
             backButton.opacity(0)
         }
         .padding([.horizontal, .top])
+        .background(colorPalette.backgroundColor)
     }
 
     private func navigationStackContentView(step: OnboardingStep?) -> some View {
-        VStack {
+        VStack(spacing: 0) {
             switch step?.type {
+            case .welcome(let welcomeStep):
+                WelcomeView(step: welcomeStep)
             case .oneAnswer(let oneAnswerStep):
                 OneAnswerView(step: oneAnswerStep)
             case .binaryAnswer(let binaryAnswerStep):
@@ -119,6 +122,8 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             Button(action: completion, label: {
                 Text("Next")
             })
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(ColorPalette.testData.backgroundColor)
         },
         completion: { _ in}
     )

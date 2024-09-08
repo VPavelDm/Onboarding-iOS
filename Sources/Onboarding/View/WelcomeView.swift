@@ -15,9 +15,13 @@ struct WelcomeView: View {
 
     var body: some View {
         VStack(spacing: 26) {
-            ZStack(alignment: .bottom) {
+            ZStack {
                 imageView
                 imageGradientView
+                    .rotationEffect(.radians(.pi))
+                    .frame(maxHeight: .infinity, alignment: .top)
+                imageGradientView
+                    .frame(maxHeight: .infinity, alignment: .bottom)
             }
             VStack {
                 titleView
@@ -86,6 +90,9 @@ struct WelcomeView: View {
 }
 
 #Preview {
-    WelcomeView(step: .testData())
-        .environmentObject(OnboardingViewModel(configuration: .testData(), completion: { _ in }))
+    OnboardingView(
+        configuration: .testData(),
+        outerScreen: { _ in Text("") },
+        completion: { _ in }
+    )
 }

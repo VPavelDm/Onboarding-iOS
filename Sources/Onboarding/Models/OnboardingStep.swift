@@ -14,6 +14,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
     var maxStepsInChain: Int
 
     enum OnboardingStepType: Sendable, Equatable, Hashable {
+        case welcome(WelcomeStep)
         case oneAnswer(OneAnswerStep)
         case binaryAnswer(BinaryAnswerStep)
         case multipleAnswer(MultipleAnswerStep)
@@ -44,6 +45,7 @@ extension OnboardingStep {
 
     init?(response: OnboardingStepResponse) {
         let type: OnboardingStepType = switch response.type {
+        case .welcome(let payload): .welcome(WelcomeStep(response: payload))
         case .oneAnswer(let payload): .oneAnswer(OneAnswerStep(response: payload))
         case .multipleAnswer(let payload): .multipleAnswer(MultipleAnswerStep(response: payload))
         case .description(let payload): .description(DescriptionStep(response: payload))
