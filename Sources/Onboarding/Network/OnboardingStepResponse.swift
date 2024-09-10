@@ -100,7 +100,7 @@ struct OnboardingStepResponse: Decodable {
     struct WelcomeStep: Decodable {
         let title: String
         let description: String
-        let image: ImageResponse
+        let emojis: [String]
         let firstAnswer: StepAnswer
         let secondAnswer: StepAnswer
     }

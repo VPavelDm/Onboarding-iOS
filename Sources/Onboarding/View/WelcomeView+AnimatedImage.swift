@@ -12,18 +12,26 @@ extension WelcomeView {
     struct AnimatedImageView: View {
         @Environment(\.colorPalette) private var colorPalette
 
-        let emojis: [String] = ["🦥", "⚽️", "🧩", "✈️", "🏖️", "🏔️"]
+        let step: WelcomeStep
+
+        var innitOrbitEmojis: [String] {
+            Array(step.emojis[0..<(step.emojis.count / 2)])
+        }
+
+        var outerOrbitEmojis: [String] {
+            Array(step.emojis[(step.emojis.count / 2)...])
+        }
 
         var body: some View {
             GeometryReader { geometry in
                 ZStack {
                     WelcomeView.OrbitView(
-                        emojis: Array(emojis[0...2]),
+                        emojis: innitOrbitEmojis,
                         radius: geometry.size.width / 2 * 0.85,
                         progressOffset: .zero
                     )
                     WelcomeView.OrbitView(
-                        emojis: Array(emojis[3...]),
+                        emojis: outerOrbitEmojis,
                         radius: geometry.size.width / 2 * 1.15,
                         progressOffset: 0.5
                     )
@@ -38,14 +46,14 @@ extension WelcomeView {
         }
 
         private var titleView: some View {
-            Text("Welcome to Lyncil")
+            Text(step.title)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(colorPalette.primaryTextColor)
         }
 
         private var descriptionView: some View {
-            Text("Unleash Your Songwriting Potential with Lyncil")
+            Text(step.description)
                 .font(.body)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)

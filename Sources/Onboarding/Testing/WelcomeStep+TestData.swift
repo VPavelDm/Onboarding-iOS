@@ -11,9 +11,9 @@ extension WelcomeStep {
 
     static func testData() -> Self {
         Self(
-            title: "Welcome to Lyncil",
-            description: "Unleash Your Songwriting Potential with Lyncil",
-            image: .named("womanWithTeleskope"),
+            title: "Welcome to YAZIO",
+            description: "Let's make every day count!",
+            emojis: ["🍎", "🥑", "🥒", "🧀", "🥕", "🥩"],
             firstAnswer: StepAnswer(
                 title: "Get Started",
                 nextStepID: UUID()

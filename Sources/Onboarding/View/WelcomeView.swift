@@ -35,7 +35,7 @@ struct WelcomeView: View {
 
     @ViewBuilder
     private var imageView: some View {
-        AnimatedImageView()
+        AnimatedImageView(step: step)
     }
 
     private var imageGradientView: some View {
