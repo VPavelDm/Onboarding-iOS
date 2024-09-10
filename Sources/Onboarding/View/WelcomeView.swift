@@ -24,11 +24,6 @@ struct WelcomeView: View {
                     .frame(maxHeight: .infinity, alignment: .bottom)
             }
             VStack {
-                titleView
-                descriptionView
-            }
-            .padding(.horizontal)
-            VStack {
                 getStartedButton
                 alreadyHaveAccountButton
             }
@@ -40,9 +35,7 @@ struct WelcomeView: View {
 
     @ViewBuilder
     private var imageView: some View {
-        if let image = step.image {
-            OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
-        }
+        AnimatedImageView()
     }
 
     private var imageGradientView: some View {
@@ -55,21 +48,6 @@ struct WelcomeView: View {
             endPoint: .bottom
         )
         .frame(height: 50)
-    }
-
-    private var titleView: some View {
-        Text(step.title)
-            .font(.title)
-            .fontWeight(.bold)
-            .foregroundStyle(colorPalette.primaryTextColor)
-    }
-
-    private var descriptionView: some View {
-        Text(step.description)
-            .font(.body)
-            .fontWeight(.semibold)
-            .multilineTextAlignment(.center)
-            .foregroundStyle(colorPalette.secondaryTextColor)
     }
 
     private var getStartedButton: some View {
