@@ -23,7 +23,7 @@ extension WelcomeView {
 
         var secondRadius: CGFloat {
             let circleSize = min(availableSize.width, availableSize.height) / 2
-            return circleSize * 1.5
+            return circleSize * 1.15
         }
 
         var body: some View {
