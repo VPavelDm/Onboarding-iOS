@@ -12,32 +12,29 @@ extension WelcomeView {
     struct AnimatedImageView: View {
         @Environment(\.colorPalette) private var colorPalette
 
-        @State private var availableSize: CGSize = .zero
-
         let emojis: [String] = ["🦥", "⚽️", "🧩", "✈️", "🏖️", "🏔️"]
 
-        var firstRadius: CGFloat {
-            let circleSize = min(availableSize.width, availableSize.height) / 2
-            return circleSize
-        }
-
-        var secondRadius: CGFloat {
-            let circleSize = min(availableSize.width, availableSize.height) / 2
-            return circleSize * 1.15
-        }
-
         var body: some View {
-            ZStack {
-                WelcomeView.OrbitView(emojis: Array(emojis[0...2]), radius: firstRadius, progressOffset: .zero)
-                WelcomeView.OrbitView(emojis: Array(emojis[3...]), radius: secondRadius, progressOffset: 0.5)
-                VStack {
-                    titleView
-                    descriptionView
+            GeometryReader { geometry in
+                ZStack {
+                    WelcomeView.OrbitView(
+                        emojis: Array(emojis[0...2]),
+                        radius: geometry.size.width / 2 * 0.85,
+                        progressOffset: .zero
+                    )
+                    WelcomeView.OrbitView(
+                        emojis: Array(emojis[3...]),
+                        radius: geometry.size.width / 2 * 1.15,
+                        progressOffset: 0.5
+                    )
+                    VStack {
+                        titleView
+                        descriptionView
+                    }
+                    .frame(maxWidth: geometry.size.width * 0.75)
                 }
-                .padding(.horizontal)
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .readSize(size: $availableSize)
         }
 
         private var titleView: some View {
