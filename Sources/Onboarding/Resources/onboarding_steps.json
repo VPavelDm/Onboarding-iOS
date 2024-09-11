@@ -4,9 +4,9 @@
         "type": "welcome",
         "passedPercent": 0.1,
         "payload": {
-            "title": "Welcome to YAZIO",
-            "description": "Let's make every day count!",
-            "emojis": ["🍎", "🥑", "🥒", "🧀", "🥕", "🥩"],
+            "title": "Welcome to Lyncil",
+            "description": "Unleash Your Songwriting Potential with Lyncil!",
+            "emojis": ["🎶", "🎹", "🎤", "🎸", "🎧", "🎷"],
             "firstAnswer": {
                 "title": "Get Started",
                 "nextStepID": "C34BD07B-CA60-41CE-8377-D749D4B196F4"

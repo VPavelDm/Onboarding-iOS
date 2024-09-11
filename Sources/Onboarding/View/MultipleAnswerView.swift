@@ -72,7 +72,10 @@ struct MultipleAnswerView: View {
                 Spacer()
                 CheckBox(isChose: answer.isChose)
                     .allowsHitTesting(false)
-                    .foregroundStyle(colorPalette.primaryButtonBackgroundColor)
+                    .environment(\.checkBoxColorPalette, CheckBox.ColorPalette(
+                        background: colorPalette.primaryButtonBackgroundColor,
+                        checkmark: colorPalette.primaryButtonTextColor
+                    ))
             }
         }
         .buttonStyle(MultipleAnswerButtonStyle())
