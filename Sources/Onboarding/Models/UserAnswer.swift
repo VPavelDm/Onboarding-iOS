@@ -8,6 +8,6 @@
 import Foundation
 
 public struct UserAnswer: Sendable, Equatable, Hashable {
-    var onboardingStepID: UUID
-    var answers: [String]
+    public var onboardingStepID: UUID
+    public var answers: [String]
 }
