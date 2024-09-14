@@ -1,6 +1,6 @@
 [
     {
-        "id": "D5B8B0A2-E4F6-4641-BFA7-86C833FB95A0",
+        "id": "welcome_id",
         "type": "welcome",
         "passedPercent": 0.1,
         "payload": {
@@ -9,16 +9,16 @@
             "emojis": ["🎶", "🎹", "🎤", "🎸", "🎧", "🎷"],
             "firstAnswer": {
                 "title": "Get Started",
-                "nextStepID": "C34BD07B-CA60-41CE-8377-D749D4B196F4"
+                "nextStepID": "challenges"
             },
             "secondAnswer": {
                 "title": "I Already Have an Account",
-                "nextStepID": "68A3D5D2-F4FD-4DDB-A818-B1FD0FE2BA3A"
+                "nextStepID": "login"
             }
         }
     },
     {
-        "id": "C34BD07B-CA60-41CE-8377-D749D4B196F4",
+        "id": "challenges",
         "type": "multipleAnswer",
         "passedPercent": 0.28,
         "payload": {
@@ -27,33 +27,33 @@
             "answers": [
                 {
                     "title": "🍟 Resting cravings",
-                    "nextStepID": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A"
+                    "nextStepID": "goal"
                 },
                 {
                     "title": "✨ Staying motivated",
-                    "nextStepID": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A"
+                    "nextStepID": "goal"
                 },
                 {
                     "title": "🥣 Reducing portion sizes",
-                    "nextStepID": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A"
+                    "nextStepID": "goal"
                 },
                 {
                     "title": "🥗 Knowing what to eat",
-                    "nextStepID": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A"
+                    "nextStepID": "goal"
                 },
                 {
                     "title": "⏰ Being too busy",
-                    "nextStepID": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A"
+                    "nextStepID": "goal"
                 },
                 {
                     "title": "💭 Something else",
-                    "nextStepID": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A"
+                    "nextStepID": "goal"
                 }
             ]
         }
     },
     {
-        "id": "874CFA8E-029C-4073-9E12-9A2EEA2CC20A",
+        "id": "goal",
         "type": "oneAnswer",
         "passedPercent": 0.42,
         "payload": {
@@ -62,29 +62,29 @@
             "answers": [
                 {
                     "title": "📉 Lose weight",
-                    "nextStepID": "D956D79D-5B4D-414A-8335-CFE957FD3FEF"
+                    "nextStepID": "starting_point"
                 },
                 {
                     "title": "👀 Maintain weight",
-                    "nextStepID": "D956D79D-5B4D-414A-8335-CFE957FD3FEF"
+                    "nextStepID": "starting_point"
                 },
                 {
                     "title": "📈 Gain weight",
-                    "nextStepID": "D956D79D-5B4D-414A-8335-CFE957FD3FEF"
+                    "nextStepID": "starting_point"
                 },
                 {
                     "title": "💪 Build weight",
-                    "nextStepID": "D956D79D-5B4D-414A-8335-CFE957FD3FEF"
+                    "nextStepID": "starting_point"
                 },
                 {
                     "title": "💬 Something else",
-                    "nextStepID": "D956D79D-5B4D-414A-8335-CFE957FD3FEF"
+                    "nextStepID": "starting_point"
                 },
             ]
         }
     },
     {
-        "id": "D956D79D-5B4D-414A-8335-CFE957FD3FEF",
+        "id": "starting_point",
         "type": "description",
         "passedPercent": 0.57,
         "payload": {
@@ -96,12 +96,12 @@
             },
             "answer": {
                 "title": "Continue",
-                "nextStepID": "6021CABF-377B-4B9E-A488-1DF90888FDDD"
+                "nextStepID": "sex"
             }
         }
     },
     {
-        "id": "6021CABF-377B-4B9E-A488-1DF90888FDDD",
+        "id": "sex",
         "type": "binaryAnswer",
         "passedPercent": 0.71,
         "payload": {
@@ -110,28 +110,28 @@
             "firstAnswer": {
                 "title": "Female",
                 "icon": "🚺",
-                "nextStepID": "68A3D5D2-F4FD-4DDB-A818-B1FD0FE2BA3A"
+                "nextStepID": "login"
             },
             "secondAnswer": {
                 "title": "Male",
                 "icon": "🚹",
-                "nextStepID": "68A3D5D2-F4FD-4DDB-A818-B1FD0FE2BA3A"
+                "nextStepID": "login"
             }
         }
     },
     {
-        "id": "68A3D5D2-F4FD-4DDB-A818-B1FD0FE2BA3A",
+        "id": "login",
         "type": "login",
         "passedPercent": 0.85,
         "payload": {
             "answer": {
                 "title": "Next",
-                "nextStepID": "DA2A564D-CA2C-4F5B-8938-3B4D8AAE31B7"
+                "nextStepID": "custom_1"
             }
         }
     },
     {
-        "id": "DA2A564D-CA2C-4F5B-8938-3B4D8AAE31B7",
+        "id": "custom_1",
         "type": "custom",
         "passedPercent": 1,
         "payload": {

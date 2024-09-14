@@ -10,7 +10,7 @@ import Foundation
 struct StepAnswer: Sendable, Equatable, Hashable {
     var title: String
     var icon: String?
-    var nextStepID: UUID?
+    var nextStepID: StepID?
 }
 
 // MARK: - Convert

@@ -8,3 +8,4 @@
 import Foundation
 
 public typealias OnboardingOuterScreenCallbackParams = (OnboardingOuterScreen, () -> Void)
+public typealias StepID = String

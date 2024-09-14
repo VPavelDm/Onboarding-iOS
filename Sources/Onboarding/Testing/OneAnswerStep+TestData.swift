@@ -9,16 +9,18 @@ import Foundation
 
 extension OneAnswerStep {
 
-    static func testData() -> Self {
+    static func testData(
+        nextStepID: StepID = StepID("starting_point")
+    ) -> Self {
         Self(
             title: "What's your main goal?",
             description: "Choose only one answer",
             answers: [
-                StepAnswer(title: "📉 Lose weight", nextStepID: UUID()),
-                StepAnswer(title: "👀 Maintain weight", nextStepID: UUID()),
-                StepAnswer(title: "📈 Gain weight", nextStepID: UUID()),
-                StepAnswer(title: "💪 Build weight", nextStepID: UUID()),
-                StepAnswer(title: "💬 Something else", nextStepID: UUID()),
+                StepAnswer(title: "📉 Lose weight", nextStepID: nextStepID),
+                StepAnswer(title: "👀 Maintain weight", nextStepID: nextStepID),
+                StepAnswer(title: "📈 Gain weight", nextStepID: nextStepID),
+                StepAnswer(title: "💪 Build weight", nextStepID: nextStepID),
+                StepAnswer(title: "💬 Something else", nextStepID: nextStepID),
             ]
         )
     }

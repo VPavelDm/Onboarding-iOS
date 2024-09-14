@@ -8,7 +8,7 @@
 import Foundation
 
 struct OnboardingStepResponse: Decodable {
-    let id: UUID
+    let id: StepID
     let type: OnboardingStepType
     let passedPercent: Double
 
@@ -21,7 +21,7 @@ struct OnboardingStepResponse: Decodable {
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
+        id = try container.decode(StepID.self, forKey: .id)
         passedPercent = try container.decode(Double.self, forKey: .passedPercent)
         let type = try container.decode(String.self, forKey: .type)
         switch type {
@@ -108,7 +108,7 @@ struct OnboardingStepResponse: Decodable {
     struct StepAnswer: Decodable {
         let title: String
         let icon: String?
-        let nextStepID: UUID?
+        let nextStepID: StepID?
     }
 
     struct CustomStep: Decodable {

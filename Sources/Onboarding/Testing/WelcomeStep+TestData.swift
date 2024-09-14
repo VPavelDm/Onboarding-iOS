@@ -16,11 +16,11 @@ extension WelcomeStep {
             emojis: ["🍎", "🥑", "🥒", "🧀", "🥕", "🥩"],
             firstAnswer: StepAnswer(
                 title: "Get Started",
-                nextStepID: UUID()
+                nextStepID: StepID("challenges")
             ),
             secondAnswer: StepAnswer(
                 title: "I Have Already an Account",
-                nextStepID: UUID()
+                nextStepID: StepID("login")
             )
         )
     }

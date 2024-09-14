@@ -8,7 +8,7 @@
 import Foundation
 
 struct OnboardingStep: Sendable, Equatable, Hashable {
-    var id: UUID
+    var id: StepID
     var type: OnboardingStepType
     var passedPercent: Double
 

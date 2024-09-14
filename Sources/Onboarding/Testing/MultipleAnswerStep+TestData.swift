@@ -10,7 +10,7 @@ import Foundation
 extension MultipleAnswerStep {
 
     static func testData(
-        nextStepID: UUID = UUID(uuidString: "C34BD07B-CA60-41CE-8377-D749D4B196F4")!
+        nextStepID: StepID = StepID("challenges")
     ) -> Self {
         Self(
             title: "What challenges did you face?",
