@@ -109,6 +109,37 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let icon: String?
         let nextStepID: StepID?
+        let payload: Payload
+
+        init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.title = try container.decode(String.self, forKey: .title)
+            self.icon = try container.decodeIfPresent(String.self, forKey: .icon)
+            self.nextStepID = try container.decodeIfPresent(StepID.self, forKey: .nextStepID)
+            let payloadType = try container.decode(String.self, forKey: .payloadType)
+            switch payloadType {
+            case "string":
+                self.payload = .string(try container.decode(String.self, forKey: .payload))
+            case "json":
+                self.payload = .json(try container.decode(Data.self, forKey: .payload))
+            default:
+                self.payload = .unknown
+            }
+        }
+
+        enum Payload: Decodable {
+            case string(String)
+            case json(Data)
+            case unknown
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case title
+            case icon
+            case nextStepID
+            case payloadType
+            case payload
+        }
     }
 
     struct CustomStep: Decodable {

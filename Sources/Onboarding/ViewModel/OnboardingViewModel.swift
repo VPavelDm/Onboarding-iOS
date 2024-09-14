@@ -52,7 +52,10 @@ final class OnboardingViewModel: ObservableObject {
 
     func onAnswer(answers: [StepAnswer]) {
         guard let currentStep else { return }
-        userAnswers.append(UserAnswer(onboardingStepID: currentStep.id, answers: answers.map(\.title)))
+        userAnswers.append(UserAnswer(
+            onboardingStepID: currentStep.id,
+            payloads: answers.map(\.payload).compactMap(UserAnswer.Payload.init(payload:))
+        ))
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
         if let nextStepIndex = steps.firstIndex(where: { $0.id == answers.last?.nextStepID }) {

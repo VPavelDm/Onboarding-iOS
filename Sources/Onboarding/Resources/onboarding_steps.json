@@ -110,12 +110,16 @@
             "firstAnswer": {
                 "title": "Female",
                 "icon": "🚺",
-                "nextStepID": "login"
+                "nextStepID": "login",
+                "payloadType": "string",
+                "payload": "female"
             },
             "secondAnswer": {
                 "title": "Male",
                 "icon": "🚹",
-                "nextStepID": "login"
+                "nextStepID": "login",
+                "payloadType": "string",
+                "payload": "male"
             }
         }
     },
