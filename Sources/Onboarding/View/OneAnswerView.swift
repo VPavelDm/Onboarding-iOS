@@ -21,7 +21,7 @@ struct OneAnswerView: View {
                     titleView
                     descriptionView
                 }
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(spacing: 12) {
                     ForEach(step.answers.indices, id: \.self) { index in
                         buttonView(answer: step.answers[index])
                     }
@@ -53,6 +53,7 @@ struct OneAnswerView: View {
             await viewModel.onAnswer(answers: [answer])
         } label: {
             Text(answer.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .buttonStyle(AnswerButtonStyle())
     }
