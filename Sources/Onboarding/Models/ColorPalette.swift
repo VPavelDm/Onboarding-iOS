@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import CoreUI
 
-public struct ColorPalette: Sendable {
+public struct ColorPalette: Sendable, AsyncButtonColorPalette, CheckBoxColorPalette {
+    public let asyncButtonProgressView: Color
+    public let checkboxBackground: Color
+    public let checkboxCheckmark: Color
     let backgroundColor: Color
     let primaryTextColor: Color
     let secondaryTextColor: Color
@@ -19,6 +23,9 @@ public struct ColorPalette: Sendable {
     let progressBarBackgroundColor: Color
 
     public init(
+        asyncButtonProgressView: Color,
+        checkboxBackground: Color,
+        checkboxCheckmark: Color,
         backgroundColor: Color,
         primaryTextColor: Color,
         secondaryTextColor: Color,
@@ -29,6 +36,9 @@ public struct ColorPalette: Sendable {
         progressBarColor: Color,
         progressBarBackgroundColor: Color
     ) {
+        self.asyncButtonProgressView = asyncButtonProgressView
+        self.checkboxBackground = checkboxBackground
+        self.checkboxCheckmark = checkboxCheckmark
         self.backgroundColor = backgroundColor
         self.primaryTextColor = primaryTextColor
         self.secondaryTextColor = secondaryTextColor

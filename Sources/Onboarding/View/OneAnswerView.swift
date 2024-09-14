@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct OneAnswerView: View {
     @Environment(\.colorPalette) private var colorPalette
@@ -48,8 +49,8 @@ struct OneAnswerView: View {
     }
 
     private func buttonView(answer: StepAnswer) -> some View {
-        Button {
-            viewModel.onAnswer(answers: [answer])
+        AsyncButton {
+            await viewModel.onAnswer(answers: [answer])
         } label: {
             Text(answer.title)
         }

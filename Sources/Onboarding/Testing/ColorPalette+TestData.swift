@@ -11,6 +11,9 @@ import SwiftUI
 extension ColorPalette {
     static var testData: Self {
         Self(
+            asyncButtonProgressView: Color(hex: "0589D6"),
+            checkboxBackground: Color(hex: "0589D6"),
+            checkboxCheckmark: Color(hex: "F0F2F5"),
             backgroundColor: Color(hex: "111927"),
             primaryTextColor: Color(hex: "F0F2F5"),
             secondaryTextColor: Color(hex: "DADCE2"),

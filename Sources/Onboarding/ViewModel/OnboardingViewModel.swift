@@ -30,11 +30,11 @@ final class OnboardingViewModel: ObservableObject {
     }
 
     let configuration: OnboardingConfiguration
-    let completion: ([UserAnswer]) -> Void
+    let completion: ([UserAnswer]) async -> Void
 
     // MARK: - Inits
 
-    init(configuration: OnboardingConfiguration, completion: @escaping ([UserAnswer]) -> Void) {
+    init(configuration: OnboardingConfiguration, completion: @escaping ([UserAnswer]) async -> Void) {
         self.configuration = configuration
         self.service = OnboardingService(configuration: configuration)
         self.completion = completion
@@ -50,7 +50,7 @@ final class OnboardingViewModel: ObservableObject {
         self.currentStep = firstStep
     }
 
-    func onAnswer(answers: [StepAnswer]) {
+    func onAnswer(answers: [StepAnswer]) async {
         guard let currentStep else { return }
         userAnswers.append(UserAnswer(
             onboardingStepID: currentStep.id,
@@ -62,7 +62,7 @@ final class OnboardingViewModel: ObservableObject {
             passedSteps.append(steps[nextStepIndex])
             self.currentStep = passedSteps.last
         } else {
-            completion(userAnswers)
+            await completion(userAnswers)
         }
     }
 

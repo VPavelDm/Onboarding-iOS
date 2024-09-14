@@ -72,18 +72,14 @@ struct MultipleAnswerView: View {
                 Spacer()
                 CheckBox(isChose: answer.isChose)
                     .allowsHitTesting(false)
-                    .environment(\.checkBoxColorPalette, CheckBox.ColorPalette(
-                        background: colorPalette.primaryButtonBackgroundColor,
-                        checkmark: colorPalette.primaryButtonTextColor
-                    ))
             }
         }
         .buttonStyle(MultipleAnswerButtonStyle())
     }
 
     private var nextButton: some View {
-        Button {
-            viewModel.onAnswer(answers: answers.filter(\.isChose).map(\.value))
+        AsyncButton {
+            await viewModel.onAnswer(answers: answers.filter(\.isChose).map(\.value))
         } label: {
             Text("Next")
         }

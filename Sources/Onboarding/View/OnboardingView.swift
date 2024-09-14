@@ -19,7 +19,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     public init(
         configuration: OnboardingConfiguration,
         @ViewBuilder outerScreen: @escaping (OnboardingOuterScreenCallbackParams) -> OuterScreen,
-        completion: @escaping ([UserAnswer]) -> Void
+        completion: @escaping ([UserAnswer]) async -> Void
     ) {
         self._viewModel = StateObject(wrappedValue: OnboardingViewModel(
             configuration: configuration,
@@ -99,14 +99,14 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             .background(colorPalette.backgroundColor)
     }
 
-    private func handleOuterScreenCallback() {
+    private func handleOuterScreenCallback() async {
         switch viewModel.currentStep?.type {
         case .custom(let stepAnswer):
-            viewModel.onAnswer(answers: [stepAnswer])
+            await viewModel.onAnswer(answers: [stepAnswer])
         case .login(let stepAnswer):
-            viewModel.onAnswer(answers: [stepAnswer])
+            await viewModel.onAnswer(answers: [stepAnswer])
         case .prime(let stepAnswer):
-            viewModel.onAnswer(answers: [stepAnswer])
+            await viewModel.onAnswer(answers: [stepAnswer])
         default:
             break
         }
@@ -117,9 +117,10 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     OnboardingView(
         configuration: .testData(),
         outerScreen: { type, completion in
-            Button(action: completion, label: {
+            Button {
+            } label: {
                 Text("Next")
-            })
+            }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(ColorPalette.testData.backgroundColor)
         },

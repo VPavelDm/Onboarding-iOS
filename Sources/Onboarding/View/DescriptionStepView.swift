@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct DescriptionStepView: View {
     @Environment(\.colorPalette) private var colorPalette
@@ -56,8 +57,8 @@ struct DescriptionStepView: View {
     }
 
     private var nextButton: some View {
-        Button {
-            viewModel.onAnswer(answers: [step.answer])
+        AsyncButton {
+            await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text("Next")
         }

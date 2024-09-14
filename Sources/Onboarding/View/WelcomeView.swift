@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct WelcomeView: View {
     @Environment(\.colorPalette) private var colorPalette
@@ -51,8 +52,8 @@ struct WelcomeView: View {
     }
 
     private var getStartedButton: some View {
-        Button {
-            viewModel.onAnswer(answers: [step.firstAnswer])
+        AsyncButton {
+            await viewModel.onAnswer(answers: [step.firstAnswer])
         } label: {
             Text(step.firstAnswer.title)
         }
@@ -60,8 +61,8 @@ struct WelcomeView: View {
     }
 
     private var alreadyHaveAccountButton: some View {
-        Button {
-            viewModel.onAnswer(answers: [step.secondAnswer])
+        AsyncButton {
+            await viewModel.onAnswer(answers: [step.secondAnswer])
         } label: {
             Text(step.secondAnswer.title)
         }

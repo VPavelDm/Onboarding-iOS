@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct BinaryAnswerView: View {
     @Environment(\.colorPalette) private var colorPalette
@@ -46,8 +47,8 @@ struct BinaryAnswerView: View {
     }
 
     private var firstAnswerButton: some View {
-        Button {
-            viewModel.onAnswer(answers: [step.firstAnswer])
+        AsyncButton {
+            await viewModel.onAnswer(answers: [step.firstAnswer])
         } label: {
             VStack {
                 if let icon = step.firstAnswer.icon {
@@ -61,8 +62,8 @@ struct BinaryAnswerView: View {
     }
 
     private var secondAnswerButton: some View {
-        Button {
-            viewModel.onAnswer(answers: [step.secondAnswer])
+        AsyncButton {
+            await viewModel.onAnswer(answers: [step.secondAnswer])
         } label: {
             VStack {
                 if let icon = step.secondAnswer.icon {
