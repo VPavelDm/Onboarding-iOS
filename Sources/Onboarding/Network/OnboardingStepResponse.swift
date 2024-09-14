@@ -109,36 +109,32 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let icon: String?
         let nextStepID: StepID?
-        let payload: Payload
-
-        init(from decoder: any Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.title = try container.decode(String.self, forKey: .title)
-            self.icon = try container.decodeIfPresent(String.self, forKey: .icon)
-            self.nextStepID = try container.decodeIfPresent(StepID.self, forKey: .nextStepID)
-            let payloadType = try container.decode(String.self, forKey: .payloadType)
-            switch payloadType {
-            case "string":
-                self.payload = .string(try container.decode(String.self, forKey: .payload))
-            case "json":
-                self.payload = .json(try container.decode(Data.self, forKey: .payload))
-            default:
-                self.payload = .unknown
-            }
-        }
+        let payload: Payload?
 
         enum Payload: Decodable {
             case string(String)
             case json(Data)
-            case unknown
-        }
 
-        enum CodingKeys: String, CodingKey {
-            case title
-            case icon
-            case nextStepID
-            case payloadType
-            case payload
+            enum CodingKeys: String, CodingKey {
+                case type
+                case value
+            }
+
+            init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+                switch type {
+                case "string":
+                    self = .string(try container.decode(String.self, forKey: .value))
+                case "json":
+                    self = .json(try container.decode(Data.self, forKey: .value))
+                default:
+                    throw DecodingError.dataCorrupted(DecodingError.Context(
+                        codingPath: [CodingKeys.value],
+                        debugDescription: ""
+                    ))
+                }
+            }
         }
     }
 

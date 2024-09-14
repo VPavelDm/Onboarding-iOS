@@ -111,15 +111,19 @@
                 "title": "Female",
                 "icon": "🚺",
                 "nextStepID": "login",
-                "payloadType": "string",
-                "payload": "female"
+                "payload": {
+                    "type": "string",
+                    "value": "female"
+                }
             },
             "secondAnswer": {
                 "title": "Male",
                 "icon": "🚹",
                 "nextStepID": "login",
-                "payloadType": "string",
-                "payload": "male"
+                "payload": {
+                    "type": "string",
+                    "value": "male"
+                }
             }
         }
     },

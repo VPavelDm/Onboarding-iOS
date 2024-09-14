@@ -19,14 +19,12 @@ public struct UserAnswer: Sendable, Equatable, Hashable {
 
 extension UserAnswer.Payload {
 
-    init?(payload: StepAnswer.Payload) {
+    init(payload: StepAnswer.Payload) {
         switch payload {
         case .string(let string):
             self = .string(string)
         case .json(let data):
             self = .json(data)
-        case .unknown:
-            return nil
         }
     }
 }

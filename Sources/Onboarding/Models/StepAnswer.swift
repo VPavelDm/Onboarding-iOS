@@ -11,12 +11,11 @@ struct StepAnswer: Sendable, Equatable, Hashable {
     var title: String
     var icon: String?
     var nextStepID: StepID?
-    var payload: Payload = .unknown
+    var payload: Payload?
 
     enum Payload: Sendable, Equatable, Hashable {
         case string(String)
         case json(Data)
-        case unknown
     }
 }
 
@@ -29,7 +28,7 @@ extension StepAnswer {
             title: response.title,
             icon: response.icon,
             nextStepID: response.nextStepID,
-            payload: Payload(response: response.payload)
+            payload: response.payload.map(Payload.init(response:))
         )
     }
 }
@@ -42,8 +41,6 @@ extension StepAnswer.Payload {
             self = .string(string)
         case .json(let data):
             self = .json(data)
-        case .unknown:
-            self = .unknown
         }
     }
 }

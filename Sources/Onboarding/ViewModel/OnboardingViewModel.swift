@@ -54,7 +54,7 @@ final class OnboardingViewModel: ObservableObject {
         guard let currentStep else { return }
         userAnswers.append(UserAnswer(
             onboardingStepID: currentStep.id,
-            payloads: answers.map(\.payload).compactMap(UserAnswer.Payload.init(payload:))
+            payloads: answers.compactMap(\.payload).map(UserAnswer.Payload.init(payload:))
         ))
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
