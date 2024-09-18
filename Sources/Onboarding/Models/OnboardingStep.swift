@@ -21,6 +21,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case login(StepAnswer)
         case custom(StepAnswer)
         case prime(StepAnswer)
+        case progress(ProgressStep)
         case unknown
     }
 }
