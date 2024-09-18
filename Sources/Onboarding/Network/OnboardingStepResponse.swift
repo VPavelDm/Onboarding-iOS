@@ -49,6 +49,9 @@ struct OnboardingStepResponse: Decodable {
         case "welcome":
             let payload = try container.decode(WelcomeStep.self, forKey: .payload)
             self.type = .welcome(payload)
+        case "progress":
+            let payload = try container.decode(ProgressStep.self, forKey: .payload)
+            self.type = .progress(payload)
         default:
             self.type = .unknown
         }
@@ -63,6 +66,7 @@ struct OnboardingStepResponse: Decodable {
         case custom(StepAnswer)
         case prime(StepAnswer)
         case welcome(WelcomeStep)
+        case progress(ProgressStep)
         case unknown
     }
 
@@ -103,6 +107,11 @@ struct OnboardingStepResponse: Decodable {
         let emojis: [String]
         let firstAnswer: StepAnswer
         let secondAnswer: StepAnswer
+    }
+
+    struct ProgressStep: Decodable {
+        let title: String
+        let steps: [String]
     }
 
     struct StepAnswer: Decodable {

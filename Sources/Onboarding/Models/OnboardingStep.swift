@@ -53,6 +53,7 @@ extension OnboardingStep {
         case .login(let payload): .login(StepAnswer(response: payload))
         case .custom(let payload): .custom(StepAnswer(response: payload))
         case .prime(let payload): .prime(StepAnswer(response: payload))
+        case .progress(let payload): .progress(ProgressStep(response: payload))
         default: .unknown
         }
 
