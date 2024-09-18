@@ -42,7 +42,7 @@ extension ProgressStepView {
 
     private func stepView(at index: Int) -> some View {
         Text(step.steps[index])
-            .font(.system(size: 20))
+            .font(.system(size: 16))
             .foregroundStyle(stepCompleted(at: index) ? colorPalette.primaryTextColor : colorPalette.progressBarDisabledColor)
     }
 
