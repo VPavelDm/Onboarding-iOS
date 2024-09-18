@@ -60,7 +60,7 @@ struct DescriptionStepView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
-            Text("Next")
+            Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
         .padding([.horizontal, .bottom])
