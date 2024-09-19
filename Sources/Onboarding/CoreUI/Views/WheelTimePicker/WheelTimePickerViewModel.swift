@@ -149,6 +149,7 @@ extension WheelTimePicker {
             }
 
             self.times = times
+            self.selectedTimeIndex = 0
         }
     }
 }

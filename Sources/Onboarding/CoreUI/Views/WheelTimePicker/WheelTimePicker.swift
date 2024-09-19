@@ -33,6 +33,9 @@ struct WheelTimePicker: View {
                 .ignoresSafeArea()
                 .animation(.linear, value: viewModel.selectedTimeIndex)
         )
+        .onAppear {
+            viewModel.selectedTimeIndex = 20
+        }
         .environmentObject(viewModel)
     }
 

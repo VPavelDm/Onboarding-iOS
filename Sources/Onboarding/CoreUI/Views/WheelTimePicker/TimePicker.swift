@@ -36,9 +36,6 @@ extension WheelTimePicker {
             .scrollTargetBehavior(.viewAligned)
             .scrollPosition(id: $viewModel.selectedTimeIndex, anchor: .center)
             .readSize(size: $size)
-            .onAppear {
-                viewModel.selectedTimeIndex = 20
-            }
         }
 
         private func timeView(_ time: String) -> some View {
