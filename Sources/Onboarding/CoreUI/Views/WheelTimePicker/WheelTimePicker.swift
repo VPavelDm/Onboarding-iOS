@@ -24,8 +24,8 @@ struct WheelTimePicker: View {
                 TimePicker()
             }
         }
-        .ignoresSafeArea(.container, edges: .bottom)
-        .background(Color(hex: "1F1B4E"))
+        .background(viewModel.backgroundColor.animation(.linear, value: viewModel.selectedTimeIndex))
+        .ignoresSafeArea()
         .environmentObject(viewModel)
     }
 

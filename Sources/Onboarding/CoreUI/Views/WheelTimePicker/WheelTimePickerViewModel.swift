@@ -56,6 +56,10 @@ extension WheelTimePicker {
             }
         }
 
+        var backgroundColor: LinearGradient {
+            sunDayStart <= currentDate && currentDate <= sunDayEnd ? backgroundColors[1] : backgroundColors[0]
+        }
+
         // MARK: - Properties
 
         private let calendar = Calendar.current
@@ -94,6 +98,14 @@ extension WheelTimePicker {
 
         var secondMidnight: Date {
             calendar.date(byAdding: .day, value: 1, to: firstMidnight) ?? .now
+        }
+
+        private var backgroundColors: [LinearGradient] {
+            [
+                LinearGradient(colors: [Color(hex: "000033"), Color(hex: "000066"), Color(hex: "191970")], startPoint: .top, endPoint: .bottom),
+                LinearGradient(colors: [Color(hex: "FF4500"), Color(hex: "FFA07A"), Color(hex: "FFD700")], startPoint: .top, endPoint: .bottom),
+
+            ]
         }
 
         // MARK: - Inits
