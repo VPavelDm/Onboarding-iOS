@@ -12,10 +12,11 @@ struct WheelTimePicker: View {
 
     @StateObject private var viewModel = ViewModel()
     @State private var size: CGSize = .zero
+    @State private var selectedTimeIndex: Int?
 
     var body: some View {
         VStack(spacing: 0) {
-            HouseView(viewModel: viewModel)
+            HouseView(activeIndex: $selectedTimeIndex, viewModel: viewModel)
             ZStack {
                 EarthShape()
                     .fill(Color.green)
@@ -28,36 +29,29 @@ struct WheelTimePicker: View {
     }
 
     private var timeScrollView: some View {
-        ScrollViewReader { reader in
-            ScrollView(.horizontal) {
-                HStack(spacing: 30) {
-                    ForEach(viewModel.times.indices, id: \.self) { index in
-                        Button {
-                            withAnimation {
-                                reader.scrollTo(index, anchor: .center)
-                            }
-                        } label: {
-                            timeView(viewModel.times[index])
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .id(index)
+        ScrollView(.horizontal) {
+            LazyHStack(spacing: 30) {
+                ForEach(viewModel.times.indices, id: \.self) { index in
+                    timeView(viewModel.times[index])
                         .visualEffect { view, proxy in
                             view
                                 .offset(y: offset(proxy))
                                 .scaleEffect(scale(proxy), anchor: .bottom)
                         }
-                    }
                 }
-                .frame(height: .earthHeight)
-                .offset(y: .progressStep * 1.25)
-                .scrollTargetLayout()
-                .padding(.horizontal, size.width / 2 - .circleSize / 2)
             }
-            .scrollIndicators(.hidden)
-            .scrollTargetBehavior(.viewAligned)
-            .scrollPosition(id: $viewModel.activeIndex)
+            .frame(height: .earthHeight)
+            .offset(y: .progressStep * 1.25)
+            .scrollTargetLayout()
+            .safeAreaPadding(.horizontal, size.width / 2 - .circleSize / 2)
         }
+        .scrollIndicators(.hidden)
+        .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: $selectedTimeIndex, anchor: .center)
         .readSize(size: $size)
+        .onAppear {
+            selectedTimeIndex = 20
+        }
     }
 
     private func timeView(_ time: String) -> some View {
@@ -97,26 +91,7 @@ private extension WheelTimePicker {
 
         // MARK: - Outputs
 
-        @Published var activeIndex: Range<Array<String>.Index>.Element?
         @Published var times: [String] = []
-
-        var isDay: Bool {
-            print("LOG: activeIndex - \(activeIndex)")
-            guard let activeIndex else { return true }
-            let time = times[activeIndex]
-            
-            guard let date = dateFormatter.date(from: time) else {
-                return true
-            }
-            guard let dayTimeStart = calendar.date(bySettingHour: 4, minute: 0, second: 0, of: date) else {
-                return true
-            }
-            guard let dayTimeEnd = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date) else {
-                return false
-            }
-            
-            return dayTimeStart <= date && date <= dayTimeEnd
-        }
 
         // MARK: - Properties
 
@@ -143,6 +118,27 @@ private extension WheelTimePicker {
         init() {
             initialiseTimes()
         }
+
+        // MARK: - Intents
+
+        func isDay(activeIndex: Int?) -> Bool {
+            guard let activeIndex else { return true }
+            let time = times[activeIndex]
+            print("LOG: time - \(time)")
+
+            guard let date = dateFormatter.date(from: time) else {
+                return true
+            }
+            guard let dayTimeStart = calendar.date(bySettingHour: 4, minute: 0, second: 0, of: date) else {
+                return true
+            }
+            guard let dayTimeEnd = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date) else {
+                return false
+            }
+
+            return dayTimeStart <= date && date <= dayTimeEnd
+        }
+
 
         // MARK: - Utils
 
@@ -198,6 +194,7 @@ private extension WheelTimePicker {
 private extension WheelTimePicker {
 
     struct HouseView: View {
+        @Binding var activeIndex: Int?
         @ObservedObject var viewModel: ViewModel
 
         var body: some View {
@@ -205,7 +202,7 @@ private extension WheelTimePicker {
                 .resizable()
                 .renderingMode(.template)
                 .frame(width: 100, height: 100)
-                .foregroundStyle(viewModel.isDay ? .blue : .red)
+                .foregroundStyle(viewModel.isDay(activeIndex: activeIndex) ? .blue : .red)
                 .offset(y: 5)
         }
     }
