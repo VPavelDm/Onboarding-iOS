@@ -149,12 +149,39 @@ private extension WheelTimePicker {
                 return true
             }
             guard let dayTimeEnd = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date) else {
-                return false
+                return true
             }
 
             return dayTimeStart <= date && date <= dayTimeEnd
         }
 
+        func sunAngle(selectedTimeIndex: Int?) -> Angle {
+            guard let selectedTimeIndex else { return .degrees(180) }
+            let time = times[selectedTimeIndex]
+            guard let date = dateFormatter.date(from: time) else {
+                return .degrees(180)
+            }
+            guard let dayTimeStart = calendar.date(bySettingHour: 4, minute: 0, second: 0, of: date) else {
+                return .degrees(180)
+            }
+            guard let dayTimeEnd = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date) else {
+                return .degrees(180)
+            }
+            guard dayTimeStart < date else {
+                return .degrees(180)
+            }
+            guard date < dayTimeEnd else {
+                return .degrees(540)
+            }
+
+            let totalTime = dayTimeEnd.timeIntervalSince(dayTimeStart)
+
+            let timePassed = date.timeIntervalSince(dayTimeStart)
+
+            let percentage = (timePassed / totalTime)
+
+            return .degrees(270 + percentage * 180)
+        }
 
         // MARK: - Utils
 
@@ -212,17 +239,18 @@ private extension WheelTimePicker {
     struct HouseView: View {
         @Binding var selectedTimeIndex: Int?
         @ObservedObject var viewModel: ViewModel
-        @State private var currentAngle: Angle = .degrees(0)
 
         var body: some View {
             ZStack {
                 homeView
-                moonSunView
+                sunView
+                    .frame(maxHeight: .dayNightRadius * 2, alignment: .top)
+                    .rotationEffect(viewModel.sunAngle(selectedTimeIndex: selectedTimeIndex))
+                    .animation(.linear, value: viewModel.sunAngle(selectedTimeIndex: selectedTimeIndex))
+                moonView
+                    .frame(maxHeight: .dayNightRadius * 2, alignment: .top)
             }
             .offset(y: .dayNightRadius - .homeSize / 2 + 5)
-            .onAppear {
-                currentAngle = .degrees(360)
-            }
         }
 
         private var homeView: some View {
@@ -231,17 +259,6 @@ private extension WheelTimePicker {
                 .renderingMode(.template)
                 .foregroundStyle(.white)
                 .frame(width: .homeSize, height: .homeSize)
-        }
-
-        private var moonSunView: some View {
-            VStack {
-                moonView
-                Spacer()
-                sunView
-            }
-            .frame(maxHeight: .dayNightRadius * 2)
-            .rotationEffect(currentAngle)
-            .animation(.linear(duration: 5).repeatForever(autoreverses: false), value: currentAngle)
         }
 
         private var moonView: some View {
