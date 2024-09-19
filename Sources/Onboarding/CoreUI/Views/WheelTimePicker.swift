@@ -196,14 +196,47 @@ private extension WheelTimePicker {
     struct HouseView: View {
         @Binding var activeIndex: Int?
         @ObservedObject var viewModel: ViewModel
+        @State private var currentAngle: Angle = .degrees(0)
 
         var body: some View {
+            ZStack {
+                homeView
+                moonSunView
+            }
+            .offset(y: .dayNightRadius - .homeSize / 2 + 5)
+            .onAppear {
+                currentAngle = .degrees(360)
+            }
+        }
+
+        private var homeView: some View {
             Image("home", bundle: Bundle.module)
                 .resizable()
                 .renderingMode(.template)
-                .frame(width: 100, height: 100)
-                .foregroundStyle(viewModel.isDay(activeIndex: activeIndex) ? .blue : .red)
-                .offset(y: 5)
+                .frame(width: .homeSize, height: .homeSize)
+        }
+
+        private var moonSunView: some View {
+            VStack {
+                moonView
+                Spacer()
+                sunView
+            }
+            .frame(maxHeight: .dayNightRadius * 2)
+            .rotationEffect(currentAngle)
+            .animation(.linear(duration: 5).repeatForever(autoreverses: false), value: currentAngle)
+        }
+
+        private var moonView: some View {
+            Image(systemName: "moon.fill")
+                .resizable()
+                .frame(width: 32, height: 32)
+        }
+
+        private var sunView: some View {
+            Image(systemName: "sun.min.fill")
+                .resizable()
+                .frame(width: 32, height: 32)
         }
     }
 }
@@ -215,6 +248,8 @@ extension CGFloat {
     static let circleSize: CGFloat = 60
     static let earthHeight: CGFloat = 200
     static let progressStep: CGFloat = 30
+    static let dayNightRadius: CGFloat = 120
+    static let homeSize: CGFloat = 100
 }
 
 // MARK: - Preview
