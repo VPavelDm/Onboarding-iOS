@@ -14,8 +14,11 @@ struct WheelTimePicker: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            timeView
-                .frame(maxHeight: .infinity)
+            VStack {
+                titleView
+                timeView
+            }
+            .frame(maxHeight: .infinity)
             HouseView(viewModel: viewModel)
             ZStack {
                 EarthShape()
@@ -23,10 +26,20 @@ struct WheelTimePicker: View {
                     .frame(maxHeight: .earthHeight)
                 TimePicker()
             }
+            continueButton
         }
-        .background(viewModel.backgroundColor.animation(.linear, value: viewModel.selectedTimeIndex))
-        .ignoresSafeArea()
+        .background(
+            viewModel.backgroundColor
+                .ignoresSafeArea()
+                .animation(.linear, value: viewModel.selectedTimeIndex)
+        )
         .environmentObject(viewModel)
+    }
+
+    private var titleView: some View {
+        Text("When do you plan to study?")
+            .foregroundStyle(.white)
+            .font(.system(size: 16, weight: .semibold))
     }
 
     private var timeView: some View {
@@ -36,6 +49,15 @@ struct WheelTimePicker: View {
             .contentTransition(.numericText())
             .animation(.easeInOut, value: viewModel.selectedTimeIndex)
             .monospaced()
+    }
+
+    private var continueButton: some View {
+        Button {} label: {
+            Text("Continue")
+        }
+        .buttonStyle(PrimaryButtonStyle())
+        .padding([.horizontal, .bottom])
+        .background(Color(hex: "2A2663"))
     }
 }
 
