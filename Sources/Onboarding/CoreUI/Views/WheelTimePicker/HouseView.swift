@@ -13,7 +13,6 @@ import SwiftUI
 extension WheelTimePicker {
 
     struct HouseView: View {
-        @Binding var selectedTimeIndex: Int?
         @ObservedObject var viewModel: ViewModel
 
         var body: some View {
@@ -21,12 +20,12 @@ extension WheelTimePicker {
                 homeView
                 sunView
                     .frame(maxHeight: .dayNightRadius * 2, alignment: .top)
-                    .rotationEffect(viewModel.sunAngle(selectedTimeIndex: selectedTimeIndex))
-                    .animation(.linear, value: viewModel.sunAngle(selectedTimeIndex: selectedTimeIndex))
+                    .rotationEffect(viewModel.sunAngle)
+                    .animation(.linear, value: viewModel.sunAngle)
                 moonView
                     .frame(maxHeight: .dayNightRadius * 2, alignment: .top)
-                    .rotationEffect(viewModel.moonAngle(selectedTimeIndex: selectedTimeIndex))
-                    .animation(.linear, value: viewModel.moonAngle(selectedTimeIndex: selectedTimeIndex))
+                    .rotationEffect(viewModel.moonAngle)
+                    .animation(.linear, value: viewModel.moonAngle)
             }
             .offset(y: .dayNightRadius - .homeSize / 2 + 5)
         }

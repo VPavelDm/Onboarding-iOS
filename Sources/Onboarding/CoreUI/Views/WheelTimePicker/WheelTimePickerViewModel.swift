@@ -16,6 +16,45 @@ extension WheelTimePicker {
         // MARK: - Outputs
 
         @Published var times: [String] = []
+        @Published var selectedTimeIndex: Int?
+
+        var currentTime: String {
+            times[selectedTimeIndex ?? 0]
+        }
+
+        var sunAngle: Angle {
+            guard sunDayStart <= currentDate else {
+                return .degrees(180)
+            }
+            guard currentDate <= sunDayEnd else {
+                return .degrees(540)
+            }
+
+            let totalTime = sunDayEnd.timeIntervalSince(sunDayStart)
+            let timePassed = currentDate.timeIntervalSince(sunDayStart)
+            let percentage = timePassed / totalTime
+
+            return .degrees(270 + percentage * 180)
+        }
+
+        var moonAngle: Angle {
+            if sunDayStart <= currentDate && currentDate <= sunDayEnd {
+                return .degrees(180)
+            }
+            if currentDate < sunDayStart {
+                let totalTime = sunDayStart.timeIntervalSince(firstMidnight)
+                let timePassed = currentDate.timeIntervalSince(firstMidnight)
+                let percentage = timePassed / totalTime
+
+                return .degrees(-90 + percentage * 180)
+            } else {
+                let totalTime = secondMidnight.timeIntervalSince(sunDayEnd)
+                let timePassed = currentDate.timeIntervalSince(sunDayEnd)
+                let percentage = timePassed / totalTime
+
+                return .degrees(270 + percentage * 180)
+            }
+        }
 
         // MARK: - Properties
 
@@ -37,74 +76,30 @@ extension WheelTimePicker {
             return dateFormatter
         }()
 
+        var currentDate: Date {
+            dateFormatter.date(from: currentTime) ?? .now
+        }
+
+        var sunDayStart: Date {
+            calendar.date(bySettingHour: 4, minute: 0, second: 0, of: currentDate) ?? .now
+        }
+
+        var sunDayEnd: Date {
+            calendar.date(bySettingHour: 22, minute: 0, second: 0, of: currentDate) ?? .now
+        }
+
+        var firstMidnight: Date {
+            calendar.date(bySettingHour: 0, minute: 0, second: 0, of: currentDate) ?? .now
+        }
+
+        var secondMidnight: Date {
+            calendar.date(byAdding: .day, value: 1, to: firstMidnight) ?? .now
+        }
+
         // MARK: - Inits
 
         init() {
             initialiseTimes()
-        }
-
-        // MARK: - Intents
-
-        func sunAngle(selectedTimeIndex: Int?) -> Angle {
-            guard let selectedTimeIndex else { return .degrees(180) }
-            let time = times[selectedTimeIndex]
-            guard let date = dateFormatter.date(from: time) else {
-                return .degrees(180)
-            }
-            guard let dayTimeStart = calendar.date(bySettingHour: 4, minute: 0, second: 0, of: date) else {
-                return .degrees(180)
-            }
-            guard let dayTimeEnd = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date) else {
-                return .degrees(180)
-            }
-            guard dayTimeStart < date else {
-                return .degrees(180)
-            }
-            guard date < dayTimeEnd else {
-                return .degrees(540)
-            }
-
-            let totalTime = dayTimeEnd.timeIntervalSince(dayTimeStart)
-
-            let timePassed = date.timeIntervalSince(dayTimeStart)
-
-            let percentage = (timePassed / totalTime)
-
-            return .degrees(270 + percentage * 180)
-        }
-
-        func moonAngle(selectedTimeIndex: Int?) -> Angle {
-            guard let selectedTimeIndex else { return .degrees(180) }
-            let time = times[selectedTimeIndex]
-            guard let date = dateFormatter.date(from: time) else {
-                return .degrees(180)
-            }
-            guard let dayTimeStart = calendar.date(bySettingHour: 4, minute: 0, second: 0, of: date) else {
-                return .degrees(180)
-            }
-            guard let dayTimeEnd = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date) else {
-                return .degrees(180)
-            }
-            guard let midnight = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: date) else {
-                return .degrees(180)
-            }
-            guard date < dayTimeStart || dayTimeEnd < date else {
-                return .degrees(540)
-            }
-
-            if date < dayTimeStart {
-                let totalTime = dayTimeStart.timeIntervalSince(midnight)
-                let timePassed = date.timeIntervalSince(midnight)
-                let percentage = timePassed / totalTime
-                return .degrees(270 + percentage * 180)
-            } else if let nextDayMidnight = calendar.date(byAdding: .day, value: 1, to: midnight) {
-                let totalTime = nextDayMidnight.timeIntervalSince(dayTimeEnd)
-                let timePassed = date.timeIntervalSince(dayTimeEnd)
-                let percentage = timePassed / totalTime
-                return .degrees(630 + percentage * 180)
-            } else {
-                return .degrees(180)
-            }
         }
 
         // MARK: - Utils

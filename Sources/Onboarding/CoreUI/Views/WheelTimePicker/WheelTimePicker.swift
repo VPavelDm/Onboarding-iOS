@@ -11,18 +11,17 @@ import SwiftUI
 struct WheelTimePicker: View {
 
     @StateObject private var viewModel = ViewModel()
-    @State private var selectedTimeIndex: Int?
 
     var body: some View {
         VStack(spacing: 0) {
             timeView
                 .frame(maxHeight: .infinity)
-            HouseView(selectedTimeIndex: $selectedTimeIndex, viewModel: viewModel)
+            HouseView(viewModel: viewModel)
             ZStack {
                 EarthShape()
                     .fill(Color(hex: "2A2663"))
                     .frame(maxHeight: .earthHeight)
-                TimePicker(selectedTimeIndex: $selectedTimeIndex)
+                TimePicker()
             }
         }
         .ignoresSafeArea(.container, edges: .bottom)
@@ -31,11 +30,11 @@ struct WheelTimePicker: View {
     }
 
     private var timeView: some View {
-        Text(viewModel.times[selectedTimeIndex ?? 0])
+        Text(viewModel.currentTime)
             .foregroundStyle(.white)
             .font(.system(size: 84, weight: .bold))
             .contentTransition(.numericText())
-            .animation(.easeInOut, value: selectedTimeIndex)
+            .animation(.easeInOut, value: viewModel.selectedTimeIndex)
             .monospaced()
     }
 }

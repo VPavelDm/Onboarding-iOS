@@ -13,8 +13,6 @@ extension WheelTimePicker {
     struct TimePicker: View {
         @EnvironmentObject private var viewModel: ViewModel
         @State private var size: CGSize = .zero
-        
-        @Binding var selectedTimeIndex: Int?
 
         var body: some View {
             ScrollView(.horizontal) {
@@ -36,10 +34,10 @@ extension WheelTimePicker {
             }
             .scrollIndicators(.hidden)
             .scrollTargetBehavior(.viewAligned)
-            .scrollPosition(id: $selectedTimeIndex, anchor: .center)
+            .scrollPosition(id: $viewModel.selectedTimeIndex, anchor: .center)
             .readSize(size: $size)
             .onAppear {
-                selectedTimeIndex = 20
+                viewModel.selectedTimeIndex = 20
             }
         }
 
