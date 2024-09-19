@@ -12,11 +12,10 @@ struct WheelTimePicker: View {
 
     @StateObject private var viewModel = ViewModel()
     @State private var size: CGSize = .zero
-    @State private var activeIndex: Int?
 
     var body: some View {
         VStack(spacing: 0) {
-            Rectangle().frame(width: 40, height: 40)
+            HouseView(viewModel: viewModel)
             ZStack {
                 EarthShape()
                     .fill(Color.green)
@@ -56,7 +55,7 @@ struct WheelTimePicker: View {
             }
             .scrollIndicators(.hidden)
             .scrollTargetBehavior(.viewAligned)
-            .scrollPosition(id: $activeIndex)
+            .scrollPosition(id: $viewModel.activeIndex)
         }
         .readSize(size: $size)
     }
@@ -96,14 +95,38 @@ private extension WheelTimePicker {
     @MainActor
     final class ViewModel: ObservableObject {
 
-        @Published var times: [String]
+        // MARK: - Outputs
 
-        init() {
-            var times: [String] = []
+        @Published var activeIndex: Range<Array<String>.Index>.Element?
+        @Published var times: [String] = []
 
-            let calendar = Calendar.current
+        var isDay: Bool {
+            print("LOG: activeIndex - \(activeIndex)")
+            guard let activeIndex else { return true }
+            let time = times[activeIndex]
+            
+            guard let date = dateFormatter.date(from: time) else {
+                return true
+            }
+            guard let dayTimeStart = calendar.date(bySettingHour: 4, minute: 0, second: 0, of: date) else {
+                return true
+            }
+            guard let dayTimeEnd = calendar.date(bySettingHour: 22, minute: 0, second: 0, of: date) else {
+                return false
+            }
+            
+            return dayTimeStart <= date && date <= dayTimeEnd
+        }
+
+        // MARK: - Properties
+
+        private let calendar = Calendar.current
+
+        private let dateFormatter: DateFormatter = {
             let locale = Locale.current
+
             let dateFormatter = DateFormatter()
+            dateFormatter.locale = locale
 
             if locale.is24TimeFormat {
                 dateFormatter.dateStyle = .none
@@ -112,7 +135,19 @@ private extension WheelTimePicker {
                 dateFormatter.dateFormat = "hh:mm\na"
             }
 
-            dateFormatter.locale = locale
+            return dateFormatter
+        }()
+
+        // MARK: - Inits
+
+        init() {
+            initialiseTimes()
+        }
+
+        // MARK: - Utils
+
+        private func initialiseTimes() {
+            var times: [String] = []
 
             let midnight = calendar.startOfDay(for: Date())
 
@@ -126,7 +161,7 @@ private extension WheelTimePicker {
                 }
             }
 
-            self._times = Published(initialValue: times)
+            self.times = times
         }
     }
 }
@@ -141,15 +176,37 @@ private extension WheelTimePicker {
         func path(in rect: CGRect) -> Path {
             var path = Path()
 
-            path.addArc(
-                center: CGPoint(x: rect.midX, y: rect.height * 4 - 14),
-                radius: rect.width * 2,
-                startAngle: .degrees(0),
-                endAngle: .degrees(180),
-                clockwise: true
+            let height: CGFloat = rect.height * 0.15
+
+            path.move(to: CGPoint(x: rect.minX, y: height))
+            path.addQuadCurve(
+                to: CGPoint(x: rect.maxX, y: height),
+                control: CGPoint(x: rect.midX, y: -height)
             )
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+            path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+            path.closeSubpath()
 
             return path
+        }
+    }
+}
+
+// MARK: - House
+
+@available(iOS 17.0, *)
+private extension WheelTimePicker {
+
+    struct HouseView: View {
+        @ObservedObject var viewModel: ViewModel
+
+        var body: some View {
+            Image("home", bundle: Bundle.module)
+                .resizable()
+                .renderingMode(.template)
+                .frame(width: 100, height: 100)
+                .foregroundStyle(viewModel.isDay ? .blue : .red)
+                .offset(y: 5)
         }
     }
 }
