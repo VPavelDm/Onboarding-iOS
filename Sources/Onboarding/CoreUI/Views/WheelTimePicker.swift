@@ -16,16 +16,28 @@ struct WheelTimePicker: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HouseView(activeIndex: $selectedTimeIndex, viewModel: viewModel)
+            Spacer()
+            timeView
+            Spacer()
+            HouseView(selectedTimeIndex: $selectedTimeIndex, viewModel: viewModel)
             ZStack {
                 EarthShape()
-                    .fill(Color.green)
+                    .fill(Color(hex: "2A2663"))
                     .frame(maxHeight: .earthHeight)
                 timeScrollView
             }
         }
-        .frame(maxHeight: .infinity, alignment: .bottom)
         .ignoresSafeArea(.container, edges: .bottom)
+        .background(Color(hex: "1F1B4E"))
+    }
+
+    private var timeView: some View {
+        Text(viewModel.times[selectedTimeIndex ?? 0])
+            .foregroundStyle(.white)
+            .font(.system(size: 84, weight: .bold))
+            .contentTransition(.numericText())
+            .animation(.easeInOut, value: selectedTimeIndex)
+            .monospaced()
     }
 
     private var timeScrollView: some View {
@@ -37,6 +49,7 @@ struct WheelTimePicker: View {
                             view
                                 .offset(y: offset(proxy))
                                 .scaleEffect(scale(proxy), anchor: .bottom)
+                                .opacity(opacity(proxy))
                         }
                 }
             }
@@ -60,7 +73,7 @@ struct WheelTimePicker: View {
             .foregroundStyle(.white)
             .font(.system(size: 14, weight: .semibold))
             .frame(width: .circleSize, height: .circleSize)
-            .background(Color.red)
+            .background(Color(hex: "3DADFF"))
             .clipShape(Circle())
     }
 
@@ -72,6 +85,10 @@ struct WheelTimePicker: View {
     nonisolated private func scale(_ proxy: GeometryProxy) -> CGFloat {
         let progress = progress(proxy)
         return 1 + progress * 0.5
+    }
+
+    nonisolated private func opacity(_ proxy: GeometryProxy) -> CGFloat {
+        progress(proxy)
     }
 
     nonisolated private func progress(_ proxy: GeometryProxy) -> CGFloat {
@@ -121,10 +138,9 @@ private extension WheelTimePicker {
 
         // MARK: - Intents
 
-        func isDay(activeIndex: Int?) -> Bool {
-            guard let activeIndex else { return true }
-            let time = times[activeIndex]
-            print("LOG: time - \(time)")
+        func isDay(selectedTimeIndex: Int?) -> Bool {
+            guard let selectedTimeIndex else { return true }
+            let time = times[selectedTimeIndex]
 
             guard let date = dateFormatter.date(from: time) else {
                 return true
@@ -194,7 +210,7 @@ private extension WheelTimePicker {
 private extension WheelTimePicker {
 
     struct HouseView: View {
-        @Binding var activeIndex: Int?
+        @Binding var selectedTimeIndex: Int?
         @ObservedObject var viewModel: ViewModel
         @State private var currentAngle: Angle = .degrees(0)
 
@@ -213,6 +229,7 @@ private extension WheelTimePicker {
             Image("home", bundle: Bundle.module)
                 .resizable()
                 .renderingMode(.template)
+                .foregroundStyle(.white)
                 .frame(width: .homeSize, height: .homeSize)
         }
 
@@ -230,12 +247,16 @@ private extension WheelTimePicker {
         private var moonView: some View {
             Image(systemName: "moon.fill")
                 .resizable()
+                .renderingMode(.template)
+                .foregroundStyle(.yellow)
                 .frame(width: 32, height: 32)
         }
 
         private var sunView: some View {
             Image(systemName: "sun.min.fill")
                 .resizable()
+                .renderingMode(.template)
+                .foregroundStyle(.yellow)
                 .frame(width: 32, height: 32)
         }
     }
