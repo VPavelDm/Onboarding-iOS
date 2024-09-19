@@ -76,17 +76,13 @@ extension WheelTimePicker {
         private let calendar = Calendar.current
 
         private let dateFormatter: DateFormatter = {
-            let locale = Locale.current
+            let locale = Locale(languageCode: .russian, languageRegion: .belarus)
 
             let dateFormatter = DateFormatter()
             dateFormatter.locale = locale
 
-            if locale.is24TimeFormat {
-                dateFormatter.dateStyle = .none
-                dateFormatter.timeStyle = .short
-            } else {
-                dateFormatter.dateFormat = "hh:mm\na"
-            }
+            dateFormatter.dateStyle = .none
+            dateFormatter.timeStyle = .short
 
             return dateFormatter
         }()

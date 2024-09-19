@@ -22,7 +22,7 @@ struct WheelTimePicker: View {
             HouseView(viewModel: viewModel)
             ZStack {
                 EarthShape()
-                    .fill(Color(hex: "2A2663"))
+                    .fill(Color.ground)
                     .frame(maxHeight: .earthHeight)
                 TimePicker()
             }
@@ -49,6 +49,7 @@ struct WheelTimePicker: View {
             .contentTransition(.numericText())
             .animation(.easeInOut, value: viewModel.selectedTimeIndex)
             .monospaced()
+            .multilineTextAlignment(.center)
     }
 
     private var continueButton: some View {
@@ -57,7 +58,7 @@ struct WheelTimePicker: View {
         }
         .buttonStyle(PrimaryButtonStyle())
         .padding([.horizontal, .bottom])
-        .background(Color(hex: "2A2663"))
+        .background(Color.ground)
     }
 }
 
@@ -70,6 +71,12 @@ extension CGFloat {
     static let progressStep: CGFloat = 30
     static let dayNightRadius: CGFloat = 120
     static let homeSize: CGFloat = 100
+}
+
+extension Color {
+
+    static let ground: Color = Color(hex: "2A2663")
+    static let sun: Color = Color(hex: "FAFF0E")
 }
 
 // MARK: - Preview

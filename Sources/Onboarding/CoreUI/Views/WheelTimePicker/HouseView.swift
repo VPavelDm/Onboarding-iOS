@@ -50,8 +50,8 @@ extension WheelTimePicker {
             Image(systemName: "sun.min.fill")
                 .resizable()
                 .renderingMode(.template)
-                .foregroundStyle(.yellow)
-                .frame(width: 32, height: 32)
+                .foregroundStyle(Color.sun)
+                .frame(width: 44, height: 44)
         }
     }
 }
