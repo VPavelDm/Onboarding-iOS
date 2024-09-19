@@ -57,7 +57,18 @@ extension WheelTimePicker {
         }
 
         var backgroundColor: LinearGradient {
-            sunDayStart <= currentDate && currentDate <= sunDayEnd ? backgroundColors[1] : backgroundColors[0]
+            switch currentDate {
+            case ..<sunDayStart:
+                backgroundColors[0]
+            case sunDayStart..<morningEnd:
+                backgroundColors[1]
+            case morningEnd..<eveningStart:
+                backgroundColors[2]
+            case eveningStart...sunDayEnd:
+                backgroundColors[3]
+            default:
+                backgroundColors[4]
+            }
         }
 
         // MARK: - Properties
@@ -88,6 +99,14 @@ extension WheelTimePicker {
             calendar.date(bySettingHour: 4, minute: 0, second: 0, of: currentDate) ?? .now
         }
 
+        var morningEnd: Date {
+            calendar.date(bySettingHour: 11, minute: 0, second: 0, of: currentDate) ?? .now
+        }
+
+        var eveningStart: Date {
+            calendar.date(bySettingHour: 16, minute: 0, second: 0, of: currentDate) ?? .now
+        }
+
         var sunDayEnd: Date {
             calendar.date(bySettingHour: 22, minute: 0, second: 0, of: currentDate) ?? .now
         }
@@ -102,9 +121,11 @@ extension WheelTimePicker {
 
         private var backgroundColors: [LinearGradient] {
             [
-                LinearGradient(colors: [Color(hex: "000033"), Color(hex: "000066"), Color(hex: "191970")], startPoint: .top, endPoint: .bottom),
-                LinearGradient(colors: [Color(hex: "FF4500"), Color(hex: "FFA07A"), Color(hex: "FFD700")], startPoint: .top, endPoint: .bottom),
-
+                LinearGradient(colors: [Color(hex: "05060B"), Color(hex: "072831"), Color(hex: "074F5B")], startPoint: .top, endPoint: .bottom),
+                LinearGradient(colors: [Color(hex: "101E3C"), Color(hex: "745C93"), Color(hex: "FDB56D")], startPoint: .top, endPoint: .bottom),
+                LinearGradient(colors: [Color(hex: "1F78AF"), Color(hex: "62C6FD"), Color(hex: "C4F3FA")], startPoint: .top, endPoint: .bottom),
+                LinearGradient(colors: [Color(hex: "6B3E67"), Color(hex: "FE8771"), Color(hex: "FFBB78")], startPoint: .top, endPoint: .bottom),
+                LinearGradient(colors: [Color(hex: "0D0D1F"), Color(hex: "003366"), Color(hex: "001848")], startPoint: .top, endPoint: .bottom),
             ]
         }
 
@@ -135,4 +156,3 @@ extension WheelTimePicker {
         }
     }
 }
-
