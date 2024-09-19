@@ -15,9 +15,11 @@ struct WheelTimePicker: View {
     @State private var activeIndex: Int?
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
+            Rectangle().frame(width: 40, height: 40)
             ZStack {
                 EarthShape()
+                    .fill(Color.green)
                     .frame(maxHeight: .earthHeight)
                 timeScrollView
             }
@@ -86,15 +88,6 @@ struct WheelTimePicker: View {
     }
 }
 
-// MARK: - Constants
-
-extension CGFloat {
-
-    static let circleSize: CGFloat = 60
-    static let earthHeight: CGFloat = 200
-    static let progressStep: CGFloat = 30
-}
-
 // MARK: - View Model
 
 @available(iOS 17.0, *)
@@ -109,7 +102,7 @@ private extension WheelTimePicker {
             var times: [String] = []
 
             let calendar = Calendar.current
-            let locale = Locale(languageCode: .english, languageRegion: .unitedStates)
+            let locale = Locale.current
             let dateFormatter = DateFormatter()
 
             if locale.is24TimeFormat {
@@ -148,21 +141,26 @@ private extension WheelTimePicker {
         func path(in rect: CGRect) -> Path {
             var path = Path()
 
-            let startingHeight = rect.height * 0.3
-
-            path.move(to: CGPoint(x: rect.minX - startingHeight / 3, y: startingHeight))
-            path.addCurve(
-                to: CGPoint(x: rect.maxX + startingHeight / 3, y: startingHeight),
-                control1: CGPoint(x: rect.minX, y: rect.minY),
-                control2: CGPoint(x: rect.maxX, y: rect.minY)
+            path.addArc(
+                center: CGPoint(x: rect.midX, y: rect.height * 4 - 14),
+                radius: rect.width * 2,
+                startAngle: .degrees(0),
+                endAngle: .degrees(180),
+                clockwise: true
             )
-            path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-            path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-            path.closeSubpath()
 
             return path
         }
     }
+}
+
+// MARK: - Constants
+
+extension CGFloat {
+
+    static let circleSize: CGFloat = 60
+    static let earthHeight: CGFloat = 200
+    static let progressStep: CGFloat = 30
 }
 
 // MARK: - Preview
