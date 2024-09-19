@@ -32,7 +32,6 @@ struct WheelTimePicker: View {
                 HStack(spacing: 30) {
                     ForEach(viewModel.times.indices, id: \.self) { index in
                         Button {
-                            print("LOG: click - \(index)")
                             withAnimation {
                                 reader.scrollTo(index, anchor: .center)
                             }
@@ -49,19 +48,15 @@ struct WheelTimePicker: View {
                     }
                 }
                 .frame(height: .earthHeight)
-                .offset(y: -.progressStep)
+                .offset(y: .progressStep * 1.25)
                 .scrollTargetLayout()
                 .padding(.horizontal, size.width / 2 - .circleSize / 2)
             }
-            .coordinateSpace(name: "scrollView")
             .scrollIndicators(.hidden)
             .scrollTargetBehavior(.viewAligned)
             .scrollPosition(id: $activeIndex)
-            .readSize(size: $size)
-            .onAppear {
-                reader.scrollTo(5)
-            }
         }
+        .readSize(size: $size)
     }
 
     private func timeView(_ time: String) -> some View {
@@ -76,18 +71,18 @@ struct WheelTimePicker: View {
 
     nonisolated private func offset(_ proxy: GeometryProxy) -> CGFloat {
         let progress = progress(proxy)
-        return max(abs(progress), 0.6) * .progressStep
+        return progress * -.progressStep
     }
 
     nonisolated private func scale(_ proxy: GeometryProxy) -> CGFloat {
         let progress = progress(proxy)
-        return max(1.5 - abs(progress), 1)
+        return 1 + progress * 0.5
     }
 
     nonisolated private func progress(_ proxy: GeometryProxy) -> CGFloat {
-        let minX = proxy.bounds(of: .scrollView)?.minX ?? 0
-        print("LOG: \(proxy.frame(in: .scrollView))")
-        return minX / proxy.size.width
+        let screenWidth = proxy.bounds(of: .scrollView)?.width ?? .zero
+        let midX = proxy.frame(in: .scrollView).midX
+        return 1 - abs(midX - screenWidth / 2) / screenWidth * 2
     }
 }
 
@@ -128,8 +123,8 @@ private extension WheelTimePicker {
 
             let midnight = calendar.startOfDay(for: Date())
 
-            for hour in 0..<1 {
-                for minute in stride(from: 0, to: 60, by: 60) {
+            for hour in 0..<24 {
+                for minute in stride(from: 0, to: 60, by: 30) {
                     guard let time = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: midnight) else {
                         continue
                     }
