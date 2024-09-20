@@ -29,13 +29,15 @@ final class OnboardingViewModel: ObservableObject {
         !userAnswers.isEmpty
     }
 
+    let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
     let completion: ([UserAnswer]) async -> Void
 
     // MARK: - Inits
 
-    init(configuration: OnboardingConfiguration, completion: @escaping ([UserAnswer]) async -> Void) {
+    init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate, completion: @escaping ([UserAnswer]) async -> Void) {
         self.configuration = configuration
+        self.delegate = delegate
         self.service = OnboardingService(configuration: configuration)
         self.completion = completion
     }

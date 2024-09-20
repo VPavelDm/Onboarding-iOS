@@ -56,7 +56,5 @@ extension WheelTimePicker {
 }
 
 #Preview {
-    VStack {
-        WheelTimePicker()
-    }
+    WheelTimePicker(completion: { _ in })
 }

@@ -41,6 +41,7 @@ private extension CGFloat {
 #Preview {
     OnboardingView(
         configuration: .testData(),
+        delegate: MockOnboardingDelegate(),
         outerScreen: { _, _ in Text("Hello") },
         completion: { _ in}
     )

@@ -73,6 +73,7 @@ struct WelcomeView: View {
 #Preview {
     OnboardingView(
         configuration: .testData(),
+        delegate: MockOnboardingDelegate(),
         outerScreen: { _ in Text("") },
         completion: { _ in }
     )

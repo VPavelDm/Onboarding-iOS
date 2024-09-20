@@ -41,7 +41,8 @@ struct ProgressBarShape: Shape {
 #Preview {
     OnboardingView(
         configuration: .testData(),
+        delegate: MockOnboardingDelegate(),
         outerScreen: { _, _ in Text("Hello") },
-        completion: { _ in}
+        completion: { _ in }
     )
 }

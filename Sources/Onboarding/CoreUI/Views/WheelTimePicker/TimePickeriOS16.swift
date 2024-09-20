@@ -29,5 +29,5 @@ extension WheelTimePicker {
 }
 
 #Preview {
-    WheelTimePicker()
+    WheelTimePicker(completion: { _ in })
 }

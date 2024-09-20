@@ -11,6 +11,8 @@ struct WheelTimePicker: View {
 
     @StateObject private var viewModel = ViewModel()
 
+    var completion: (String) async -> Void
+
     var body: some View {
         VStack(spacing: 0) {
             VStack {
@@ -61,8 +63,10 @@ struct WheelTimePicker: View {
     }
 
     private var continueButton: some View {
-        Button {} label: {
-            Text("Continue")
+        AsyncButton {
+            await completion(viewModel.currentTime)
+        } label: {
+            Text("Choose")
         }
         .buttonStyle(PrimaryButtonStyle())
         .padding([.horizontal, .bottom])
@@ -90,5 +94,5 @@ extension Color {
 // MARK: - Preview
 
 #Preview {
-    WheelTimePicker()
+    WheelTimePicker(completion: { _ in })
 }
