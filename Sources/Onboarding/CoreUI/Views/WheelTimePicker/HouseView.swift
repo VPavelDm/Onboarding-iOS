@@ -9,7 +9,6 @@ import SwiftUI
 
 // MARK: - House
 
-@available(iOS 17.0, *)
 extension WheelTimePicker {
 
     struct HouseView: View {
@@ -27,7 +26,7 @@ extension WheelTimePicker {
                     .rotationEffect(viewModel.moonAngle)
                     .animation(.linear, value: viewModel.moonAngle)
             }
-            .offset(y: .dayNightRadius - .homeSize / 2 + 5)
+            .offset(y: .dayNightRadius - .homeSize / 2)
         }
 
         private var homeView: some View {
@@ -58,8 +57,6 @@ extension WheelTimePicker {
 
 #Preview {
     VStack {
-        if #available(iOS 17.0, *) {
-            WheelTimePicker()
-        }
+        WheelTimePicker()
     }
 }

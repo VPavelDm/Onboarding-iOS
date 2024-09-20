@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 17.0, *)
 struct WheelTimePicker: View {
 
     @StateObject private var viewModel = ViewModel()
@@ -18,14 +17,20 @@ struct WheelTimePicker: View {
                 titleView
                 timeView
             }
-            .frame(maxHeight: .infinity)
+            .frame(maxHeight: .infinity, alignment: .bottom)
             HouseView(viewModel: viewModel)
-            ZStack {
+                .layoutPriority(2)
+            ZStack(alignment: .bottom) {
                 EarthShape()
                     .fill(Color.ground)
                     .frame(maxHeight: .earthHeight)
-                TimePicker()
+                if #available(iOS 17.0, *) {
+                    TimePicker()
+                } else {
+                    TimePickerIOS16()
+                }
             }
+            .layoutPriority(1)
             continueButton
         }
         .background(
@@ -85,9 +90,5 @@ extension Color {
 // MARK: - Preview
 
 #Preview {
-    if #available(iOS 17.0, *) {
-        WheelTimePicker()
-    } else {
-        Text("iOS 16")
-    }
+    WheelTimePicker()
 }
