@@ -55,9 +55,9 @@ struct WheelTimePicker: View {
             .foregroundStyle(.white)
             .font(.system(size: 84, weight: .bold))
             .contentTransition(.numericText())
-            .animation(.easeInOut, value: viewModel.selectedTimeIndex)
             .monospaced()
             .multilineTextAlignment(.center)
+            .animation(.easeInOut, value: viewModel.selectedTimeIndex)
     }
 
     private var continueButton: some View {

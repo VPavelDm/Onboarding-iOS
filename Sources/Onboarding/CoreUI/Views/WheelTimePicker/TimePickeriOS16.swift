@@ -20,7 +20,7 @@ extension WheelTimePicker {
         }
 
         var body: some View {
-            Slider(value: intProxy, in: 0...48)
+            Slider(value: intProxy, in: 0...47)
                 .tint(Color(hex: "3DADFF"))
                 .padding(.horizontal)
                 .padding(.vertical, 32)
