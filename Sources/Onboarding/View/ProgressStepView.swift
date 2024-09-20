@@ -16,7 +16,7 @@ struct ProgressStepView: View {
     var step: ProgressStep
 
     var body: some View {
-        VStack {
+        VStack(spacing: 16) {
             ScrollView {
                 VStack(spacing: 64) {
                     ProgressCircleView(duration: 15, progress: $progress)
@@ -28,10 +28,13 @@ struct ProgressStepView: View {
                 .padding(.top, 64)
                 .padding(.horizontal, 32)
             }
+            .scrollIndicators(.hidden)
             nextButton
                 .padding(.horizontal, 32)
                 .padding(.bottom, 32)
         }
+        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
+        .background(colorPalette.backgroundColor)
     }
 
     private var titleView: some View {
@@ -49,13 +52,10 @@ struct ProgressStepView: View {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .opacity(progress == 100 ? 1 : 0)
-        .animation(.easeInOut, value: progress == 100)
+        .disabled(progress != 100)
     }
 }
 
 #Preview {
     ProgressStepView(step: .testData())
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(ColorPalette.testData.backgroundColor)
 }

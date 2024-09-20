@@ -27,6 +27,7 @@ struct BinaryAnswerView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding()
+        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(colorPalette.backgroundColor)
     }
 

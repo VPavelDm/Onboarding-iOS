@@ -21,6 +21,7 @@ struct WheelTimePicker: View {
                 titleView
                 timeView
             }
+            .padding(.top, .progressBarHeight + .progressBarBottomPadding * 2)
             .frame(maxHeight: .infinity, alignment: .bottom)
             HouseView(viewModel: viewModel)
                 .layoutPriority(2)
@@ -96,8 +97,5 @@ extension Color {
 // MARK: - Preview
 
 #Preview {
-    WheelTimePicker(
-        step: .testData(),
-        completion: { _ in }
-    )
+    MockOnboardingView()
 }

@@ -49,21 +49,20 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
 
     @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: 12) {
-            customToolbarView
+        ZStack(alignment: .top) {
             NavigationStack(path: $viewModel.passedSteps) {
                 navigationStackContentView(step: viewModel.steps.first)
                     .navigationDestination(for: OnboardingStep.self, destination: navigationStackContentView(step:))
             }
             .environmentObject(viewModel)
+            customToolbarView
+                .frame(height: .progressBarHeight, alignment: .bottom)
         }
     }
 
     private var customToolbarView: some View {
         ProgressBarView(completed: viewModel.passedStepsProcent)
-            .padding([.horizontal, .top])
-            .padding(.horizontal)
-            .background(colorPalette.backgroundColor)
+            .padding(.horizontal, 32)
     }
 
     private func navigationStackContentView(step: OnboardingStep?) -> some View {

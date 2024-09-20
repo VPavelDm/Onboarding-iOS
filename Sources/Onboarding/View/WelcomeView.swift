@@ -31,6 +31,7 @@ struct WelcomeView: View {
             .padding([.horizontal, .bottom])
         }
         .ignoresSafeArea(edges: [.top])
+        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(colorPalette.backgroundColor)
     }
 

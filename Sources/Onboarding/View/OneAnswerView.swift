@@ -29,6 +29,7 @@ struct OneAnswerView: View {
             }
             .padding()
         }
+        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(colorPalette.backgroundColor)
     }
 

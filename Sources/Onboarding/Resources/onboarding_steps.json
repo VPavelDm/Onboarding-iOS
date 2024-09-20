@@ -1,15 +1,15 @@
 [
     {
-        "id": "welcome_id",
+        "id": "welcome",
         "type": "welcome",
         "passedPercent": 0.1,
         "payload": {
-            "title": "Welcome to Lyncil",
-            "description": "Unleash Your Songwriting Potential with Lyncil!",
-            "emojis": ["🎶", "🎹", "🎤", "🎸", "🎧", "🎷"],
+            "title": "Welcome to Faulingo",
+            "description": "Your AI-powered companion to mastering German words.",
+            "emojis": ["📚", "✏️", "💬", "🧠", "🌍", "🇩🇪"],
             "firstAnswer": {
                 "title": "Get Started",
-                "nextStepID": "challenges"
+                "nextStepID": "algorithm_intro"
             },
             "secondAnswer": {
                 "title": "I Already Have an Account",
@@ -18,134 +18,360 @@
         }
     },
     {
-        "id": "challenges",
-        "type": "multipleAnswer",
-        "passedPercent": 0.28,
-        "payload": {
-            "title": "What challenges did you face?",
-            "description": "Choose at least one option",
-            "answers": [
-                {
-                    "title": "🍟 Resting cravings",
-                    "nextStepID": "goal"
-                },
-                {
-                    "title": "✨ Staying motivated",
-                    "nextStepID": "goal"
-                },
-                {
-                    "title": "🥣 Reducing portion sizes",
-                    "nextStepID": "goal"
-                },
-                {
-                    "title": "🥗 Knowing what to eat",
-                    "nextStepID": "goal"
-                },
-                {
-                    "title": "⏰ Being too busy",
-                    "nextStepID": "goal"
-                },
-                {
-                    "title": "💭 Something else",
-                    "nextStepID": "goal"
-                }
-            ]
-        }
-    },
-    {
-        "id": "goal",
-        "type": "oneAnswer",
-        "passedPercent": 0.42,
-        "payload": {
-            "title": "What's your main goal?",
-            "description": "Choose only one answer",
-            "answers": [
-                {
-                    "title": "📉 Lose weight",
-                    "nextStepID": "starting_point"
-                },
-                {
-                    "title": "👀 Maintain weight",
-                    "nextStepID": "starting_point"
-                },
-                {
-                    "title": "📈 Gain weight",
-                    "nextStepID": "starting_point"
-                },
-                {
-                    "title": "💪 Build weight",
-                    "nextStepID": "starting_point"
-                },
-                {
-                    "title": "💬 Something else",
-                    "nextStepID": "starting_point"
-                },
-            ]
-        }
-    },
-    {
-        "id": "starting_point",
+        "id": "algorithm_intro",
         "type": "description",
-        "passedPercent": 0.57,
+        "passedPercent": 0.15,
         "payload": {
-            "title": "Awesome! That's a great starting point.",
-            "description": "Studies have shown that regularly tracking your calories is directly linked to the self-motivation needed to successfully lose weight!",
+            "title": "Unlock your language potential!",
+            "description": "With our AI algorithm, learning German words becomes quicker and easier. Ready to dive in?",
             "image": {
                 "type": "named",
                 "value": "womanWithTeleskope"
             },
             "answer": {
+                "title": "Dive In",
+                "nextStepID": "customer_age"
+            }
+        }
+    },
+    {
+        "id": "customer_age",
+        "type": "oneAnswer",
+        "passedPercent": 0.2,
+        "payload": {
+            "title": "How old are you?",
+            "description": "Age is just a number, but it helps us fine-tune your learning!",
+            "answers": [
+                {
+                    "title": "📚 Under 18",
+                    "nextStepID": "previous_experience"
+                },
+                {
+                    "title": "🎓 19-35",
+                    "nextStepID": "previous_experience"
+                },
+                {
+                    "title": "💼 36-49",
+                    "nextStepID": "previous_experience"
+                },
+                {
+                    "title": "🍷 50+",
+                    "nextStepID": "previous_experience"
+                }
+            ]
+        }
+    },
+    {
+        "id": "previous_experience",
+        "type": "multipleAnswer",
+        "passedPercent": 0.25,
+        "payload": {
+            "title": "Have you studied German before?",
+            "description": "Tell us how you’ve learned German before so we can tailor your lessons perfectly!",
+            "answers": [
+                {
+                    "title": "I studied German at school 🏫",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I had a private teacher 🎓",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I used apps and online resources 📱💻",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I’ve been to German-speaking countries ✈️🇩🇪",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I’ve only picked up a few words here and there 💬",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I’ve never studied German before 🌱",
+                    "nextStepID": "current_experience"
+                },
+                {
+                    "title": "None of the above 🤷‍♂️🤷‍♀️",
+                    "nextStepID": "language_level"
+                }
+            ]
+        }
+    },
+    {
+        "id": "language_level",
+        "type": "oneAnswer",
+        "passedPercent": 0.3,
+        "payload": {
+            "title": "What’s your current German level?",
+            "description": "Tell us your level so we can adjust the lessons to match your skills perfectly!",
+            "answers": [
+                {
+                    "title": "Complete beginner (A1) 🌟",
+                    "nextStepID": "current_experience"
+                },
+                {
+                    "title": "Basic knowledge (A2) 📖",
+                    "nextStepID": "current_experience"
+                },
+                {
+                    "title": "Intermediate (B1) 🚀",
+                    "nextStepID": "current_experience"
+                },
+                {
+                    "title": "Upper-intermediate (B2) 🔥",
+                    "nextStepID": "current_experience"
+                },
+                {
+                    "title": "Advanced (C1) 🎯",
+                    "nextStepID": "current_experience"
+                },
+                {
+                    "title": "Fluent/Native (C2) 🏅",
+                    "nextStepID": "current_experience"
+                }
+            ]
+        }
+    },
+    {
+        "id": "current_experience",
+        "type": "multipleAnswer",
+        "passedPercent": 0.35,
+        "payload": {
+            "title": "Are you studying German right now?",
+            "description": "Let us know if you're actively learning German so we can support your progress!",
+            "answers": [
+                {
+                    "title": "Not right now, but I want to start! 🚀",
+                    "nextStepID": "difficulties"
+                },
+                {
+                    "title": "Yes, I'm taking a course 🏫",
+                    "nextStepID": "difficulties"
+                },
+                {
+                    "title": "Yes, I’m learning with a teacher 🎓",
+                    "nextStepID": "difficulties"
+                },
+                {
+                    "title": "Yes, I use apps or online resources 📱💻",
+                    "nextStepID": "difficulties"
+                },
+                {
+                    "title": "Yes, I study by myself 📚",
+                    "nextStepID": "difficulties"
+                }
+            ]
+        }
+    },
+    {
+        "id": "difficulties",
+        "type": "multipleAnswer",
+        "passedPercent": 0.4,
+        "payload": {
+            "title": "What’s the most difficult part of studying German for you?",
+            "description": "Let us know if you're actively learning German so we can support your progress!",
+            "answers": [
+                {
+                    "title": "Learning grammar rules 📚",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Remembering vocabulary 🧠",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Speaking confidently 🎤",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Understanding native speakers 🎧",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Pronunciation 🗣️",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Staying motivated 💪",
+                    "nextStepID": "satisfaction"
+                }
+            ]
+        }
+    },
+    {
+        "id": "satisfaction",
+        "type": "oneAnswer",
+        "passedPercent": 0.45,
+        "payload": {
+            "title": "Are you satisfied with your current German level?",
+            "description": "We want to know how you feel about your progress so far. Let’s see if we can help you improve!",
+            "answers": [
+                {
+                    "title": "Yes, I’m happy with my level 😊",
+                    "nextStepID": "happy_satisfaction"
+                },
+                {
+                    "title": "I’m okay, but there’s room for improvement 🤔",
+                    "nextStepID": "happy_satisfaction"
+                },
+                {
+                    "title": "No, I want to be much better 🚀",
+                    "nextStepID": "bad_satisfaction"
+                }
+            ]
+        }
+    },
+    {
+        "id": "happy_satisfaction",
+        "type": "oneAnswer",
+        "passedPercent": 0.5,
+        "payload": {
+            "title": "What’s your goal for learning German?",
+            "description": "Tell us what you're aiming for, so we can help you reach your goal faster!",
+            "answers": [
+                {
+                    "title": "Prepare for a German language exam (Goethe, TELC, etc.) 🎓",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Improve my vocabulary for travel ✈️",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Learn words for work or business 💼",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Expand vocabulary for casual conversations 💬",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Understand German books, articles, or media 📚",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "I just want to improve my vocabulary in general 🌱",
+                    "nextStepID": "lessons_frequency"
+                }
+            ]
+        }
+    },
+    {
+        "id": "bad_satisfaction",
+        "type": "oneAnswer",
+        "passedPercent": 0.5,
+        "payload": {
+            "title": "What’s your goal for learning German?",
+            "description": "Since you’re just starting out, what would you like to achieve first?",
+            "answers": [
+                {
+                    "title": "Learn basic words and phrases for everyday use 🛍️",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "Build a strong foundation with essential vocabulary 🏗️",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Be able to introduce myself and hold simple conversations 💬",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Prepare for a beginner-level language course or exam 📚",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Learn useful words for traveling in German-speaking countries ✈️",
+                    "nextStepID": "time_constraints"
+                }
+            ]
+        }
+    },
+    {
+        "id": "time_constraints",
+        "type": "oneAnswer",
+        "passedPercent": 0.55,
+        "payload": {
+            "title": "How much time do you have to reach your goal?",
+            "description": "Let us know your timeline, so we can help you stay on track and reach your goal in time!",
+            "answers": [
+                {
+                    "title": "Less than a month ⏳",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "1-3 months 📅",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "3-6 months 🗓️",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "6-12 months 🕰️",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "No rush, I’m taking my time 🌿",
+                    "nextStepID": "lessons_frequency"
+                }
+            ]
+        }
+    },
+    {
+        "id": "lessons_frequency",
+        "type": "oneAnswer",
+        "passedPercent": 0.6,
+        "payload": {
+            "title": "How much time will you devote to learning?",
+            "description": "Consistency is key! Tell us how much time you can practice daily, and we’ll tailor your learning plan to fit your schedule.",
+            "answers": [
+                {
+                    "title": "5 mins daily ⏱️",
+                    "nextStepID": "program_creation"
+                },
+                {
+                    "title": "10 mins daily ⏳",
+                    "nextStepID": "program_creation"
+                },
+                {
+                    "title": "15 mins or more 🚀",
+                    "nextStepID": "program_creation"
+                }
+            ]
+        }
+    },
+    {
+        "id": "program_creation",
+        "type": "progress",
+        "passedPercent": 0.65,
+        "payload": {
+            "title": "We're creating your plan...",
+            "steps": [
+                "Analysing your answers",
+                "Generating words to study",
+                "Preparing the plan to study",
+                "Adding finishing touches"
+            ],
+            "answer": {
                 "title": "Continue",
-                "nextStepID": "sex"
+                "nextStepID": "remind_time"
             }
         }
     },
     {
-        "id": "sex",
-        "type": "binaryAnswer",
-        "passedPercent": 0.71,
+        "id": "remind_time",
+        "type": "timePicker",
+        "passedPercent": 0.7,
         "payload": {
-            "title": "What's your sex?",
-            "description": "Since the formula for an accurate calorie calculation differs based on sex, we need this information to calculate your daily calorie goal.",
-            "firstAnswer": {
-                "title": "Female",
-                "icon": "🚺",
-                "nextStepID": "login",
-                "payload": {
-                    "type": "string",
-                    "value": "female"
-                }
-            },
-            "secondAnswer": {
-                "title": "Male",
-                "icon": "🚹",
-                "nextStepID": "login",
-                "payload": {
-                    "type": "string",
-                    "value": "male"
-                }
-            }
-        }
-    },
-    {
-        "id": "login",
-        "type": "login",
-        "passedPercent": 0.85,
-        "payload": {
+            "title": "When do you want to study?",
             "answer": {
-                "title": "Next",
-                "nextStepID": "custom_1"
+                "title": "Choose Time",
+                "nextStepID": "remind_time"
             }
         }
-    },
-    {
-        "id": "custom_1",
-        "type": "custom",
-        "passedPercent": 1,
-        "payload": {
-            "answer": {
-                "title": "Next"
-            }
-        }
-    },
+    }
 ]
