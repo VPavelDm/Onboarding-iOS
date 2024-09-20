@@ -11,6 +11,7 @@ import SwiftUI
 extension WheelTimePicker {
 
     struct TimePicker: View {
+        @Environment(\.colorPalette) private var colorPalette
         @EnvironmentObject private var viewModel: ViewModel
         @State private var size: CGSize = .zero
 
@@ -41,10 +42,10 @@ extension WheelTimePicker {
         private func timeView(_ time: String) -> some View {
             Text(time)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.white)
+                .foregroundStyle(colorPalette.primaryTextColor)
                 .font(.system(size: 14, weight: .semibold))
                 .frame(width: .circleSize, height: .circleSize)
-                .background(Color(hex: "3DADFF"))
+                .background(colorPalette.primaryButtonBackgroundColor)
                 .clipShape(Circle())
         }
 

@@ -29,5 +29,8 @@ extension WheelTimePicker {
 }
 
 #Preview {
-    WheelTimePicker(completion: { _ in })
+    WheelTimePicker(
+        step: .testData(),
+        completion: { _ in }
+    )
 }

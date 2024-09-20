@@ -7,18 +7,20 @@
 
 import SwiftUI
 
-struct ReminderStepView: View {
+struct TimePickerStepView: View {
 
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
+    var step: TimePickerStep
+
     var body: some View {
-        WheelTimePicker { time in
+        WheelTimePicker(step: step) { time in
             try? await viewModel.delegate.requestNotificationsPermission()
-            await viewModel.onAnswer(answers: [])
+            await viewModel.onAnswer(answers: [step.answer])
         }
     }
 }
 
 #Preview {
-    ReminderStepView()
+    TimePickerStepView(step: .testData())
 }

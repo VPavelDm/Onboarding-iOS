@@ -22,6 +22,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case custom(StepAnswer)
         case prime(StepAnswer)
         case progress(ProgressStep)
+        case timePicker(TimePickerStep)
         case unknown
     }
 }
@@ -54,6 +55,7 @@ extension OnboardingStep {
         case .custom(let payload): .custom(StepAnswer(response: payload))
         case .prime(let payload): .prime(StepAnswer(response: payload))
         case .progress(let payload): .progress(ProgressStep(response: payload))
+        case .timePicker(let payload): .timePicker(TimePickerStep(response: payload))
         default: .unknown
         }
 

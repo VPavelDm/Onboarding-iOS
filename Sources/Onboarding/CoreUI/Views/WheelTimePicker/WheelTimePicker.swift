@@ -9,8 +9,10 @@ import SwiftUI
 
 struct WheelTimePicker: View {
 
+    @Environment(\.colorPalette) private var colorPalette: ColorPalette
     @StateObject private var viewModel = ViewModel()
 
+    var step: TimePickerStep
     var completion: (String) async -> Void
 
     var body: some View {
@@ -47,14 +49,14 @@ struct WheelTimePicker: View {
     }
 
     private var titleView: some View {
-        Text("When do you plan to study?")
-            .foregroundStyle(.white)
+        Text(step.title)
+            .foregroundStyle(colorPalette.primaryTextColor)
             .font(.system(size: 16, weight: .semibold))
     }
 
     private var timeView: some View {
         Text(viewModel.currentTime)
-            .foregroundStyle(.white)
+            .foregroundStyle(colorPalette.primaryTextColor)
             .font(.system(size: 84, weight: .bold))
             .contentTransition(.numericText())
             .monospaced()
@@ -66,7 +68,7 @@ struct WheelTimePicker: View {
         AsyncButton {
             await completion(viewModel.currentTime)
         } label: {
-            Text("Choose")
+            Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
         .padding([.horizontal, .bottom])
@@ -94,5 +96,8 @@ extension Color {
 // MARK: - Preview
 
 #Preview {
-    WheelTimePicker(completion: { _ in })
+    WheelTimePicker(
+        step: .testData(),
+        completion: { _ in }
+    )
 }

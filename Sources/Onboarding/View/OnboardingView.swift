@@ -89,6 +89,8 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                 outerScreen((.prime, handleOuterScreenCallback))
             case .progress(let step):
                 ProgressStepView(step: step)
+            case .timePicker(let step):
+                TimePickerStepView(step: step)
             case .unknown, .none:
                 EmptyView()
             }
