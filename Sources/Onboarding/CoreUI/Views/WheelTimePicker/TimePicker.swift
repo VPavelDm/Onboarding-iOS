@@ -42,7 +42,7 @@ extension WheelTimePicker {
         private func timeView(_ time: String) -> some View {
             Text(time)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(colorPalette.primaryTextColor)
+                .foregroundStyle(colorPalette.primaryButtonTextColor)
                 .font(.system(size: 14, weight: .semibold))
                 .frame(width: .circleSize, height: .circleSize)
                 .background(colorPalette.primaryButtonBackgroundColor)
