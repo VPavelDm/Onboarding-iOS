@@ -116,6 +116,7 @@ struct OnboardingStepResponse: Decodable {
     struct ProgressStep: Decodable {
         let title: String
         let steps: [String]
+        let answer: StepAnswer
     }
 
     struct TimePickerStep: Decodable {

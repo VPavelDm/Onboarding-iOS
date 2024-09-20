@@ -10,6 +10,7 @@ import Foundation
 struct ProgressStep: Sendable, Equatable, Hashable {
     var title: String
     var steps: [String]
+    var answer: StepAnswer
 }
 
 // MARK: - Convert
@@ -19,7 +20,8 @@ extension ProgressStep {
     init(response: OnboardingStepResponse.ProgressStep) {
         self.init(
             title: response.title,
-            steps: response.steps
+            steps: response.steps,
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

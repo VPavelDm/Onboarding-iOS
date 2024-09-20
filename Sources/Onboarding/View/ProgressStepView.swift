@@ -44,9 +44,9 @@ struct ProgressStepView: View {
 
     private var nextButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [])
+            await viewModel.onAnswer(answers: [step.answer])
         } label: {
-            Text("Continue")
+            Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
         .opacity(progress == 100 ? 1 : 0)

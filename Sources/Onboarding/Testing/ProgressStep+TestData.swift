@@ -17,7 +17,8 @@ extension ProgressStep {
                 "Calculating your calorie goal",
                 "Predicting your progress",
                 "Adding finishing touches"
-            ]
+            ],
+            answer: StepAnswer(title: "Continue")
         )
     }
 }
