@@ -19,13 +19,11 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     public init(
         configuration: OnboardingConfiguration,
         delegate: OnboardingDelegate,
-        @ViewBuilder outerScreen: @escaping (OnboardingOuterScreenCallbackParams) -> OuterScreen,
-        completion: @escaping ([UserAnswer]) async -> Void
+        @ViewBuilder outerScreen: @escaping (OnboardingOuterScreenCallbackParams) -> OuterScreen
     ) {
         self._viewModel = StateObject(wrappedValue: OnboardingViewModel(
             configuration: configuration,
-            delegate: delegate,
-            completion: completion
+            delegate: delegate
         ))
         self.colorPalette = configuration.colorPalette
         self.outerScreen = outerScreen
@@ -129,7 +127,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(ColorPalette.testData.backgroundColor)
-        },
-        completion: { _ in}
+        }
     )
 }

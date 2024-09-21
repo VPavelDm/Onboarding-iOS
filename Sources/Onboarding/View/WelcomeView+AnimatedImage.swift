@@ -66,7 +66,6 @@ extension WelcomeView {
     OnboardingView(
         configuration: .testData(),
         delegate: MockOnboardingDelegate(),
-        outerScreen: { _ in Text("") },
-        completion: { _ in }
+        outerScreen: { _ in Text("") }
     )
 }

@@ -31,7 +31,6 @@ final class OnboardingViewModel: ObservableObject {
 
     let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
-    let completion: ([UserAnswer]) async -> Void
 
     var finishProgress: AnyPublisher<Void, Never> {
         Publishers.CombineLatest(progressSubject, progressButtonSubject)
@@ -41,11 +40,10 @@ final class OnboardingViewModel: ObservableObject {
 
     // MARK: - Inits
 
-    init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate, completion: @escaping ([UserAnswer]) async -> Void) {
+    init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate) {
         self.configuration = configuration
         self.delegate = delegate
         self.service = OnboardingService(configuration: configuration)
-        self.completion = completion
     }
 
     // MARK: - Intents
@@ -70,7 +68,7 @@ final class OnboardingViewModel: ObservableObject {
             passedSteps.append(steps[nextStepIndex])
             self.currentStep = passedSteps.last
         } else {
-            await completion(userAnswers)
+            await delegate.finalise()
         }
     }
 

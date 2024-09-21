@@ -71,7 +71,6 @@ struct DescriptionStepView: View {
     DescriptionStepView(step: .testData())
         .environmentObject(OnboardingViewModel(
             configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            completion: { _ in })
-        )
+            delegate: MockOnboardingDelegate()
+        ))
 }

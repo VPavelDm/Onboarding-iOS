@@ -14,4 +14,7 @@ final class MockOnboardingDelegate: OnboardingDelegate {
 
     func setupNotifications(for time: String) async throws {
     }
+
+    func finalise() async {
+    }
 }
