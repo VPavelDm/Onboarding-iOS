@@ -9,5 +9,5 @@ import Foundation
 
 public protocol OnboardingDelegate {
     
-    func requestNotificationsPermission() async throws
+    func setupNotifications(for time: String) async throws
 }

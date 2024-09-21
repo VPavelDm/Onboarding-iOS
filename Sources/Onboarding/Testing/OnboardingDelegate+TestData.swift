@@ -9,6 +9,6 @@ import Foundation
 
 final class MockOnboardingDelegate: OnboardingDelegate {
     
-    func requestNotificationsPermission() async throws {
+    func setupNotifications(for time: String) async throws {
     }
 }

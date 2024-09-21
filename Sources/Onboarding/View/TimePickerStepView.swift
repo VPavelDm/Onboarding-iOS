@@ -15,7 +15,7 @@ struct TimePickerStepView: View {
 
     var body: some View {
         WheelTimePicker(step: step) { time in
-            try? await viewModel.delegate.requestNotificationsPermission()
+            try? await viewModel.delegate.setupNotifications(for: time)
             await viewModel.onAnswer(answers: [step.answer])
         }
     }
