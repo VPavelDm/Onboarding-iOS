@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 @MainActor
 final class OnboardingViewModel: ObservableObject {
@@ -13,6 +14,9 @@ final class OnboardingViewModel: ObservableObject {
     // MARK: - Properties
 
     private let service: OnboardingService
+    private let progressSubject = PassthroughSubject<Void, Never>()
+    private let progressButtonSubject = PassthroughSubject<Void, Never>()
+    private var cancellations = Set<AnyCancellable>()
 
     // MARK: - Outputs
 
@@ -25,13 +29,15 @@ final class OnboardingViewModel: ObservableObject {
         passedSteps.last?.passedPercent ?? 0.05
     }
 
-    var showBackButton: Bool {
-        !userAnswers.isEmpty
-    }
-
     let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
     let completion: ([UserAnswer]) async -> Void
+
+    var finishProgress: AnyPublisher<Void, Never> {
+        Publishers.CombineLatest(progressSubject, progressButtonSubject)
+            .map { _ in Void() }
+            .eraseToAnyPublisher()
+    }
 
     // MARK: - Inits
 
@@ -66,6 +72,21 @@ final class OnboardingViewModel: ObservableObject {
         } else {
             await completion(userAnswers)
         }
+    }
+
+    func onProgressButton() {
+        progressButtonSubject.send(Void())
+    }
+
+    func processAnswers(step: ProgressStep) async {
+        finishProgress
+            .asyncSink { [weak self] _ in
+                await self?.onAnswer(answers: [step.answer])
+            }
+            .store(in: &cancellations)
+        
+        try? await delegate.processAnswers(userAnswers)
+        progressSubject.send(Void())
     }
 
     func onBack() {
