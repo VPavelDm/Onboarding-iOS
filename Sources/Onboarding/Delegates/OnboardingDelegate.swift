@@ -9,5 +9,6 @@ import Foundation
 
 public protocol OnboardingDelegate {
     
+    func processAnswers(_ answers: [UserAnswer]) async throws
     func setupNotifications(for time: String) async throws
 }

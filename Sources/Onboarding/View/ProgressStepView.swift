@@ -12,6 +12,7 @@ struct ProgressStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State var progress: CGFloat = 0
+    @State private var isButtonLoading: Bool = false
 
     var step: ProgressStep
 
@@ -35,6 +36,9 @@ struct ProgressStepView: View {
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(colorPalette.backgroundColor)
+        .task {
+            await viewModel.processAnswers(step: step)
+        }
     }
 
     private var titleView: some View {
@@ -46,10 +50,16 @@ struct ProgressStepView: View {
     }
 
     private var nextButton: some View {
-        AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+        Button {
+            isButtonLoading = true
+            viewModel.onProgressButton()
         } label: {
-            Text(step.answer.title)
+            ZStack {
+                Text(step.answer.title).opacity(isButtonLoading ? 0 : 1)
+                ProgressView()
+                    .tint(colorPalette.asyncButtonProgressView)
+                    .opacity(isButtonLoading ? 1 : 0)
+            }
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(progress != 100)
@@ -57,5 +67,5 @@ struct ProgressStepView: View {
 }
 
 #Preview {
-    ProgressStepView(step: .testData())
+    MockOnboardingView()
 }

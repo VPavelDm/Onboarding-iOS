@@ -11,7 +11,7 @@ import SwiftUI
 extension ColorPalette {
     static var testData: Self {
         Self(
-            asyncButtonProgressView: Color(hex: "0589D6"),
+            asyncButtonProgressView: Color(hex: "FFFFFF"),
             checkboxBackground: Color(hex: "0589D6"),
             checkboxCheckmark: Color(hex: "F0F2F5"),
             backgroundColor: Color(hex: "111927"),
