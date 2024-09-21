@@ -13,8 +13,7 @@ struct MockOnboardingView: View {
         OnboardingView(
             configuration: .testData(),
             delegate: MockOnboardingDelegate(),
-            outerScreen: { _ in },
-            completion: { _ in }
+            outerScreen: { _ in }
         )
     }
 }
