@@ -24,6 +24,33 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case progress(ProgressStep)
         case timePicker(TimePickerStep)
         case unknown
+
+        var title: String? {
+            switch self {
+            case .welcome(let welcomeStep):
+                welcomeStep.title
+            case .oneAnswer(let oneAnswerStep):
+                oneAnswerStep.title
+            case .binaryAnswer(let binaryAnswerStep):
+                binaryAnswerStep.title
+            case .multipleAnswer(let multipleAnswerStep):
+                multipleAnswerStep.title
+            case .description(let descriptionStep):
+                descriptionStep.title
+            case .login(let stepAnswer):
+                stepAnswer.title
+            case .custom(let stepAnswer):
+                stepAnswer.title
+            case .prime(let stepAnswer):
+                stepAnswer.title
+            case .progress(let progressStep):
+                progressStep.title
+            case .timePicker(let timePickerStep):
+                timePickerStep.title
+            case .unknown:
+                nil
+            }
+        }
     }
 }
 
