@@ -82,7 +82,7 @@ struct MultipleAnswerView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: answers.filter(\.isChose).map(\.value))
         } label: {
-            Text("Next")
+            Text(step.buttonTitle)
         }
         .buttonStyle(PrimaryButtonStyle())
         .padding([.horizontal, .bottom])

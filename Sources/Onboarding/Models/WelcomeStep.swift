@@ -12,7 +12,7 @@ struct WelcomeStep: Sendable, Equatable, Hashable {
     let description: String
     let emojis: [String]
     let firstAnswer: StepAnswer
-    let secondAnswer: StepAnswer
+    let secondAnswer: StepAnswer?
 }
 
 // MARK: - Convert
@@ -25,7 +25,7 @@ extension WelcomeStep {
             description: response.description,
             emojis: response.emojis,
             firstAnswer: StepAnswer(response: response.firstAnswer),
-            secondAnswer: StepAnswer(response: response.secondAnswer)
+            secondAnswer: response.secondAnswer.map(StepAnswer.init(response:))
         )
     }
 }

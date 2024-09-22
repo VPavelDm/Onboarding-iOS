@@ -26,7 +26,9 @@ struct WelcomeView: View {
             }
             VStack {
                 getStartedButton
-                alreadyHaveAccountButton
+                if let answer = step.secondAnswer {
+                    alreadyHaveAccountButton(answer: answer)
+                }
             }
             .padding([.horizontal, .bottom])
         }
@@ -61,11 +63,11 @@ struct WelcomeView: View {
         .buttonStyle(PrimaryButtonStyle())
     }
 
-    private var alreadyHaveAccountButton: some View {
+    private func alreadyHaveAccountButton(answer: StepAnswer) -> some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.secondAnswer])
+            await viewModel.onAnswer(answers: [answer])
         } label: {
-            Text(step.secondAnswer.title)
+            Text(answer.title)
         }
         .buttonStyle(SecondaryButtonStyle())
     }

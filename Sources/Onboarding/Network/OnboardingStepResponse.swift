@@ -83,6 +83,7 @@ struct OnboardingStepResponse: Decodable {
     struct MultipleAnswerStep: Decodable {
         let title: String
         let description: String?
+        let buttonTitle: String
         let answers: [StepAnswer]
     }
 
@@ -110,7 +111,7 @@ struct OnboardingStepResponse: Decodable {
         let description: String
         let emojis: [String]
         let firstAnswer: StepAnswer
-        let secondAnswer: StepAnswer
+        let secondAnswer: StepAnswer?
     }
 
     struct ProgressStep: Decodable {

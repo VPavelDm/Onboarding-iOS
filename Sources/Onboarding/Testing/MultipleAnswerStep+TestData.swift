@@ -14,7 +14,8 @@ extension MultipleAnswerStep {
     ) -> Self {
         Self(
             title: "What challenges did you face?",
-            description: "Choose at least one option",
+            description: "Choose at least one option", 
+            buttonTitle: "Next",
             answers: [
                 StepAnswer(title:  "🍟 Resting cravings", nextStepID: nextStepID),
                 StepAnswer(title:  "✨ Staying motivated", nextStepID: nextStepID),
