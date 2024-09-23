@@ -10,11 +10,15 @@ import SwiftUI
 struct CasinoStepView: View {
     @Environment(\.colorPalette) private var colorPalette
 
+    @State private var currentAngle: Angle = .initialAngle
+
     var body: some View {
         VStack {
+            Spacer()
             titleView
             Spacer()
-            CasinoWheel(colors: .wheelColors)
+            CasinoWheel(currentAngle: $currentAngle, slices: .slices)
+            Spacer()
             Spacer()
             spinButton
         }
@@ -32,17 +36,38 @@ struct CasinoStepView: View {
     }
 
     private var spinButton: some View {
-        Button {} label: {
+        Button {
+            withAnimation(.timingCurve(0.2, 0.8, 0.2, 1.0, duration: 5)) {
+                currentAngle = .degrees(-760)
+            }
+        } label: {
             Text("Spin")
         }
         .buttonStyle(PrimaryButtonStyle())
     }
 }
 
-private extension Array where Element == Color {
+private extension Array where Element == CasinoWheel.Slice {
 
-    static var wheelColors: [Color] {
-        [.darkSlice, .lightSlice, .darkSlice, .lightSlice, .darkSlice, .lightSlice, .gift, .lightSlice]
+    static var slices: [Element] {
+        [
+            Element(value: "5", color: .darkSlice),
+            Element(value: "10", color: .lightSlice),
+            Element(value: "5", color: .darkSlice),
+            Element(value: "25", color: .lightSlice),
+            Element(value: "5", color: .darkSlice),
+            Element(value: "10", color: .lightSlice),
+            Element(value: "75", color: .gift),
+            Element(value: "5", color: .lightSlice),
+        ]
+    }
+}
+
+private extension Angle {
+
+    static var initialAngle: Angle {
+        let slices: [CasinoWheel.Slice] = .slices
+        return .degrees(360 / Double(slices.count)) / 2
     }
 }
 

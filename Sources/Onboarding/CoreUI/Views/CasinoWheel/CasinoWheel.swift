@@ -9,14 +9,12 @@ import SwiftUI
 
 struct CasinoWheel: View {
 
-    @State private var currentAngle: Angle
+    @Environment(\.colorPalette) private var colorPalette
 
-    var colors: [Color]
+    @State private var wheelSize: CGSize = .zero
 
-    init(colors: [Color]) {
-        self._currentAngle = State(initialValue: .initialAngle(count: colors.count))
-        self.colors = colors
-    }
+    @Binding var currentAngle: Angle
+    var slices: [Slice]
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -27,29 +25,37 @@ struct CasinoWheel: View {
             }
             .rotationEffect(currentAngle)
             .padding(.top, .borderCircleHeight * 2.5)
-            .onTapGesture {
-                withAnimation(.timingCurve(0.2, 0.8, 0.2, 1.0, duration: 5)) {
-                    currentAngle = .degrees(720)
-                }
-            }
             pointerView
         }
         .aspectRatio(1.0, contentMode: .fit)
     }
 
     private var slicesView: some View {
-        ForEach(colors.indices, id: \.self) { index in
-            CasinoWheelSlice(
-                startAngle: .sliceStartAngle(at: index, count: colors.count),
-                endAngle: .sliceEndAngle(at: index, count: colors.count)
-            )
-            .fill(colors[index])
+        ZStack {
+            ForEach(slices.indices, id: \.self) { index in
+                CasinoWheelSlice(
+                    startAngle: .sliceStartAngle(at: index, count: slices.count),
+                    endAngle: .sliceEndAngle(at: index, count: slices.count)
+                )
+                .fill(slices[index].color)
+                giftView(at: index)
+            }
         }
+        .readSize(size: $wheelSize)
+    }
+
+    private func giftView(at index: Int) -> some View {
+        Text("\(slices[index].value)%")
+            .foregroundStyle(colorPalette.primaryTextColor)
+            .font(.system(size: 26, weight: .bold))
+            .rotationEffect(.textRotationAngle(at: index, count: slices.count))
+            .offset(.textOffset(at: index, count: slices.count, in: wheelSize))
+            .zIndex(1)
     }
 
     private var centerCircle: some View {
         Circle()
-            .fill(colors[0])
+            .fill(slices[0].color)
             .frame(width: 16, height: 16)
     }
 
@@ -75,6 +81,12 @@ struct CasinoWheel: View {
                 .padding(.top, (.pointerWidth / 2 - .pointerInnerCircleRadius))
         }
     }
+
+    struct Slice: Identifiable, Sendable, Equatable {
+        var id: UUID = UUID()
+        var value: String
+        var color: Color
+    }
 }
 
 private extension Angle {
@@ -87,8 +99,33 @@ private extension Angle {
         sliceStartAngle(at: index, count: count) + .degrees(360 / Double(count))
     }
 
-    static func initialAngle(count: Int) -> Angle {
-        .degrees(360 / Double(count)) / 2
+    static func sliceMiddleAngle(at index: Int, count: Int) -> Angle {
+        let startAngle = Angle.sliceStartAngle(at: index, count: count)
+        let endAngle = Angle.sliceEndAngle(at: index, count: count)
+        return (startAngle + endAngle) / 2
+    }
+
+    static func textRotationAngle(at index: Int, count: Int) -> Angle {
+        let initialAngle = Angle.degrees(360) / Double(count) / 2 + Angle.degrees(90)
+
+        return initialAngle + Angle.degrees(Double(index) * 360 / Double(count))
+    }
+}
+
+private extension CGSize {
+
+    static func textOffset(at index: Int, count: Int, in size: CGSize) -> CGSize {
+        let radius = size.width / 3.5
+
+        let angle = Angle.sliceMiddleAngle(at: index, count: count)
+
+        let textCenterX: CGFloat = cos(angle.radians) * radius
+        let textCenterY = sin(angle.radians) * radius
+
+        return CGSize(
+            width: textCenterX,
+            height: textCenterY
+        )
     }
 }
 
