@@ -11,6 +11,7 @@ struct CasinoStepView: View {
     @Environment(\.colorPalette) private var colorPalette
 
     @State private var currentAngle: Angle = .initialAngle
+    @State private var throwConfetti: Bool = false
 
     var body: some View {
         VStack {
@@ -20,11 +21,16 @@ struct CasinoStepView: View {
             CasinoWheel(currentAngle: $currentAngle, slices: .slices)
             Spacer()
             Spacer()
-            spinButton
+            if #available(iOS 17.0, *) {
+                spinButton
+            } else {
+                spinButtonIOS16
+            }
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colorPalette.backgroundColor)
+        .casinoWheelConfetti(throwConfetti: $throwConfetti)
     }
 
     private var titleView: some View {
@@ -35,10 +41,27 @@ struct CasinoStepView: View {
             .foregroundStyle(colorPalette.primaryTextColor)
     }
 
+    @available(iOS 17.0, *)
     private var spinButton: some View {
         Button {
             withAnimation(.timingCurve(0.2, 0.8, 0.2, 1.0, duration: 5)) {
                 currentAngle = .degrees(-760)
+            } completion: {
+                throwConfetti = true
+            }
+        } label: {
+            Text("Spin")
+        }
+        .buttonStyle(PrimaryButtonStyle())
+    }
+
+    private var spinButtonIOS16: some View {
+        Button {
+            withAnimation(.timingCurve(0.2, 0.8, 0.2, 1.0, duration: 5)) {
+                currentAngle = .degrees(-760)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+                throwConfetti = true
             }
         } label: {
             Text("Spin")
