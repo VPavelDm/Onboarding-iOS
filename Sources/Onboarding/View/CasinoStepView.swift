@@ -12,6 +12,7 @@ struct CasinoStepView: View {
 
     @State private var currentAngle: Angle = .initialAngle
     @State private var throwConfetti: Bool = false
+    @State private var showSuccessAlert: Bool = false
 
     var body: some View {
         VStack {
@@ -21,16 +22,16 @@ struct CasinoStepView: View {
             CasinoWheel(currentAngle: $currentAngle, slices: .slices)
             Spacer()
             Spacer()
-            if #available(iOS 17.0, *) {
-                spinButton
-            } else {
-                spinButtonIOS16
-            }
+            spinButton
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colorPalette.backgroundColor)
         .casinoWheelConfetti(throwConfetti: $throwConfetti)
+        .sheet(isPresented: $showSuccessAlert) {
+            Text("Success")
+                .presentationDetents([.medium])
+        }
     }
 
     private var titleView: some View {
@@ -41,28 +42,15 @@ struct CasinoStepView: View {
             .foregroundStyle(colorPalette.primaryTextColor)
     }
 
-    @available(iOS 17.0, *)
     private var spinButton: some View {
-        Button {
-            withAnimation(.timingCurve(0.2, 0.8, 0.2, 1.0, duration: 5)) {
-                currentAngle = .degrees(-760)
-            } completion: {
-                throwConfetti = true
+        AsyncButton {
+            withAnimation(.timingCurve(0.2, 0.8, 0.2, 1.0, duration: 8)) {
+                currentAngle = .degrees(-1840)
             }
-        } label: {
-            Text("Spin")
-        }
-        .buttonStyle(PrimaryButtonStyle())
-    }
-
-    private var spinButtonIOS16: some View {
-        Button {
-            withAnimation(.timingCurve(0.2, 0.8, 0.2, 1.0, duration: 5)) {
-                currentAngle = .degrees(-760)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
-                throwConfetti = true
-            }
+            try? await Task.sleep(for: .seconds(8))
+            throwConfetti = true
+            try? await Task.sleep(for: .seconds(5))
+            showSuccessAlert = true
         } label: {
             Text("Spin")
         }
