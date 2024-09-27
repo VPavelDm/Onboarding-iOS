@@ -7,9 +7,20 @@
 
 import SwiftUI
 
-enum SensoryFeedbackType {
+enum SensoryFeedbackType: String, Identifiable, CaseIterable, Equatable, Hashable {
+    var id: Self { self }
+    
     case success
     case alignment
+    case warning
+    case error
+    case selection
+    case increase
+    case decrease
+    case start
+    case stop
+    case levelChange
+
 
     @available(iOS 17.0, *)
     var sensoryFeedback: SensoryFeedback {
@@ -17,7 +28,23 @@ enum SensoryFeedbackType {
         case .success:
                 .success
         case .alignment:
+                .levelChange
+        case .warning:
+                .warning
+        case .error:
+                .error
+        case .selection:
                 .selection
+        case .increase:
+                .increase
+        case .decrease:
+                .decrease
+        case .start:
+                .start
+        case .stop:
+                .stop
+        case .levelChange:
+                .levelChange
         }
     }
 }
