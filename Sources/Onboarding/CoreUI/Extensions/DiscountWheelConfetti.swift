@@ -64,5 +64,5 @@ extension View {
 }
 
 #Preview {
-    DiscountWheelStepView()
+    DiscountWheelStepView(step: .testData())
 }

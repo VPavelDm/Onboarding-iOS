@@ -139,5 +139,5 @@ private extension CGFloat {
 }
 
 #Preview {
-    DiscountWheelStepView()
+    DiscountWheelStepView(step: .testData())
 }
