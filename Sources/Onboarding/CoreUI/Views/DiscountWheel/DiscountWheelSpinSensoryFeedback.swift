@@ -9,29 +9,32 @@ import SwiftUI
 
 private struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
 
-    @Binding var currentAngle: Angle
+    var currentAngle: Angle
     var slicesCount: Int
 
-    var animatableData: Int {
+    var animatableData: Angle {
         get {
-            let sliceAngle = Angle.degrees(360.0 / Double(slicesCount))
-            return Int(currentAngle.degrees / sliceAngle.degrees)
+            currentAngle
         }
         set {
-            let sliceAngle = Angle.degrees(360.0 / Double(slicesCount))
-            currentAngle = Angle.degrees(Double(newValue) * sliceAngle.degrees)
+            currentAngle = newValue
         }
+    }
+
+    var opacity: CGFloat {
+        min(abs(animatableData.degrees / -1840), 1)
     }
 
     func body(content: Content) -> some View {
         content
-            .sensoryFeedback(feedbackType: .alignment, trigger: animatableData)
+            .opacity(opacity)
+//            .sensoryFeedback(feedbackType: .alignment, trigger: animatableData)
     }
 }
 
 extension View {
 
-    func wheelSpinSensoryFeedback(currentAngle: Binding<Angle>, slicesCount: Int) -> some View {
+    func wheelSpinSensoryFeedback(currentAngle: Angle, slicesCount: Int) -> some View {
         modifier(DiscountWheelSpinSensoryFeedback(currentAngle: currentAngle, slicesCount: slicesCount))
     }
 }
