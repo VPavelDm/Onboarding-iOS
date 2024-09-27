@@ -10,18 +10,18 @@ import SwiftUI
 private struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
 
     var sliceAngle: Angle
-    @Binding var currentAngle: Angle
+    var currentAngle: Angle
 
-    init(currentAngle: Binding<Angle>, slicesCount: Int) {
+    init(currentAngle: Angle, slicesCount: Int) {
         self.sliceAngle = Angle.degrees(360.0 / Double(slicesCount))
-        self._currentAngle = currentAngle
+        self.currentAngle = currentAngle
     }
 
     var animatableData: Double {
         get { currentAngle.degrees }
         set {
             currentAngle = Angle.degrees(newValue)
-            print(Int(newValue / sliceAngle.degrees))
+            print(Int(animatableData / sliceAngle.degrees))
         }
     }
 
@@ -33,7 +33,7 @@ private struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
 
 extension View {
 
-    func wheelSpinSensoryFeedback(currentAngle: Binding<Angle>, slicesCount: Int) -> some View {
+    func wheelSpinSensoryFeedback(currentAngle: Angle, slicesCount: Int) -> some View {
         modifier(DiscountWheelSpinSensoryFeedback(currentAngle: currentAngle, slicesCount: slicesCount))
     }
 }

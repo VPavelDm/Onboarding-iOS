@@ -31,7 +31,7 @@ struct DiscountWheelStepView: View {
         .background(colorPalette.backgroundColor)
         .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
         .wheelSpinSensoryFeedback(
-            currentAngle: $currentAngle,
+            currentAngle: currentAngle,
             slicesCount: Array<DiscountWheel.Slice>.slices.count
         )
         .discountWheelConfetti(throwConfetti: $throwConfetti)
