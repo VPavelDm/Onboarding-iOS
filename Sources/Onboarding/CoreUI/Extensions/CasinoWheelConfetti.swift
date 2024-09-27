@@ -10,9 +10,7 @@ import ConfettiSwiftUI
 
 private struct CasinoWheelConfettiModifier: ViewModifier {
 
-    @State private var counter: Int = 0
-
-    @Binding var throwConfetti: Bool
+    @Binding var throwConfetti: Int
 
     func body(content: Content) -> some View {
         content
@@ -24,11 +22,6 @@ private struct CasinoWheelConfettiModifier: ViewModifier {
                 confettiView(angle: .rightConfettiAngle)
                     .frame(maxWidth: .infinity, alignment: .leading)
             )
-            .onChange(of: throwConfetti) { throwConfetti in
-                if throwConfetti {
-                    counter += 1
-                }
-            }
     }
 
     private func confettiView(angle: Angle) -> some View {
@@ -36,13 +29,12 @@ private struct CasinoWheelConfettiModifier: ViewModifier {
             .fill(.clear)
             .frame(width: 10)
             .confettiCannon(
-                counter: $counter,
+                counter: $throwConfetti,
                 num: 15,
                 confettiSize: .size,
                 openingAngle: angle,
                 closingAngle: angle,
-                radius: .radius,
-                repetitions: .repetitions
+                radius: .radius
             )
     }
 }
@@ -51,10 +43,6 @@ private extension CGFloat {
 
     static var radius: CGFloat { 600 }
     static var size: CGFloat { 25 }
-}
-
-private extension Int {
-    static var repetitions: Int { 2 }
 }
 
 private extension Angle {
@@ -70,7 +58,7 @@ private extension Angle {
 
 extension View {
 
-    func casinoWheelConfetti(throwConfetti: Binding<Bool>) -> some View {
+    func casinoWheelConfetti(throwConfetti: Binding<Int>) -> some View {
         modifier(CasinoWheelConfettiModifier(throwConfetti: throwConfetti))
     }
 }

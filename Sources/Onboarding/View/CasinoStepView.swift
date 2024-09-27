@@ -11,7 +11,7 @@ struct CasinoStepView: View {
     @Environment(\.colorPalette) private var colorPalette
 
     @State private var currentAngle: Angle = .initialAngle
-    @State private var throwConfetti: Bool = false
+    @State private var throwConfetti: Int = 0
     @State private var showSuccessAlert: Bool = false
 
     var body: some View {
@@ -27,6 +27,11 @@ struct CasinoStepView: View {
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colorPalette.backgroundColor)
+        .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
+        .wheelSpinSensoryFeedback(
+            currentAngle: $currentAngle,
+            slicesCount: Array<CasinoWheel.Slice>.slices.count
+        )
         .casinoWheelConfetti(throwConfetti: $throwConfetti)
         .sheet(isPresented: $showSuccessAlert) {
             Text("Success")
@@ -48,13 +53,18 @@ struct CasinoStepView: View {
                 currentAngle = .degrees(-1840)
             }
             try? await Task.sleep(for: .seconds(8))
-            throwConfetti = true
-            try? await Task.sleep(for: .seconds(5))
+            throwConfetti = 1
+            try? await Task.sleep(for: .milliseconds(500))
+            throwConfetti += 1
+            try? await Task.sleep(for: .milliseconds(500))
+            throwConfetti += 1
+            try? await Task.sleep(for: .milliseconds(500))
             showSuccessAlert = true
         } label: {
             Text("Spin")
         }
         .buttonStyle(PrimaryButtonStyle())
+        .disabled(currentAngle != .initialAngle)
     }
 }
 
