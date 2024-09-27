@@ -55,6 +55,9 @@ struct OnboardingStepResponse: Decodable {
         case "timePicker":
             let payload = try container.decode(TimePickerStep.self, forKey: .payload)
             self.type = .timePicker(payload)
+        case "casino":
+            let payload = try container.decode(CasinoStep.self, forKey: .payload)
+            self.type = .casino(payload)
         default:
             self.type = .unknown
         }
@@ -71,6 +74,7 @@ struct OnboardingStepResponse: Decodable {
         case welcome(WelcomeStep)
         case progress(ProgressStep)
         case timePicker(TimePickerStep)
+        case casino(CasinoStep)
         case unknown
     }
 
@@ -123,6 +127,10 @@ struct OnboardingStepResponse: Decodable {
     struct TimePickerStep: Decodable {
         let title: String
         let answer: StepAnswer
+    }
+
+    struct CasinoStep: Decodable {
+        let title: String
     }
 
     struct StepAnswer: Decodable {
