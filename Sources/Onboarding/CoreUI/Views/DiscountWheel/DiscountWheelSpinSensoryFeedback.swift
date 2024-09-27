@@ -9,8 +9,6 @@ import SwiftUI
 
 private struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
 
-    @State private var selection: SensoryFeedbackType = .success
-
     var sliceAngle: Angle
     var currentAngle: Angle
 
@@ -21,26 +19,12 @@ private struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
 
     var animatableData: Double {
         get { currentAngle.degrees }
-        set {
-            currentAngle = Angle.degrees(newValue)
-            print(Int(animatableData / sliceAngle.degrees))
-        }
+        set { currentAngle = Angle.degrees(newValue) }
     }
 
     func body(content: Content) -> some View {
-        VStack {
-            pickerView
-            content
-                .sensoryFeedback(feedbackType: selection, trigger: Int(animatableData / sliceAngle.degrees))
-        }
-    }
-
-    private var pickerView: some View {
-        Picker("", selection: $selection) {
-            ForEach(SensoryFeedbackType.allCases) { type in
-                Text(type.rawValue)
-            }
-        }
+        content
+            .sensoryFeedback(feedbackType: .selection, trigger: Int(animatableData / sliceAngle.degrees))
     }
 }
 
