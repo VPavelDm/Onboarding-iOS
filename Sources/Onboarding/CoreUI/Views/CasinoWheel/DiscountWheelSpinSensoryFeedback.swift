@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-private struct CasinoWheelSpinSensoryFeedback: ViewModifier, Animatable {
+private struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
 
     @Binding var currentAngle: Angle
     var slicesCount: Int
@@ -32,6 +32,6 @@ private struct CasinoWheelSpinSensoryFeedback: ViewModifier, Animatable {
 extension View {
 
     func wheelSpinSensoryFeedback(currentAngle: Binding<Angle>, slicesCount: Int) -> some View {
-        modifier(CasinoWheelSpinSensoryFeedback(currentAngle: currentAngle, slicesCount: slicesCount))
+        modifier(DiscountWheelSpinSensoryFeedback(currentAngle: currentAngle, slicesCount: slicesCount))
     }
 }

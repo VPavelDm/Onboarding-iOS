@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CasinoStepView: View {
+struct DiscountWheelStepView: View {
     @Environment(\.colorPalette) private var colorPalette
 
     @State private var currentAngle: Angle = .initialAngle
@@ -19,7 +19,7 @@ struct CasinoStepView: View {
             Spacer()
             titleView
             Spacer()
-            CasinoWheel(currentAngle: $currentAngle, slices: .slices)
+            DiscountWheel(currentAngle: $currentAngle, slices: .slices)
             Spacer()
             Spacer()
             spinButton
@@ -30,9 +30,9 @@ struct CasinoStepView: View {
         .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
         .wheelSpinSensoryFeedback(
             currentAngle: $currentAngle,
-            slicesCount: Array<CasinoWheel.Slice>.slices.count
+            slicesCount: Array<DiscountWheel.Slice>.slices.count
         )
-        .casinoWheelConfetti(throwConfetti: $throwConfetti)
+        .discountWheelConfetti(throwConfetti: $throwConfetti)
         .sheet(isPresented: $showSuccessAlert) {
             Text("Success")
                 .presentationDetents([.medium])
@@ -68,7 +68,7 @@ struct CasinoStepView: View {
     }
 }
 
-private extension Array where Element == CasinoWheel.Slice {
+private extension Array where Element == DiscountWheel.Slice {
 
     static var slices: [Element] {
         [
@@ -87,7 +87,7 @@ private extension Array where Element == CasinoWheel.Slice {
 private extension Angle {
 
     static var initialAngle: Angle {
-        let slices: [CasinoWheel.Slice] = .slices
+        let slices: [DiscountWheel.Slice] = .slices
         return .degrees(360 / Double(slices.count)) / 2
     }
 }
@@ -108,5 +108,5 @@ private extension Color {
 }
 
 #Preview {
-    CasinoStepView()
+    DiscountWheelStepView()
 }

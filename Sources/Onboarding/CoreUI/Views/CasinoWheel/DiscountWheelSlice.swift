@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CasinoWheelSlice: Shape {
+struct DiscountWheelSlice: Shape {
 
     var startAngle: Angle
     var endAngle: Angle

@@ -23,7 +23,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case prime(StepAnswer)
         case progress(ProgressStep)
         case timePicker(TimePickerStep)
-        case casino(CasinoStep)
+        case discountWheel(DiscountWheelStep)
         case unknown
 
         var title: String? {
@@ -48,7 +48,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
                 progressStep.title
             case .timePicker(let timePickerStep):
                 timePickerStep.title
-            case .casino(let step):
+            case .discountWheel(let step):
                 step.title
             case .unknown:
                 nil
@@ -86,7 +86,7 @@ extension OnboardingStep {
         case .prime(let payload): .prime(StepAnswer(response: payload))
         case .progress(let payload): .progress(ProgressStep(response: payload))
         case .timePicker(let payload): .timePicker(TimePickerStep(response: payload))
-        case .casino(let payload): .casino(CasinoStep(title: payload.title))
+        case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload))
         default: .unknown
         }
 

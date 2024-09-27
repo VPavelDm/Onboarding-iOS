@@ -8,7 +8,7 @@
 import SwiftUI
 import ConfettiSwiftUI
 
-private struct CasinoWheelConfettiModifier: ViewModifier {
+private struct DiscountWheelConfettiModifier: ViewModifier {
 
     @Binding var throwConfetti: Int
 
@@ -58,11 +58,11 @@ private extension Angle {
 
 extension View {
 
-    func casinoWheelConfetti(throwConfetti: Binding<Int>) -> some View {
-        modifier(CasinoWheelConfettiModifier(throwConfetti: throwConfetti))
+    func discountWheelConfetti(throwConfetti: Binding<Int>) -> some View {
+        modifier(DiscountWheelConfettiModifier(throwConfetti: throwConfetti))
     }
 }
 
 #Preview {
-    CasinoStepView()
+    DiscountWheelStepView()
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CasinoWheelPointer: Shape {
+struct DiscountWheelPointer: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -56,7 +56,7 @@ struct CasinoWheelPointer: Shape {
 }
 
 #Preview {
-    CasinoWheelPointer()
+    DiscountWheelPointer()
         .fill(Color.red)
         .padding()
 }

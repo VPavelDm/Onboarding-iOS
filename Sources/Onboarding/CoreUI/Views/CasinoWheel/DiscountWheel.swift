@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CasinoWheel: View {
+struct DiscountWheel: View {
 
     @Environment(\.colorPalette) private var colorPalette
 
@@ -33,7 +33,7 @@ struct CasinoWheel: View {
     private var slicesView: some View {
         ZStack {
             ForEach(slices.indices, id: \.self) { index in
-                CasinoWheelSlice(
+                DiscountWheelSlice(
                     startAngle: .sliceStartAngle(at: index, count: slices.count),
                     endAngle: .sliceEndAngle(at: index, count: slices.count)
                 )
@@ -66,7 +66,7 @@ struct CasinoWheel: View {
 
     private var pointerView: some View {
         ZStack(alignment: .top) {
-            CasinoWheelPointer()
+            DiscountWheelPointer()
                 .fill(Color.white)
                 .frame(
                     width: .pointerWidth,
@@ -139,5 +139,5 @@ private extension CGFloat {
 }
 
 #Preview {
-    CasinoStepView()
+    DiscountWheelStepView()
 }
