@@ -17,7 +17,7 @@ enum SensoryFeedbackType {
         case .success:
                 .success
         case .alignment:
-                .alignment
+                .selection
         }
     }
 }
