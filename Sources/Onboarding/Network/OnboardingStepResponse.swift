@@ -131,6 +131,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct DiscountWheelStep: Decodable {
         let title: String
+        let answer: StepAnswer
     }
 
     struct StepAnswer: Decodable {

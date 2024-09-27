@@ -14,6 +14,8 @@ struct DiscountWheelStepView: View {
     @State private var throwConfetti: Int = 0
     @State private var showSuccessAlert: Bool = false
 
+    var step: DiscountWheelStep
+
     var body: some View {
         VStack {
             Spacer()
@@ -40,7 +42,7 @@ struct DiscountWheelStepView: View {
     }
 
     private var titleView: some View {
-        Text("Spin to Win Your Prime Discount")
+        Text(step.title)
             .font(.title)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
@@ -61,7 +63,7 @@ struct DiscountWheelStepView: View {
             try? await Task.sleep(for: .milliseconds(500))
             showSuccessAlert = true
         } label: {
-            Text("Spin")
+            Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(currentAngle != .initialAngle)
@@ -108,5 +110,5 @@ private extension Color {
 }
 
 #Preview {
-    DiscountWheelStepView()
+    DiscountWheelStepView(step: .testData())
 }
