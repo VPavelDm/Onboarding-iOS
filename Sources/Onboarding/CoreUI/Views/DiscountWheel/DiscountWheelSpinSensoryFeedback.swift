@@ -27,7 +27,7 @@ private struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
 
     func body(content: Content) -> some View {
         content
-            .sensoryFeedback(feedbackType: .alignment, trigger: Int(animatableData / sliceAngle.degrees))
+            .sensoryFeedback(feedbackType: .success, trigger: Int(animatableData / sliceAngle.degrees))
     }
 }
 
