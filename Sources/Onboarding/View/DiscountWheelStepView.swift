@@ -10,6 +10,8 @@ import SwiftUI
 struct DiscountWheelStepView: View {
     @Environment(\.colorPalette) private var colorPalette
 
+    @EnvironmentObject private var viewModel: OnboardingViewModel
+
     @State private var currentAngle: Angle = .initialAngle
     @State private var throwConfetti: Int = 0
     @State private var showSuccessAlert: Bool = false
@@ -36,8 +38,7 @@ struct DiscountWheelStepView: View {
         )
         .discountWheelConfetti(throwConfetti: $throwConfetti)
         .sheet(isPresented: $showSuccessAlert) {
-            Text("Success")
-                .presentationDetents([.medium])
+            DiscountWheelSuccessView(step: step)
         }
     }
 
@@ -63,7 +64,7 @@ struct DiscountWheelStepView: View {
             try? await Task.sleep(for: .milliseconds(500))
             showSuccessAlert = true
         } label: {
-            Text(step.answer.title)
+            Text(step.spinButtonTitle)
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(currentAngle != .initialAngle)

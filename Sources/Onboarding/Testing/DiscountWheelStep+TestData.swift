@@ -12,6 +12,9 @@ extension DiscountWheelStep {
     static func testData() -> Self {
         DiscountWheelStep(
             title: "Spin to Win Your Prime Discount",
+            spinButtonTitle: "Spin",
+            successTitle: "🥳 Wooohooo\nyou won 75% discount!",
+            successDescription: "It is a one-time deal, so don't miss it!",
             answer: StepAnswer(title: "Step")
         )
     }
