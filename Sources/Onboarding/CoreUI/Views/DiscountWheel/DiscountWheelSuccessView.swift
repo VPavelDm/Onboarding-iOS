@@ -14,6 +14,7 @@ struct DiscountWheelSuccessView: View {
 
     @State private var size: CGSize = .zero
 
+    @Binding var isPresented: Bool
     var step: DiscountWheelStep
 
     var body: some View {
@@ -51,6 +52,7 @@ struct DiscountWheelSuccessView: View {
 
     private var takeButton: some View {
         AsyncButton {
+            isPresented = false
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(step.answer.title)
@@ -62,6 +64,6 @@ struct DiscountWheelSuccessView: View {
 #Preview {
     Color.black
         .sheet(isPresented: .constant(true)) {
-            DiscountWheelSuccessView(step: .testData())
+            DiscountWheelSuccessView(isPresented: .constant(true), step: .testData())
         }
 }

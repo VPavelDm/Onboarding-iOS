@@ -38,7 +38,7 @@ struct DiscountWheelStepView: View {
         )
         .discountWheelConfetti(throwConfetti: $throwConfetti)
         .sheet(isPresented: $showSuccessAlert) {
-            DiscountWheelSuccessView(step: step)
+            DiscountWheelSuccessView(isPresented: $showSuccessAlert, step: step)
                 .environmentObject(viewModel)
         }
     }
