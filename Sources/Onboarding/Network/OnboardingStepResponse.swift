@@ -44,8 +44,8 @@ struct OnboardingStepResponse: Decodable {
             let payload = try container.decode(CustomStep.self, forKey: .payload)
             self.type = .custom(payload.answer)
         case "prime":
-            let payload = try container.decode(CustomStep.self, forKey: .payload)
-            self.type = .prime(payload.answer)
+            let payload = try container.decode(PrimeStep.self, forKey: .payload)
+            self.type = .prime(payload)
         case "welcome":
             let payload = try container.decode(WelcomeStep.self, forKey: .payload)
             self.type = .welcome(payload)
@@ -70,7 +70,7 @@ struct OnboardingStepResponse: Decodable {
         case binaryAnswer(BinaryAnswer)
         case login(StepAnswer)
         case custom(StepAnswer)
-        case prime(StepAnswer)
+        case prime(PrimeStep)
         case welcome(WelcomeStep)
         case progress(ProgressStep)
         case timePicker(TimePickerStep)
@@ -131,6 +131,12 @@ struct OnboardingStepResponse: Decodable {
 
     struct DiscountWheelStep: Decodable {
         let title: String
+        let answer: StepAnswer
+    }
+
+    struct PrimeStep: Decodable {
+        let title: String
+        let description: String
         let answer: StepAnswer
     }
 

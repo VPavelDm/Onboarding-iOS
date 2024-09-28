@@ -12,3 +12,16 @@ struct PrimeStep: Sendable, Equatable, Hashable {
     var description: String
     var answer: StepAnswer
 }
+
+// MARK: - Convert
+
+extension PrimeStep {
+
+    init(response: OnboardingStepResponse.PrimeStep) {
+        self.init(
+            title: response.title,
+            description: response.description,
+            answer: StepAnswer(response: response.answer)
+        )
+    }
+}

@@ -82,8 +82,8 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                 if let stepID = step?.id {
                     outerScreen((.custom(stepID), handleOuterScreenCallback))
                 }
-            case .prime:
-                outerScreen((.prime, handleOuterScreenCallback))
+            case .prime(let step):
+                PrimeStepView(step: step)
             case .progress(let step):
                 ProgressStepView(step: step)
             case .timePicker(let step):
@@ -109,8 +109,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
         case .custom(let stepAnswer):
             await viewModel.onAnswer(answers: [stepAnswer])
         case .login(let stepAnswer):
-            await viewModel.onAnswer(answers: [stepAnswer])
-        case .prime(let stepAnswer):
             await viewModel.onAnswer(answers: [stepAnswer])
         default:
             break
