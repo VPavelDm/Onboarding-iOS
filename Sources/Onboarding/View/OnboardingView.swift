@@ -88,6 +88,8 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                 ProgressStepView(step: step)
             case .timePicker(let step):
                 TimePickerStepView(step: step)
+            case .discountWheel(let step):
+                DiscountWheelStepView(step: step)
             case .unknown, .none:
                 EmptyView()
             }
