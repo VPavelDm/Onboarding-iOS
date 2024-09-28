@@ -10,6 +10,8 @@ import SwiftUI
 struct DiscountWheelSuccessView: View {
     @Environment(\.colorPalette) private var colorPalette
 
+    @EnvironmentObject private var viewModel: OnboardingViewModel
+
     @State private var size: CGSize = .zero
 
     var step: DiscountWheelStep
@@ -49,7 +51,7 @@ struct DiscountWheelSuccessView: View {
 
     private var takeButton: some View {
         AsyncButton {
-
+            await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(step.answer.title)
         }
