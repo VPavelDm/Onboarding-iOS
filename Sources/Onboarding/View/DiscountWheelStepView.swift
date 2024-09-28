@@ -82,7 +82,7 @@ private extension Array where Element == DiscountWheel.Slice {
             Element(value: "25", color: .lightSlice),
             Element(value: "5", color: .darkSlice),
             Element(value: "10", color: .lightSlice),
-            Element(value: "75", color: .gift),
+            Element(value: "70", color: .gift),
             Element(value: "5", color: .lightSlice),
         ]
     }
