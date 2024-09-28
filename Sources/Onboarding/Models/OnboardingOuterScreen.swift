@@ -10,5 +10,4 @@ import Foundation
 public enum OnboardingOuterScreen {
     case login
     case custom(StepID)
-    case prime
 }
