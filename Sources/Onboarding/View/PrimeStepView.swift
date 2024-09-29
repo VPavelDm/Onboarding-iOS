@@ -76,7 +76,7 @@ struct PrimeStepView: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
-            .background(Color(hex: "EF5350"))
+            .background(Color(hex: "ED3A2E"))
             .clipShape(RoundedRectangle(cornerRadius: 16))
         }
         .padding()
