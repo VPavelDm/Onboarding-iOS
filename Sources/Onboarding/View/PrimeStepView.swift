@@ -12,7 +12,10 @@ struct PrimeStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var isLoading = true
+    @State private var isRefuseButtonVisible = false
     @State private var discountedProduct: DiscountedProduct = .testData()
+
+    @State private var isWarningShowed: Bool = false
 
     var step: PrimeStep
 
@@ -25,17 +28,26 @@ struct PrimeStepView: View {
             VStack(spacing: 16) {
                 priceView
                 continueButton
+                refuseButton
             }
         }
         .animation(.easeInOut, value: isLoading)
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colorPalette.backgroundColor)
+        .alert(step.warning.title, isPresented: $isWarningShowed) {
+            confirmWarning
+            cancelWarning
+        } message: {
+            Text(step.warning.description)
+        }
         .task {
             do {
                 try? await Task.sleep(for: .seconds(3))
                 discountedProduct = try await viewModel.delegate.fetchDiscountedProduct()
                 isLoading = false
+                try? await Task.sleep(for: .seconds(3))
+                isRefuseButtonVisible = true
             } catch {
                 print(error.localizedDescription)
             }
@@ -99,6 +111,42 @@ struct PrimeStepView: View {
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(isLoading)
+    }
+
+    private var refuseButton: some View {
+        Button {
+            isWarningShowed = true
+        } label: {
+            Text(step.refuseAnswer.title)
+        }
+        .buttonStyle(SimpleButtonStyle())
+        .opacity(isRefuseButtonVisible ? 1 : 0)
+        .animation(.easeInOut, value: isRefuseButtonVisible)
+    }
+
+    private var confirmWarning: some View {
+        Button(role: .destructive) {
+            Task { @MainActor in
+                await viewModel.onAnswer(answers: [step.refuseAnswer])
+            }
+        } label: {
+            Text(step.warning.confirmButtonTitle)
+        }
+    }
+
+    private var cancelWarning: some View {
+        Button {
+            Task { @MainActor in
+                do {
+                    try await viewModel.delegate.makePurchase(discountedProduct)
+                    await viewModel.onAnswer(answers: [step.answer])
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        } label: {
+            Text(step.warning.cancelButtonTitle)
+        }
     }
 }
 

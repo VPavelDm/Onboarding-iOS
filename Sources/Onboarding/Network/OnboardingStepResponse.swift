@@ -141,6 +141,15 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let description: String
         let answer: StepAnswer
+        let refuseAnswer: StepAnswer
+        let warning: RefuseWarning
+
+        struct RefuseWarning: Decodable {
+            let title: String
+            let description: String
+            let confirmButtonTitle: String
+            let cancelButtonTitle: String
+        }
     }
 
     struct StepAnswer: Decodable {

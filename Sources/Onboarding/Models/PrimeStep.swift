@@ -11,6 +11,15 @@ struct PrimeStep: Sendable, Equatable, Hashable {
     var title: String
     var description: String
     var answer: StepAnswer
+    var refuseAnswer: StepAnswer
+    var warning: RefuseWarning
+
+    struct RefuseWarning: Sendable, Equatable, Hashable {
+        var title: String
+        var description: String
+        var cancelButtonTitle: String
+        var confirmButtonTitle: String
+    }
 }
 
 // MARK: - Convert
@@ -21,7 +30,21 @@ extension PrimeStep {
         self.init(
             title: response.title,
             description: response.description,
-            answer: StepAnswer(response: response.answer)
+            answer: StepAnswer(response: response.answer),
+            refuseAnswer: StepAnswer(response: response.refuseAnswer),
+            warning: RefuseWarning(response: response.warning)
+        )
+    }
+}
+
+extension PrimeStep.RefuseWarning {
+
+    init(response: OnboardingStepResponse.PrimeStep.RefuseWarning) {
+        self.init(
+            title: response.title,
+            description: response.description,
+            cancelButtonTitle: response.cancelButtonTitle,
+            confirmButtonTitle: response.confirmButtonTitle
         )
     }
 }
