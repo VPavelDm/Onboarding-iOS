@@ -13,7 +13,7 @@ struct SimpleButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(colorPalette.primaryButtonTextColor.opacity(configuration.isPressed || isEnabled ? 0.65 : 1))
+            .foregroundStyle(colorPalette.simpleButtonTextColor.opacity(configuration.isPressed || isEnabled ? 0.65 : 1))
             .font(.system(size: 16, weight: .semibold))
     }
 }
