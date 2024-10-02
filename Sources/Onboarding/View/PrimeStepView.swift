@@ -138,6 +138,7 @@ struct PrimeStepView: View {
         Button {
             Task { @MainActor in
                 do {
+                    isWarningShowed = false
                     try await viewModel.delegate.makePurchase(discountedProduct)
                     await viewModel.onAnswer(answers: [step.answer])
                 } catch {
