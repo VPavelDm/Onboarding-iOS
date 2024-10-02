@@ -16,6 +16,10 @@ struct DiscountWheelStepView: View {
     @State private var throwConfetti: Int = 0
     @State private var showSuccessAlert: Bool = false
 
+    private var slices: [DiscountWheel.Slice] {
+        .slices(colorPalette: colorPalette)
+    }
+
     var step: DiscountWheelStep
 
     var body: some View {
@@ -23,7 +27,7 @@ struct DiscountWheelStepView: View {
             Spacer()
             titleView
             Spacer()
-            DiscountWheel(currentAngle: $currentAngle, slices: .slices)
+            DiscountWheel(currentAngle: $currentAngle, slices: slices)
             Spacer()
             Spacer()
             spinButton
@@ -34,7 +38,7 @@ struct DiscountWheelStepView: View {
         .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
         .wheelSpinSensoryFeedback(
             currentAngle: currentAngle,
-            slicesCount: Array<DiscountWheel.Slice>.slices.count
+            slicesCount: slices.count
         )
         .discountWheelConfetti(throwConfetti: $throwConfetti)
         .sheet(isPresented: $showSuccessAlert) {
@@ -74,16 +78,16 @@ struct DiscountWheelStepView: View {
 
 private extension Array where Element == DiscountWheel.Slice {
 
-    static var slices: [Element] {
+    static func slices(colorPalette: ColorPalette) -> [Element] {
         [
-            Element(value: "5", color: .darkSlice),
-            Element(value: "10", color: .lightSlice),
-            Element(value: "5", color: .darkSlice),
-            Element(value: "25", color: .lightSlice),
-            Element(value: "5", color: .darkSlice),
-            Element(value: "10", color: .lightSlice),
-            Element(value: "70", color: .gift),
-            Element(value: "5", color: .lightSlice),
+            Element(value: "5", color: colorPalette.discountSliceDarkColor),
+            Element(value: "10", color: colorPalette.discountSliceLightColor),
+            Element(value: "5", color: colorPalette.discountSliceDarkColor),
+            Element(value: "25", color: colorPalette.discountSliceLightColor),
+            Element(value: "5", color: colorPalette.discountSliceDarkColor),
+            Element(value: "10", color: colorPalette.discountSliceLightColor),
+            Element(value: "70", color: colorPalette.discountSliceGiftColor),
+            Element(value: "5", color: colorPalette.discountSliceLightColor),
         ]
     }
 }
@@ -91,23 +95,8 @@ private extension Array where Element == DiscountWheel.Slice {
 private extension Angle {
 
     static var initialAngle: Angle {
-        let slices: [DiscountWheel.Slice] = .slices
+        let slices: [DiscountWheel.Slice] = .slices(colorPalette: .testData)
         return .degrees(360 / Double(slices.count)) / 2
-    }
-}
-
-private extension Color {
-
-    static var darkSlice: Color {
-        Color(hex: "4D5761")
-    }
-
-    static var lightSlice: Color {
-        Color(hex: "6C737F")
-    }
-
-    static var gift: Color {
-        Color(hex: "EF5350")
     }
 }
 

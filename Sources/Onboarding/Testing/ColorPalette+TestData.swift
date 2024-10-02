@@ -24,7 +24,10 @@ extension ColorPalette {
             progressBarColor: Color(hex: "0589D6"),
             progressBarBackgroundColor: Color(hex: "29303C"),
             progressBarDisabledColor: Color(hex: "858894"),
-            orbitColor: Color(hex: "1F2A37")
+            orbitColor: Color(hex: "1F2A37"),
+            discountSliceDarkColor: Color(hex: "4D5761"),
+            discountSliceLightColor: Color(hex: "6C737F"),
+            discountSliceGiftColor: Color(hex: "EF5350")
         )
     }
 }

@@ -23,6 +23,9 @@ public struct ColorPalette: Sendable, AsyncButtonColorPalette, CheckBoxColorPale
     public let progressBarBackgroundColor: Color
     public let progressBarDisabledColor: Color
     public let orbitColor: Color
+    public let discountSliceDarkColor: Color
+    public let discountSliceLightColor: Color
+    public let discountSliceGiftColor: Color
 
     public init(
         asyncButtonProgressView: Color,
@@ -38,7 +41,10 @@ public struct ColorPalette: Sendable, AsyncButtonColorPalette, CheckBoxColorPale
         progressBarColor: Color,
         progressBarBackgroundColor: Color,
         progressBarDisabledColor: Color,
-        orbitColor: Color
+        orbitColor: Color,
+        discountSliceDarkColor: Color,
+        discountSliceLightColor: Color,
+        discountSliceGiftColor: Color
     ) {
         self.asyncButtonProgressView = asyncButtonProgressView
         self.checkboxBackground = checkboxBackground
@@ -54,6 +60,9 @@ public struct ColorPalette: Sendable, AsyncButtonColorPalette, CheckBoxColorPale
         self.progressBarBackgroundColor = progressBarBackgroundColor
         self.progressBarDisabledColor = progressBarDisabledColor
         self.orbitColor = orbitColor
+        self.discountSliceDarkColor = discountSliceDarkColor
+        self.discountSliceLightColor = discountSliceLightColor
+        self.discountSliceGiftColor = discountSliceGiftColor
     }
 }
 
