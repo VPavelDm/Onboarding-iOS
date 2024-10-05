@@ -75,7 +75,7 @@ struct PrimeStepView: View {
                     .font(.system(size: 24, weight: .bold))
                 HStack {
                     Text(discountedProduct.originalPrice)
-                        .strikethrough()
+                        .strikethrough(!isLoading)
                     Text(discountedProduct.discountedPrice)
                 }
             }

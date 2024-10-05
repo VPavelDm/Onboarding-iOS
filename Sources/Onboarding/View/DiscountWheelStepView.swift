@@ -57,10 +57,10 @@ struct DiscountWheelStepView: View {
 
     private var spinButton: some View {
         AsyncButton {
-            withAnimation(.timingCurve(0.2, 0.8, 0.2, 1.0, duration: 8)) {
-                currentAngle = .degrees(-1840)
+            withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: 10)) {
+                currentAngle = .degrees(-1805)
             }
-            try? await Task.sleep(for: .seconds(8))
+            try? await Task.sleep(for: .seconds(10))
             throwConfetti = 1
             try? await Task.sleep(for: .milliseconds(500))
             throwConfetti += 1
