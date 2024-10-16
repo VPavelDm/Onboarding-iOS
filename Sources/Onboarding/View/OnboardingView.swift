@@ -110,6 +110,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
 
     private var backButton: some View {
         Button {
+            viewModel.delegate.onBackButtonClick()
             viewModel.passedSteps.removeLast()
         } label: {
             Image(systemName: "chevron.left")

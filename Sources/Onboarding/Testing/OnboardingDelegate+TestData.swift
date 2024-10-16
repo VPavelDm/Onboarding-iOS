@@ -24,4 +24,10 @@ final class MockOnboardingDelegate: OnboardingDelegate {
 
     func finalise() async {
     }
+
+    func onAnswerClick(userAnswer: UserAnswer) {
+    }
+
+    func onBackButtonClick() {
+    }
 }
