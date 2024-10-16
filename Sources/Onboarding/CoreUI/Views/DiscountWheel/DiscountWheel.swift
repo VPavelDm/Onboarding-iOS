@@ -45,12 +45,19 @@ struct DiscountWheel: View {
     }
 
     private func giftView(at index: Int) -> some View {
-        Text("\(slices[index].value)%")
-            .foregroundStyle(colorPalette.primaryTextColor)
-            .font(.system(size: 26, weight: .bold))
-            .rotationEffect(.textRotationAngle(at: index, count: slices.count))
-            .offset(.textOffset(at: index, count: slices.count, in: wheelSize))
-            .zIndex(1)
+        VStack {
+            if slices[index].color == colorPalette.discountSliceGiftColor {
+                Image(systemName: "gift")
+                    .font(.system(size: 42))
+            } else {
+                Text("\(slices[index].value)%")
+                    .font(.system(size: 26, weight: .bold))
+            }
+        }
+        .foregroundStyle(colorPalette.primaryTextColor)
+        .rotationEffect(.textRotationAngle(at: index, count: slices.count))
+        .offset(.textOffset(at: index, count: slices.count, in: wheelSize))
+        .zIndex(1)
     }
 
     private var centerCircle: some View {
