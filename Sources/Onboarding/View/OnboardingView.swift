@@ -53,8 +53,10 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                     .navigationDestination(for: OnboardingStep.self, destination: navigationStackContentView(step:))
             }
             .environmentObject(viewModel)
-            customToolbarView
-                .frame(height: .progressBarHeight, alignment: .bottom)
+            if viewModel.steps.count > 1 {
+                customToolbarView
+                    .frame(height: .progressBarHeight, alignment: .bottom)
+            }
         }
     }
 
