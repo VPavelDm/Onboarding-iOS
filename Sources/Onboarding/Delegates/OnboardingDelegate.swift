@@ -15,6 +15,6 @@ public protocol OnboardingDelegate {
     func makePurchase(_ product: DiscountedProduct) async throws
     func finalise() async
 
-    func onAnswerClick(userAnswer: UserAnswer)
-    func onBackButtonClick()
+    func onAnswerClick(userAnswer: UserAnswer) async
+    func onBackButtonClick() async
 }
