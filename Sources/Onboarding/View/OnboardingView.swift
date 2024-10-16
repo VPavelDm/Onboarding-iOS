@@ -59,8 +59,12 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     }
 
     private var customToolbarView: some View {
-        ProgressBarView(completed: viewModel.passedStepsProcent)
-            .padding(.horizontal, 32)
+        HStack(spacing: 12) {
+            backButton.opacity(viewModel.passedSteps.count == 1 ? 0 : 1)
+            ProgressBarView(completed: viewModel.passedStepsProcent)
+            backButton.opacity(0)
+        }
+        .padding(.horizontal, 12)
     }
 
     private func navigationStackContentView(step: OnboardingStep?) -> some View {
@@ -104,6 +108,18 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             .background(colorPalette.backgroundColor)
     }
 
+    private var backButton: some View {
+        Button {
+            viewModel.passedSteps.removeLast()
+        } label: {
+            Image(systemName: "chevron.left")
+                .tint(.primary)
+                .frame(width: 24, height: 24)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+
     private func handleOuterScreenCallback() async {
         switch viewModel.currentStep?.type {
         case .custom(let stepAnswer):
@@ -129,4 +145,5 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             .background(ColorPalette.testData.backgroundColor)
         }
     )
+    .preferredColorScheme(.dark)
 }

@@ -10,10 +10,6 @@
             "firstAnswer": {
                 "title": "Get Started",
                 "nextStepID": "algorithm_intro"
-            },
-            "secondAnswer": {
-                "title": "I Already Have an Account",
-                "nextStepID": "login"
             }
         }
     },
@@ -26,18 +22,221 @@
             "description": "With our AI algorithm, learning German words becomes quicker and easier. Ready to dive in?",
             "image": {
                 "type": "named",
-                "value": "womanWithTeleskope"
+                "value": "algorithmIntroImage"
             },
             "answer": {
                 "title": "Dive In",
-                "nextStepID": "customer_age"
+                "nextStepID": "native_language"
             }
+        }
+    },
+    {
+        "id": "native_language",
+        "type": "oneAnswer",
+        "passedPercent": 0.2,
+        "payload": {
+            "title": "Select your native language",
+            "description": "We'll use this for translations to help you learn German faster.",
+            "answers": [
+                {
+                    "title": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "en-EN"
+                    },
+                },
+                {
+                    "title": "🇪🇸 Spanish",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "es-ES"
+                    },
+                },
+                {
+                    "title": "🇷🇺 Russian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "ru-RU"
+                    },
+                },
+                {
+                    "title": "🇫🇷 French",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "fr-FR"
+                    },
+                },
+                {
+                    "title": "🇮🇹 Italian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "it-IT"
+                    },
+                },
+                {
+                    "title": "🇵🇹 Portuguese",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "pt-PT"
+                    },
+                },
+                {
+                    "title": "🇯🇵 Japanese",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "ja-JP"
+                    },
+                },
+                {
+                    "title": "🇨🇳 Chinese",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "zh-CN"
+                    },
+                },
+                {
+                    "title": "🇰🇷 Korean",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "ko-KR"
+                    },
+                },
+                {
+                    "title": "🇳🇱 Dutch",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "nl-NL"
+                    },
+                },
+                {
+                    "title": "🇸🇪 Swedish",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "sv-SE"
+                    },
+                },
+                {
+                    "title": "🇳🇴 Norwegian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "no-NO"
+                    },
+                },
+                {
+                    "title": "🇹🇷 Turkish",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "tr-TR"
+                    },
+                },
+                {
+                    "title": "🇵🇱 Polish",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "pl-PL"
+                    },
+                },
+                {
+                    "title": "🇬🇷 Greek",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "el-GR"
+                    },
+                },
+                {
+                    "title": "🇮🇱 Hebrew",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "he-IL"
+                    },
+                },
+                {
+                    "title": "🇩🇰 Danish",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "da-DK"
+                    },
+                },
+                {
+                    "title": "🇮🇳 Hindi",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "hi-IN"
+                    },
+                },
+                {
+                    "title": "🇨🇿 Czech",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "cs-CZ"
+                    },
+                },
+                {
+                    "title": "🇺🇦 Ukrainian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "uk-UA"
+                    },
+                },
+                {
+                    "title": "🇭🇺 Hungarian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "hu-HU"
+                    },
+                },
+                {
+                    "title": "🇷🇴 Romanian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "ro-RO"
+                    },
+                },
+                {
+                    "title": "🇮🇩 Indonesian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "id-ID"
+                    },
+                },
+                {
+                    "title": "🇫🇮 Finnish",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "fi-FI"
+                    }
+                }
+            ]
         }
     },
     {
         "id": "customer_age",
         "type": "oneAnswer",
-        "passedPercent": 0.2,
+        "passedPercent": 0.25,
         "payload": {
             "title": "How old are you?",
             "description": "Age is just a number, but it helps us fine-tune your learning!",
@@ -64,10 +263,11 @@
     {
         "id": "previous_experience",
         "type": "multipleAnswer",
-        "passedPercent": 0.25,
+        "passedPercent": 0.3,
         "payload": {
             "title": "Have you studied German before?",
             "description": "Tell us how you’ve learned German before so we can tailor your lessons perfectly!",
+            "buttonTitle": "Next",
             "answers": [
                 {
                     "title": "I studied German at school 🏫",
@@ -91,7 +291,7 @@
                 },
                 {
                     "title": "I’ve never studied German before 🌱",
-                    "nextStepID": "current_experience"
+                    "nextStepID": "difficulties"
                 },
                 {
                     "title": "None of the above 🤷‍♂️🤷‍♀️",
@@ -103,65 +303,66 @@
     {
         "id": "language_level",
         "type": "oneAnswer",
-        "passedPercent": 0.3,
+        "passedPercent": 0.35,
         "payload": {
             "title": "What’s your current German level?",
             "description": "Tell us your level so we can adjust the lessons to match your skills perfectly!",
             "answers": [
                 {
-                    "title": "Complete beginner (A1) 🌟",
-                    "nextStepID": "current_experience"
+                    "title": "Complete beginner 🌱",
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "completeBeginner"
+                    }
+                },
+                {
+                    "title": "Beginner (A1) 🌟",
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "beginner"
+                    }
                 },
                 {
                     "title": "Basic knowledge (A2) 📖",
-                    "nextStepID": "current_experience"
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "elementary"
+                    }
                 },
                 {
                     "title": "Intermediate (B1) 🚀",
-                    "nextStepID": "current_experience"
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "intermediate"
+                    }
                 },
                 {
                     "title": "Upper-intermediate (B2) 🔥",
-                    "nextStepID": "current_experience"
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "upperIntermediate"
+                    }
                 },
                 {
                     "title": "Advanced (C1) 🎯",
-                    "nextStepID": "current_experience"
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "advanced"
+                    }
                 },
                 {
                     "title": "Fluent/Native (C2) 🏅",
-                    "nextStepID": "current_experience"
-                }
-            ]
-        }
-    },
-    {
-        "id": "current_experience",
-        "type": "multipleAnswer",
-        "passedPercent": 0.35,
-        "payload": {
-            "title": "Are you studying German right now?",
-            "description": "Let us know if you're actively learning German so we can support your progress!",
-            "answers": [
-                {
-                    "title": "Not right now, but I want to start! 🚀",
-                    "nextStepID": "difficulties"
-                },
-                {
-                    "title": "Yes, I'm taking a course 🏫",
-                    "nextStepID": "difficulties"
-                },
-                {
-                    "title": "Yes, I’m learning with a teacher 🎓",
-                    "nextStepID": "difficulties"
-                },
-                {
-                    "title": "Yes, I use apps or online resources 📱💻",
-                    "nextStepID": "difficulties"
-                },
-                {
-                    "title": "Yes, I study by myself 📚",
-                    "nextStepID": "difficulties"
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "proficient"
+                    }
                 }
             ]
         }
@@ -169,10 +370,11 @@
     {
         "id": "difficulties",
         "type": "multipleAnswer",
-        "passedPercent": 0.4,
+        "passedPercent": 0.45,
         "payload": {
             "title": "What’s the most difficult part of studying German for you?",
             "description": "Let us know if you're actively learning German so we can support your progress!",
+            "buttonTitle": "Next",
             "answers": [
                 {
                     "title": "Learning grammar rules 📚",
@@ -204,7 +406,7 @@
     {
         "id": "satisfaction",
         "type": "oneAnswer",
-        "passedPercent": 0.45,
+        "passedPercent": 0.5,
         "payload": {
             "title": "Are you satisfied with your current German level?",
             "description": "We want to know how you feel about your progress so far. Let’s see if we can help you improve!",
@@ -227,7 +429,7 @@
     {
         "id": "happy_satisfaction",
         "type": "oneAnswer",
-        "passedPercent": 0.5,
+        "passedPercent": 0.55,
         "payload": {
             "title": "What’s your goal for learning German?",
             "description": "Tell us what you're aiming for, so we can help you reach your goal faster!",
@@ -262,7 +464,7 @@
     {
         "id": "bad_satisfaction",
         "type": "oneAnswer",
-        "passedPercent": 0.5,
+        "passedPercent": 0.6,
         "payload": {
             "title": "What’s your goal for learning German?",
             "description": "Since you’re just starting out, what would you like to achieve first?",
@@ -293,7 +495,7 @@
     {
         "id": "time_constraints",
         "type": "oneAnswer",
-        "passedPercent": 0.55,
+        "passedPercent": 0.65,
         "payload": {
             "title": "How much time do you have to reach your goal?",
             "description": "Let us know your timeline, so we can help you stay on track and reach your goal in time!",
@@ -324,7 +526,7 @@
     {
         "id": "lessons_frequency",
         "type": "oneAnswer",
-        "passedPercent": 0.6,
+        "passedPercent": 0.7,
         "payload": {
             "title": "How much time will you devote to learning?",
             "description": "Consistency is key! Tell us how much time you can practice daily, and we’ll tailor your learning plan to fit your schedule.",
@@ -347,7 +549,7 @@
     {
         "id": "program_creation",
         "type": "progress",
-        "passedPercent": 0.65,
+        "passedPercent": 0.75,
         "payload": {
             "title": "We're creating your plan...",
             "steps": [
@@ -365,12 +567,48 @@
     {
         "id": "remind_time",
         "type": "timePicker",
-        "passedPercent": 0.7,
+        "passedPercent": 0.8,
         "payload": {
             "title": "When do you want to study?",
             "answer": {
                 "title": "Choose Time",
-                "nextStepID": "remind_time"
+                "nextStepID": "discountWheel"
+            }
+        }
+    },
+    {
+        "id": "discountWheel",
+        "type": "discountWheel",
+        "passedPercent": 0.9,
+        "payload": {
+            "title": "Spin to Win your Prime Discount",
+            "spinButtonTitle": "Spin",
+            "successTitle": "🥳 Wooohooo\nyou won 70% discount!",
+            "successDescription": "It is a one-time deal, so don't miss it!",
+            "answer": {
+                "title": "Take Discount",
+                "nextStepID": "prime"
+            }
+        }
+    },
+    {
+        "id": "prime",
+        "type": "prime",
+        "passedPercent": 1,
+        "payload": {
+            "title": "💎 Your One-Time Offer",
+            "description": "70% OFF FOREVER",
+            "answer": {
+                "title": "Use Discount"
+            },
+            "refuseAnswer": {
+                "title": "Refuse Discount"
+            },
+            "warning": {
+                "title": "Last Chance to Claim Your Special Offer!",
+                "description": "Are you sure you want to skip this one-time offer? This is your only opportunity to take advantage of this exclusive deal. Once you skip, it won’t be available again in the future.",
+                "cancelButtonTitle": "Claim My Offer Now",
+                "confirmButtonTitle": "Yes, Give up forever"
             }
         }
     }
