@@ -38,6 +38,18 @@ final class OnboardingViewModel: ObservableObject {
             .eraseToAnyPublisher()
     }
 
+    var isBackButtonVisible: Bool {
+        guard passedSteps.count > 1 else { return false }
+        guard let step = passedSteps.last else { return false }
+        if case OnboardingStep.OnboardingStepType.discountWheel = step.type {
+            return false
+        }
+        if case OnboardingStep.OnboardingStepType.prime = step.type {
+            return false
+        }
+        return true
+    }
+
     // MARK: - Inits
 
     init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate) {

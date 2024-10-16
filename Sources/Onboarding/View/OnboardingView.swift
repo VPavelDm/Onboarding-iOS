@@ -60,7 +60,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
 
     private var customToolbarView: some View {
         HStack(spacing: 12) {
-            backButton.opacity(viewModel.passedSteps.count == 1 ? 0 : 1)
+            backButton.opacity(viewModel.isBackButtonVisible ? 1 : 0)
             ProgressBarView(completed: viewModel.passedStepsProcent)
             backButton.opacity(0)
         }
