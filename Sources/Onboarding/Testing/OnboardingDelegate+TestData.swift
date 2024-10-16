@@ -15,6 +15,13 @@ final class MockOnboardingDelegate: OnboardingDelegate {
     func setupNotifications(for time: String) async throws {
     }
 
+    func fetchDiscountedProduct() async throws -> DiscountedProduct {
+        .testData()
+    }
+
+    func makePurchase(_ product: DiscountedProduct) async throws {
+    }
+
     func finalise() async {
     }
 }

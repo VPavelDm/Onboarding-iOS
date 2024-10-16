@@ -16,7 +16,8 @@ let package = Package(
             targets: ["Onboarding"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/VPavelDm/SwiftExtensions", branch: "main")
+        .package(url: "https://github.com/VPavelDm/SwiftExtensions", branch: "main"),
+        .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,7 +25,8 @@ let package = Package(
         .target(
             name: "Onboarding",
             dependencies: [
-                .product(name: "CoreUI", package: "SwiftExtensions")
+                .product(name: "CoreUI", package: "SwiftExtensions"),
+                .product(name: "ConfettiSwiftUI", package: "ConfettiSwiftUI")
             ],
             resources: [
                 .process("Resources")

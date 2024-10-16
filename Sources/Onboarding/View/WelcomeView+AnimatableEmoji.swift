@@ -21,7 +21,7 @@ extension WelcomeView {
             ZStack {
                 Circle()
                     .stroke(lineWidth: 1)
-                    .foregroundStyle(colorPalette.secondaryButtonBackgroundColor)
+                    .foregroundStyle(colorPalette.orbitColor)
                     .frame(width: radius * 2, height: radius * 2)
                 ForEach(emojis.indices, id: \.self) { index in
                     EmojiOnOrbitView(

@@ -44,8 +44,8 @@ struct OnboardingStepResponse: Decodable {
             let payload = try container.decode(CustomStep.self, forKey: .payload)
             self.type = .custom(payload.answer)
         case "prime":
-            let payload = try container.decode(CustomStep.self, forKey: .payload)
-            self.type = .prime(payload.answer)
+            let payload = try container.decode(PrimeStep.self, forKey: .payload)
+            self.type = .prime(payload)
         case "welcome":
             let payload = try container.decode(WelcomeStep.self, forKey: .payload)
             self.type = .welcome(payload)
@@ -55,6 +55,9 @@ struct OnboardingStepResponse: Decodable {
         case "timePicker":
             let payload = try container.decode(TimePickerStep.self, forKey: .payload)
             self.type = .timePicker(payload)
+        case "discountWheel":
+            let payload = try container.decode(DiscountWheelStep.self, forKey: .payload)
+            self.type = .discountWheel(payload)
         default:
             self.type = .unknown
         }
@@ -67,10 +70,11 @@ struct OnboardingStepResponse: Decodable {
         case binaryAnswer(BinaryAnswer)
         case login(StepAnswer)
         case custom(StepAnswer)
-        case prime(StepAnswer)
+        case prime(PrimeStep)
         case welcome(WelcomeStep)
         case progress(ProgressStep)
         case timePicker(TimePickerStep)
+        case discountWheel(DiscountWheelStep)
         case unknown
     }
 
@@ -123,6 +127,29 @@ struct OnboardingStepResponse: Decodable {
     struct TimePickerStep: Decodable {
         let title: String
         let answer: StepAnswer
+    }
+
+    struct DiscountWheelStep: Decodable {
+        let title: String
+        var spinButtonTitle: String
+        var successTitle: String
+        var successDescription: String
+        let answer: StepAnswer
+    }
+
+    struct PrimeStep: Decodable {
+        let title: String
+        let description: String
+        let answer: StepAnswer
+        let refuseAnswer: StepAnswer
+        let warning: RefuseWarning
+
+        struct RefuseWarning: Decodable {
+            let title: String
+            let description: String
+            let confirmButtonTitle: String
+            let cancelButtonTitle: String
+        }
     }
 
     struct StepAnswer: Decodable {

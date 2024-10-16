@@ -47,6 +47,7 @@ struct WheelTimePicker: View {
             viewModel.selectedTimeIndex = 20
         }
         .environmentObject(viewModel)
+        .environment(\.colorPalette, .testData)
     }
 
     private var titleView: some View {
