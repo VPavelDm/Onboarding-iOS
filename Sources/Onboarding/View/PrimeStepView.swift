@@ -30,11 +30,10 @@ struct PrimeStepView: View {
                 continueButton
                 HStack {
                     termsOfUseView
-                    Divider()
+                    refuseButton
                     privacyPolicy
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                refuseButton
             }
         }
         .animation(.easeInOut, value: isLoading)
@@ -85,8 +84,10 @@ struct PrimeStepView: View {
                 HStack(alignment: .lastTextBaseline, spacing: 2) {
                     Text(discountedProduct.monthlyPrice)
                         .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(colorPalette.grayButtonTextColor)
                     Text(discountedProduct.monthlyPriceTitle)
                         .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(colorPalette.grayButtonTextColor)
                 }
             }
         }
@@ -117,8 +118,11 @@ struct PrimeStepView: View {
             isWarningShowed = true
         } label: {
             Text(step.refuseAnswer.title)
+                .foregroundStyle(colorPalette.grayButtonTextColor)
+                .multilineTextAlignment(.center)
         }
-        .buttonStyle(SimpleButtonStyle())
+        .buttonStyle(PlainButtonStyle())
+        .frame(maxWidth: .infinity)
         .opacity(isRefuseButtonVisible ? 1 : 0)
         .animation(.easeInOut, value: isRefuseButtonVisible)
     }
@@ -150,14 +154,14 @@ struct PrimeStepView: View {
     }
 
     private var termsOfUseView: some View {
-        Link("Terms of Use", destination: discountedProduct.termsOfUse)
-            .tint(colorPalette.primaryTextColor)
+        Link("Terms", destination: discountedProduct.termsOfUse)
+            .tint(colorPalette.grayButtonTextColor)
             .frame(maxWidth: .infinity)
     }
 
     private var privacyPolicy: some View {
-        Link("Privacy Policy", destination: discountedProduct.privacyPolicy)
-            .tint(colorPalette.primaryTextColor)
+        Link("Privacy", destination: discountedProduct.privacyPolicy)
+            .tint(colorPalette.grayButtonTextColor)
             .frame(maxWidth: .infinity)
     }
 }
