@@ -13,18 +13,24 @@ public struct DiscountedProduct: Sendable, Equatable, Hashable {
     var originalPrice: String
     var monthlyPrice: String
     var monthlyPriceTitle: String
+    var termsOfUse: URL
+    var privacyPolicy: URL
 
     public init(
         duration: String,
         discountedPrice: String,
         originalPrice: String,
         monthlyPrice: String,
-        monthlyPriceTitle: String
+        monthlyPriceTitle: String,
+        termsOfUse: URL,
+        privacyPolicy: URL
     ) {
         self.duration = duration
         self.discountedPrice = discountedPrice
         self.originalPrice = originalPrice
         self.monthlyPrice = monthlyPrice
         self.monthlyPriceTitle = monthlyPriceTitle
+        self.termsOfUse = termsOfUse
+        self.privacyPolicy = privacyPolicy
     }
 }
