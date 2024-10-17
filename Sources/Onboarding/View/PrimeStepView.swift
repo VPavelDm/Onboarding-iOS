@@ -78,23 +78,20 @@ struct PrimeStepView: View {
         HStack {
             Text(discountedProduct.duration)
                 .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(colorPalette.primaryButtonTextColor)
             Spacer()
             VStack(alignment: .trailing) {
                 Text(discountedProduct.discountedPrice)
                     .font(.system(size: 24, weight: .bold))
-                    .foregroundStyle(colorPalette.primaryButtonTextColor)
                 HStack(alignment: .lastTextBaseline, spacing: 2) {
                     Text(discountedProduct.monthlyPrice)
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundStyle(colorPalette.secondaryButtonTextColor)
                     Text(discountedProduct.monthlyPriceTitle)
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(colorPalette.secondaryButtonTextColor)
                 }
             }
         }
         .padding()
+        .foregroundStyle(colorPalette.secondaryButtonTextColor)
         .background(colorPalette.secondaryButtonBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .redacted(reason: .placeholder, if: isLoading)
