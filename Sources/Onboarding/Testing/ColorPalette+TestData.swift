@@ -22,6 +22,7 @@ extension ColorPalette {
             secondaryButtonTextColor: Color(hex: "F0F2F5"),
             secondaryButtonBackgroundColor: Color(hex: "1F2A37"),
             simpleButtonTextColor: Color(hex: "0589D6"),
+            grayButtonTextColor: Color(hex: "8E8E93"),
             progressBarColor: Color(hex: "0589D6"),
             progressBarBackgroundColor: Color(hex: "29303C"),
             progressBarDisabledColor: Color(hex: "858894"),

@@ -28,7 +28,12 @@ struct PrimeStepView: View {
             VStack(spacing: 16) {
                 priceView
                 continueButton
-                refuseButton
+                HStack {
+                    termsOfUseView
+                    refuseButton
+                    privacyPolicy
+                }
+                .fixedSize(horizontal: false, vertical: true)
             }
         }
         .animation(.easeInOut, value: isLoading)
@@ -70,26 +75,21 @@ struct PrimeStepView: View {
 
     private var priceView: some View {
         HStack {
-            VStack(alignment: .leading) {
-                Text(discountedProduct.duration)
+            Text(discountedProduct.duration)
+                .font(.system(size: 24, weight: .bold))
+            Spacer()
+            VStack(alignment: .trailing) {
+                Text(discountedProduct.discountedPrice)
                     .font(.system(size: 24, weight: .bold))
-                HStack {
-                    Text(discountedProduct.originalPrice)
-                        .strikethrough(!isLoading)
-                    Text(discountedProduct.discountedPrice)
+                HStack(alignment: .lastTextBaseline, spacing: 2) {
+                    Text(discountedProduct.monthlyPrice)
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(colorPalette.grayButtonTextColor)
+                    Text(discountedProduct.monthlyPriceTitle)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(colorPalette.grayButtonTextColor)
                 }
             }
-            Spacer()
-            HStack(alignment: .lastTextBaseline, spacing: 4) {
-                Text(discountedProduct.monthlyPrice)
-                    .font(.system(size: 24, weight: .bold))
-                Text(discountedProduct.monthlyPriceTitle)
-                    .font(.system(size: 16, weight: .semibold))
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(colorPalette.discountSliceGiftColor)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
         }
         .padding()
         .foregroundStyle(colorPalette.secondaryButtonTextColor)
@@ -118,8 +118,11 @@ struct PrimeStepView: View {
             isWarningShowed = true
         } label: {
             Text(step.refuseAnswer.title)
+                .foregroundStyle(colorPalette.grayButtonTextColor)
+                .multilineTextAlignment(.center)
         }
-        .buttonStyle(SimpleButtonStyle())
+        .buttonStyle(PlainButtonStyle())
+        .frame(maxWidth: .infinity)
         .opacity(isRefuseButtonVisible ? 1 : 0)
         .animation(.easeInOut, value: isRefuseButtonVisible)
     }
@@ -148,6 +151,18 @@ struct PrimeStepView: View {
         } label: {
             Text(step.warning.cancelButtonTitle)
         }
+    }
+
+    private var termsOfUseView: some View {
+        Link("Terms", destination: discountedProduct.termsOfUse)
+            .tint(colorPalette.grayButtonTextColor)
+            .frame(maxWidth: .infinity)
+    }
+
+    private var privacyPolicy: some View {
+        Link("Privacy", destination: discountedProduct.privacyPolicy)
+            .tint(colorPalette.grayButtonTextColor)
+            .frame(maxWidth: .infinity)
     }
 }
 

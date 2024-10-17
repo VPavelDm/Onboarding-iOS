@@ -15,7 +15,9 @@ extension DiscountedProduct {
             discountedPrice: "35,99$",
             originalPrice: "119,99$",
             monthlyPrice: "2,99$",
-            monthlyPriceTitle: "/month"
+            monthlyPriceTitle: "/month",
+            termsOfUse: URL(string: "https://google.com")!,
+            privacyPolicy: URL(string: "https://google.com")!
         )
     }
 }

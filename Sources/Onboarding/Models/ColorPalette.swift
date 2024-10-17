@@ -20,6 +20,7 @@ public struct ColorPalette: Sendable, AsyncButtonColorPalette, CheckBoxColorPale
     public let secondaryButtonTextColor: Color
     public let secondaryButtonBackgroundColor: Color
     public let simpleButtonTextColor: Color
+    public let grayButtonTextColor: Color
     public let progressBarColor: Color
     public let progressBarBackgroundColor: Color
     public let progressBarDisabledColor: Color
@@ -40,6 +41,7 @@ public struct ColorPalette: Sendable, AsyncButtonColorPalette, CheckBoxColorPale
         secondaryButtonTextColor: Color,
         secondaryButtonBackgroundColor: Color,
         simpleButtonTextColor: Color,
+        grayButtonTextColor: Color,
         progressBarColor: Color,
         progressBarBackgroundColor: Color,
         progressBarDisabledColor: Color,
@@ -59,6 +61,7 @@ public struct ColorPalette: Sendable, AsyncButtonColorPalette, CheckBoxColorPale
         self.secondaryButtonTextColor = secondaryButtonTextColor
         self.secondaryButtonBackgroundColor = secondaryButtonBackgroundColor
         self.simpleButtonTextColor = simpleButtonTextColor
+        self.grayButtonTextColor = grayButtonTextColor
         self.progressBarColor = progressBarColor
         self.progressBarBackgroundColor = progressBarBackgroundColor
         self.progressBarDisabledColor = progressBarDisabledColor
