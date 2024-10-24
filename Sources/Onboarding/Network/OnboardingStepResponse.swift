@@ -11,18 +11,21 @@ struct OnboardingStepResponse: Decodable {
     let id: StepID
     let type: OnboardingStepType
     let passedPercent: Double
+    let isBackButtonVisible: Bool
 
     enum CodingKeys: String, CodingKey {
         case id
         case type
         case passedPercent
         case payload
+        case isBackButtonVisible
     }
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(StepID.self, forKey: .id)
         passedPercent = try container.decode(Double.self, forKey: .passedPercent)
+        isBackButtonVisible = (try? container.decodeIfPresent(Bool.self, forKey: .isBackButtonVisible)) ?? true
         let type = try container.decode(String.self, forKey: .type)
         switch type {
         case "multipleAnswer":

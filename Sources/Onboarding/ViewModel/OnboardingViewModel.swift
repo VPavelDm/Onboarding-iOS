@@ -40,14 +40,7 @@ final class OnboardingViewModel: ObservableObject {
 
     var isBackButtonVisible: Bool {
         guard passedSteps.count > 1 else { return false }
-        guard let step = passedSteps.last else { return false }
-        if case OnboardingStep.OnboardingStepType.discountWheel = step.type {
-            return false
-        }
-        if case OnboardingStep.OnboardingStepType.prime = step.type {
-            return false
-        }
-        return true
+        return passedSteps.last?.isBackButtonVisible ?? true
     }
 
     // MARK: - Inits
