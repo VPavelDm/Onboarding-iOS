@@ -113,7 +113,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     private var backButton: some View {
         AsyncButton {
             await viewModel.delegate.onBackButtonClick()
-            viewModel.passedSteps.removeLast()
+            viewModel.onBack()
         } label: {
             Image(systemName: "chevron.left")
                 .tint(.primary)
