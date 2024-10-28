@@ -48,7 +48,7 @@ extension WheelTimePicker {
                 .foregroundStyle(.white)
                 .font(.system(size: 14, weight: .semibold))
                 .frame(width: timeViewBubbleSize, height: timeViewBubbleSize)
-                .background(Color(hex: "3DADFF"))
+                .background(Color(hex: "4743A3"))
                 .clipShape(Circle())
                 .frame(width: timeViewSize, height: timeViewSize)
                 .padding(.top, (.earthHeight - timeViewSize) / 2)

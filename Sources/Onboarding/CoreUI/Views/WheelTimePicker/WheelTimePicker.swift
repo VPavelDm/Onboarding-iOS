@@ -72,7 +72,7 @@ struct WheelTimePicker: View {
         } label: {
             Text(step.answer.title)
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(TimePickerButtonStyle())
         .padding([.horizontal, .bottom])
         .background(Color.ground)
     }
@@ -98,5 +98,5 @@ extension Color {
 // MARK: - Preview
 
 #Preview {
-    MockOnboardingView()
+    WheelTimePicker(step: .testData(), completion: { _ in })
 }
