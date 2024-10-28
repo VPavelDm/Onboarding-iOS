@@ -101,8 +101,12 @@ final class OnboardingViewModel: ObservableObject {
     }
 
     func onBack() {
-        userAnswers.removeLast()
-        passedSteps.removeLast()
-        currentStep = passedSteps.last
+        if !userAnswers.isEmpty {
+            userAnswers.removeLast()
+        }
+        if !passedSteps.isEmpty {
+            passedSteps.removeLast()
+            currentStep = passedSteps.last
+        }
     }
 }
