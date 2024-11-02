@@ -13,7 +13,6 @@ struct DiscountWheelStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var currentAngle: Angle = .initialAngle
-    @State private var draggingProgress: CGFloat = .zero
     @State private var throwConfetti: Int = 0
     @State private var showSuccessAlert: Bool = false
     @State private var pressed: Bool = false
@@ -99,7 +98,7 @@ private extension Array where Element == DiscountWheel.Slice {
     }
 }
 
-extension Angle {
+private extension Angle {
 
     static var initialAngle: Angle {
         let slices: [DiscountWheel.Slice] = .slices(colorPalette: .testData)
