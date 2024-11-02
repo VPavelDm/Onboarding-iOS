@@ -31,12 +31,10 @@ struct DiscountWheelStepView: View {
             wheelView
             Spacer()
             Spacer()
-            resetButton
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colorPalette.backgroundColor)
-        .coordinateSpace(name: .discountWheelNamespace)
         .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
         .wheelSpinSensoryFeedback(
             currentAngle: currentAngle,
@@ -59,22 +57,7 @@ struct DiscountWheelStepView: View {
 
     private var wheelView: some View {
         DiscountWheel(currentAngle: $currentAngle, slices: slices)
-            .draggable(
-                currentAngle: $currentAngle,
-                initialAngle: .initialAngle,
-                progress: $draggingProgress,
-                coordinateSpace: .named(String.discountWheelNamespace)
-            )
-    }
-
-    private var resetButton: some View {
-        Button {
-            currentAngle = .initialAngle
-            draggingProgress = .zero
-        } label: {
-            Text("Reset")
-        }
-        .buttonStyle(PrimaryButtonStyle())
+            .draggable(currentAngle: $currentAngle)
     }
 }
 
@@ -94,18 +77,11 @@ private extension Array where Element == DiscountWheel.Slice {
     }
 }
 
-private extension Angle {
+extension Angle {
 
     static var initialAngle: Angle {
         let slices: [DiscountWheel.Slice] = .slices(colorPalette: .testData)
         return .degrees(360 / Double(slices.count)) / 2
-    }
-}
-
-private extension Hashable where Self == String {
-
-    static var discountWheelNamespace: Self {
-        "DiscountWheel.Namespace"
     }
 }
 

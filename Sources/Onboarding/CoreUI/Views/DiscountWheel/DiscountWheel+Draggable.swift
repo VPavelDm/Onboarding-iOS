@@ -10,15 +10,16 @@ import SwiftUI
 private struct DiscountWheelDraggableModifier: ViewModifier {
 
     @State private var pressed: Bool = false
-
-    @Binding var progress: CGFloat
+    @State private var progress: CGFloat = .zero
+    
     @Binding var currentAngle: Angle
 
     func body(content: Content) -> some View {
         VStack(spacing: 32) {
             DiscountWheelProgressView(pressed: $pressed)
             content
-            launchButton
+            DiscountWheelLaunchButton(progress: $progress, pressed: $pressed)
+            resetButton
         }
         .onChange(of: pressed) { [wasPressed = pressed] nowPressed in
             guard wasPressed && !nowPressed else { return }
@@ -28,21 +29,21 @@ private struct DiscountWheelDraggableModifier: ViewModifier {
         }
     }
 
-    private var launchButton: some View {
-        DiscountWheelLaunchButton(progress: $progress, pressed: $pressed)
+    private var resetButton: some View {
+        Button {
+            currentAngle = .initialAngle
+            progress = .zero
+        } label: {
+            Text("Reset")
+        }
+        .buttonStyle(PrimaryButtonStyle())
     }
-
 }
 
 extension View {
 
-    func draggable(
-        currentAngle: Binding<Angle>,
-        initialAngle: Angle,
-        progress: Binding<CGFloat>,
-        coordinateSpace: CoordinateSpace
-    ) -> some View {
-        modifier(DiscountWheelDraggableModifier(progress: progress, currentAngle: currentAngle))
+    func draggable(currentAngle: Binding<Angle>) -> some View {
+        modifier(DiscountWheelDraggableModifier(currentAngle: currentAngle))
     }
 }
 
