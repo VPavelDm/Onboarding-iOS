@@ -8,10 +8,19 @@
 import SwiftUI
 
 struct DiscountWheelProgressView: View {
-    var progress: Double
+    @State private var screenSize: CGSize = .zero
+
+    @Binding var pressed: Bool
 
     var body: some View {
-        ProgressView(value: progress, total: 1)
-            .progressViewStyle(.linear)
+        ZStack(alignment: .leading) {
+            Rectangle()
+                .frame(height: 5)
+                .foregroundStyle(.red)
+            Rectangle()
+                .frame(width: pressed ? screenSize.width : 0, height: 5)
+                .foregroundStyle(.blue)
+        }
+        .readSize(size: $screenSize)
     }
 }

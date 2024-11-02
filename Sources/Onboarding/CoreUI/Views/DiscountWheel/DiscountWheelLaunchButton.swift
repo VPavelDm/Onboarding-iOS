@@ -53,24 +53,6 @@ struct DiscountWheelLaunchButton: View {
     }
 }
 
-struct MyProgressBarView: View {
-    @State private var screenSize: CGSize = .zero
-
-    @Binding var pressed: Bool
-
-    var body: some View {
-        ZStack(alignment: .leading) {
-            Rectangle()
-                .frame(height: 5)
-                .foregroundStyle(.red)
-            Rectangle()
-                .frame(width: pressed ? screenSize.width : 0, height: 5)
-                .foregroundStyle(.blue)
-        }
-        .readSize(size: $screenSize)
-    }
-}
-
 private extension TimeInterval {
 
     static let maxPressDuration: CGFloat = 10

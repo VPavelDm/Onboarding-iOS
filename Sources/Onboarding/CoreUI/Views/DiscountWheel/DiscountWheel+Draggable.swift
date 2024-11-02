@@ -16,7 +16,7 @@ private struct DiscountWheelDraggableModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         VStack(spacing: 32) {
-            MyProgressBarView(pressed: $pressed)
+            DiscountWheelProgressView(pressed: $pressed)
             content
             launchButton
         }
