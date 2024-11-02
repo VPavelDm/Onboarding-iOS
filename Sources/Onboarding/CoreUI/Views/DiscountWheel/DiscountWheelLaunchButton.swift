@@ -19,7 +19,7 @@ struct DiscountWheelLaunchButton: View {
 
     var body: some View {
         Text(step.spinButtonTitle)
-            .foregroundStyle(colorPalette.primaryButtonTextColor)
+            .foregroundStyle(colorPalette.secondaryButtonTextColor)
             .font(.system(size: 16, weight: .semibold))
             .padding()
             .background(colorPalette.secondaryButtonBackgroundColor)
