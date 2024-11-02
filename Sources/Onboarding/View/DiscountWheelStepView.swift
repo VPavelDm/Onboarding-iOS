@@ -28,9 +28,6 @@ struct DiscountWheelStepView: View {
             Spacer()
             titleView
             Spacer()
-            DiscountWheelProgressView(progress: draggingProgress)
-                .padding([.horizontal])
-            Spacer()
             wheelView
             Spacer()
             Spacer()
