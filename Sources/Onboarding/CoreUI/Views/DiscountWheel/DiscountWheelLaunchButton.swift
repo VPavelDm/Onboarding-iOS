@@ -55,7 +55,7 @@ struct DiscountWheelLaunchButton: View {
 
 private extension TimeInterval {
 
-    static let maxPressDuration: CGFloat = 10
+    static let maxPressDuration: CGFloat = 3
 }
 
 #Preview {
