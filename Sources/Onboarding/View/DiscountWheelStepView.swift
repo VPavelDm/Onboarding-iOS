@@ -15,9 +15,16 @@ struct DiscountWheelStepView: View {
     @State private var currentAngle: Angle = .initialAngle
     @State private var throwConfetti: Int = 0
     @State private var showSuccessAlert: Bool = false
+    @State private var pressed: Bool = false
+    @State private var progress: CGFloat = .zero
 
     private var slices: [DiscountWheel.Slice] {
         .slices(colorPalette: colorPalette)
+    }
+
+    private var animationDuration: TimeInterval {
+        guard progress > .minSpinProgress else { return 5 }
+        return max(progress * 20, 10)
     }
 
     var step: DiscountWheelStep
@@ -27,15 +34,15 @@ struct DiscountWheelStepView: View {
             Spacer()
             titleView
             Spacer()
-            DiscountWheel(currentAngle: $currentAngle, slices: slices)
+            wheelView
             Spacer()
             Spacer()
-            spinButton
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colorPalette.backgroundColor)
         .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
+        .sensoryFeedback(feedbackType: .increase, trigger: Int(progress * 100))
         .wheelSpinSensoryFeedback(
             currentAngle: currentAngle,
             slicesCount: slices.count
@@ -55,12 +62,53 @@ struct DiscountWheelStepView: View {
             .foregroundStyle(colorPalette.primaryTextColor)
     }
 
-    private var spinButton: some View {
-        AsyncButton {
-            withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: 10)) {
-                currentAngle = .degrees(-1805)
+    private var wheelView: some View {
+        VStack(spacing: 32) {
+            DiscountWheelProgressView(pressed: $pressed)
+            DiscountWheel(currentAngle: $currentAngle, slices: slices)
+            VStack(spacing: 16) {
+                DiscountWheelLaunchButton(progress: $progress, pressed: $pressed, step: step)
+                explanationView
             }
-            try? await Task.sleep(for: .seconds(10))
+        }
+        .onChange(of: pressed) { [wasPressed = pressed] nowPressed in
+            guard !wasPressed && nowPressed else { return }
+            withAnimation(.linear) {
+                currentAngle += .degrees(2)
+            }
+        }
+        .onChange(of: pressed) { [wasPressed = pressed] nowPressed in
+            guard wasPressed && !nowPressed else { return }
+            if #available(iOS 17.0, *) {
+                withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: animationDuration)) {
+                    currentAngle = .onHoldRelease(progress: progress)
+                } completion: {
+                    guard progress > .minSpinProgress else { return }
+                    initiateSuccessAlert()
+                }
+            } else {
+                withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: animationDuration)) {
+                    currentAngle = .onHoldRelease(progress: progress)
+                }
+                Task { @MainActor in
+                    guard progress > .minSpinProgress else { return }
+                    try? await Task.sleep(for: .seconds(animationDuration + 0.5))
+                    initiateSuccessAlert()
+                }
+            }
+        }
+    }
+
+    private var explanationView: some View {
+        Text(step.spinFootnote)
+            .foregroundStyle(colorPalette.secondaryTextColor)
+            .font(.footnote)
+            .multilineTextAlignment(.center)
+            .opacity(0.5)
+    }
+
+    private func initiateSuccessAlert() {
+        Task { @MainActor in
             throwConfetti = 1
             try? await Task.sleep(for: .milliseconds(500))
             throwConfetti += 1
@@ -68,11 +116,7 @@ struct DiscountWheelStepView: View {
             throwConfetti += 1
             try? await Task.sleep(for: .milliseconds(500))
             showSuccessAlert = true
-        } label: {
-            Text(step.spinButtonTitle)
         }
-        .buttonStyle(PrimaryButtonStyle())
-        .disabled(currentAngle != .initialAngle)
     }
 }
 
@@ -80,7 +124,7 @@ private extension Array where Element == DiscountWheel.Slice {
 
     static func slices(colorPalette: ColorPalette) -> [Element] {
         [
-            Element(value: "5", color: colorPalette.discountSliceDarkColor),
+            Element(value: "7", color: colorPalette.discountSliceDarkColor),
             Element(value: "10", color: colorPalette.discountSliceLightColor),
             Element(value: "5", color: colorPalette.discountSliceDarkColor),
             Element(value: "25", color: colorPalette.discountSliceLightColor),
@@ -96,8 +140,29 @@ private extension Angle {
 
     static var initialAngle: Angle {
         let slices: [DiscountWheel.Slice] = .slices(colorPalette: .testData)
-        return .degrees(360 / Double(slices.count)) / 2
+        return .degrees(360 / Double(slices.count)) / 2 * 3
     }
+
+    static func onHoldRelease(progress: CGFloat) -> Angle {
+        if progress > .minSpinProgress {
+            let maxEndAngle: CGFloat = 320 + 360 * 7
+
+            let circleAmounts = Int(progress * maxEndAngle / 360)
+
+            let endAngle: CGFloat = maxEndAngle - CGFloat(360 * Int(maxEndAngle / 360)) + CGFloat(circleAmounts * 360)
+
+            return .degrees(endAngle)
+        } else {
+            return .initialAngle + .degrees(15)
+        }
+    }
+}
+
+// MARK: - Constants
+
+extension CGFloat {
+
+    static var minSpinProgress: CGFloat = 0.2
 }
 
 #Preview {
