@@ -13,6 +13,7 @@ struct DiscountWheelStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var currentAngle: Angle = .initialAngle
+    @State private var draggingProgress: CGFloat = .zero
     @State private var throwConfetti: Int = 0
     @State private var showSuccessAlert: Bool = false
 
@@ -27,9 +28,13 @@ struct DiscountWheelStepView: View {
             Spacer()
             titleView
             Spacer()
+            DiscountWheelProgressView(progress: draggingProgress)
+                .padding([.horizontal])
+            Spacer()
             wheelView
             Spacer()
             Spacer()
+            resetButton
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -60,8 +65,19 @@ struct DiscountWheelStepView: View {
             .draggable(
                 currentAngle: $currentAngle,
                 initialAngle: .initialAngle,
+                progress: $draggingProgress,
                 coordinateSpace: .named(String.discountWheelNamespace)
             )
+    }
+
+    private var resetButton: some View {
+        Button {
+            currentAngle = .initialAngle
+            draggingProgress = .zero
+        } label: {
+            Text("Reset")
+        }
+        .buttonStyle(PrimaryButtonStyle())
     }
 }
 

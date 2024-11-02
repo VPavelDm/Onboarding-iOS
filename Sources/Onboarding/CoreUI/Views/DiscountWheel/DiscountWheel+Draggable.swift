@@ -14,13 +14,20 @@ private struct DiscountWheelDraggableModifier: ViewModifier {
 
     @Binding var currentAngle: Angle
     var initialAngle: Angle
+    @Binding var progress: CGFloat
     var coordinateSpace: CoordinateSpace
 
-    var wheelCenterPoint: CGPoint {
+    private var wheelCenterPoint: CGPoint {
         CGPoint(
             x: wheelFrame.origin.x + wheelFrame.width / 2,
             y: wheelFrame.origin.y + wheelFrame.height / 2
         )
+    }
+
+    private let maxDraggingAngle: Angle = .degrees(720)
+
+    private var animationDuration: TimeInterval {
+        max(5, progress * 15)
     }
 
     func body(content: Content) -> some View {
@@ -38,12 +45,17 @@ private struct DiscountWheelDraggableModifier: ViewModifier {
                     return previousDraggingAngle = currentDraggingAngle
                 }
                 currentAngle.applyDelta(currentDraggingAngle - previousDraggingAngle)
+                progress = min(abs(currentAngle.degrees / maxDraggingAngle.degrees), 1)
                 previousDraggingAngle = currentDraggingAngle
             }
             .onEnded { _ in
                 previousDraggingAngle = .zero
-                withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: 10)) {
-                    currentAngle.onDragRelease(initialAngle: initialAngle)
+                withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: animationDuration)) {
+                    currentAngle.onDragRelease(
+                        initialAngle: initialAngle,
+                        maxAngle: maxDraggingAngle,
+                        progress: progress
+                    )
                 }
             }
     }
@@ -78,15 +90,36 @@ private extension Angle {
         }
     }
 
-    mutating func onDragRelease(initialAngle: Angle) {
+    mutating func onDragRelease(initialAngle: Angle, maxAngle: Angle, progress: CGFloat) {
         let isClockwise = self - initialAngle > .degrees(0)
-        self = .degrees(isClockwise ? -1805 : 1760)
+
+        let maxEndAngle: CGFloat = isClockwise ? -5 - 360 * 6 : 320 + 360 * 5
+
+        let circleAmounts = Int(progress * maxEndAngle / 360)
+
+        let endAngle: CGFloat = maxEndAngle - CGFloat(360 * Int(maxEndAngle / 360)) + CGFloat(circleAmounts * 360)
+
+        self = .degrees(endAngle)
     }
 }
 
 extension View {
 
-    func draggable(currentAngle: Binding<Angle>, initialAngle: Angle, coordinateSpace: CoordinateSpace) -> some View {
-        modifier(DiscountWheelDraggableModifier(currentAngle: currentAngle, initialAngle: initialAngle, coordinateSpace: coordinateSpace))
+    func draggable(
+        currentAngle: Binding<Angle>,
+        initialAngle: Angle,
+        progress: Binding<CGFloat>,
+        coordinateSpace: CoordinateSpace
+    ) -> some View {
+        modifier(DiscountWheelDraggableModifier(
+            currentAngle: currentAngle,
+            initialAngle: initialAngle,
+            progress: progress,
+            coordinateSpace: coordinateSpace
+        ))
     }
+}
+
+#Preview {
+    DiscountWheelStepView(step: .testData())
 }
