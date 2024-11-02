@@ -79,8 +79,22 @@ struct DiscountWheelStepView: View {
         }
         .onChange(of: pressed) { [wasPressed = pressed] nowPressed in
             guard wasPressed && !nowPressed else { return }
-            withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: animationDuration)) {
-                currentAngle = .onHoldRelease(progress: progress)
+            if #available(iOS 17.0, *) {
+                withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: animationDuration)) {
+                    currentAngle = .onHoldRelease(progress: progress)
+                } completion: {
+                    guard progress > .minSpinProgress else { return }
+                    initiateSuccessAlert()
+                }
+            } else {
+                withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: animationDuration)) {
+                    currentAngle = .onHoldRelease(progress: progress)
+                }
+                Task { @MainActor in
+                    guard progress > .minSpinProgress else { return }
+                    try? await Task.sleep(for: .seconds(animationDuration + 0.5))
+                    initiateSuccessAlert()
+                }
             }
         }
     }
@@ -91,6 +105,18 @@ struct DiscountWheelStepView: View {
             .font(.footnote)
             .multilineTextAlignment(.center)
             .opacity(0.5)
+    }
+
+    private func initiateSuccessAlert() {
+        Task { @MainActor in
+            throwConfetti = 1
+            try? await Task.sleep(for: .milliseconds(500))
+            throwConfetti += 1
+            try? await Task.sleep(for: .milliseconds(500))
+            throwConfetti += 1
+            try? await Task.sleep(for: .milliseconds(500))
+            showSuccessAlert = true
+        }
     }
 }
 
