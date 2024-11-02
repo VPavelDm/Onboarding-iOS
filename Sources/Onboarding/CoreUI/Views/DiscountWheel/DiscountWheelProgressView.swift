@@ -10,6 +10,7 @@ import SwiftUI
 struct DiscountWheelProgressView: View {
     @Environment(\.colorPalette) private var colorPalette
 
+    @State private var size: CGSize = .zero
     @Binding var pressed: Bool
 
     var body: some View {
@@ -20,10 +21,11 @@ struct DiscountWheelProgressView: View {
             RoundedRectangle(cornerRadius: 4)
                 .frame(height: 8)
                 .foregroundStyle(gradientColor)
-                .frame(width: pressed ? .infinity : 0)
+                .frame(width: pressed ? size.width - 2 * .hPadding : 0)
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 32)
+        .padding(.horizontal, .hPadding)
+        .readSize(size: $size)
     }
 
     private var gradientColor: LinearGradient {
@@ -33,6 +35,11 @@ struct DiscountWheelProgressView: View {
             endPoint: .trailing
         )
     }
+}
+
+private extension CGFloat {
+
+    static let hPadding: CGFloat = 32
 }
 
 #Preview {
