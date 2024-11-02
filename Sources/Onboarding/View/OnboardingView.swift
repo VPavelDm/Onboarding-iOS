@@ -64,6 +64,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
         HStack(spacing: 12) {
             backButton.opacity(viewModel.isBackButtonVisible ? 1 : 0)
             ProgressBarView(completed: viewModel.passedStepsProcent)
+                .opacity(viewModel.isProgressBarVisible ? 1 : 0)
             backButton.opacity(0)
         }
         .padding(.horizontal, 12)

@@ -43,6 +43,11 @@ final class OnboardingViewModel: ObservableObject {
         return passedSteps.last?.isBackButtonVisible ?? true
     }
 
+    var isProgressBarVisible: Bool {
+        guard passedSteps.count > 1 else { return false }
+        return passedSteps.last?.isProgressBarVisible ?? true
+    }
+
     // MARK: - Inits
 
     init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate) {
