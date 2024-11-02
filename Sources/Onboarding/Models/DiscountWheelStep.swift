@@ -10,6 +10,7 @@ import Foundation
 struct DiscountWheelStep: Sendable, Equatable, Hashable {
     var title: String
     var spinButtonTitle: String
+    var spinFootnote: String
     var successTitle: String
     var successDescription: String
     var answer: StepAnswer
@@ -23,6 +24,7 @@ extension DiscountWheelStep {
         self.init(
             title: response.title,
             spinButtonTitle: response.spinButtonTitle,
+            spinFootnote: response.spinFootnote,
             successTitle: response.successTitle,
             successDescription: response.successDescription,
             answer: StepAnswer(response: response.answer)

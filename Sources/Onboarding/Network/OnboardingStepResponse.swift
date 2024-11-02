@@ -135,6 +135,7 @@ struct OnboardingStepResponse: Decodable {
     struct DiscountWheelStep: Decodable {
         let title: String
         var spinButtonTitle: String
+        var spinFootnote: String
         var successTitle: String
         var successDescription: String
         let answer: StepAnswer

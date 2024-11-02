@@ -17,7 +17,6 @@ struct DiscountWheelStepView: View {
     @State private var showSuccessAlert: Bool = false
     @State private var pressed: Bool = false
     @State private var progress: CGFloat = .zero
-    @State private var bouncing: Bool = false
 
     private var slices: [DiscountWheel.Slice] {
         .slices(colorPalette: colorPalette)
@@ -37,12 +36,12 @@ struct DiscountWheelStepView: View {
             wheelView
             Spacer()
             Spacer()
-            resetButton
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colorPalette.backgroundColor)
         .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
+        .sensoryFeedback(feedbackType: .increase, trigger: Int(progress * 100))
         .wheelSpinSensoryFeedback(
             currentAngle: currentAngle,
             slicesCount: slices.count
@@ -66,15 +65,13 @@ struct DiscountWheelStepView: View {
         VStack(spacing: 32) {
             DiscountWheelProgressView(pressed: $pressed)
             DiscountWheel(currentAngle: $currentAngle, slices: slices)
-                .id(bouncing)
             VStack(spacing: 16) {
                 DiscountWheelLaunchButton(progress: $progress, pressed: $pressed, step: step)
                 explanationView
             }
         }
         .onChange(of: pressed) { [wasPressed = pressed] nowPressed in
-            guard !wasPressed && nowPressed else { return bouncing = false }
-            bouncing = true
+            guard !wasPressed && nowPressed else { return }
             withAnimation(.linear) {
                 currentAngle += .degrees(2)
             }
@@ -88,21 +85,11 @@ struct DiscountWheelStepView: View {
     }
 
     private var explanationView: some View {
-        Text("Press and hold to Power Up the wheel and to win your Discount")
+        Text(step.spinFootnote)
             .foregroundStyle(colorPalette.secondaryTextColor)
             .font(.footnote)
             .multilineTextAlignment(.center)
             .opacity(0.5)
-    }
-
-    private var resetButton: some View {
-        Button {
-            currentAngle = .initialAngle
-            progress = .zero
-        } label: {
-            Text("Reset")
-        }
-        .buttonStyle(PrimaryButtonStyle())
     }
 }
 
@@ -110,7 +97,7 @@ private extension Array where Element == DiscountWheel.Slice {
 
     static func slices(colorPalette: ColorPalette) -> [Element] {
         [
-            Element(value: "5", color: colorPalette.discountSliceDarkColor),
+            Element(value: "7", color: colorPalette.discountSliceDarkColor),
             Element(value: "10", color: colorPalette.discountSliceLightColor),
             Element(value: "5", color: colorPalette.discountSliceDarkColor),
             Element(value: "25", color: colorPalette.discountSliceLightColor),
