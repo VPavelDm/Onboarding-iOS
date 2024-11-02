@@ -23,7 +23,8 @@ struct DiscountWheelStepView: View {
     }
 
     private var animationDuration: TimeInterval {
-        max(progress * 20, 5)
+        guard progress > .minSpinProgress else { return 5 }
+        return max(progress * 20, 10)
     }
 
     var step: DiscountWheelStep
@@ -117,7 +118,7 @@ private extension Angle {
     }
 
     static func onHoldRelease(progress: CGFloat) -> Angle {
-        if progress > 0.2 {
+        if progress > .minSpinProgress {
             let maxEndAngle: CGFloat = 320 + 360 * 7
 
             let circleAmounts = Int(progress * maxEndAngle / 360)
@@ -129,6 +130,13 @@ private extension Angle {
             return .initialAngle + .degrees(15)
         }
     }
+}
+
+// MARK: - Constants
+
+extension CGFloat {
+
+    static var minSpinProgress: CGFloat = 0.2
 }
 
 #Preview {
