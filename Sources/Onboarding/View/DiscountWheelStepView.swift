@@ -16,6 +16,8 @@ struct DiscountWheelStepView: View {
     @State private var draggingProgress: CGFloat = .zero
     @State private var throwConfetti: Int = 0
     @State private var showSuccessAlert: Bool = false
+    @State private var pressed: Bool = false
+    @State private var progress: CGFloat = .zero
 
     private var slices: [DiscountWheel.Slice] {
         .slices(colorPalette: colorPalette)
@@ -31,6 +33,7 @@ struct DiscountWheelStepView: View {
             wheelView
             Spacer()
             Spacer()
+            resetButton
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -56,8 +59,27 @@ struct DiscountWheelStepView: View {
     }
 
     private var wheelView: some View {
-        DiscountWheel(currentAngle: $currentAngle, slices: slices)
-            .draggable(currentAngle: $currentAngle)
+        VStack(spacing: 32) {
+            DiscountWheelProgressView(pressed: $pressed)
+            DiscountWheel(currentAngle: $currentAngle, slices: slices)
+            DiscountWheelLaunchButton(progress: $progress, pressed: $pressed)
+        }
+        .onChange(of: pressed) { [wasPressed = pressed] nowPressed in
+            guard wasPressed && !nowPressed else { return }
+            withAnimation(.timingCurve(0.2, 0.8, 0.05, 1.0, duration: 10)) {
+                currentAngle = .degrees(-1805)
+            }
+        }
+    }
+
+    private var resetButton: some View {
+        Button {
+            currentAngle = .initialAngle
+            progress = .zero
+        } label: {
+            Text("Reset")
+        }
+        .buttonStyle(PrimaryButtonStyle())
     }
 }
 
