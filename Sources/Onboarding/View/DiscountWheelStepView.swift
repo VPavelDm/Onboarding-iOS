@@ -68,7 +68,7 @@ struct DiscountWheelStepView: View {
             DiscountWheel(currentAngle: $currentAngle, slices: slices)
                 .id(bouncing)
             VStack(spacing: 16) {
-                DiscountWheelLaunchButton(progress: $progress, pressed: $pressed)
+                DiscountWheelLaunchButton(progress: $progress, pressed: $pressed, step: step)
                 explanationView
             }
         }

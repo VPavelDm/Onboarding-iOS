@@ -15,9 +15,10 @@ struct DiscountWheelLaunchButton: View {
 
     @Binding var progress: CGFloat
     @Binding var pressed: Bool
+    var step: DiscountWheelStep
 
     var body: some View {
-        Text("🔥 Power Up")
+        Text(step.spinButtonTitle)
             .foregroundStyle(colorPalette.primaryButtonTextColor)
             .font(.system(size: 16, weight: .semibold))
             .padding()
@@ -38,7 +39,7 @@ struct DiscountWheelLaunchButton: View {
         pressedAt = Date()
         withAnimation(.linear(duration: .maxPressDuration)) {
             pressed = true
-            scaleFactor = 0.9
+            scaleFactor = .targetScaleFactor
         }
     }
 
@@ -53,9 +54,16 @@ struct DiscountWheelLaunchButton: View {
     }
 }
 
+// MARK: - Constants
+
 private extension TimeInterval {
 
     static let maxPressDuration: CGFloat = 3
+}
+
+private extension CGFloat {
+
+    static let targetScaleFactor = 0.9
 }
 
 #Preview {
