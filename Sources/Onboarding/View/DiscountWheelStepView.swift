@@ -61,7 +61,10 @@ struct DiscountWheelStepView: View {
         VStack(spacing: 32) {
             DiscountWheelProgressView(pressed: $pressed)
             DiscountWheel(currentAngle: $currentAngle, slices: slices)
-            DiscountWheelLaunchButton(progress: $progress, pressed: $pressed)
+            VStack(spacing: 16) {
+                DiscountWheelLaunchButton(progress: $progress, pressed: $pressed)
+                explanationView
+            }
         }
         .onChange(of: pressed) { [wasPressed = pressed] nowPressed in
             guard wasPressed && !nowPressed else { return }
@@ -69,6 +72,14 @@ struct DiscountWheelStepView: View {
                 currentAngle = .degrees(-1805)
             }
         }
+    }
+
+    private var explanationView: some View {
+        Text("Press and hold to Power Up the wheel and to win your Discount")
+            .foregroundStyle(colorPalette.secondaryTextColor)
+            .font(.footnote)
+            .multilineTextAlignment(.center)
+            .opacity(0.5)
     }
 
     private var resetButton: some View {
