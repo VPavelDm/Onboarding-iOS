@@ -8,19 +8,33 @@
 import SwiftUI
 
 struct DiscountWheelProgressView: View {
-    @State private var screenSize: CGSize = .zero
+    @Environment(\.colorPalette) private var colorPalette
 
     @Binding var pressed: Bool
 
     var body: some View {
         ZStack(alignment: .leading) {
-            Rectangle()
-                .frame(height: 5)
-                .foregroundStyle(.red)
-            Rectangle()
-                .frame(width: pressed ? screenSize.width : 0, height: 5)
-                .foregroundStyle(.blue)
+            RoundedRectangle(cornerRadius: 4)
+                .frame(height: 8)
+                .foregroundStyle(colorPalette.progressBarBackgroundColor)
+            RoundedRectangle(cornerRadius: 4)
+                .frame(height: 8)
+                .foregroundStyle(gradientColor)
+                .frame(width: pressed ? .infinity : 0)
         }
-        .readSize(size: $screenSize)
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 32)
     }
+
+    private var gradientColor: LinearGradient {
+        LinearGradient(
+            colors: [.green, .yellow, .red],
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+    }
+}
+
+#Preview {
+    DiscountWheelStepView(step: .testData())
 }
