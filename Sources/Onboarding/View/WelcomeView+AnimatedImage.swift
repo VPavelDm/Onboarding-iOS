@@ -49,6 +49,7 @@ extension WelcomeView {
             Text(step.title)
                 .font(.title)
                 .fontWeight(.bold)
+                .multilineTextAlignment(.center)
                 .foregroundStyle(colorPalette.primaryTextColor)
         }
 
