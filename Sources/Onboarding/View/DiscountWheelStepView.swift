@@ -25,7 +25,7 @@ struct DiscountWheelStepView: View {
 
     private var animationDuration: TimeInterval {
         guard progress > .minSpinProgress else { return 5 }
-        return max(progress * 20, 10)
+        return max(progress * 15, 10)
     }
 
     var step: DiscountWheelStep
