@@ -15,6 +15,7 @@ struct DiscountWheelLaunchButton: View {
 
     @Binding var progress: CGFloat
     @Binding var pressed: Bool
+    @Binding var pressingProgress: Double
     var step: DiscountWheelStep
 
     var body: some View {
@@ -40,6 +41,7 @@ struct DiscountWheelLaunchButton: View {
         withAnimation(.linear(duration: .maxPressDuration)) {
             pressed = true
             scaleFactor = .targetScaleFactor
+            pressingProgress = 100
         }
     }
 

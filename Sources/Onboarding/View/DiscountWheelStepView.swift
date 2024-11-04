@@ -17,6 +17,7 @@ struct DiscountWheelStepView: View {
     @State private var showSuccessAlert: Bool = false
     @State private var pressed: Bool = false
     @State private var progress: CGFloat = .zero
+    @State private var pressingProgress: Double = 0
 
     private var slices: [DiscountWheel.Slice] {
         .slices(colorPalette: colorPalette)
@@ -42,7 +43,7 @@ struct DiscountWheelStepView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colorPalette.backgroundColor)
         .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
-        .sensoryFeedback(feedbackType: .increase, trigger: Int(progress * 100))
+        .pressSensoryFeedback(progress: pressingProgress)
         .wheelSpinSensoryFeedback(
             currentAngle: currentAngle,
             slicesCount: slices.count
@@ -67,7 +68,12 @@ struct DiscountWheelStepView: View {
             DiscountWheelProgressView(pressed: $pressed)
             DiscountWheel(currentAngle: $currentAngle, slices: slices)
             VStack(spacing: 16) {
-                DiscountWheelLaunchButton(progress: $progress, pressed: $pressed, step: step)
+                DiscountWheelLaunchButton(
+                    progress: $progress,
+                    pressed: $pressed,
+                    pressingProgress: $pressingProgress,
+                    step: step
+                )
                 explanationView
             }
         }
