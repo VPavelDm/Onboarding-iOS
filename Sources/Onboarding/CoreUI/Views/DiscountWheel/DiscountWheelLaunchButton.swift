@@ -34,6 +34,7 @@ struct DiscountWheelLaunchButton: View {
                     onReleased()
                 }
             }
+            .disabled(progress != .zero)
     }
 
     private func onPressing() {

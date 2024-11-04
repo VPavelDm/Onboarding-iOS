@@ -35,6 +35,7 @@ extension WheelTimePicker {
                 }
                 .scrollTargetLayout()
             }
+            .sensoryFeedback(.selection, trigger: viewModel.selectedTimeIndex)
             .scrollPosition(id: $viewModel.selectedTimeIndex, anchor: .center)
             .scrollIndicators(.hidden)
             .scrollTargetBehavior(.viewAligned)
