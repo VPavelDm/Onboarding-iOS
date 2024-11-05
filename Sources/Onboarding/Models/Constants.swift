@@ -9,6 +9,6 @@ import SwiftUI
 
 extension CGFloat {
 
-    static let progressBarHeight: CGFloat = 24
+    static let progressBarHeight: CGFloat = 40
     static let progressBarBottomPadding: CGFloat = 8
 }
