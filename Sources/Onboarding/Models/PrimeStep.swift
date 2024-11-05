@@ -10,6 +10,7 @@ import Foundation
 struct PrimeStep: Sendable, Equatable, Hashable {
     var title: String
     var description: String
+    var features: [String]
     var answer: StepAnswer
 }
 
@@ -21,6 +22,7 @@ extension PrimeStep {
         self.init(
             title: response.title,
             description: response.description,
+            features: response.features,
             answer: StepAnswer(response: response.answer)
         )
     }

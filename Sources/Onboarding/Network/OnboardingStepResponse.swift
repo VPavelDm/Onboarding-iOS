@@ -150,6 +150,7 @@ struct OnboardingStepResponse: Decodable {
     struct PrimeStep: Decodable {
         let title: String
         let description: String
+        let features: [String]
         let answer: StepAnswer
     }
 
