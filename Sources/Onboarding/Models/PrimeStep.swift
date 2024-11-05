@@ -12,14 +12,6 @@ struct PrimeStep: Sendable, Equatable, Hashable {
     var description: String
     var answer: StepAnswer
     var refuseAnswer: StepAnswer
-    var warning: RefuseWarning
-
-    struct RefuseWarning: Sendable, Equatable, Hashable {
-        var title: String
-        var description: String
-        var cancelButtonTitle: String
-        var confirmButtonTitle: String
-    }
 }
 
 // MARK: - Convert
