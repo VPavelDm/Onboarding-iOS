@@ -13,6 +13,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
     var passedPercent: Double
     var isBackButtonVisible: Bool
     var isProgressBarVisible: Bool
+    var isCloseButtonVisible: Bool
 
     enum OnboardingStepType: Sendable, Equatable, Hashable {
         case welcome(WelcomeStep)
@@ -97,7 +98,8 @@ extension OnboardingStep {
             type: type,
             passedPercent: response.passedPercent,
             isBackButtonVisible: response.isBackButtonVisible,
-            isProgressBarVisible: response.isProgressBarVisible
+            isProgressBarVisible: response.isProgressBarVisible,
+            isCloseButtonVisible: response.isCloseButtonVisible
         )
     }
 }

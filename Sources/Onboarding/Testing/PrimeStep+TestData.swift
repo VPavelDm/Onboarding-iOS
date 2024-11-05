@@ -13,8 +13,7 @@ extension PrimeStep {
         PrimeStep(
             title: "💎 Your One-Time Offer",
             description: "75% OFF FOREVER",
-            answer: StepAnswer(title: "Apply Voucher"),
-            refuseAnswer: StepAnswer(title: "Refuse Voucher")
+            answer: StepAnswer(title: "Apply Voucher")
         )
     }
 }

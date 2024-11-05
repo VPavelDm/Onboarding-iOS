@@ -48,6 +48,10 @@ final class OnboardingViewModel: ObservableObject {
         return passedSteps.last?.isProgressBarVisible ?? true
     }
 
+    var isCloseButtonVisible: Bool {
+        passedSteps.last?.isCloseButtonVisible ?? false
+    }
+
     // MARK: - Inits
 
     init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate) {

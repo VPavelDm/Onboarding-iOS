@@ -27,7 +27,6 @@ struct PrimeStepView: View {
                 continueButton
                 HStack {
                     termsOfUseView
-                    refuseButton
                     privacyPolicy
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -99,18 +98,6 @@ struct PrimeStepView: View {
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(isLoading)
-    }
-
-    private var refuseButton: some View {
-        AsyncButton {
-            await viewModel.onAnswer(answers: [step.refuseAnswer])
-        } label: {
-            Text(step.refuseAnswer.title)
-                .foregroundStyle(colorPalette.grayButtonTextColor)
-                .multilineTextAlignment(.center)
-        }
-        .buttonStyle(PlainButtonStyle())
-        .frame(maxWidth: .infinity)
     }
 
     private var termsOfUseView: some View {

@@ -65,7 +65,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             backButton.opacity(viewModel.isBackButtonVisible ? 1 : 0)
             ProgressBarView(completed: viewModel.passedStepsProcent)
                 .opacity(viewModel.isProgressBarVisible ? 1 : 0)
-            backButton.opacity(0)
+            closeButton.opacity(viewModel.isCloseButtonVisible ? 1 : 0)
         }
         .padding(.horizontal, 12)
     }
@@ -119,6 +119,20 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             Image(systemName: "chevron.left")
                 .tint(.primary)
                 .frame(width: 24, height: 24)
+                .frame(width: 40, height: 40)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+
+    private var closeButton: some View {
+        AsyncButton {
+            await viewModel.onAnswer(answers: [])
+        } label: {
+            Image(systemName: "xmark.circle.fill")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .frame(width: 40, height: 40)
                 .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())

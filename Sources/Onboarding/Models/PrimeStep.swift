@@ -11,7 +11,6 @@ struct PrimeStep: Sendable, Equatable, Hashable {
     var title: String
     var description: String
     var answer: StepAnswer
-    var refuseAnswer: StepAnswer
 }
 
 // MARK: - Convert
@@ -22,8 +21,7 @@ extension PrimeStep {
         self.init(
             title: response.title,
             description: response.description,
-            answer: StepAnswer(response: response.answer),
-            refuseAnswer: StepAnswer(response: response.refuseAnswer)
+            answer: StepAnswer(response: response.answer)
         )
     }
 }
