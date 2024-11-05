@@ -23,20 +23,7 @@ extension PrimeStep {
             title: response.title,
             description: response.description,
             answer: StepAnswer(response: response.answer),
-            refuseAnswer: StepAnswer(response: response.refuseAnswer),
-            warning: RefuseWarning(response: response.warning)
-        )
-    }
-}
-
-extension PrimeStep.RefuseWarning {
-
-    init(response: OnboardingStepResponse.PrimeStep.RefuseWarning) {
-        self.init(
-            title: response.title,
-            description: response.description,
-            cancelButtonTitle: response.cancelButtonTitle,
-            confirmButtonTitle: response.confirmButtonTitle
+            refuseAnswer: StepAnswer(response: response.refuseAnswer)
         )
     }
 }
