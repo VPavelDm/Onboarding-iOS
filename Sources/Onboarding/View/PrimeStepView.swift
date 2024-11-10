@@ -22,7 +22,6 @@ struct PrimeStepView: View {
             titleView
             descriptionView
             Spacer()
-            featuresView
             VStack(spacing: 16) {
                 priceView
                 continueButton
@@ -59,17 +58,6 @@ struct PrimeStepView: View {
             .font(.system(size: 46, weight: .bold))
             .foregroundStyle(colorPalette.primaryButtonBackgroundColor)
             .multilineTextAlignment(.center)
-    }
-
-    private var featuresView: some View {
-        VStack(alignment: .leading) {
-            ForEach(step.features.indices, id: \.self) { index in
-                Text("‧ \(step.features[index])")
-                    .foregroundStyle(colorPalette.secondaryTextColor)
-                    .font(.system(size: 18, weight: .medium))
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var priceView: some View {
