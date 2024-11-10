@@ -52,6 +52,12 @@ final class OnboardingViewModel: ObservableObject {
         passedSteps.last?.isCloseButtonVisible ?? false
     }
 
+    var shouldShowToolbar: Bool {
+        steps.contains(where: { step in
+            step.isCloseButtonVisible || step.isProgressBarVisible
+        })
+    }
+
     // MARK: - Inits
 
     init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate) {
