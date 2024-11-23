@@ -22,3 +22,8 @@ struct PrimaryButtonStyle: ButtonStyle {
             .opacity(isEnabled ? 1.0 : 0.65)
     }
 }
+
+#Preview {
+    MultipleAnswerView(step: .testData())
+        .preferredColorScheme(.dark)
+}

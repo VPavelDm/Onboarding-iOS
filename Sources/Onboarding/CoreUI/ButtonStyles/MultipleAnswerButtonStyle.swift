@@ -12,12 +12,17 @@ struct MultipleAnswerButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(.black)
+            .foregroundStyle(.white)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
-            .background(.secondary)
+            .background(Color(uiColor: .systemGray6))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .opacity(isEnabled ? 1.0 : 0.65)
     }
+}
+
+#Preview {
+    MultipleAnswerView(step: .testData())
+        .preferredColorScheme(.dark)
 }

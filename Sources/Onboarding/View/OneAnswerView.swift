@@ -61,4 +61,5 @@ struct OneAnswerView: View {
 
 #Preview {
     OneAnswerView(step: .testData())
+        .preferredColorScheme(.dark)
 }

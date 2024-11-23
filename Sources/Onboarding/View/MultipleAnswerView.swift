@@ -106,4 +106,5 @@ private extension Array where Element == BoxModel {
 
 #Preview {
     MultipleAnswerView(step: .testData())
+        .preferredColorScheme(.dark)
 }

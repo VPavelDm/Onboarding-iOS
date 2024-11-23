@@ -17,7 +17,7 @@ struct ProgressBarView: View {
     var body: some View {
         ZStack(alignment: .leading) {
             Rectangle()
-                .fill(.secondary)
+                .fill(Color(uiColor: .systemGray6))
                 .clipShape(ProgressBarShape(isCompleted: true))
             Rectangle()
                 .fill(Color.accentColor)
@@ -43,4 +43,5 @@ private extension CGFloat {
         delegate: MockOnboardingDelegate(),
         outerScreen: { _, _ in Text("Hello") }
     )
+    .preferredColorScheme(.dark)
 }
