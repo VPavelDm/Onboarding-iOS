@@ -11,7 +11,6 @@ import SwiftUI
 extension WheelTimePicker {
 
     struct TimePicker: View {
-        @Environment(\.colorPalette) private var colorPalette
         @EnvironmentObject private var viewModel: ViewModel
 
         @State private var size: CGSize = .zero

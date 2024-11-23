@@ -10,7 +10,6 @@ import CoreUI
 import CoreHaptics
 
 struct MultipleAnswerView: View {
-    @Environment(\.colorPalette) private var colorPalette
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var answers: [BoxModel]
@@ -27,7 +26,7 @@ struct MultipleAnswerView: View {
             nextButton
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(colorPalette.backgroundColor)
+        .background(.black)
     }
 
     private var scrollView: some View {
@@ -51,7 +50,7 @@ struct MultipleAnswerView: View {
         Text(step.title)
             .font(.title)
             .fontWeight(.bold)
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.white)
     }
 
     @ViewBuilder
@@ -59,7 +58,7 @@ struct MultipleAnswerView: View {
         if let description = step.description {
             Text(description)
                 .font(.headline)
-                .foregroundStyle(colorPalette.secondaryTextColor)
+                .foregroundStyle(.secondary)
         }
     }
 

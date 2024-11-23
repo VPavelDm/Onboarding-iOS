@@ -13,7 +13,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
 
     @State private var showError: Bool = false
 
-    let colorPalette: ColorPalette
     let outerScreen: (OnboardingOuterScreenCallbackParams) -> OuterScreen
 
     public init(
@@ -25,7 +24,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             configuration: configuration,
             delegate: delegate
         ))
-        self.colorPalette = configuration.colorPalette
         self.outerScreen = outerScreen
     }
 
@@ -34,8 +32,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             .progressView(isVisible: viewModel.currentStep == nil) {
                 contentLoadingView
             }
-            .environment(\.colorPalette, colorPalette)
-            .background(colorPalette.backgroundColor)
+            .background(.black)
             .onFirstAppear {
                 do {
                     try await viewModel.loadSteps()
@@ -106,9 +103,9 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
 
     private var contentLoadingView: some View {
         ProgressView()
-            .tint(colorPalette.primaryButtonBackgroundColor)
+            .tint(.accentColor)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(colorPalette.backgroundColor)
+            .background(.black)
     }
 
     private var backButton: some View {
@@ -160,7 +157,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                 Text("Next")
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(ColorPalette.testData.backgroundColor)
         }
     )
     .preferredColorScheme(.dark)

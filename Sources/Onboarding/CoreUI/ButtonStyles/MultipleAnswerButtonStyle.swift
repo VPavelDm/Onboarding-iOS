@@ -9,15 +9,14 @@ import SwiftUI
 
 struct MultipleAnswerButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
-    @Environment(\.colorPalette) private var colorPalette
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(colorPalette.secondaryButtonTextColor)
+            .foregroundStyle(.black)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
-            .background(colorPalette.secondaryButtonBackgroundColor)
+            .background(.secondary)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .opacity(isEnabled ? 1.0 : 0.65)
     }

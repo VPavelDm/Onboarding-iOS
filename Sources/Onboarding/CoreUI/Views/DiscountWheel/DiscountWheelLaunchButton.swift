@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DiscountWheelLaunchButton: View {
-    @Environment(\.colorPalette) private var colorPalette
 
     @State private var scaleFactor: CGFloat = 1
     @State private var pressedAt: Date?
@@ -20,10 +19,10 @@ struct DiscountWheelLaunchButton: View {
 
     var body: some View {
         Text(step.spinButtonTitle)
-            .foregroundStyle(colorPalette.secondaryButtonTextColor)
+            .foregroundStyle(.black)
             .font(.system(size: 16, weight: .semibold))
             .padding()
-            .background(colorPalette.secondaryButtonBackgroundColor)
+            .background(.secondary)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .scaleEffect(x: scaleFactor, y: scaleFactor)
             .onLongPressGesture {

@@ -9,7 +9,6 @@ import SwiftUI
 import CoreUI
 
 struct BinaryAnswerView: View {
-    @Environment(\.colorPalette) private var colorPalette
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     var step: BinaryAnswerStep
@@ -28,14 +27,14 @@ struct BinaryAnswerView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding()
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(colorPalette.backgroundColor)
+        .background(.black)
     }
 
     private var titleView: some View {
         Text(step.title)
             .font(.title)
             .fontWeight(.bold)
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.white)
     }
 
     @ViewBuilder
@@ -43,7 +42,7 @@ struct BinaryAnswerView: View {
         if let description = step.description {
             Text(description)
                 .font(.headline)
-                .foregroundStyle(colorPalette.secondaryTextColor)
+                .foregroundStyle(.secondary)
         }
     }
 

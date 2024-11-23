@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DiscountWheelProgressView: View {
-    @Environment(\.colorPalette) private var colorPalette
 
     @State private var size: CGSize = .zero
     @Binding var pressed: Bool
@@ -17,7 +16,7 @@ struct DiscountWheelProgressView: View {
         ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: 4)
                 .frame(height: 8)
-                .foregroundStyle(colorPalette.progressBarBackgroundColor)
+                .foregroundStyle(.secondary)
             RoundedRectangle(cornerRadius: 4)
                 .frame(height: 8)
                 .foregroundStyle(gradientColor)

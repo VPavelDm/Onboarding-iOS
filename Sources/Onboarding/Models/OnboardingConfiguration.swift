@@ -10,12 +10,10 @@ import Foundation
 public struct OnboardingConfiguration {
 
     let url: URL
-    let colorPalette: ColorPalette
     let bundle: Bundle
 
-    public init(url: URL, colorPalette: ColorPalette, bundle: Bundle = .main) {
+    public init(url: URL, bundle: Bundle = .main) {
         self.url = url
-        self.colorPalette = colorPalette
         self.bundle = bundle
     }
 }

@@ -9,7 +9,6 @@ import SwiftUI
 import CoreUI
 
 struct OneAnswerView: View {
-    @Environment(\.colorPalette) private var colorPalette
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     var step: OneAnswerStep
@@ -30,14 +29,14 @@ struct OneAnswerView: View {
             .padding()
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(colorPalette.backgroundColor)
+        .background(.black)
     }
 
     private var titleView: some View {
         Text(step.title)
             .font(.title)
             .fontWeight(.bold)
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.white)
     }
 
     @ViewBuilder
@@ -45,7 +44,7 @@ struct OneAnswerView: View {
         if let description = step.description {
             Text(description)
                 .font(.headline)
-                .foregroundStyle(colorPalette.secondaryTextColor)
+                .foregroundStyle(.secondary)
         }
     }
 

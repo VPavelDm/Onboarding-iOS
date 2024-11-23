@@ -10,7 +10,6 @@ import SwiftUI
 extension WelcomeView {
 
     struct AnimatedImageView: View {
-        @Environment(\.colorPalette) private var colorPalette
 
         let step: WelcomeStep
 
@@ -50,7 +49,7 @@ extension WelcomeView {
                 .font(.title)
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(colorPalette.primaryTextColor)
+                .foregroundStyle(.white)
         }
 
         private var descriptionView: some View {
@@ -58,7 +57,7 @@ extension WelcomeView {
                 .font(.body)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(colorPalette.secondaryTextColor)
+                .foregroundStyle(.secondary)
         }
     }
 }
@@ -69,4 +68,5 @@ extension WelcomeView {
         delegate: MockOnboardingDelegate(),
         outerScreen: { _ in Text("") }
     )
+    .preferredColorScheme(.dark)
 }

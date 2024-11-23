@@ -9,12 +9,11 @@ import SwiftUI
 import CoreUI
 
 struct TimePickerButtonStyle: ButtonStyle {
-    @Environment(\.colorPalette) private var colorPalette
     @Environment(\.isEnabled) private var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(colorPalette.primaryButtonTextColor)
+            .foregroundStyle(.black)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: .infinity)
             .padding()

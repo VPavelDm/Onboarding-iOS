@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DiscountWheelSuccessView: View {
-    @Environment(\.colorPalette) private var colorPalette
 
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
@@ -27,7 +26,7 @@ struct DiscountWheelSuccessView: View {
             takeButton
         }
         .padding()
-        .background(colorPalette.backgroundColor)
+        .background(.black)
         .readSize(size: $size)
         .presentationDetents([.height(size.height)])
         .interactiveDismissDisabled()
@@ -36,7 +35,7 @@ struct DiscountWheelSuccessView: View {
     private var titleView: some View {
         Text(step.successTitle)
             .font(.title2.bold())
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.white)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
     }
@@ -45,7 +44,7 @@ struct DiscountWheelSuccessView: View {
         Text(step.successDescription)
             .font(.title3)
             .fontWeight(.semibold)
-            .foregroundStyle(colorPalette.secondaryTextColor)
+            .foregroundStyle(.secondary)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
     }

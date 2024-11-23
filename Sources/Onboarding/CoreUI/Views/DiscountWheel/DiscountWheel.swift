@@ -9,8 +9,6 @@ import SwiftUI
 
 struct DiscountWheel: View {
 
-    @Environment(\.colorPalette) private var colorPalette
-
     @State private var wheelSize: CGSize = .zero
 
     @Binding var currentAngle: Angle
@@ -46,7 +44,7 @@ struct DiscountWheel: View {
 
     private func giftView(at index: Int) -> some View {
         VStack {
-            if slices[index].color == colorPalette.discountSliceGiftColor {
+            if slices[index].color == .red {
                 Image(systemName: "gift")
                     .font(.system(size: 42))
             } else {
@@ -54,7 +52,7 @@ struct DiscountWheel: View {
                     .font(.system(size: 26, weight: .bold))
             }
         }
-        .foregroundStyle(colorPalette.primaryTextColor)
+        .foregroundStyle(.white)
         .rotationEffect(.textRotationAngle(at: index, count: slices.count))
         .offset(.textOffset(at: index, count: slices.count, in: wheelSize))
         .zIndex(1)
@@ -80,7 +78,7 @@ struct DiscountWheel: View {
                     height: .pointerWidth * 2
                 )
             Circle()
-                .fill(ColorPalette.testData.backgroundColor)
+                .fill(.white)
                 .frame(
                     width: .pointerInnerCircleRadius * 2,
                     height: .pointerInnerCircleRadius * 2

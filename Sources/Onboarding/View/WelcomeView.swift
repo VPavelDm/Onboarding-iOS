@@ -9,7 +9,6 @@ import SwiftUI
 import CoreUI
 
 struct WelcomeView: View {
-    @Environment(\.colorPalette) private var colorPalette
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     var step: WelcomeStep
@@ -34,7 +33,7 @@ struct WelcomeView: View {
         }
         .ignoresSafeArea(edges: [.top])
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(colorPalette.backgroundColor)
+        .background(.black)
     }
 
     @ViewBuilder
@@ -45,8 +44,8 @@ struct WelcomeView: View {
     private var imageGradientView: some View {
         LinearGradient(
             colors: [
-                colorPalette.backgroundColor.opacity(0),
-                colorPalette.backgroundColor
+                .black.opacity(0),
+                .black
             ],
             startPoint: .top,
             endPoint: .bottom
@@ -79,4 +78,5 @@ struct WelcomeView: View {
         delegate: MockOnboardingDelegate(),
         outerScreen: { _ in Text("") }
     )
+    .preferredColorScheme(.dark)
 }

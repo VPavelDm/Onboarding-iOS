@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DiscountWheelStepView: View {
-    @Environment(\.colorPalette) private var colorPalette
 
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
@@ -19,9 +18,7 @@ struct DiscountWheelStepView: View {
     @State private var progress: CGFloat = .zero
     @State private var pressingProgress: Double = 0
 
-    private var slices: [DiscountWheel.Slice] {
-        .slices(colorPalette: colorPalette)
-    }
+    private var slices: [DiscountWheel.Slice] { .slices }
 
     private var animationDuration: TimeInterval {
         guard progress > .minSpinProgress else { return 5 }
@@ -41,7 +38,7 @@ struct DiscountWheelStepView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(colorPalette.backgroundColor)
+        .background(.black)
         .sensoryFeedback(feedbackType: .success, trigger: throwConfetti)
         .pressSensoryFeedback(progress: pressingProgress)
         .wheelSpinSensoryFeedback(
@@ -60,7 +57,7 @@ struct DiscountWheelStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.white)
     }
 
     private var wheelView: some View {
@@ -107,7 +104,7 @@ struct DiscountWheelStepView: View {
 
     private var explanationView: some View {
         Text(step.spinFootnote)
-            .foregroundStyle(colorPalette.secondaryTextColor)
+            .foregroundStyle(.secondary)
             .font(.footnote)
             .multilineTextAlignment(.center)
             .opacity(0.5)
@@ -128,16 +125,16 @@ struct DiscountWheelStepView: View {
 
 private extension Array where Element == DiscountWheel.Slice {
 
-    static func slices(colorPalette: ColorPalette) -> [Element] {
+    static var slices: [Element] {
         [
-            Element(value: "7", color: colorPalette.discountSliceDarkColor),
-            Element(value: "10", color: colorPalette.discountSliceLightColor),
-            Element(value: "5", color: colorPalette.discountSliceDarkColor),
-            Element(value: "25", color: colorPalette.discountSliceLightColor),
-            Element(value: "5", color: colorPalette.discountSliceDarkColor),
-            Element(value: "10", color: colorPalette.discountSliceLightColor),
-            Element(value: "70", color: colorPalette.discountSliceGiftColor),
-            Element(value: "5", color: colorPalette.discountSliceLightColor),
+            Element(value: "7", color: Color(hex: "4D5761")),
+            Element(value: "10", color: Color(hex: "6C727E")),
+            Element(value: "5", color: Color(hex: "4D5761")),
+            Element(value: "25", color: Color(hex: "6C727E")),
+            Element(value: "5", color: Color(hex: "4D5761")),
+            Element(value: "10", color: Color(hex: "6C727E")),
+            Element(value: "70", color: Color(hex: "EE534F")),
+            Element(value: "5", color: Color(hex: "6C727E")),
         ]
     }
 }
@@ -145,7 +142,7 @@ private extension Array where Element == DiscountWheel.Slice {
 private extension Angle {
 
     static var initialAngle: Angle {
-        let slices: [DiscountWheel.Slice] = .slices(colorPalette: .testData)
+        let slices: [DiscountWheel.Slice] = .slices
         return .degrees(360 / Double(slices.count)) / 2 * 3
     }
 

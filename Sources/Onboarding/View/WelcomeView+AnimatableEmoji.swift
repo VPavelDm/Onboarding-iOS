@@ -10,7 +10,6 @@ import SwiftUI
 extension WelcomeView {
 
     struct OrbitView: View {
-        @Environment(\.colorPalette) private var colorPalette
 
         @State private var progress: CGFloat = .zero
         var emojis: [String]
@@ -21,7 +20,7 @@ extension WelcomeView {
             ZStack {
                 Circle()
                     .stroke(lineWidth: 1)
-                    .foregroundStyle(colorPalette.orbitColor)
+                    .foregroundStyle(Color(uiColor: .systemGray6))
                     .frame(width: radius * 2, height: radius * 2)
                 ForEach(emojis.indices, id: \.self) { index in
                     EmojiOnOrbitView(
@@ -66,4 +65,5 @@ extension WelcomeView {
 
 #Preview {
     WelcomeView(step: .testData())
+        .preferredColorScheme(.dark)
 }

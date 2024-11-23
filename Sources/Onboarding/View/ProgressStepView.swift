@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ProgressStepView: View {
-    @Environment(\.colorPalette) var colorPalette
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State var progress: CGFloat = 0
@@ -35,7 +34,7 @@ struct ProgressStepView: View {
                 .padding(.bottom, 32)
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(colorPalette.backgroundColor)
+        .background(.black)
         .task {
             await viewModel.processAnswers(step: step)
         }
@@ -46,7 +45,7 @@ struct ProgressStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.black)
     }
 
     private var nextButton: some View {
@@ -57,7 +56,7 @@ struct ProgressStepView: View {
             ZStack {
                 Text(step.answer.title).opacity(isButtonLoading ? 0 : 1)
                 ProgressView()
-                    .tint(colorPalette.asyncButtonProgressView)
+                    .tint(.accentColor)
                     .opacity(isButtonLoading ? 1 : 0)
             }
         }

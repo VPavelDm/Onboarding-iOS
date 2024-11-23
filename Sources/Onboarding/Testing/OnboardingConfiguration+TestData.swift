@@ -12,7 +12,6 @@ public extension OnboardingConfiguration {
     static func testData() -> Self {
         Self(
             url: Bundle.module.url(forResource: "onboarding_steps", withExtension: "json")!,
-            colorPalette: .testData,
             bundle: .module
         )
     }

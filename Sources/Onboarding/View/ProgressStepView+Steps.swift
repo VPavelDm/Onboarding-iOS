@@ -26,16 +26,16 @@ extension ProgressStepView {
             .resizable()
             .font(.system(size: 128, weight: .bold))
             .frame(width: 12, height: 12)
-            .foregroundStyle(colorPalette.backgroundColor)
+            .foregroundStyle(.black)
             .padding(8)
             .background {
                 if stepCompleted(at: index) {
                     Circle()
-                        .fill(colorPalette.progressBarColor)
+                        .fill(Color.accentColor)
                 } else {
                     Circle()
                         .stroke(lineWidth: 1)
-                        .fill(colorPalette.progressBarDisabledColor)
+                        .fill(Color.accentColor.opacity(0.6))
                 }
             }
     }
@@ -43,7 +43,7 @@ extension ProgressStepView {
     private func stepView(at index: Int) -> some View {
         Text(step.steps[index])
             .font(.system(size: 16))
-            .foregroundStyle(stepCompleted(at: index) ? colorPalette.primaryTextColor : colorPalette.progressBarDisabledColor)
+            .foregroundStyle(stepCompleted(at: index) ? .white : Color.accentColor.opacity(0.6))
     }
 
     private func stepCompleted(at index: Int) -> Bool {

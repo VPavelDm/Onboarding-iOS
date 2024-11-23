@@ -9,7 +9,6 @@ import SwiftUI
 
 struct WheelTimePicker: View {
 
-    @Environment(\.colorPalette) private var colorPalette: ColorPalette
     @StateObject private var viewModel = ViewModel()
 
     var step: TimePickerStep
@@ -47,18 +46,17 @@ struct WheelTimePicker: View {
             viewModel.selectedTimeIndex = 20
         }
         .environmentObject(viewModel)
-        .environment(\.colorPalette, .testData)
     }
 
     private var titleView: some View {
         Text(step.title)
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.white)
             .font(.system(size: 16, weight: .semibold))
     }
 
     private var timeView: some View {
         Text(viewModel.currentTime)
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.white)
             .font(.system(size: 84, weight: .bold))
             .contentTransition(.numericText())
             .monospaced()

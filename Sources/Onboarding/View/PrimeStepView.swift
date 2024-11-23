@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PrimeStepView: View {
-    @Environment(\.colorPalette) private var colorPalette
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var isLoading = true
@@ -35,7 +34,7 @@ struct PrimeStepView: View {
         .animation(.easeInOut, value: isLoading)
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(colorPalette.backgroundColor)
+        .background(.black)
         .task {
             do {
                 discountedProduct = try await viewModel.delegate.fetchDiscountedProduct()
@@ -49,14 +48,14 @@ struct PrimeStepView: View {
     private var titleView: some View {
         Text(step.title)
             .font(.title.bold())
-            .foregroundStyle(colorPalette.primaryTextColor)
+            .foregroundStyle(.black)
             .multilineTextAlignment(.center)
     }
 
     private var descriptionView: some View {
         Text(step.description)
             .font(.system(size: 46, weight: .bold))
-            .foregroundStyle(colorPalette.primaryButtonBackgroundColor)
+            .foregroundStyle(Color.accentColor)
             .multilineTextAlignment(.center)
     }
 
@@ -71,16 +70,16 @@ struct PrimeStepView: View {
                 HStack(alignment: .lastTextBaseline, spacing: 2) {
                     Text(discountedProduct.monthlyPrice)
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundStyle(colorPalette.grayButtonTextColor)
+                        .foregroundStyle(.gray)
                     Text(discountedProduct.monthlyPriceTitle)
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(colorPalette.grayButtonTextColor)
+                        .foregroundStyle(.gray)
                 }
             }
         }
         .padding()
-        .foregroundStyle(colorPalette.secondaryButtonTextColor)
-        .background(colorPalette.secondaryButtonBackgroundColor)
+        .foregroundStyle(.black)
+        .background(.secondary)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .redacted(reason: .placeholder, if: isLoading)
     }
@@ -102,13 +101,13 @@ struct PrimeStepView: View {
 
     private var termsOfUseView: some View {
         Link("Terms", destination: discountedProduct.termsOfUse)
-            .tint(colorPalette.grayButtonTextColor)
+            .tint(.secondary)
             .frame(maxWidth: .infinity)
     }
 
     private var privacyPolicy: some View {
         Link("Privacy", destination: discountedProduct.privacyPolicy)
-            .tint(colorPalette.grayButtonTextColor)
+            .tint(.secondary)
             .frame(maxWidth: .infinity)
     }
 }
