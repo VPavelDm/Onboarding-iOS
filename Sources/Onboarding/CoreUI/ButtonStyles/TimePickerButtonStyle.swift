@@ -13,7 +13,7 @@ struct TimePickerButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(.black)
+            .foregroundStyle(.white)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: .infinity)
             .padding()
