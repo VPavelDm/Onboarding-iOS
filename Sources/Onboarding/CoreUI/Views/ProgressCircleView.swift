@@ -40,7 +40,7 @@ struct ProgressCircleView: View {
 
     private var backgroundCircle: some View {
         Circle()
-            .stroke(Color.accentColor, lineWidth: 12)
+            .stroke(Color(uiColor: .systemGray6), lineWidth: 12)
     }
 
     private var progressCircle: some View {
@@ -57,7 +57,7 @@ struct ProgressCircleView: View {
     private var progressText: some View {
         Text("\(Int(progress)) %")
             .monospacedDigit()
-            .foregroundStyle(.black)
+            .foregroundStyle(.white)
             .font(.system(size: 32, weight: .bold))
             .contentTransition(.numericText())
             .animation(.linear, value: progress)
@@ -67,4 +67,5 @@ struct ProgressCircleView: View {
 #Preview {
     ProgressCircleView(duration: 15, progress: .constant(50))
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .preferredColorScheme(.dark)
 }

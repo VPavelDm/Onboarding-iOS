@@ -45,7 +45,7 @@ struct ProgressStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
-            .foregroundStyle(.black)
+            .foregroundStyle(.white)
     }
 
     private var nextButton: some View {
@@ -66,5 +66,7 @@ struct ProgressStepView: View {
 }
 
 #Preview {
-    MockOnboardingView()
+    ProgressStepView(step: .testData())
+        .environmentObject(OnboardingViewModel(configuration: .testData(), delegate: MockOnboardingDelegate()))
+        .preferredColorScheme(.dark)
 }

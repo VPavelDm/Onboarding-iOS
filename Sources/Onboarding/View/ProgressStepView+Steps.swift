@@ -35,7 +35,7 @@ extension ProgressStepView {
                 } else {
                     Circle()
                         .stroke(lineWidth: 1)
-                        .fill(Color.accentColor.opacity(0.6))
+                        .fill(Color(uiColor: .systemGray2))
                 }
             }
     }
@@ -43,10 +43,16 @@ extension ProgressStepView {
     private func stepView(at index: Int) -> some View {
         Text(step.steps[index])
             .font(.system(size: 16))
-            .foregroundStyle(stepCompleted(at: index) ? .white : Color.accentColor.opacity(0.6))
+            .foregroundStyle(stepCompleted(at: index) ? .white : Color(uiColor: .systemGray2))
     }
 
     private func stepCompleted(at index: Int) -> Bool {
         CGFloat(index + 1) / CGFloat(step.steps.count) * 100 <= progress
     }
+}
+
+#Preview {
+    ProgressStepView(step: .testData())
+        .environmentObject(OnboardingViewModel(configuration: .testData(), delegate: MockOnboardingDelegate()))
+        .preferredColorScheme(.dark)
 }
