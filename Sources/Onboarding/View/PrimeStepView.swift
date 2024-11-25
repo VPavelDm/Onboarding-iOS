@@ -79,7 +79,7 @@ struct PrimeStepView: View {
         }
         .padding()
         .foregroundStyle(.black)
-        .background(.secondary)
+        .background(Color(uiColor: .systemGray6))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .redacted(reason: .placeholder, if: isLoading)
     }
