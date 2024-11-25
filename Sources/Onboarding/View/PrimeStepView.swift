@@ -63,10 +63,12 @@ struct PrimeStepView: View {
         HStack {
             Text(discountedProduct.duration)
                 .font(.system(size: 24, weight: .bold))
+                .foregroundStyle(.white)
             Spacer()
             VStack(alignment: .trailing) {
                 Text(discountedProduct.discountedPrice)
                     .font(.system(size: 24, weight: .bold))
+                    .foregroundStyle(.white)
                 HStack(alignment: .lastTextBaseline, spacing: 2) {
                     Text(discountedProduct.monthlyPrice)
                         .font(.system(size: 16, weight: .bold))
