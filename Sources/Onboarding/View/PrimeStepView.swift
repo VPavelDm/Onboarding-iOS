@@ -48,7 +48,7 @@ struct PrimeStepView: View {
     private var titleView: some View {
         Text(step.title)
             .font(.title.bold())
-            .foregroundStyle(.black)
+            .foregroundStyle(.white)
             .multilineTextAlignment(.center)
     }
 
