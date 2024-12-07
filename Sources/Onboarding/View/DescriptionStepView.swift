@@ -14,13 +14,14 @@ struct DescriptionStepView: View {
     var step: DescriptionStep
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack {
             imageView
             VStack(alignment: .leading, spacing: 12) {
                 titleView
                 descriptionView
             }
-            Spacer()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer(minLength: 24)
             nextButton
         }
         .background(.black)
