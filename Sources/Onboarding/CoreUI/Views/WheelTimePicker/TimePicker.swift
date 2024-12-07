@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 19.09.24.
 //
@@ -18,19 +18,21 @@ extension WheelTimePicker {
         var body: some View {
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 0) {
-                    timeView("00:00").opacity(0)
-                    timeView("00:00").opacity(0)
+                    ForEach(values.hiddenBubbles(in: size), id: \.self) { _ in
+                        timeView("00:00").opacity(0)
+                    }
                     ForEach(viewModel.times.indices, id: \.self) { index in
                         timeView(viewModel.times[index])
                             .visualEffect { view, proxy in
                                 view
-                                    .offset(y: offset(proxy))
-                                    .scaleEffect(scale(proxy), anchor: .bottom)
-                                    .opacity(opacity(proxy))
+                                    .offset(y: values.offset(proxy))
+                                    .scaleEffect(values.scale(proxy), anchor: .bottom)
+                                    .opacity(values.opacity(proxy))
                             }
                     }
-                    timeView("00:00").opacity(0)
-                    timeView("00:00").opacity(0)
+                    ForEach(values.hiddenBubbles(in: size), id: \.self) { _ in
+                        timeView("00:00").opacity(0)
+                    }
                 }
                 .scrollTargetLayout()
             }
@@ -47,39 +49,19 @@ extension WheelTimePicker {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.white)
                 .font(.system(size: 14, weight: .semibold))
-                .frame(width: timeViewBubbleSize, height: timeViewBubbleSize)
+                .frame(width: values.timeViewBubbleSize(in: size), height: values.timeViewBubbleSize(in: size))
                 .background(Color(hex: "4743A3"))
                 .clipShape(Circle())
-                .frame(width: timeViewSize, height: timeViewSize)
-                .padding(.top, (.earthHeight - timeViewSize) / 2)
+                .frame(width: values.timeViewSize(in: size), height: values.timeViewSize(in: size))
+                .padding(.top, (.earthHeight - values.timeViewSize(in: size)) / 2)
         }
 
-        nonisolated private func offset(_ proxy: GeometryProxy) -> CGFloat {
-            let progress = progress(proxy)
-            return progress * -.progressStep
-        }
-
-        nonisolated private func scale(_ proxy: GeometryProxy) -> CGFloat {
-            let progress = progress(proxy)
-            return 1 + progress * 0.25
-        }
-
-        nonisolated private func opacity(_ proxy: GeometryProxy) -> CGFloat {
-            progress(proxy)
-        }
-
-        nonisolated private func progress(_ proxy: GeometryProxy) -> CGFloat {
-            let screenWidth = proxy.bounds(of: .scrollView)?.width ?? .zero
-            let midX = proxy.frame(in: .scrollView).midX
-            return 1 - abs(midX - screenWidth / 2) / screenWidth * 2
-        }
-
-        var timeViewSize: CGFloat {
-            size.width / 5
-        }
-
-        var timeViewBubbleSize: CGFloat {
-            max(timeViewSize - 16, 0)
+        nonisolated var values: TimePickerValues {
+            TimePickerValues()
         }
     }
+}
+
+#Preview {
+    WheelTimePicker(step: .testData(), completion: { _ in })
 }

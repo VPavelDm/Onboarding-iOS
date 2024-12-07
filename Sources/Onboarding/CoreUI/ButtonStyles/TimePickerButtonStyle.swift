@@ -15,11 +15,16 @@ struct TimePickerButtonStyle: ButtonStyle {
         configuration.label
             .foregroundStyle(.white)
             .font(.system(size: 16, weight: .semibold))
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: 500)
             .padding()
             .background(Color(hex: "4743A3"))
             .clipShape(RoundedRectangle(cornerRadius: 16))
+            .frame(maxWidth: .infinity)
             .scaleEffect(x: configuration.isPressed ? 0.95 : 1, y: configuration.isPressed ? 0.95 : 1)
             .opacity(isEnabled ? 1.0 : 0.65)
     }
+}
+
+#Preview {
+    WheelTimePicker(step: .testData(), completion: { _ in })
 }
