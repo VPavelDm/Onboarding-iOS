@@ -26,19 +26,19 @@ extension WelcomeView {
                 ZStack {
                     WelcomeView.OrbitView(
                         emojis: innitOrbitEmojis,
-                        radius: geometry.size.width / 2 * 0.85,
+                        radius: geometry.size.innerRadius,
                         progressOffset: .zero
                     )
                     WelcomeView.OrbitView(
                         emojis: outerOrbitEmojis,
-                        radius: geometry.size.width / 2 * 1.15,
+                        radius: geometry.size.outerRadius,
                         progressOffset: 0.5
                     )
                     VStack {
                         titleView
                         descriptionView
                     }
-                    .frame(maxWidth: geometry.size.width * 0.75)
+                    .frame(maxWidth: geometry.size.maxTextWidth)
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
             }
@@ -58,6 +58,37 @@ extension WelcomeView {
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
+        }
+    }
+}
+
+private extension CGSize {
+
+    var minSide: CGFloat {
+        min(width, height)
+    }
+
+    var innerRadius: CGFloat {
+        if minSide < 500 {
+            minSide / 2 * 0.85
+        } else {
+            minSide / 2 * 0.75
+        }
+    }
+
+    var outerRadius: CGFloat {
+        if minSide < 500 {
+            minSide / 2 * 1.15
+        } else {
+            minSide / 2 * 0.95
+        }
+    }
+
+    var maxTextWidth: CGFloat {
+        if minSide < 500 {
+            minSide * 0.7
+        } else {
+            minSide * 0.6
         }
     }
 }

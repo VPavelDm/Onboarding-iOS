@@ -13,10 +13,11 @@ struct PrimaryButtonStyle: ButtonStyle {
         configuration.label
             .foregroundStyle(.black)
             .font(.system(size: 16, weight: .semibold))
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: 500)
             .padding()
             .background(Color.accentColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
+            .frame(maxWidth: .infinity)
             .scaleEffect(x: configuration.isPressed ? 0.95 : 1, y: configuration.isPressed ? 0.95 : 1)
     }
 }

@@ -15,14 +15,7 @@ struct WelcomeView: View {
 
     var body: some View {
         VStack(spacing: 26) {
-            ZStack {
-                imageView
-                imageGradientView
-                    .rotationEffect(.radians(.pi))
-                    .frame(maxHeight: .infinity, alignment: .top)
-                imageGradientView
-                    .frame(maxHeight: .infinity, alignment: .bottom)
-            }
+            imageView
             VStack {
                 getStartedButton
                 if let answer = step.secondAnswer {
