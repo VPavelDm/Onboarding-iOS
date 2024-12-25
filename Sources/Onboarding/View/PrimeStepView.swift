@@ -59,7 +59,7 @@ struct PrimeStepView: View {
     }
 
     private var expiresInView: some View {
-        Text("Expires In")
+        Text("Expires In", bundle: .module)
             .font(.system(size: 14, weight: .semibold))
             .foregroundStyle(Color.secondary)
     }
@@ -67,6 +67,7 @@ struct PrimeStepView: View {
     private var descriptionView: some View {
         Text(step.description)
             .font(.system(size: 46, weight: .bold))
+            .minimumScaleFactor(0.5)
             .foregroundStyle(Color.accentColor)
             .multilineTextAlignment(.center)
     }
