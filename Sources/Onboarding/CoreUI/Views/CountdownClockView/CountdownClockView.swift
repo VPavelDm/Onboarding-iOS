@@ -34,6 +34,7 @@ struct CountdownClockView: View {
         }
         .onAppear {
             viewModel.startTimer()
+            print(Bundle.module.bundlePath)
         }
     }
 
@@ -50,7 +51,7 @@ struct CountdownClockView: View {
     }
 
     private func labelView(_ value: LocalizedStringKey) -> some View {
-        Text(value)
+        Text(value, bundle: .module)
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(Color.secondary)
     }
