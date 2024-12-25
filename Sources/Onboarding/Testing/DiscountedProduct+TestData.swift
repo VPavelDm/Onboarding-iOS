@@ -17,7 +17,14 @@ extension DiscountedProduct {
             monthlyPrice: "2,99$",
             monthlyPriceTitle: "/month",
             termsOfUse: URL(string: "https://google.com")!,
-            privacyPolicy: URL(string: "https://google.com")!
+            privacyPolicy: URL(string: "https://google.com")!,
+            discount: Discount(
+                expirationDate: Date.now.advanced(by: 86430),
+                days: "Дни",
+                hours: "Часы",
+                minutes: "Минуты",
+                seconds: "Секунды"
+            )
         )
     }
 }

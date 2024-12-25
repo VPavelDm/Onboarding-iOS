@@ -19,6 +19,12 @@ struct PrimeStepView: View {
         VStack(spacing: 32) {
             Spacer()
             titleView
+            if let discount = discountedProduct.discount {
+                VStack(spacing: 8) {
+                    expiresInView
+                    CountdownClockView(discount: discount)
+                }
+            }
             descriptionView
             Spacer()
             VStack(spacing: 16) {
@@ -50,6 +56,12 @@ struct PrimeStepView: View {
             .font(.title.bold())
             .foregroundStyle(.white)
             .multilineTextAlignment(.center)
+    }
+
+    private var expiresInView: some View {
+        Text("Истекает через")
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundStyle(Color.secondary)
     }
 
     private var descriptionView: some View {
@@ -120,4 +132,5 @@ struct PrimeStepView: View {
             configuration: .testData(),
             delegate: MockOnboardingDelegate()
         ))
+        .preferredColorScheme(.dark)
 }
