@@ -55,11 +55,12 @@ public final class CountdownClockViewModel: ObservableObject {
     private func updateRemainingTime() throws {
         let components = try calculateRemainingTime()
 
-        let labels: [LocalizedStringKey] = [
-            "\(components.days) Days",
-            "\(components.hours) Hours",
-            "\(components.minutes) Minutes",
-            "\(components.seconds) Seconds"
+        let labels: [String] = [
+            String(localized: "\(components.days) Days", bundle: .module),
+            String(localized: "\(components.hours) Hours", bundle: .module),
+            String(localized: "\(components.minutes) Minutes", bundle: .module),
+            String(localized: "\(components.seconds) Seconds", bundle: .module)
+                .replacing("%d", with: "")
         ]
 
         timeComponents = zip([components.days, components.hours, components.minutes, components.seconds], labels)
@@ -94,7 +95,7 @@ public final class CountdownClockViewModel: ObservableObject {
 
     public struct TimeComponent: Equatable {
         public var digits: [Int]
-        public var label: LocalizedStringKey
+        public var label: String
     }
 
     private struct CampaignExpiredError: Error {}
