@@ -87,6 +87,12 @@
                   "state" : "translated",
                   "value" : "%lld Часа"
                 }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Часов"
+                }
               }
             }
           }
@@ -130,9 +136,33 @@
     "%lld Seconds" : {
       "localizations" : {
         "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld Секунд"
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Несколько Секунд"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Много Секунд"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Секунду"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Других Секунд"
+                }
+              }
+            }
           }
         }
       }
