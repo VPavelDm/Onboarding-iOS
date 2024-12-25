@@ -64,7 +64,7 @@ private extension CountdownClockView {
 
         var body: some View {
             Text(text)
-                .font(.system(size: 16, weight: .bold))
+                .font(.system(size: 16, weight: .bold).monospaced())
                 .foregroundStyle(Color.primary)
                 .animation(.easeInOut, value: text)
                 .contentTransition(.numericText(countsDown: true))
