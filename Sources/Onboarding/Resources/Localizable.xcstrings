@@ -2,10 +2,24 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%@%%" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%%"
+          }
+        }
+      }
     },
     "%lld %%" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld %%"
+          }
+        }
+      }
     },
     "%lld Days" : {
       "localizations" : {
@@ -215,14 +229,35 @@
         }
       }
     },
+    "Expires In" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Истекает Через"
+          }
+        }
+      }
+    },
     "Privacy" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конфиденциальность"
+          }
+        }
+      }
     },
     "Terms" : {
-
-    },
-    "Истекает через" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Условия"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

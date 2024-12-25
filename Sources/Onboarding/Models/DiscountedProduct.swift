@@ -45,7 +45,7 @@ extension DiscountedProduct {
     public struct Discount: Sendable, Equatable, Hashable {
         public var expirationDate: Date
 
-        public init(expirationDate: Date, days: String, hours: String, minutes: String, seconds: String) {
+        public init(expirationDate: Date) {
             self.expirationDate = expirationDate
         }
     }

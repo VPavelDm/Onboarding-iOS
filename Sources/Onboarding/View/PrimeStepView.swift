@@ -59,7 +59,7 @@ struct PrimeStepView: View {
     }
 
     private var expiresInView: some View {
-        Text("Истекает через")
+        Text("Expires In")
             .font(.system(size: 14, weight: .semibold))
             .foregroundStyle(Color.secondary)
     }
