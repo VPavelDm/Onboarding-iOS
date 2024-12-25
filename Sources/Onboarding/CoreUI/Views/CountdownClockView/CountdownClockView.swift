@@ -49,7 +49,7 @@ struct CountdownClockView: View {
         .padding(.top, 11)
     }
 
-    private func labelView(_ value: String) -> some View {
+    private func labelView(_ value: LocalizedStringKey) -> some View {
         Text(value)
             .font(.system(size: 12, weight: .semibold))
             .foregroundStyle(Color.secondary)
@@ -75,3 +75,13 @@ private extension CountdownClockView {
         }
     }
 }
+
+#Preview {
+    PrimeStepView(step: .testData())
+        .environmentObject(OnboardingViewModel(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate()
+        ))
+        .preferredColorScheme(.dark)
+}
+
