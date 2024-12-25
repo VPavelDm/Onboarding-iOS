@@ -60,7 +60,7 @@ public final class CountdownClockViewModel: ObservableObject {
             String(localized: "\(components.hours) Hours", bundle: .module),
             String(localized: "\(components.minutes) Minutes", bundle: .module),
             String(localized: "\(components.seconds) Seconds", bundle: .module)
-                .replacing("%d", with: "")
+                .replacing("\\d", with: "")
         ]
 
         timeComponents = zip([components.days, components.hours, components.minutes, components.seconds], labels)
