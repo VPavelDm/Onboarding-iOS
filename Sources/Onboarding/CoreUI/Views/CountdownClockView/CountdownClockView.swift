@@ -11,9 +11,15 @@ import Combine
 struct CountdownClockView: View {
 
     @StateObject private var viewModel: CountdownClockViewModel
+    private let discount: DiscountedProduct.Discount?
 
     init(discount: DiscountedProduct.Discount) {
-        self._viewModel = StateObject(wrappedValue: CountdownClockViewModel(discount: discount))
+        self.discount = discount
+        self._viewModel = StateObject(wrappedValue: CountdownClockViewModel(
+            discount: {
+                discount
+            }
+        ))
     }
 
     var body: some View {

@@ -20,12 +20,12 @@ public final class CountdownClockViewModel: ObservableObject {
     private var timerCancellation: AnyCancellable?
     private let calendar: Calendar
     private let currentDate: () -> Date
-    private let discount: DiscountedProduct.Discount
+    private let discount: () -> DiscountedProduct.Discount
 
     // MARK: - Lifecycle
 
     public init(
-        discount: DiscountedProduct.Discount,
+        discount: @escaping () -> DiscountedProduct.Discount,
         calendar: Calendar = .current,
         currentDate: @escaping () -> Date = { .now }
     ) {
@@ -75,14 +75,14 @@ public final class CountdownClockViewModel: ObservableObject {
 
     private func calculateRemainingTime() throws -> (days: Int, hours: Int, minutes: Int, seconds: Int) {
         let currentDate = currentDate()
-        guard currentDate < discount.expirationDate else {
+        guard currentDate < discount().expirationDate else {
             throw CampaignExpiredError()
         }
 
         let dateComponents = calendar.dateComponents(
             [.day, .hour, .minute, .second],
             from: currentDate,
-            to: discount.expirationDate
+            to: discount().expirationDate
         )
         let days = dateComponents.day ?? 0
         let hours = dateComponents.hour ?? 0
