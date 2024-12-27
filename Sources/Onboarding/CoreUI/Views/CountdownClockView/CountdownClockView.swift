@@ -11,7 +11,7 @@ import Combine
 struct CountdownClockView: View {
 
     @StateObject private var viewModel = CountdownClockViewModel()
-    let discount: DiscountedProduct.Discount
+    @Binding var discount: DiscountedProduct.Discount
     let isRunning: Bool
 
     var body: some View {
