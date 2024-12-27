@@ -15,7 +15,7 @@ public struct DiscountedProduct: Sendable, Equatable, Hashable {
     var monthlyPriceTitle: String
     var termsOfUse: URL
     var privacyPolicy: URL
-    var discount: Discount?
+    var discount: Discount
 
     public init(
         duration: String,
@@ -25,7 +25,7 @@ public struct DiscountedProduct: Sendable, Equatable, Hashable {
         monthlyPriceTitle: String,
         termsOfUse: URL,
         privacyPolicy: URL,
-        discount: Discount?
+        discount: Discount
     ) {
         self.duration = duration
         self.discountedPrice = discountedPrice
