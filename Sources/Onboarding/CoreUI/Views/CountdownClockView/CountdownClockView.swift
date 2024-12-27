@@ -10,17 +10,8 @@ import Combine
 
 struct CountdownClockView: View {
 
-    @StateObject private var viewModel: CountdownClockViewModel
-    private let discount: DiscountedProduct.Discount?
-
-    init(discount: DiscountedProduct.Discount) {
-        self.discount = discount
-        self._viewModel = StateObject(wrappedValue: CountdownClockViewModel(
-            discount: {
-                discount
-            }
-        ))
-    }
+    @StateObject private var viewModel = CountdownClockViewModel()
+    let discount: DiscountedProduct.Discount
 
     var body: some View {
         HStack(alignment: .top, spacing: 4) {
@@ -39,7 +30,7 @@ struct CountdownClockView: View {
             }
         }
         .onAppear {
-            viewModel.startTimer()
+            viewModel.startTimer(discount: discount)
         }
     }
 
