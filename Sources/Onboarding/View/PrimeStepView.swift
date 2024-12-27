@@ -24,7 +24,7 @@ struct PrimeStepView: View {
                     expiresInView
                     CountdownClockView(discount: discount, isRunning: !isLoading)
                 }
-                .redacted(reason: .placeholder)
+                .redacted(reason: .placeholder, if: isLoading)
             }
             descriptionView
             Spacer()
