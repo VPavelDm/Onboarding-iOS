@@ -22,7 +22,7 @@ struct PrimeStepView: View {
             if let discount = discountedProduct.discount {
                 VStack(spacing: 8) {
                     expiresInView
-                    CountdownClockView(discount: discount)
+                    CountdownClockView(discount: discount, isRunning: !isLoading)
                 }
                 .redacted(reason: .placeholder)
             }

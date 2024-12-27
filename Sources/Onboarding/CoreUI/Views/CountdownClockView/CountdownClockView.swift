@@ -12,6 +12,7 @@ struct CountdownClockView: View {
 
     @StateObject private var viewModel = CountdownClockViewModel()
     let discount: DiscountedProduct.Discount
+    let isRunning: Bool
 
     var body: some View {
         HStack(alignment: .top, spacing: 4) {
@@ -29,7 +30,8 @@ struct CountdownClockView: View {
                 }
             }
         }
-        .onAppear {
+        .onChange(of: isRunning) { [wasRunning = isRunning] isRunning in
+            guard !wasRunning && isRunning else { return }
             viewModel.startTimer(discount: discount)
         }
     }

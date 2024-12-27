@@ -13,7 +13,9 @@ public final class CountdownClockViewModel: ObservableObject {
     // MARK: - Public
 
     @Published public var timeComponents: [TimeComponent] = []
-    @Published private var discount: DiscountedProduct.Discount?
+    @Published private var discount: DiscountedProduct.Discount = DiscountedProduct.Discount(
+        expirationDate: Date.now.advanced(by: 60 * 60 * 24 * 7)
+    )
 
     // MARK: - Private
 
@@ -71,7 +73,7 @@ public final class CountdownClockViewModel: ObservableObject {
 
     private func calculateRemainingTime() throws -> (days: Int, hours: Int, minutes: Int, seconds: Int) {
         let currentDate = currentDate()
-        guard let discount, currentDate < discount.expirationDate else {
+        guard currentDate < discount.expirationDate else {
             throw CampaignExpiredError()
         }
 
