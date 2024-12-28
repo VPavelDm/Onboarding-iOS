@@ -75,36 +75,44 @@ struct PrimeStepView: View {
 
     private var discountMonthlyView: some View {
         HStack(alignment: .lastTextBaseline, spacing: 2) {
-            Text("\(discountedProduct.originalPrice)")
+            Text("\(discountedProduct.originalMonthlyPrice)")
                 .strikethrough()
-                .font(.system(size: 16, weight: .bold))
+                .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.red)
             Text(discountedProduct.monthlyPrice)
-                .font(.system(size: 16, weight: .bold))
+                .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.white)
             Text(discountedProduct.monthlyPriceTitle)
-                .font(.system(size: 12, weight: .semibold))
+                .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(.white)
         }
     }
 
     private var priceView: some View {
         HStack {
-            Text(discountedProduct.duration)
-                .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(.white)
-            Spacer()
-            VStack(alignment: .trailing) {
-                Text(discountedProduct.discountedPrice)
+            VStack(alignment: .leading) {
+                Text(discountedProduct.duration)
                     .font(.system(size: 24, weight: .bold))
                     .foregroundStyle(.white)
                 HStack(alignment: .lastTextBaseline, spacing: 2) {
-                    Text(discountedProduct.monthlyPrice)
+                    Text(discountedProduct.originalAnnualPrice)
+                        .strikethrough()
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.gray)
+                    Text(discountedProduct.discountedPrice)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(.tint)
+                }
+            }
+            Spacer()
+            VStack(alignment: .trailing) {
+                HStack(alignment: .lastTextBaseline, spacing: 2) {
+                    Text(discountedProduct.monthlyPrice)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(.white)
                     Text(discountedProduct.monthlyPriceTitle)
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(.gray)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.white)
                 }
             }
         }

@@ -15,7 +15,8 @@ extension DiscountedProduct {
         DiscountedProduct(
             duration: "12 months",
             discountedPrice: "35,99$",
-            originalPrice: "119,99$",
+            originalAnnualPrice: "119,99$",
+            originalMonthlyPrice: "9,99$",
             monthlyPrice: "2,99$",
             monthlyPriceTitle: "/month",
             termsOfUse: URL(string: "https://google.com")!,
