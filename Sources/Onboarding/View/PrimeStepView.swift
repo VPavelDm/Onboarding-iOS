@@ -27,6 +27,7 @@ struct PrimeStepView: View {
                 descriptionView
                 discountMonthlyView
             }
+            .redacted(reason: .placeholder, if: isLoading)
             Spacer()
             VStack(spacing: 16) {
                 priceView
