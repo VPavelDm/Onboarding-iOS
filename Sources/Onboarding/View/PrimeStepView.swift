@@ -30,7 +30,10 @@ struct PrimeStepView: View {
             Spacer()
             VStack(spacing: 16) {
                 priceView
-                continueButton
+                VStack(spacing: 12) {
+                    continueButton
+                    closeButton
+                }
                 HStack {
                     termsOfUseView
                     privacyPolicy
@@ -136,6 +139,15 @@ struct PrimeStepView: View {
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(isLoading)
+    }
+
+    private var closeButton: some View {
+        AsyncButton {
+            await viewModel.onAnswer(answers: [])
+        } label: {
+            Text("No Payment due now")
+        }
+        .buttonStyle(SimpleButtonStyle())
     }
 
     private var termsOfUseView: some View {
