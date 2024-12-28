@@ -99,7 +99,7 @@ struct PrimeStepView: View {
                     .foregroundStyle(.white)
                 HStack(alignment: .lastTextBaseline, spacing: 2) {
                     Text(discountedProduct.originalAnnualPrice)
-                        .strikethrough()
+                        .strikethrough(!isLoading)
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(.gray)
                     Text(discountedProduct.discountedPrice)
