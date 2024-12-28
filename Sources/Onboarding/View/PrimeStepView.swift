@@ -145,7 +145,7 @@ struct PrimeStepView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: [])
         } label: {
-            Text("No Payment due now")
+            Text("No Gift due now")
         }
         .buttonStyle(SimpleButtonStyle())
     }
@@ -154,12 +154,14 @@ struct PrimeStepView: View {
         Link("Terms", destination: discountedProduct.termsOfUse)
             .tint(.secondary)
             .frame(maxWidth: .infinity)
+            .buttonStyle(SimpleButtonStyle())
     }
 
     private var privacyPolicy: some View {
         Link("Privacy", destination: discountedProduct.privacyPolicy)
             .tint(.secondary)
             .frame(maxWidth: .infinity)
+            .buttonStyle(SimpleButtonStyle())
     }
 }
 

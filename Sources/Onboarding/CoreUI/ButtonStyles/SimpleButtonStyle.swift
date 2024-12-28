@@ -12,7 +12,8 @@ struct SimpleButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(.secondary.opacity(configuration.isPressed || isEnabled ? 0.65 : 1))
+            .foregroundStyle(.secondary)
             .font(.system(size: 16, weight: .semibold))
+            .scaleEffect(configuration.isPressed ? 0.95 : 1)
     }
 }
