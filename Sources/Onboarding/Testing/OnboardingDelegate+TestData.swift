@@ -16,7 +16,7 @@ final class MockOnboardingDelegate: OnboardingDelegate {
     }
 
     func fetchDiscountedProduct() async throws -> DiscountedProduct {
-        .testData()
+        .testData(expirationDate: Date.now.advanced(by: 86400))
     }
 
     func makePurchase(_ product: DiscountedProduct) async throws {

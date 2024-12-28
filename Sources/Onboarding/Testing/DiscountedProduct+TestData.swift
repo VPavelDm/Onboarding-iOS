@@ -9,7 +9,9 @@ import Foundation
 
 extension DiscountedProduct {
 
-    static func testData() -> Self {
+    static func testData(
+        expirationDate: Date = Date.now.advanced(by: -86400)
+    ) -> Self {
         DiscountedProduct(
             duration: "12 months",
             discountedPrice: "35,99$",
@@ -18,9 +20,7 @@ extension DiscountedProduct {
             monthlyPriceTitle: "/month",
             termsOfUse: URL(string: "https://google.com")!,
             privacyPolicy: URL(string: "https://google.com")!,
-            discount: Discount(
-                expirationDate: Date.now.advanced(by: 86430)
-            )
+            discount: Discount(expirationDate: expirationDate)
         )
     }
 }

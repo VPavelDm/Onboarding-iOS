@@ -10,29 +10,38 @@ import Combine
 
 struct CountdownClockView: View {
 
-    @StateObject private var viewModel = CountdownClockViewModel()
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+
+    @State private var timeComponents: [DiscountedProduct.TimeComponent]
+    @State private var isRedacted: Bool = true
     @Binding var discount: DiscountedProduct.Discount
-    let isRunning: Bool
+
+    init(discount: Binding<DiscountedProduct.Discount>) {
+        self._discount = discount
+        self._timeComponents = State(initialValue: discount.wrappedValue.timeComponents)
+    }
 
     var body: some View {
         HStack(alignment: .top, spacing: 4) {
-            ForEach(viewModel.timeComponents.indices, id: \.self) { index in
+            ForEach(timeComponents.indices, id: \.self) { index in
                 VStack(spacing: 4) {
                     HStack(spacing: 4) {
-                        ForEach(viewModel.timeComponents[index].digits.indices, id: \.self) { dIndex in
-                            CardView(text: "\(viewModel.timeComponents[index].digits[dIndex])")
+                        ForEach(timeComponents[index].digits.indices, id: \.self) { dIndex in
+                            CardView(text: "\(timeComponents[index].digits[dIndex])")
+                                .redacted(reason: .placeholder, if: isRedacted)
                         }
                     }
-                    labelView(viewModel.timeComponents[index].label)
+                    labelView(timeComponents[index].label)
                 }
-                if index < viewModel.timeComponents.count - 1 {
+                if index < timeComponents.count - 1 {
                     dotsView
                 }
             }
         }
-        .onChange(of: isRunning) { [wasRunning = isRunning] isRunning in
-            guard !wasRunning && isRunning else { return }
-            viewModel.startTimer(discount: discount)
+        .onReceive(timer) { _ in
+            guard Date.now <= discount.expirationDate else { return }
+            timeComponents = discount.timeComponents
+            isRedacted = false
         }
     }
 

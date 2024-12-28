@@ -37,16 +37,3 @@ public struct DiscountedProduct: Sendable, Equatable, Hashable {
         self.discount = discount
     }
 }
-
-// MARK: - Discount
-
-extension DiscountedProduct {
-
-    public struct Discount: Sendable, Equatable, Hashable {
-        public var expirationDate: Date
-
-        public init(expirationDate: Date) {
-            self.expirationDate = expirationDate
-        }
-    }
-}

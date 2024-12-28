@@ -21,10 +21,8 @@ struct PrimeStepView: View {
             titleView
             VStack(spacing: 8) {
                 expiresInView
-                CountdownClockView(discount: $discountedProduct.discount, isRunning: !isLoading)
-                    .redacted(reason: .placeholder, if: isLoading)
+                CountdownClockView(discount: $discountedProduct.discount)
             }
-            .redacted(reason: .placeholder, if: isLoading)
             descriptionView
             Spacer()
             VStack(spacing: 16) {
