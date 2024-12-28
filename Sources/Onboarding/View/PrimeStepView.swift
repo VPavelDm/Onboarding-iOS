@@ -23,7 +23,10 @@ struct PrimeStepView: View {
                 expiresInView
                 CountdownClockView(discount: $discountedProduct.discount)
             }
-            descriptionView
+            VStack(spacing: 6) {
+                descriptionView
+                discountMonthlyView
+            }
             Spacer()
             VStack(spacing: 16) {
                 priceView
@@ -68,6 +71,21 @@ struct PrimeStepView: View {
             .minimumScaleFactor(0.5)
             .foregroundStyle(Color.accentColor)
             .multilineTextAlignment(.center)
+    }
+
+    private var discountMonthlyView: some View {
+        HStack(alignment: .lastTextBaseline, spacing: 2) {
+            Text("\(discountedProduct.originalPrice)")
+                .strikethrough()
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(.red)
+            Text(discountedProduct.monthlyPrice)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(.white)
+            Text(discountedProduct.monthlyPriceTitle)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(.white)
+        }
     }
 
     private var priceView: some View {
