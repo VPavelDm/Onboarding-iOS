@@ -79,7 +79,7 @@ struct PrimeStepView: View {
     private var discountMonthlyView: some View {
         HStack(alignment: .lastTextBaseline, spacing: 2) {
             Text("\(discountedProduct.originalMonthlyPrice)")
-                .strikethrough()
+                .strikethrough(!isLoading)
                 .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.red)
             Text(discountedProduct.monthlyPrice)
