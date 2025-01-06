@@ -104,7 +104,7 @@ struct DiscountWheelStepView: View {
 
     private var explanationView: some View {
         Text(step.spinFootnote)
-            .foregroundStyle(.secondary)
+            .foregroundStyle(.white)
             .font(.footnote)
             .multilineTextAlignment(.center)
             .opacity(0.5)
@@ -170,4 +170,5 @@ extension CGFloat {
 
 #Preview {
     DiscountWheelStepView(step: .testData())
+        .preferredColorScheme(.light)
 }
