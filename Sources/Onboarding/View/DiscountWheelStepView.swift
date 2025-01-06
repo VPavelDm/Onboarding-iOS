@@ -133,7 +133,7 @@ private extension Array where Element == DiscountWheel.Slice {
             Element(value: "25", color: Color(hex: "6C727E")),
             Element(value: "5", color: Color(hex: "4D5761")),
             Element(value: "10", color: Color(hex: "6C727E")),
-            Element(value: "70", color: Color(hex: "EE534F")),
+            Element(value: "92", color: Color(hex: "EE534F")),
             Element(value: "5", color: Color(hex: "6C727E")),
         ]
     }
