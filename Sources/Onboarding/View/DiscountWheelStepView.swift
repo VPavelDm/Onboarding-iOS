@@ -170,5 +170,5 @@ extension CGFloat {
 
 #Preview {
     DiscountWheelStepView(step: .testData())
-        .preferredColorScheme(.light)
+        .preferredColorScheme(.dark)
 }

@@ -22,7 +22,7 @@ struct DiscountWheelLaunchButton: View {
             .foregroundStyle(.white)
             .font(.system(size: 16, weight: .semibold))
             .padding()
-            .background(.secondary)
+            .background(.gray.opacity(0.3))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .scaleEffect(x: scaleFactor, y: scaleFactor)
             .onLongPressGesture {
@@ -70,4 +70,5 @@ private extension CGFloat {
 
 #Preview {
     DiscountWheelStepView(step: .testData())
+        .preferredColorScheme(.dark)
 }
