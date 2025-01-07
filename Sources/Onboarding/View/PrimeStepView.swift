@@ -146,7 +146,7 @@ struct PrimeStepView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: [])
         } label: {
-            Text("No Gift due now")
+            Text("No Gift due now", bundle: .module)
         }
         .buttonStyle(SimpleButtonStyle())
     }
