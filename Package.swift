@@ -42,7 +42,10 @@ let package = Package(
         ),
         .target(
             name: "CoreNetwork",
-            dependencies: []
+            dependencies: [],
+            swiftSettings: [
+                .define("BUILD_LIBRARY_FOR_DISTRIBUTION", .when(configuration: .release))
+            ]
         ),
 
 
