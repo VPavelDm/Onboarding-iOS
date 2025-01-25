@@ -25,10 +25,3 @@ public struct AnyEvent: Event {
         self.parameters = EmptySchema(source: source).build()
     }
 }
-
-extension AnyEvent: AmplitudeEvent {
-    
-    public var details: AmplitudeEventDetails? {
-        AmplitudeEventDetails(name: name, parameters: parameters)
-    }
-}
