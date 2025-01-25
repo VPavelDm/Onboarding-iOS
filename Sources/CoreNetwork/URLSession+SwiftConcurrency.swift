@@ -1,8 +1,8 @@
 //
 //  URLSession+SwiftConcurrency.swift
-//  CoreNetwork
+//  VirtualChampionsLeague
 //
-//  Created by Pavel Vaitsikhouski on 04.09.24.
+//  Created by Pavel Vaitsikhouski on 17.10.22.
 //
 
 import Foundation
@@ -17,11 +17,11 @@ extension URLSession {
     /// - Parameters:
     ///   - resource: The resource to fetch.
     /// - Returns: The value transformed from the network data by the resource.
-    public func value<Value>(for resource: Resource<Value>) async throws -> Value {
+    public func value<Value: Sendable>(for resource: Resource<Value>) async throws -> Value {
         try await withCheckedThrowingContinuation { continuation in
-            fetch(resource, completion: { result in
+            fetch(resource) { result in
                 continuation.resume(with: result)
-            })
+            }
         }
     }
 }

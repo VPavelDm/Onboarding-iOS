@@ -1,19 +1,27 @@
 //
 //  URLSession+fetch.swift
-//  CoreNetwork
+//  VirtualChampionsLeague
 //
-//  Created by Pavel Vaitsikhouski on 04.09.24.
+//  Created by Pavel Vaitsikhouski on 17.10.22.
 //
 
 import Foundation
 
-/// Function to use to sign network requests.
-public var authenticate: (URLRequest, @escaping (URLRequest) -> Void) -> Void = { request, completion in
-    completion(request)
+public final class AuthenticateFactory: @unchecked Sendable {
+    static let shared = AuthenticateFactory()
+    
+    /// Function to use to sign network requests.
+    public var authenticate: (URLRequest, @escaping (URLRequest) -> Void) -> Void = { request, completion in
+        completion(request)
+    }
 }
 
-/// Modifiers that are performed for every network request made.
-public var modifiers: [NetworkModifier] = []
+public final class ModifiersFactory: @unchecked Sendable {
+    static let shared = ModifiersFactory()
+    
+    /// Modifiers that are performed for every network request made.
+    public var modifiers: [NetworkModifier] = []
+}
 
 extension URLSession {
 
@@ -25,17 +33,18 @@ extension URLSession {
     ///   - resource: The resource to fetch.
     ///   - queue: The queue to callback onto. Default is `DispatchQueue.main`.
     ///   - completion: Completion block to call once the request has been performed.
-    public func fetch<Value>(
+    public func fetch<Value: Sendable>(
         _ resource: Resource<Value>,
         callbackQueue queue: DispatchQueue = .main,
-        completion: @escaping (Result<Value, Error>) -> Void
+        completion: @Sendable @escaping (Result<Value, Error>) -> Void
     ) {
         do {
-            let resource = resource.modify(modifiers)
+            let resource = resource.modify(ModifiersFactory.shared.modifiers)
 
-            authenticate(try resource.makeRequest(ResourceInitialiser.shared.networkEnvironment)) { request in
+            AuthenticateFactory.shared.authenticate(try resource.makeRequest()) { request in
                 self.perform(request: request) { result in
                     let value = Result { try resource.transform(result.get()) }
+
                     queue.async { completion(value) }
                 }
             }
@@ -48,7 +57,7 @@ extension URLSession {
     @discardableResult
     private func perform(
         request: URLRequest,
-        completion: @escaping (Result<(Data, URLResponse), URLError>) -> Void
+        completion: @Sendable @escaping (Result<(Data, URLResponse), URLError>) -> Void
     ) -> URLSessionDataTask {
 
         let task = dataTask(with: request) { data, response, error in

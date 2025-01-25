@@ -1,8 +1,8 @@
 //
 //  HTTPError.swift
-//  CoreNetwork
+//  Faultier
 //
-//  Created by Pavel Vaitsikhouski on 04.09.24.
+//  Created by Pavel Vaitsikhouski on 30.01.24.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ public struct HTTPError: Error, Equatable, Hashable {
 
 extension HTTPError {
 
-    public struct Code: Equatable, Hashable {
+    public struct Code: Equatable, Hashable, Sendable {
         let value: Int
         public init(_ value: Int) {
             self.value = value

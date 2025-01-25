@@ -1,8 +1,8 @@
 //
 //  URLRequest+HTTPHeaderField.swift
-//  CoreNetwork
+//  VirtualChampionsLeague
 //
-//  Created by Pavel Vaitsikhouski on 04.09.24.
+//  Created by Pavel Vaitsikhouski on 18.10.22.
 //
 
 import Foundation
