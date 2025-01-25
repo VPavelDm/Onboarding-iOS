@@ -34,26 +34,15 @@ let package = Package(
             ],
             resources: [
                 .process("Resources")
-            ],
-            swiftSettings: [
-                .define("BUILD_LIBRARY_FOR_DISTRIBUTION", .when(configuration: .release))
             ]
         ),
         .target(
             name: "CoreUI",
-            dependencies: [],
-            swiftSettings: [
-                .define("BUILD_LIBRARY_FOR_DISTRIBUTION", .when(configuration: .release))
-            ]
+            dependencies: []
         ),
         .target(
             name: "CoreNetwork",
-            dependencies: [],
-            swiftSettings: [
-                .define("BUILD_LIBRARY_FOR_DISTRIBUTION", .when(configuration: .release))
-            ]
+            dependencies: []
         ),
-
-
     ]
 )
