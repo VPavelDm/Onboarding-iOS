@@ -13,7 +13,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "Onboarding",
-            targets: ["Onboarding"]),
+            targets: ["Onboarding", "CoreUI", "CoreNetwork"])
     ],
     dependencies: [
         .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0")
@@ -29,6 +29,14 @@ let package = Package(
             resources: [
                 .process("Resources")
             ]
+        ),
+        .target(
+            name: "CoreUI",
+            dependencies: []
+        ),
+        .target(
+            name: "CoreNetwork",
+            dependencies: []
         ),
 
 
