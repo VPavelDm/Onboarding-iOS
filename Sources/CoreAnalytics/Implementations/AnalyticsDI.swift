@@ -11,11 +11,12 @@ public final class AnalyticsDI {
 
     @MainActor
     public static let shared = AnalyticsDI()
+    public var implementations: [AnalyticsProtocol] = []
 
     private init() {}
     
     public var analytics: AnalyticsProtocol {
-        var analytics: [AnalyticsProtocol] = [AmplitudeAnalytics()]
+        var analytics: [AnalyticsProtocol] = implementations
         #if DEBUG
         analytics.append(LoggerAnalytics())
         #endif

@@ -25,8 +25,7 @@ let package = Package(
             targets: ["CoreNetwork"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0"),
-        .package(url: "https://github.com/amplitude/Amplitude-iOS", from: "8.22.0")
+        .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -42,9 +41,7 @@ let package = Package(
         ),
         .target(
             name: "CoreAnalytics",
-            dependencies: [
-                .product(name: "Amplitude", package: "Amplitude-iOS")
-            ]
+            dependencies: []
         ),
         .target(
             name: "CoreUI",
