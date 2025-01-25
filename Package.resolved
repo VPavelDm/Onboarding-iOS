@@ -1,5 +1,5 @@
 {
-  "originHash" : "d421042ecb82315643f36300b4c1f1c295e17d63522bb79dba867da745a18efe",
+  "originHash" : "aaf2facca00852faf3863459e00c9a8e66eb6dc392f1f8845178043b7e1ab20b",
   "pins" : [
     {
       "identity" : "confettiswiftui",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "f45961f97bbae6fff6e2e64546fea0189425ad92",
         "version" : "1.1.0"
-      }
-    },
-    {
-      "identity" : "swiftextensions",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/VPavelDm/SwiftExtensions",
-      "state" : {
-        "branch" : "main",
-        "revision" : "447b43a1db6b5ea00c20013730b8622ceab13c49"
       }
     }
   ],
