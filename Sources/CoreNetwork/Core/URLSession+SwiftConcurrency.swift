@@ -19,7 +19,9 @@ extension URLSession {
     /// - Returns: The value transformed from the network data by the resource.
     public func value<Value>(for resource: Resource<Value>) async throws -> Value {
         try await withCheckedThrowingContinuation { continuation in
-            fetch(resource, completion: continuation.resume)
+            fetch(resource, completion: { result in
+                continuation.resume(with: result)
+            })
         }
     }
 }
