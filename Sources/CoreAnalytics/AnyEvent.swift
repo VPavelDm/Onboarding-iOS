@@ -12,9 +12,9 @@ import Foundation
   * Enable simple tracking in trivial cases, such as when just an event name is sent.
 */
 public struct AnyEvent: Event {
-    let name: String
-    let parameters: Parameters
-    
+    public let name: String
+    public let parameters: Parameters
+
     public init(name: String, schema: ParametersSchema) {
         self.name = name
         self.parameters = schema.build()
