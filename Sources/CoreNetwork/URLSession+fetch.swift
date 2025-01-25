@@ -17,7 +17,7 @@ public final class AuthenticateFactory: @unchecked Sendable {
 }
 
 public final class ModifiersFactory: @unchecked Sendable {
-    static let shared = ModifiersFactory()
+    public static let shared = ModifiersFactory()
     
     /// Modifiers that are performed for every network request made.
     public var modifiers: [NetworkModifier] = []
