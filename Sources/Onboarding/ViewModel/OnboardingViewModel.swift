@@ -124,4 +124,8 @@ final class OnboardingViewModel: ObservableObject {
             currentStep = passedSteps.last
         }
     }
+
+    func format(string: String) -> String {
+        delegate.format(string: string)
+    }
 }

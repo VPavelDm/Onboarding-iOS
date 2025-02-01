@@ -13,6 +13,7 @@ struct DiscountWheelStep: Sendable, Equatable, Hashable {
     var spinFootnote: String
     var successTitle: String
     var successDescription: String
+    let discount: Int
     var answer: StepAnswer
 }
 
@@ -27,6 +28,7 @@ extension DiscountWheelStep {
             spinFootnote: response.spinFootnote,
             successTitle: response.successTitle,
             successDescription: response.successDescription,
+            discount: response.discount,
             answer: StepAnswer(response: response.answer)
         )
     }

@@ -13,8 +13,16 @@ public protocol OnboardingDelegate {
     func setupNotifications(for time: String) async throws
     func fetchDiscountedProduct() async throws -> DiscountedProduct
     func makePurchase(_ product: DiscountedProduct) async throws
+    func format(string: String) -> String
     func finalise() async
 
     func onAnswerClick(userAnswer: UserAnswer) async
     func onBackButtonClick() async
+}
+
+public extension OnboardingDelegate {
+
+    func format(string: String) -> String {
+        string
+    }
 }

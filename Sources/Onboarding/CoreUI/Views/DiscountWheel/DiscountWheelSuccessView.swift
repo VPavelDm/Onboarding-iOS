@@ -41,7 +41,7 @@ struct DiscountWheelSuccessView: View {
     }
 
     private var descriptionView: some View {
-        Text(step.successDescription)
+        Text(viewModel.format(string: step.successDescription))
             .font(.title3)
             .fontWeight(.semibold)
             .foregroundStyle(.secondary)
