@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 public protocol OnboardingDelegate {
     
     func processAnswers(_ answers: [UserAnswer]) async throws
