@@ -144,7 +144,6 @@ struct OnboardingStepResponse: Decodable {
         var spinFootnote: String
         var successTitle: String
         var successDescription: String
-        var discount: Int
         let answer: StepAnswer
     }
 

@@ -16,7 +16,6 @@ extension DiscountWheelStep {
             spinFootnote: "Press and hold to spin.\nRelease when your heart is ready!",
             successTitle: "🥳 Wooohooo\nyou won 75% discount!",
             successDescription: "It is a one-time deal, so don't miss it!",
-            discount: 32,
             answer: StepAnswer(title: "Step")
         )
     }

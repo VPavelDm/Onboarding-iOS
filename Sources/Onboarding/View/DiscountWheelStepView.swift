@@ -18,7 +18,9 @@ struct DiscountWheelStepView: View {
     @State private var progress: CGFloat = .zero
     @State private var pressingProgress: Double = 0
 
-    private var slices: [DiscountWheel.Slice] { .slices(step: step) }
+    private var slices: [DiscountWheel.Slice] { .slices(
+        discountValue: viewModel.format(string: "{discount_value}"))
+    }
 
     private var animationDuration: TimeInterval {
         guard progress > .minSpinProgress else { return 5 }
@@ -125,7 +127,7 @@ struct DiscountWheelStepView: View {
 
 private extension Array where Element == DiscountWheel.Slice {
 
-    static func slices(step: DiscountWheelStep) -> [Element] {
+    static func slices(discountValue: String = "") -> [Element] {
         [
             Element(value: "7", color: Color(hex: "4D5761")),
             Element(value: "10", color: Color(hex: "6C727E")),
@@ -133,7 +135,7 @@ private extension Array where Element == DiscountWheel.Slice {
             Element(value: "25", color: Color(hex: "6C727E")),
             Element(value: "5", color: Color(hex: "4D5761")),
             Element(value: "10", color: Color(hex: "6C727E")),
-            Element(value: "\(step.discount)", color: Color(hex: "EE534F")),
+            Element(value: discountValue, color: Color(hex: "EE534F")),
             Element(value: "5", color: Color(hex: "6C727E")),
         ]
     }
@@ -142,7 +144,7 @@ private extension Array where Element == DiscountWheel.Slice {
 private extension Angle {
 
     static var initialAngle: Angle {
-        let slices: [DiscountWheel.Slice] = .slices(step: .testData())
+        let slices: [DiscountWheel.Slice] = .slices()
         return .degrees(360 / Double(slices.count)) / 2 * 3
     }
 
