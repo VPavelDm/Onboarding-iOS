@@ -70,7 +70,7 @@ struct PrimeStepView: View {
     }
 
     private var descriptionView: some View {
-        Text(step.description)
+        Text(viewModel.format(string: step.description))
             .font(.system(size: 46, weight: .bold))
             .minimumScaleFactor(0.5)
             .foregroundStyle(Color.accentColor)
