@@ -12,6 +12,9 @@ public protocol ColorPalette {
     var textColor: Color { get }
     var secondaryTextColor: Color { get }
     var primaryButtonForegroundColor: Color { get }
+    var primaryButtonBackgroundColor: Color { get }
+    var secondaryButtonForegroundColor: Color { get }
+    var secondaryButtonBackgroundColor: Color { get }
     var accentColor: Color { get }
 }
 
@@ -27,6 +30,9 @@ public struct TestColorPalette: ColorPalette {
     public var textColor: Color = .primary
     public var secondaryTextColor: Color = .secondary
     public var primaryButtonForegroundColor: Color = .primary
+    public var primaryButtonBackgroundColor: Color = .blue
+    public var secondaryButtonForegroundColor: Color = .blue
+    public var secondaryButtonBackgroundColor: Color = .blue
     public var accentColor: Color = .blue
 }
 

@@ -26,7 +26,7 @@ struct MultipleAnswerView: View {
             nextButton
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(.black)
+        .background(viewModel.colorPalette.backgroundColor)
     }
 
     private var scrollView: some View {
@@ -50,7 +50,7 @@ struct MultipleAnswerView: View {
         Text(step.title)
             .font(.title)
             .fontWeight(.bold)
-            .foregroundStyle(.white)
+            .foregroundStyle(viewModel.colorPalette.textColor)
     }
 
     @ViewBuilder
@@ -58,7 +58,7 @@ struct MultipleAnswerView: View {
         if let description = step.description {
             Text(description)
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
         }
     }
 

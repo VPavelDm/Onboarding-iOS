@@ -29,14 +29,14 @@ struct OneAnswerView: View {
             .padding()
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(.black)
+        .background(viewModel.colorPalette.backgroundColor)
     }
 
     private var titleView: some View {
         Text(step.title)
             .font(.title)
             .fontWeight(.bold)
-            .foregroundStyle(.white)
+            .foregroundStyle(viewModel.colorPalette.textColor)
     }
 
     @ViewBuilder
@@ -44,7 +44,7 @@ struct OneAnswerView: View {
         if let description = step.description {
             Text(description)
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
         }
     }
 
