@@ -33,7 +33,8 @@ let package = Package(
         .target(
             name: "Onboarding",
             dependencies: [
-                .product(name: "ConfettiSwiftUI", package: "ConfettiSwiftUI")
+                .product(name: "ConfettiSwiftUI", package: "ConfettiSwiftUI"),
+                "CoreUI"
             ],
             resources: [
                 .process("Resources")
