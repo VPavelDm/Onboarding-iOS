@@ -20,6 +20,10 @@ struct AnswerButtonStyle: ButtonStyle {
             .padding()
             .background(viewModel.colorPalette.secondaryButtonBackgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 1)
+            }
             .scaleEffect(x: configuration.isPressed ? 0.95 : 1, y: configuration.isPressed ? 0.95 : 1)
             .opacity(isEnabled ? 1.0 : 0.65)
     }
