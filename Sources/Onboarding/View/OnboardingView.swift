@@ -34,7 +34,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             .progressView(isVisible: viewModel.currentStep == nil) {
                 contentLoadingView
             }
-            .background(.black)
+            .background(viewModel.colorPalette.backgroundColor)
             .onFirstAppear {
                 do {
                     try await viewModel.loadSteps()
