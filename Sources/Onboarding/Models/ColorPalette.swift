@@ -8,39 +8,12 @@
 import SwiftUI
 
 public protocol ColorPalette {
-    var backgroundHexColor: String { get }
-    var textHexColor: String { get }
-    var secondaryTextHexColor: String { get }
-    var primaryButtonForegroundHexColor: String { get }
-    var primaryButtonBackgroundHexColor: String { get }
-    var primaryButtonDisabledBackgroundHexColor: String { get }
-}
-
-public extension ColorPalette {
-
-    var backgroundColor: Color {
-        Color(hex: backgroundHexColor)
-    }
-
-    var textColor: Color {
-        Color(hex: textHexColor)
-    }
-
-    var secondaryTextColor: Color {
-        Color(hex: secondaryTextHexColor)
-    }
-
-    var primaryButtonForegroundColor: Color {
-        Color(hex: primaryButtonForegroundHexColor)
-    }
-
-    var primaryButtonBackgroundColor: Color {
-        Color(hex: primaryButtonBackgroundHexColor)
-    }
-
-    var primaryButtonDisabledBackgroundColor: Color {
-        Color(hex: primaryButtonDisabledBackgroundHexColor)
-    }
+    var backgroundColor: Color { get }
+    var textColor: Color { get }
+    var secondaryTextColor: Color { get }
+    var primaryButtonForegroundColor: Color { get }
+    var primaryButtonBackgroundColor: Color { get }
+    var primaryButtonDisabledBackgroundColor: Color { get }
 }
 
 public extension ColorPalette where Self == TestColorPalette {
@@ -51,11 +24,11 @@ public extension ColorPalette where Self == TestColorPalette {
 }
 
 public struct TestColorPalette: ColorPalette {
-    public var backgroundHexColor: String = ""
-    public var textHexColor: String = ""
-    public var secondaryTextHexColor: String = ""
-    public var primaryButtonForegroundHexColor: String = ""
-    public var primaryButtonBackgroundHexColor: String = ""
-    public var primaryButtonDisabledBackgroundHexColor: String = ""
+    public var backgroundColor: Color = .black
+    public var textColor: Color = .primary
+    public var secondaryTextColor: Color = .secondary
+    public var primaryButtonForegroundColor: Color = .primary
+    public var primaryButtonBackgroundColor: Color = .blue
+    public var primaryButtonDisabledBackgroundColor: Color = .blue.opacity(0.65)
 }
 
