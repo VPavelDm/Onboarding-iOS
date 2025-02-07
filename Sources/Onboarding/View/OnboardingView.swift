@@ -116,7 +116,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             viewModel.onBack()
         } label: {
             Image(systemName: "chevron.left")
-                .tint(.primary)
+                .tint(viewModel.colorPalette.plainButtonColor)
                 .frame(width: 24, height: 24)
                 .frame(width: 40, height: 40)
                 .contentShape(Rectangle())

@@ -16,6 +16,7 @@ public protocol ColorPalette {
     var secondaryButtonForegroundColor: Color { get }
     var secondaryButtonBackgroundColor: Color { get }
     var secondaryButtonStrokeColor: Color { get }
+    var plainButtonColor: Color { get }
     var progressBarBackgroundColor: Color { get }
     var accentColor: Color { get }
 }
@@ -36,6 +37,7 @@ public struct TestColorPalette: ColorPalette {
     public var secondaryButtonForegroundColor: Color = .blue
     public var secondaryButtonBackgroundColor: Color = .blue
     public var secondaryButtonStrokeColor: Color = .blue
+    public var plainButtonColor: Color = .white
     public var progressBarBackgroundColor: Color = .red
     public var accentColor: Color = .blue
 }
