@@ -15,9 +15,9 @@ public struct AnyEvent: Event {
     public let name: String
     public let parameters: Parameters
 
-    public init(name: String, schema: ParametersSchema) {
+    public init(name: String, schema: ParametersSchema? = nil) {
         self.name = name
-        self.parameters = schema.build()
+        self.parameters = schema?.build() ?? [:]
     }
     
     public init(name: String, source: EventSource) {
