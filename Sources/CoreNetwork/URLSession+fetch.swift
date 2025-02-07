@@ -8,7 +8,7 @@
 import Foundation
 
 public final class AuthenticateFactory: @unchecked Sendable {
-    static let shared = AuthenticateFactory()
+    public static let shared = AuthenticateFactory()
     
     /// Function to use to sign network requests.
     public var authenticate: (URLRequest, @escaping (URLRequest) -> Void) -> Void = { request, completion in
