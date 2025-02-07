@@ -41,19 +41,3 @@ extension NetworkEnvironment {
         baseURL.appendingPathComponents("/\(version.value)")
     }
 }
-
-public final class NetworkEnvironmentFactory: @unchecked Sendable {
-
-    public static let shared = NetworkEnvironmentFactory()
-
-    public var networkEnvironment: NetworkEnvironment {
-        get {
-            _networkEnvironment!
-        }
-        set {
-            _networkEnvironment = newValue
-        }
-    }
-
-    private var _networkEnvironment: NetworkEnvironment?
-}
