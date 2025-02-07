@@ -11,6 +11,8 @@ extension WelcomeView {
 
     struct OrbitView: View {
 
+        @EnvironmentObject private var viewModel: OnboardingViewModel
+
         @State private var progress: CGFloat = .zero
         var emojis: [String]
         var radius: CGFloat
@@ -20,7 +22,7 @@ extension WelcomeView {
             ZStack {
                 Circle()
                     .stroke(lineWidth: 1)
-                    .foregroundStyle(Color(uiColor: .systemGray6))
+                    .foregroundStyle(viewModel.colorPalette.plainButtonColor)
                     .frame(width: radius * 2, height: radius * 2)
                 ForEach(emojis.indices, id: \.self) { index in
                     EmojiOnOrbitView(
