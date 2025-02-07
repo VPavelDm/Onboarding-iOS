@@ -13,10 +13,15 @@ import Foundation
 /// - Parameter content: the content which should be sent with the event.
 ///
 public struct ContentSchema: ParametersSchema {
-    var content: String
+    var content: [String]
     var source: EventSource?
 
     public init(content: String, source: EventSource? = nil) {
+        self.content = [content]
+        self.source = source
+    }
+
+    public init(content: [String], source: EventSource? = nil) {
         self.content = content
         self.source = source
     }
