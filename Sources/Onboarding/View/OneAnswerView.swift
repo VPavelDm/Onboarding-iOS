@@ -14,20 +14,19 @@ struct OneAnswerView: View {
     var step: OneAnswerStep
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading) {
-                    titleView
-                    descriptionView
-                }
-                VStack(spacing: 12) {
-                    ForEach(step.answers.indices, id: \.self) { index in
-                        buttonView(answer: step.answers[index])
-                    }
+        VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading) {
+                titleView
+                descriptionView
+            }
+            Spacer()
+            VStack(spacing: 12) {
+                ForEach(step.answers.indices, id: \.self) { index in
+                    buttonView(answer: step.answers[index])
                 }
             }
-            .padding()
         }
+        .padding()
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(viewModel.colorPalette.backgroundColor)
     }
