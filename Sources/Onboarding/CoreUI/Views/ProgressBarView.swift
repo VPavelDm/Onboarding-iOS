@@ -12,18 +12,18 @@ struct ProgressBarView: View {
 
     @State private var size: CGSize = .zero
 
-    var completed: CGFloat
+    @ObservedObject var viewModel: OnboardingViewModel
 
     var body: some View {
         ZStack(alignment: .leading) {
             Rectangle()
-                .fill(Color(uiColor: .systemGray6))
+                .fill(viewModel.colorPalette.progressBarBackgroundColor)
                 .clipShape(ProgressBarShape(isCompleted: true))
             Rectangle()
-                .fill(Color.accentColor)
-                .frame(width: size.width * completed)
-                .clipShape(ProgressBarShape(isCompleted: completed == 1))
-                .animation(.spring(duration: 0.35, bounce: 0.35), value: completed)
+                .fill(viewModel.colorPalette.accentColor)
+                .frame(width: size.width * viewModel.passedStepsProcent)
+                .clipShape(ProgressBarShape(isCompleted: viewModel.passedStepsProcent == 1))
+                .animation(.spring(duration: 0.35, bounce: 0.35), value: viewModel.passedStepsProcent)
         }
         .frame(height: .size)
         .readSize(size: $size)
