@@ -53,6 +53,10 @@ extension ProgressStepView {
 
 #Preview {
     ProgressStepView(step: .testData())
-        .environmentObject(OnboardingViewModel(configuration: .testData(), delegate: MockOnboardingDelegate()))
+        .environmentObject(OnboardingViewModel(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData
+        ))
         .preferredColorScheme(.dark)
 }

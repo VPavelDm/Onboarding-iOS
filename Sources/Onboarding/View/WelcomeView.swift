@@ -26,7 +26,7 @@ struct WelcomeView: View {
         }
         .ignoresSafeArea(edges: [.top])
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(.black)
+        .background(viewModel.colorPalette.backgroundColor)
     }
 
     @ViewBuilder
@@ -69,6 +69,7 @@ struct WelcomeView: View {
     OnboardingView(
         configuration: .testData(),
         delegate: MockOnboardingDelegate(),
+        colorPalette: .testData,
         outerScreen: { _ in Text("") }
     )
     .preferredColorScheme(.dark)

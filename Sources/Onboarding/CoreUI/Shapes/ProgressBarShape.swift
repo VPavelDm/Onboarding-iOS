@@ -42,6 +42,7 @@ struct ProgressBarShape: Shape {
     OnboardingView(
         configuration: .testData(),
         delegate: MockOnboardingDelegate(),
+        colorPalette: .testData,
         outerScreen: { _, _ in Text("Hello") }
     )
 }

@@ -81,6 +81,7 @@ struct BinaryAnswerView: View {
     BinaryAnswerView(step: .testData())
         .environmentObject(OnboardingViewModel(
             configuration: .testData(),
-            delegate: MockOnboardingDelegate()
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData
         ))
 }

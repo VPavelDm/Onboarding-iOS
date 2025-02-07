@@ -31,6 +31,7 @@ final class OnboardingViewModel: ObservableObject {
 
     let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
+    let colorPalette: any ColorPalette
 
     var finishProgress: AnyPublisher<Void, Never> {
         Publishers.CombineLatest(progressSubject, progressButtonSubject)
@@ -60,10 +61,11 @@ final class OnboardingViewModel: ObservableObject {
 
     // MARK: - Inits
 
-    init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate) {
+    init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate, colorPalette: any ColorPalette) {
         self.configuration = configuration
         self.delegate = delegate
         self.service = OnboardingService(configuration: configuration)
+        self.colorPalette = colorPalette
     }
 
     // MARK: - Intents

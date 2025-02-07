@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct PrimaryButtonStyle: ButtonStyle {
-    
+    @EnvironmentObject private var viewModel: OnboardingViewModel
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(.black)
+            .foregroundStyle(viewModel.colorPalette.primaryButtonForegroundColor)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: 500)
             .padding()
-            .background(Color.accentColor)
+            .background(viewModel.colorPalette.primaryButtonBackgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .frame(maxWidth: .infinity)
             .scaleEffect(x: configuration.isPressed ? 0.95 : 1, y: configuration.isPressed ? 0.95 : 1)

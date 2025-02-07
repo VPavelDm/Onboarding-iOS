@@ -97,6 +97,7 @@ private extension CGSize {
     OnboardingView(
         configuration: .testData(),
         delegate: MockOnboardingDelegate(),
+        colorPalette: .testData,
         outerScreen: { _ in Text("") }
     )
     .preferredColorScheme(.dark)

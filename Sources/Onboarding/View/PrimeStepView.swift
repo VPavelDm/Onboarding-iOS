@@ -170,7 +170,8 @@ struct PrimeStepView: View {
     PrimeStepView(step: .testData())
         .environmentObject(OnboardingViewModel(
             configuration: .testData(),
-            delegate: MockOnboardingDelegate()
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData
         ))
         .preferredColorScheme(.dark)
 }

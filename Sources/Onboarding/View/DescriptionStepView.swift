@@ -71,6 +71,7 @@ struct DescriptionStepView: View {
     DescriptionStepView(step: .testData())
         .environmentObject(OnboardingViewModel(
             configuration: .testData(),
-            delegate: MockOnboardingDelegate()
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData
         ))
 }
