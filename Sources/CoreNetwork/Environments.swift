@@ -7,53 +7,53 @@
 
 import Foundation
 
-public enum NetworkEnvironment {
-    case develop
-    case production
-    case local
-}
+public struct NetworkEnvironment {
+    private var baseURL: URL
 
-public enum APIVersion: String {
-    case v1
-}
-
-public var networkEnvironment: NetworkEnvironment {
-    NetworkEnvironmentFactory.shared.networkEnvironment
-}
-
-public final class NetworkEnvironmentFactory: @unchecked Sendable {
-    
-    public static let shared = NetworkEnvironmentFactory()
-    
-    #if DEBUG
-    public var networkEnvironment = NetworkEnvironment.develop
-    #else
-    public var networkEnvironment = NetworkEnvironment.production
-    #endif
-    
-}
-
-extension NetworkEnvironment {
-    
-    public var url: URL { self.url(.v1) }
-    
-    public func url(_ version: APIVersion) -> URL {
-        baseURL.appendingPathComponents("/\(version.rawValue)")
+    public init(baseURL: URL) {
+        self.baseURL = baseURL
     }
+}
 
-    private var baseURL: URL {
+public enum APIVersion {
+    case v1, v2, v3
+    case other(String)
+
+    var value: String {
         switch self {
-        case .production: return .production
-        case .develop: return .develop
-        case .local: return .local
+        case .v1:
+            "v1"
+        case .v2:
+            "v2"
+        case .v3:
+            "v3"
+        case .other(let string):
+            string
         }
     }
 }
 
-// MARK: -
+extension NetworkEnvironment {
 
-private extension URL {
-    static let production = URL(string: "https://api.faulingo.com")!
-    static let develop = URL(string: "https://api.faulingo.com")!
-    static let local = URL(string: "http://localhost:8083")!
+    public var url: URL { self.url(.v1) }
+
+    public func url(_ version: APIVersion) -> URL {
+        baseURL.appendingPathComponents("/\(version.value)")
+    }
+}
+
+public final class NetworkEnvironmentFactory: @unchecked Sendable {
+
+    public static let shared = NetworkEnvironmentFactory()
+
+    public var networkEnvironment: NetworkEnvironment {
+        get {
+            _networkEnvironment!
+        }
+        set {
+            _networkEnvironment = newValue
+        }
+    }
+
+    private var _networkEnvironment: NetworkEnvironment?
 }
