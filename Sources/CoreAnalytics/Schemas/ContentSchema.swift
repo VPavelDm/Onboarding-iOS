@@ -14,17 +14,20 @@ import Foundation
 ///
 public struct ContentSchema: ParametersSchema {
     var content: String
-    var source: EventSource
-    
-    public init(content: String, source: EventSource) {
+    var source: EventSource?
+
+    public init(content: String, source: EventSource? = nil) {
         self.content = content
         self.source = source
     }
     
     public func build() -> Parameters {
-        build([
-            "content": content,
-            "source": source.value
-        ])
+        var params: Parameters = [
+            "content": content
+        ]
+        if let source {
+            params["source"] = source.value
+        }
+        return build(params)
     }
 }
