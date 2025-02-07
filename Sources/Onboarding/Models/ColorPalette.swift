@@ -12,8 +12,7 @@ public protocol ColorPalette {
     var textColor: Color { get }
     var secondaryTextColor: Color { get }
     var primaryButtonForegroundColor: Color { get }
-    var primaryButtonBackgroundColor: Color { get }
-    var primaryButtonDisabledBackgroundColor: Color { get }
+    var accentColor: Color { get }
 }
 
 public extension ColorPalette where Self == TestColorPalette {
@@ -28,7 +27,6 @@ public struct TestColorPalette: ColorPalette {
     public var textColor: Color = .primary
     public var secondaryTextColor: Color = .secondary
     public var primaryButtonForegroundColor: Color = .primary
-    public var primaryButtonBackgroundColor: Color = .blue
-    public var primaryButtonDisabledBackgroundColor: Color = .blue.opacity(0.65)
+    public var accentColor: Color = .blue
 }
 

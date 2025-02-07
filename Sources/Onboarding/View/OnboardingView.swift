@@ -105,9 +105,9 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
 
     private var contentLoadingView: some View {
         ProgressView()
-            .tint(.accentColor)
+            .tint(viewModel.colorPalette.accentColor)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.black)
+            .background(viewModel.colorPalette.backgroundColor)
     }
 
     private var backButton: some View {
