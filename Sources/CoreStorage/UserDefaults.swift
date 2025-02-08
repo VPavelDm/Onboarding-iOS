@@ -18,7 +18,7 @@ struct NilFound: Error {}
 ///
 /// This contains the expected type of the value and the storage, which allows
 /// generic additions to be added to `UserDefaults`
-public struct UserDefaultsKey<Value, Stored: UserDefaultsStorable> {
+public struct UserDefaultKey<Value, Stored: UserDefaultsStorable> {
 
     public let name: String
     public let `default`: Value
@@ -49,7 +49,8 @@ public struct UserDefaultsKey<Value, Stored: UserDefaultsStorable> {
                 guard let value = value else { throw NilFound() }
                 return try encode(value)
             },
-            decode: decode)
+            decode: decode
+        )
     }
 
     public init(name: String, default: Value) where Value == Stored {
@@ -62,9 +63,8 @@ public struct UserDefaultsKey<Value, Stored: UserDefaultsStorable> {
     }
 }
 
-extension UserDefaultsKey where Stored == Data {
+extension UserDefaultKey where Stored == Data {
 
-    // swiftlint:disable opening_brace
     /// Stores a value using a json encoder and decoder.
     ///
     /// The `encode` and `decode` functions here should conert between the
@@ -84,11 +84,8 @@ extension UserDefaultsKey where Stored == Data {
         default: Value,
         encode: @escaping (Value) throws -> CodableValue,
         decode: @escaping (CodableValue) throws -> Value
-    ) -> UserDefaultsKey
-    where
-        CodableValue: Codable
-    {
-        UserDefaultsKey(
+    ) -> UserDefaultKey where CodableValue: Codable {
+        UserDefaultKey(
             name: name,
             default: `default`,
             encode: { value in
@@ -98,19 +95,16 @@ extension UserDefaultsKey where Stored == Data {
             decode: { data in
                 let codable = try JSONDecoder().decode(CodableValue.self, from: data)
                 return try decode(codable)
-            })
+            }
+        )
     }
 
     public static func json<V, CodableValue>(
         name: String,
         encode: @escaping (V) throws -> CodableValue,
         decode: @escaping (CodableValue) throws -> V
-    ) -> UserDefaultsKey
-    where
-        CodableValue: Codable,
-        Value == V?
-    {
-        UserDefaultsKey(
+    ) -> UserDefaultKey where CodableValue: Codable, Value == V? {
+        UserDefaultKey(
             name: name,
             encode: { value in
                 let codable = try encode(value)
@@ -121,16 +115,34 @@ extension UserDefaultsKey where Stored == Data {
                 return try decode(codable)
             })
     }
-    // swiftlint:enable opening_brace
+}
+
+extension UserDefaultKey where Value: Codable, Stored == Data {
+
+    public static func json(
+        name: String,
+        default: Value
+    ) -> UserDefaultKey {
+        UserDefaultKey(
+            name: name,
+            default: `default`,
+            encode: { value in
+                try JSONEncoder().encode(value)
+            },
+            decode: { data in
+                try JSONDecoder().decode(Value.self, from: data)
+            }
+        )
+    }
+
 }
 
 struct UnexpectedType: Error {
     let value: Any?
 }
 
-extension CoreStorage.UserDefaultsKey where Stored == Data {
+extension CoreStorage.UserDefaultKey where Stored == Data {
 
-    // swiftlint:disable opening_brace
     /// This mimics the way the `PersistanceService` code was implementing
     /// saving to the keychain.
     ///
@@ -146,11 +158,7 @@ extension CoreStorage.UserDefaultsKey where Stored == Data {
         name: String,
         encode: @escaping (V) throws -> RootObject,
         decode: @escaping (RootObject) throws -> V
-    ) -> Self
-    where
-        Value == V?,
-        RootObject: UserDefaultsStorable
-    {
+    ) -> Self where Value == V?, RootObject: UserDefaultsStorable, RootObject: NSCoding, RootObject: NSObject {
         Self(
             name: name,
             encode: { value in
@@ -158,9 +166,9 @@ extension CoreStorage.UserDefaultsKey where Stored == Data {
                 return try NSKeyedArchiver.archivedData(withRootObject: root, requiringSecureCoding: false)
             },
             decode: { data in
-                let unarchived = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)
-                guard let root = unarchived as? RootObject else { throw UnexpectedType(value: unarchived) }
-                return try decode(root)
+                let unarchived = try NSKeyedUnarchiver.unarchivedObject(ofClass: RootObject.self, from: data)
+                guard let unarchived else { throw UnexpectedType(value: unarchived) }
+                return try decode(unarchived)
             })
     }
 
@@ -169,10 +177,7 @@ extension CoreStorage.UserDefaultsKey where Stored == Data {
         default: Value,
         encode: @escaping (Value) throws -> RootObject,
         decode: @escaping (RootObject) throws -> Value
-    ) -> Self
-    where
-        RootObject: UserDefaultsStorable
-    {
+    ) -> Self where RootObject: UserDefaultsStorable, RootObject: NSCoding, RootObject: NSObject {
         Self(
             name: name,
             default: `default`,
@@ -181,12 +186,11 @@ extension CoreStorage.UserDefaultsKey where Stored == Data {
                 return try NSKeyedArchiver.archivedData(withRootObject: root, requiringSecureCoding: false)
             },
             decode: { data in
-                let unarchived = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)
-                guard let root = unarchived as? RootObject else { throw UnexpectedType(value: unarchived) }
-                return try decode(root)
+                let unarchived = try NSKeyedUnarchiver.unarchivedObject(ofClass: RootObject.self, from: data)
+                guard let unarchived else { throw UnexpectedType(value: unarchived) }
+                return try decode(unarchived)
             })
     }
-    // swiftlint:enable opening_brace
 }
 
 // MARK: - UserDefaults Access
@@ -198,7 +202,7 @@ extension UserDefaults {
     /// - Parameter key: A key in the current user‘s defaults database.
     /// - Returns: The value associated with the specified key, or the key's
     ///            default if the value was not found.
-    public func value<Value, Stored>(for key: UserDefaultsKey<Value, Stored>) -> Value {
+    public func value<Value, Stored>(for key: UserDefaultKey<Value, Stored>) -> Value {
         guard
             let stored = object(forKey: key.name) as? Stored,
             let value = try? key.decode(stored)
@@ -213,7 +217,7 @@ extension UserDefaults {
     /// - Parameter key: A key in the current user‘s defaults database.
     /// - Returns: The url associated with the specified key, or the key's
     ///            default if the value was not found.
-    public func value<Value>(for key: UserDefaultsKey<Value, URL>) -> Value {
+    public func value<Value>(for key: UserDefaultKey<Value, URL>) -> Value {
         guard
             let stored = url(forKey: key.name),
             let value = try? key.decode(stored)
@@ -231,7 +235,7 @@ extension UserDefaults {
     /// - Parameters:
     ///   - value: The value to store in the defaults database.
     ///   - key: The key with which to associate the value.
-    public func set<Value, Stored>(_ value: Value, for key: UserDefaultsKey<Value, Stored>) {
+    public func set<Value, Stored>(_ value: Value, for key: UserDefaultKey<Value, Stored>) {
         guard let stored = try? key.encode(value) else { return }
         set(stored, forKey: key.name)
     }
@@ -244,7 +248,7 @@ extension UserDefaults {
     /// - Parameters:
     ///   - value: The value to store in the defaults database.
     ///   - key: The key with which to associate the value.
-    public func set<Value, Stored>(_ value: Value?, for key: UserDefaultsKey<Value?, Stored>) {
+    public func set<Value, Stored>(_ value: Value?, for key: UserDefaultKey<Value?, Stored>) {
 
         // Note this is needed to prevent a crash in UserDefaults when setting a
         // nil value. This will override the previous set method when the Key's
@@ -262,42 +266,7 @@ extension UserDefaults {
     /// Removes the value of the specified key.
     ///
     /// - Parameter key: The key whose value you want to remove.
-    public func removeValue<Value, Stored>(for key: UserDefaultsKey<Value, Stored>) {
+    public func removeValue<Value, Stored>(for key: UserDefaultKey<Value, Stored>) {
         removeObject(forKey: key.name)
-    }
-}
-
-// MARK: - UserDefaults Conveniences
-
-extension UserDefaults {
-
-    public func increment<Value, Stored>(
-        _ key: UserDefaultsKey<Value, Stored>
-    ) where Value: Numeric {
-        let current = value(for: key)
-        set(current + 1, for: key)
-    }
-}
-
-// MARK: - UserDefaults Legacy
-
-/// Represents a key used for `UserDefaults` where the stored data is no longer needed.
-///
-/// It is intended to be used solely for the purpose of removing legacy data from `UserDefaults`.
-public struct UserDefaultsLegacyKey {
-    public let name: String
-
-    public init(name: String) {
-        self.name = name
-    }
-}
-
-extension UserDefaults {
-
-    /// Removes the values of the specified legacy keys.
-    ///
-    /// - Parameter key: The keys whose values you want to remove.
-    public func removeValues(for keys: [UserDefaultsLegacyKey]) {
-        keys.forEach { removeObject(forKey: $0.name) }
     }
 }
