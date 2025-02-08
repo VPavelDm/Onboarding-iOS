@@ -19,7 +19,7 @@ public struct UserDefault<Value, Stored: UserDefaultsStorable>: DynamicProperty 
     public init(_ key: UserDefaultKey<Value, Stored>, defaults: UserDefaults = .standard) {
         self.key = key
         self.defaults = defaults
-        self._value = State(initialValue: key.default)
+        self._value = State(initialValue: defaults.value(for: key))
     }
 
     /// The value stored in user defaults for the given key.
