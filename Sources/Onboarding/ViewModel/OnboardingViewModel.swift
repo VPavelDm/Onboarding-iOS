@@ -82,15 +82,13 @@ final class OnboardingViewModel: ObservableObject {
         guard let currentStep else { return }
 
         let payloads = answers.compactMap(\.payload).map(UserAnswer.Payload.init(payload:))
-        if let title = currentStep.type.title, !payloads.isEmpty {
-            let answer = UserAnswer(
-                onboardingStepID: currentStep.id,
-                title: title,
-                payloads: payloads
-            )
-            userAnswers.append(answer)
-            await delegate.onAnswerClick(userAnswer: answer)
-        }
+        let answer = UserAnswer(
+            onboardingStepID: currentStep.id,
+            title: currentStep.type.title,
+            payloads: payloads
+        )
+        userAnswers.append(answer)
+        await delegate.onAnswerClick(userAnswer: answer)
 
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
