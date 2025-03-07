@@ -9,23 +9,26 @@ import SwiftUI
 
 struct ProgressCircleView: View {
 
-    @State private var circleProgress: CGFloat = 0
+    @State private var circleProgress: CGFloat = .zero
 
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     let duration: TimeInterval
     @Binding var progress: CGFloat
+    var finished: Bool
 
     var body: some View {
         progressView
             .onReceive(timer) { _ in
-                circleProgress = 1
                 if progress < 93 {
                     progress = min(progress + 100 / duration, 100)
+                } else if finished {
+                    progress = 100
+                    timer.upstream.connect().cancel()
                 } else {
                     progress = 93
-                    timer.upstream.connect().cancel()
                 }
+                circleProgress = progress / 100
             }
     }
 
@@ -51,7 +54,7 @@ struct ProgressCircleView: View {
                 style: StrokeStyle(lineWidth: 12, lineCap: .round)
             )
             .rotationEffect(.degrees(-90))
-            .animation(.linear(duration: duration), value: circleProgress)
+            .animation(.linear(duration: 1), value: circleProgress)
     }
 
     private var progressText: some View {
@@ -62,10 +65,4 @@ struct ProgressCircleView: View {
             .contentTransition(.numericText())
             .animation(.linear, value: progress)
     }
-}
-
-#Preview {
-    ProgressCircleView(duration: 15, progress: .constant(50))
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .preferredColorScheme(.dark)
 }

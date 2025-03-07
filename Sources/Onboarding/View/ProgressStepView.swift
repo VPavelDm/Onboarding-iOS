@@ -12,6 +12,7 @@ struct ProgressStepView: View {
 
     @State var progress: CGFloat = 0
     @State private var isButtonLoading: Bool = false
+    @State private var finishedProcessing: Bool = false
 
     var step: ProgressStep
 
@@ -19,7 +20,7 @@ struct ProgressStepView: View {
         VStack(spacing: 16) {
             ScrollView {
                 VStack(spacing: 64) {
-                    ProgressCircleView(duration: 15, progress: $progress)
+                    ProgressCircleView(duration: 15, progress: $progress, finished: finishedProcessing)
                     VStack(spacing: 32) {
                         titleView
                         stepsView
@@ -37,7 +38,7 @@ struct ProgressStepView: View {
         .background(.black)
         .task {
             await viewModel.processAnswers(step: step)
-            progress = 100
+            finishedProcessing = true
         }
     }
 
