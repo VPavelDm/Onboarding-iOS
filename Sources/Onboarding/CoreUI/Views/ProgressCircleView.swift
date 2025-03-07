@@ -20,10 +20,10 @@ struct ProgressCircleView: View {
         progressView
             .onReceive(timer) { _ in
                 circleProgress = 1
-                if progress < 100 {
+                if progress < 93 {
                     progress = min(progress + 100 / duration, 100)
                 } else {
-                    progress = 87
+                    progress = 93
                     timer.upstream.connect().cancel()
                 }
             }
