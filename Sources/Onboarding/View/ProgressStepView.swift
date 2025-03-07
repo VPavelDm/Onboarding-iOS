@@ -37,6 +37,7 @@ struct ProgressStepView: View {
         .background(.black)
         .task {
             await viewModel.processAnswers(step: step)
+            progress = 100
         }
     }
 

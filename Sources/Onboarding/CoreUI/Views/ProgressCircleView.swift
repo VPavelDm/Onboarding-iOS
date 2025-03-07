@@ -23,7 +23,7 @@ struct ProgressCircleView: View {
                 if progress < 100 {
                     progress = min(progress + 100 / duration, 100)
                 } else {
-                    progress = 100
+                    progress = 87
                     timer.upstream.connect().cancel()
                 }
             }
