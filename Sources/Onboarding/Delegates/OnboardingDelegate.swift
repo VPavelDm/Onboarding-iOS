@@ -17,7 +17,7 @@ public protocol OnboardingDelegate {
     func format(string: String) -> String
     func finalise() async
 
-    func onAnswerClick(userAnswer: UserAnswer) async
+    func onAnswerClick(userAnswer: UserAnswer, allAnswers: [UserAnswer]) async
     func onBackButtonClick() async
 }
 

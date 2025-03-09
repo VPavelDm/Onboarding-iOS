@@ -88,7 +88,7 @@ final class OnboardingViewModel: ObservableObject {
             payloads: payloads
         )
         userAnswers.append(answer)
-        await delegate.onAnswerClick(userAnswer: answer)
+        await delegate.onAnswerClick(userAnswer: answer, allAnswers: userAnswers)
 
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 

@@ -7,311 +7,464 @@
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "Welcome to Lyncil",
-            "description": "Join thousands of songwriters using Lyncil to turn ideas into lyrics — faster and easier than ever!",
-            "emojis": ["🎶", "✏️", "🎸", "🎤", "🎧", "🎹"],
+            "title": "Welcome",
+            "description": "Your AI-powered companion to mastering German words.",
+            "emojis": ["📚", "✏️", "💬", "🧠", "🌍", "🇩🇪"],
             "firstAnswer": {
                 "title": "Get Started",
-                "nextStepID": "customer_age"
+                "nextStepID": "native_language"
             }
+        }
+    },
+    {
+        "id": "native_language",
+        "type": "oneAnswer",
+        "passedPercent": 0.2,
+        "isBackButtonVisible": true,
+        "isProgressBarVisible": true,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Select your native language",
+            "description": "We'll use this for translations to help you learn German faster.",
+            "buttonTitle": "Next",
+            "answers": [
+                {
+                    "title": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "en-EN"
+                    },
+                },
+                {
+                    "title": "🇺🇦 Ukrainian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "uk-UA"
+                    },
+                },
+                {
+                    "title": "🇷🇺 Russian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "ru-RU"
+                    },
+                },
+                {
+                    "title": "🇫🇷 French",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "fr-FR"
+                    },
+                }
+            ]
         }
     },
     {
         "id": "customer_age",
         "type": "oneAnswer",
-        "passedPercent": 0.2,
-        "isBackButtonVisible": false,
-        "isProgressBarVisible": false,
+        "passedPercent": 0.25,
+        "isBackButtonVisible": true,
+        "isProgressBarVisible": true,
         "isCloseButtonVisible": false,
         "payload": {
             "title": "How old are you?",
-            "description": "This helps us tailor your experience",
+            "description": "Age is just a number, but it helps us fine-tune your learning!",
+            "buttonTitle": "Next",
             "answers": [
                 {
-                    "title": "Under 18",
-                    "nextStepID": "songwriting_experience"
+                    "title": "📚 Under 18",
+                    "nextStepID": "previous_experience"
                 },
                 {
-                    "title": "18-24",
-                    "nextStepID": "songwriting_experience"
+                    "title": "🎓 19-35",
+                    "nextStepID": "previous_experience"
                 },
                 {
-                    "title": "25-34",
-                    "nextStepID": "songwriting_experience"
+                    "title": "💼 36-49",
+                    "nextStepID": "previous_experience"
                 },
                 {
-                    "title": "35-44",
-                    "nextStepID": "songwriting_experience"
-                },
-                {
-                    "title": "45+",
-                    "nextStepID": "songwriting_experience"
+                    "title": "🍷 50+",
+                    "nextStepID": "previous_experience"
                 }
             ]
         }
     },
     {
-        "id": "songwriting_experience",
-        "type": "oneAnswer",
-        "passedPercent": 0.3,
-        "isBackButtonVisible": false,
-        "isProgressBarVisible": false,
-        "isCloseButtonVisible": false,
-        "payload": {
-            "title": "Have you written song lyrics before?",
-            "answers": [
-                {
-                    "title": "Yes",
-                    "nextStepID": "songwriting_experience_clarification"
-                },
-                {
-                    "title": "No",
-                    "nextStepID": "songwriting_struggles"
-                }
-            ]
-        }
-    },
-    {
-        "id": "songwriting_experience_clarification",
-        "type": "oneAnswer",
-        "passedPercent": 0.4,
-        "isBackButtonVisible": false,
-        "isProgressBarVisible": false,
-        "isCloseButtonVisible": false,
-        "payload": {
-            "title": "How would you describe your experience?",
-            "answers": [
-                {
-                    "title": "I’ve tried once or twice",
-                    "nextStepID": "songwriting_struggles"
-                },
-                {
-                    "title": "I write occasionally",
-                    "nextStepID": "songwriting_struggles"
-                },
-                {
-                    "title": "I write regularly",
-                    "nextStepID": "songwriting_struggles"
-                }
-            ]
-        }
-    },
-    {
-        "id": "songwriting_struggles",
+        "id": "previous_experience",
         "type": "multipleAnswer",
+        "passedPercent": 0.3,
+        "isBackButtonVisible": true,
+        "isProgressBarVisible": true,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Have you studied German before?",
+            "description": "Tell us how you’ve learned German before so we can tailor your lessons perfectly!",
+            "buttonTitle": "Next",
+            "answers": [
+                {
+                    "title": "I studied German at school 🏫",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I had a private teacher 🎓",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I used apps and online resources 📱💻",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I’ve been to German-speaking countries ✈️🇩🇪",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I’ve only picked up a few words here and there 💬",
+                    "nextStepID": "language_level"
+                },
+                {
+                    "title": "I’ve never studied German before 🌱",
+                    "nextStepID": "difficulties"
+                },
+                {
+                    "title": "None of the above 🤷‍♂️🤷‍♀️",
+                    "nextStepID": "language_level"
+                }
+            ]
+        }
+    },
+    {
+        "id": "language_level",
+        "type": "oneAnswer",
+        "passedPercent": 0.35,
+        "isBackButtonVisible": true,
+        "isProgressBarVisible": true,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Pick Your Learning Level",
+            "description": "Select your level so we can better tailor the words to match Your goals!",
+            "buttonTitle": "Next",
+            "answers": [
+                {
+                    "title": "Beginner (A1) 🌱",
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "beginner"
+                    }
+                },
+                {
+                    "title": "Basic knowledge (A2) 📖",
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "elementary"
+                    }
+                },
+                {
+                    "title": "Intermediate (B1) 🚀",
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "intermediate"
+                    }
+                },
+                {
+                    "title": "Upper-intermediate (B2) 🔥",
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "upperIntermediate"
+                    }
+                },
+                {
+                    "title": "Advanced (C1) 🎯",
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "advanced"
+                    }
+                },
+                {
+                    "title": "Fluent/Native (C2) 🏅",
+                    "nextStepID": "difficulties",
+                    "payload": {
+                        "type": "string",
+                        "value": "proficient"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": "difficulties",
+        "type": "multipleAnswer",
+        "passedPercent": 0.45,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": true,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "What’s the most difficult part of studying German for you?",
+            "description": "Let us know if you're actively learning German so we can support your progress!",
+            "buttonTitle": "Next",
+            "answers": [
+                {
+                    "title": "Learning grammar rules 📚",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Remembering vocabulary 🧠",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Speaking confidently 🎤",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Understanding native speakers 🎧",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Pronunciation 🗣️",
+                    "nextStepID": "satisfaction"
+                },
+                {
+                    "title": "Staying motivated 💪",
+                    "nextStepID": "satisfaction"
+                }
+            ]
+        }
+    },
+    {
+        "id": "satisfaction",
+        "type": "oneAnswer",
         "passedPercent": 0.5,
         "isBackButtonVisible": false,
-        "isProgressBarVisible": false,
+        "isProgressBarVisible": true,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "What’s the hardest part of writing lyrics for you?",
-            "description": "Select all that apply",
-            "buttonTitle": "Continue",
+            "title": "Are you satisfied with your current German level?",
+            "description": "We want to know how you feel about your progress so far. Let’s see if we can help you improve!",
+            "buttonTitle": "Next",
             "answers": [
                 {
-                    "title": "Finding time to write",
-                    "nextStepID": "setup_goal"
+                    "title": "Yes, I’m happy with my level 😊",
+                    "nextStepID": "happy_satisfaction"
                 },
                 {
-                    "title": "Staying consistent",
-                    "nextStepID": "setup_goal"
+                    "title": "I’m okay, but there’s room for improvement 🤔",
+                    "nextStepID": "happy_satisfaction"
                 },
                 {
-                    "title": "Knowing how to start",
-                    "nextStepID": "setup_goal"
-                },
-                {
-                    "title": "Making lyrics rhyme",
-                    "nextStepID": "setup_goal"
-                },
-                {
-                    "title": "Coming up with ideas",
-                    "nextStepID": "setup_goal"
-                },
-                {
-                    "title": "Expressing emotions clearly",
-                    "nextStepID": "setup_goal"
-                },
-                {
-                    "title": "Structuring the song",
-                    "nextStepID": "setup_goal"
-                },
-                {
-                    "title": "Finishing songs",
-                    "nextStepID": "setup_goal"
-                },
-                {
-                    "title": "Other",
-                    "nextStepID": "setup_goal"
+                    "title": "No, I want to be much better 🚀",
+                    "nextStepID": "bad_satisfaction"
                 }
             ]
         }
     },
     {
-        "id": "setup_goal",
+        "id": "happy_satisfaction",
+        "type": "oneAnswer",
+        "passedPercent": 0.55,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": true,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "What’s your goal for learning German?",
+            "description": "Tell us what you're aiming for, so we can help you reach your goal faster!",
+            "buttonTitle": "Next",
+            "answers": [
+                {
+                    "title": "Prepare for a German language exam (Goethe, TELC, etc.) 🎓",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Improve my vocabulary for travel ✈️",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Learn words for work or business 💼",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Expand vocabulary for casual conversations 💬",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "Understand German books, articles, or media 📚",
+                    "nextStepID": "time_constraints"
+                },
+                {
+                    "title": "I just want to improve my vocabulary in general 🌱",
+                    "nextStepID": "lessons_frequency"
+                }
+            ]
+        }
+    },
+    {
+        "id": "bad_satisfaction",
         "type": "oneAnswer",
         "passedPercent": 0.6,
         "isBackButtonVisible": false,
-        "isProgressBarVisible": false,
+        "isProgressBarVisible": true,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "Why do you want to write lyrics?",
-            "description": "Select the goal that inspires you",
+            "title": "What’s your goal for learning German?",
+            "description": "Since you’re just starting out, what would you like to achieve first?",
+            "buttonTitle": "Next",
             "answers": [
                 {
-                    "title": "Impress someone",
-                    "nextStepID": "value_proposition"
+                    "title": "Learn basic words and phrases for everyday use 🛍️",
+                    "nextStepID": "lessons_frequency"
                 },
                 {
-                    "title": "Improve as a songwriter",
-                    "nextStepID": "value_proposition"
+                    "title": "Build a strong foundation with essential vocabulary 🏗️",
+                    "nextStepID": "time_constraints"
                 },
                 {
-                    "title": "Get inspired",
-                    "nextStepID": "value_proposition"
+                    "title": "Be able to introduce myself and hold simple conversations 💬",
+                    "nextStepID": "time_constraints"
                 },
                 {
-                    "title": "Try something new",
-                    "nextStepID": "value_proposition"
+                    "title": "Prepare for a beginner-level language course or exam 📚",
+                    "nextStepID": "time_constraints"
                 },
                 {
-                    "title": "Share my thoughts with the world",
-                    "nextStepID": "value_proposition"
-                },
-                {
-                    "title": "Have fun",
-                    "nextStepID": "value_proposition"
-                },
-                {
-                    "title": "Other",
-                    "nextStepID": "value_proposition"
-                },
+                    "title": "Learn useful words for traveling in German-speaking countries ✈️",
+                    "nextStepID": "time_constraints"
+                }
             ]
         }
     },
     {
-        "id": "value_proposition",
-        "type": "description",
+        "id": "time_constraints",
+        "type": "oneAnswer",
+        "passedPercent": 0.65,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": true,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "How much time do you have to reach your goal?",
+            "description": "Let us know your timeline, so we can help you stay on track and reach your goal in time!",
+            "buttonTitle": "Next",
+            "answers": [
+                {
+                    "title": "Less than a month ⏳",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "1-3 months 📅",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "3-6 months 🗓️",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "6-12 months 🕰️",
+                    "nextStepID": "lessons_frequency"
+                },
+                {
+                    "title": "No rush, I’m taking my time 🌿",
+                    "nextStepID": "lessons_frequency"
+                }
+            ]
+        }
+    },
+    {
+        "id": "lessons_frequency",
+        "type": "oneAnswer",
         "passedPercent": 0.7,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": true,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "How much time will you devote to learning?",
+            "description": "Consistency is key! Tell us how much time you can practice daily, and we’ll tailor your learning plan to fit your schedule.",
+            "buttonTitle": "Next",
+            "answers": [
+                {
+                    "title": "5 mins daily ⏱️",
+                    "nextStepID": "program_creation"
+                },
+                {
+                    "title": "10 mins daily ⏳",
+                    "nextStepID": "program_creation"
+                },
+                {
+                    "title": "15 mins or more 🚀",
+                    "nextStepID": "program_creation"
+                }
+            ]
+        }
+    },
+    {
+        "id": "program_creation",
+        "type": "progress",
+        "passedPercent": 0.75,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "Lyncil makes songwriting effortless 🎵",
-            "description": "Lyncil helps turn your thoughts into amazing lyrics in any genre, mood, and artist style — in minutes. Let’s make your goal a reality!",
-            "image": {
-                "type": "named",
-                "value": "songwriting",
-                "aspectRationType": "fill"
-            },
+            "title": "We're creating your plan...",
+            "steps": [
+                "Analysing your answers",
+                "Generating words to study",
+                "Preparing the plan to study",
+                "Adding finishing touches"
+            ],
             "answer": {
                 "title": "Continue",
-                "nextStepID": "select_favorite_genre"
+                "nextStepID": "remind_time"
             }
         }
     },
     {
-        "id": "select_favorite_genre",
-        "type": "multipleAnswer",
+        "id": "remind_time",
+        "type": "timePicker",
         "passedPercent": 0.8,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "Which music genre inspires you?",
-            "description": "Start with your favorite — you can always explore more later",
-            "buttonTitle": "Continue",
-            "answers": [
-                {
-                    "title": "Rap / Hip-Hop",
-                    "nextStepID": "select_favorite_mood"
-                },
-                {
-                    "title": "Pop",
-                    "nextStepID": "select_favorite_mood"
-                },
-                {
-                    "title": "R&B",
-                    "nextStepID": "select_favorite_mood"
-                },
-                {
-                    "title": "Rock",
-                    "nextStepID": "select_favorite_mood"
-                },
-                {
-                    "title": "Country",
-                    "nextStepID": "select_favorite_mood"
-                },
-                {
-                    "title": "EDM",
-                    "nextStepID": "select_favorite_mood"
-                },
-                {
-                    "title": "Alternative",
-                    "nextStepID": "select_favorite_mood"
-                },
-                {
-                    "title": "Other",
-                    "nextStepID": "select_favorite_mood"
-                },
-            ]
+            "title": "When do you want to study?",
+            "answer": {
+                "title": "Choose Time",
+                "nextStepID": "prime"
+            }
         }
     },
     {
-        "id": "select_favorite_mood",
-        "type": "multipleAnswer",
+        "id": "discountWheel",
+        "type": "discountWheel",
         "passedPercent": 0.9,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "What vibe are you going for?",
-            "description": "Choose a mood to get started",
-            "buttonTitle": "Continue",
-            "answers": [
-                {
-                    "title": "Emotional",
-                    "nextStepID": "analyse_answers"
-                },
-                {
-                    "title": "Enegretic",
-                    "nextStepID": "analyse_answers"
-                },
-                {
-                    "title": "Romantic",
-                    "nextStepID": "analyse_answers"
-                },
-                {
-                    "title": "Chill",
-                    "nextStepID": "analyse_answers"
-                },
-                {
-                    "title": "Inspiring",
-                    "nextStepID": "analyse_answers"
-                },
-                {
-                    "title": "Dark",
-                    "nextStepID": "analyse_answers"
-                }
-            ]
+            "title": "Spin to Win your Prime Discount",
+            "spinButtonTitle": "🔥 Hold to Power Up!",
+            "spinFootnote": "Hold to build spin power, then release to reveal your discount!\nThe longer you hold, the faster it spins.",
+            "successTitle": "🥳 Wooohooo\nyou won 92% discount!",
+            "successDescription": "It is a one-time deal, so don't miss it!",
+            "answer": {
+                "title": "Take Discount",
+                "nextStepID": "prime"
+            }
         }
     },
     {
-        "id": "analyse_answers",
-        "type": "progress",
+        "id": "prime",
+        "type": "custom",
         "passedPercent": 1,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "Just a moment...",
-            "description": "We’re setting up the best songwriting experience for you!",
-            "steps": [
-                "Analyzing your goals",
-                "Analyzing your interests",
-                "Personalizing your experience",
-                "Preparing creative inspiration"
-            ],
             "answer": {
                 "title": "Continue"
             }
