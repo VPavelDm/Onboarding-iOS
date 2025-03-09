@@ -14,17 +14,20 @@ struct DescriptionStepView: View {
     var step: DescriptionStep
 
     var body: some View {
-        VStack {
-            imageView
-            VStack(alignment: .leading, spacing: 12) {
-                titleView
-                descriptionView
+        ScrollView {
+            VStack {
+                imageView
+                VStack(alignment: .leading, spacing: 12) {
+                    titleView
+                    descriptionView
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            Spacer(minLength: 24)
+        }
+        .scrollIndicators(.hidden)
+        .ignoresSafeArea(edges: .top)
+        .safeAreaInset(edge: .bottom) {
             nextButton
         }
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(viewModel.colorPalette.backgroundColor)
     }
 
