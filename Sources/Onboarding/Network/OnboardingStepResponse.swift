@@ -110,6 +110,7 @@ struct OnboardingStepResponse: Decodable {
     struct ImageResponse: Decodable {
         let type: String
         let value: String
+        let aspectRationType: String
     }
 
     struct BinaryAnswer: Decodable {

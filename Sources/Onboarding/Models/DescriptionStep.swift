@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DescriptionStep: Sendable, Equatable, Hashable {
-    let image: ImageType?
+    let image: ImageMeta?
     let title: String
     let description: String?
     let answer: StepAnswer
@@ -19,12 +19,12 @@ struct DescriptionStep: Sendable, Equatable, Hashable {
 extension DescriptionStep {
 
     init(response: OnboardingStepResponse.DescriptionStep) {
-        var imageType: ImageType?
+        var image: ImageMeta?
         if let imageResponse = response.image {
-            imageType = ImageType(response: imageResponse)
+            image = ImageMeta(response: imageResponse)
         }
         self.init(
-            image: imageType,
+            image: image,
             title: response.title,
             description: response.description,
             answer: StepAnswer(response: response.answer)
