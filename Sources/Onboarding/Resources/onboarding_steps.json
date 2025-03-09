@@ -3,30 +3,317 @@
         "id": "welcome",
         "type": "welcome",
         "passedPercent": 0.1,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
         "payload": {
-            "title": "Welcome to Faulingo",
-            "description": "Your AI-powered companion to mastering German words.",
-            "emojis": ["📚", "✏️", "💬", "🧠", "🌍", "🇩🇪"],
+            "title": "Welcome to Lyncil",
+            "description": "Join thousands of songwriters using Lyncil to turn ideas into lyrics — faster and easier than ever!",
+            "emojis": ["🎶", "✏️", "🎸", "🎤", "🎧", "🎹"],
             "firstAnswer": {
                 "title": "Get Started",
-                "nextStepID": "algorithm_intro"
+                "nextStepID": "customer_age"
             }
         }
     },
     {
-        "id": "algorithm_intro",
-        "type": "description",
-        "passedPercent": 0.15,
+        "id": "customer_age",
+        "type": "oneAnswer",
+        "passedPercent": 0.2,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
         "payload": {
-            "title": "Unlock your language potential!",
-            "description": "With our AI algorithm, learning German words becomes quicker and easier. Ready to dive in?",
+            "title": "How old are you?",
+            "description": "This helps us tailor your experience",
+            "answers": [
+                {
+                    "title": "Under 18",
+                    "nextStepID": "songwriting_experience"
+                },
+                {
+                    "title": "18-24",
+                    "nextStepID": "songwriting_experience"
+                },
+                {
+                    "title": "25-34",
+                    "nextStepID": "songwriting_experience"
+                },
+                {
+                    "title": "35-44",
+                    "nextStepID": "songwriting_experience"
+                },
+                {
+                    "title": "45+",
+                    "nextStepID": "songwriting_experience"
+                }
+            ]
+        }
+    },
+    {
+        "id": "songwriting_experience",
+        "type": "oneAnswer",
+        "passedPercent": 0.3,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Have you written song lyrics before?",
+            "answers": [
+                {
+                    "title": "Yes",
+                    "nextStepID": "songwriting_experience_clarification"
+                },
+                {
+                    "title": "No",
+                    "nextStepID": "songwriting_struggles"
+                }
+            ]
+        }
+    },
+    {
+        "id": "songwriting_experience_clarification",
+        "type": "oneAnswer",
+        "passedPercent": 0.4,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "How would you describe your experience?",
+            "answers": [
+                {
+                    "title": "I’ve tried once or twice",
+                    "nextStepID": "songwriting_struggles"
+                },
+                {
+                    "title": "I write occasionally",
+                    "nextStepID": "songwriting_struggles"
+                },
+                {
+                    "title": "I write regularly",
+                    "nextStepID": "songwriting_struggles"
+                }
+            ]
+        }
+    },
+    {
+        "id": "songwriting_struggles",
+        "type": "multipleAnswer",
+        "passedPercent": 0.5,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "What’s the hardest part of writing lyrics for you?",
+            "description": "Select all that apply",
+            "buttonTitle": "Continue",
+            "answers": [
+                {
+                    "title": "Finding time to write",
+                    "nextStepID": "setup_goal"
+                },
+                {
+                    "title": "Staying consistent",
+                    "nextStepID": "setup_goal"
+                },
+                {
+                    "title": "Knowing how to start",
+                    "nextStepID": "setup_goal"
+                },
+                {
+                    "title": "Making lyrics rhyme",
+                    "nextStepID": "setup_goal"
+                },
+                {
+                    "title": "Coming up with ideas",
+                    "nextStepID": "setup_goal"
+                },
+                {
+                    "title": "Expressing emotions clearly",
+                    "nextStepID": "setup_goal"
+                },
+                {
+                    "title": "Structuring the song",
+                    "nextStepID": "setup_goal"
+                },
+                {
+                    "title": "Finishing songs",
+                    "nextStepID": "setup_goal"
+                },
+                {
+                    "title": "Other",
+                    "nextStepID": "setup_goal"
+                }
+            ]
+        }
+    },
+    {
+        "id": "setup_goal",
+        "type": "oneAnswer",
+        "passedPercent": 0.6,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Why do you want to write lyrics?",
+            "description": "Select the goal that inspires you",
+            "answers": [
+                {
+                    "title": "Impress someone",
+                    "nextStepID": "value_proposition"
+                },
+                {
+                    "title": "Improve as a songwriter",
+                    "nextStepID": "value_proposition"
+                },
+                {
+                    "title": "Get inspired",
+                    "nextStepID": "value_proposition"
+                },
+                {
+                    "title": "Try something new",
+                    "nextStepID": "value_proposition"
+                },
+                {
+                    "title": "Share my thoughts with the world",
+                    "nextStepID": "value_proposition"
+                },
+                {
+                    "title": "Have fun",
+                    "nextStepID": "value_proposition"
+                },
+                {
+                    "title": "Other",
+                    "nextStepID": "value_proposition"
+                },
+            ]
+        }
+    },
+    {
+        "id": "value_proposition",
+        "type": "description",
+        "passedPercent": 0.7,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Lyncil makes songwriting effortless 🎵",
+            "description": "Lyncil helps turn your thoughts into amazing lyrics in any genre, mood, and artist style — in minutes. Let’s make your goal a reality!",
             "image": {
                 "type": "named",
-                "value": "algorithmIntroImage"
+                "value": "songwriting",
+                "aspectRationType": "fill"
             },
             "answer": {
-                "title": "Dive In",
-                "nextStepID": "native_language"
+                "title": "Continue",
+                "nextStepID": "select_favorite_genre"
+            }
+        }
+    },
+    {
+        "id": "select_favorite_genre",
+        "type": "multipleAnswer",
+        "passedPercent": 0.8,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Which music genre inspires you?",
+            "description": "Start with your favorite — you can always explore more later",
+            "buttonTitle": "Continue",
+            "answers": [
+                {
+                    "title": "Rap / Hip-Hop",
+                    "nextStepID": "select_favorite_mood"
+                },
+                {
+                    "title": "Pop",
+                    "nextStepID": "select_favorite_mood"
+                },
+                {
+                    "title": "R&B",
+                    "nextStepID": "select_favorite_mood"
+                },
+                {
+                    "title": "Rock",
+                    "nextStepID": "select_favorite_mood"
+                },
+                {
+                    "title": "Country",
+                    "nextStepID": "select_favorite_mood"
+                },
+                {
+                    "title": "EDM",
+                    "nextStepID": "select_favorite_mood"
+                },
+                {
+                    "title": "Alternative",
+                    "nextStepID": "select_favorite_mood"
+                },
+                {
+                    "title": "Other",
+                    "nextStepID": "select_favorite_mood"
+                },
+            ]
+        }
+    },
+    {
+        "id": "select_favorite_mood",
+        "type": "multipleAnswer",
+        "passedPercent": 0.9,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "What vibe are you going for?",
+            "description": "Choose a mood to get started",
+            "buttonTitle": "Continue",
+            "answers": [
+                {
+                    "title": "Emotional",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "Enegretic",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "Romantic",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "Chill",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "Inspiring",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "Dark",
+                    "nextStepID": "analyse_answers"
+                }
+            ]
+        }
+    },
+    {
+        "id": "analyse_answers",
+        "type": "progress",
+        "passedPercent": 1,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Just a moment...",
+            "description": "We’re setting up the best songwriting experience for you!",
+            "steps": [
+                "Analyzing your goals",
+                "Analyzing your interests",
+                "Personalizing your experience",
+                "Preparing creative inspiration"
+            ],
+            "answer": {
+                "title": "Continue"
             }
         }
     }

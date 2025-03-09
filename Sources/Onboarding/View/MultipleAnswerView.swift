@@ -32,7 +32,7 @@ struct MultipleAnswerView: View {
     private var scrollView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 12) {
                     titleView
                     descriptionView
                 }
@@ -70,8 +70,7 @@ struct MultipleAnswerView: View {
             HStack {
                 Text(answer.wrappedValue.value.title)
                 Spacer()
-                CheckBox(isChose: answer.isChose)
-                    .allowsHitTesting(false)
+                RadioButton(colorPalette: viewModel.colorPalette, isSelected: answer.isChose)
             }
         }
         .buttonStyle(MultipleAnswerButtonStyle())
@@ -106,5 +105,11 @@ private extension Array where Element == BoxModel {
 
 #Preview {
     MultipleAnswerView(step: .testData())
+        .environmentObject(OnboardingViewModel(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData
+        ))
         .preferredColorScheme(.dark)
+        .tint(Color(hex: "E8FF00"))
 }

@@ -17,12 +17,13 @@ struct AnswerButtonStyle: ButtonStyle {
             .foregroundStyle(viewModel.colorPalette.secondaryButtonForegroundColor)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
+            .frame(height: 64)
+            .padding(.horizontal)
             .background(viewModel.colorPalette.secondaryButtonBackgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay {
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 1)
+                    .stroke(viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
             }
             .scaleEffect(x: configuration.isPressed ? 0.95 : 1, y: configuration.isPressed ? 0.95 : 1)
             .opacity(isEnabled ? 1.0 : 0.65)
@@ -31,5 +32,10 @@ struct AnswerButtonStyle: ButtonStyle {
 
 #Preview {
     OneAnswerView(step: .testData())
+        .environmentObject(OnboardingViewModel(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData
+        ))
         .preferredColorScheme(.dark)
 }

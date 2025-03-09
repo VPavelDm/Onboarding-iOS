@@ -17,25 +17,25 @@ struct ProgressStepView: View {
     var step: ProgressStep
 
     var body: some View {
-        VStack(spacing: 16) {
-            ScrollView {
-                VStack(spacing: 64) {
-                    ProgressCircleView(duration: 15, progress: $progress, finished: finishedProcessing)
-                    VStack(spacing: 32) {
+        ScrollView {
+            VStack(spacing: 64) {
+                ProgressCircleView(duration: 15, progress: $progress, finished: finishedProcessing)
+                VStack(spacing: 32) {
+                    VStack(spacing: 12) {
                         titleView
-                        stepsView
+                        descriptionView
                     }
+                    stepsView
                 }
-                .padding(.top, 64)
-                .padding(.horizontal, 32)
             }
-            .scrollIndicators(.hidden)
-            nextButton
-                .padding(.horizontal, 32)
-                .padding(.bottom, 32)
+            .padding(.top, 64)
+            .padding(.horizontal, 32)
         }
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(.black)
+        .scrollIndicators(.hidden)
+        .safeAreaInset(edge: .bottom) {
+            nextButton
+        }
+        .background(viewModel.colorPalette.backgroundColor)
         .task {
             await viewModel.processAnswers(step: step)
             finishedProcessing = true
@@ -48,6 +48,16 @@ struct ProgressStepView: View {
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
             .foregroundStyle(.white)
+    }
+
+    @ViewBuilder
+    private var descriptionView: some View {
+        if let description = step.description {
+            Text(description)
+                .font(.headline)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .multilineTextAlignment(.center)
+        }
     }
 
     private var nextButton: some View {
@@ -63,7 +73,10 @@ struct ProgressStepView: View {
             }
         }
         .buttonStyle(PrimaryButtonStyle())
+        .padding([.horizontal, .bottom])
         .disabled(progress != 100)
+        .opacity(progress == 100 ? 1 : 0)
+        .animation(.easeInOut, value: progress == 100)
     }
 }
 

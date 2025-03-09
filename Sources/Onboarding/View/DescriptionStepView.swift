@@ -11,6 +11,10 @@ import CoreUI
 struct DescriptionStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
+    @State private var isTitleVisible: Bool = false
+    @State private var isDescriptionVisible: Bool = false
+    @State private var isButtonVisible: Bool = false
+
     var step: DescriptionStep
 
     var body: some View {
@@ -18,17 +22,35 @@ struct DescriptionStepView: View {
             VStack {
                 imageView
                 VStack(alignment: .leading, spacing: 12) {
-                    titleView
-                    descriptionView
+                    if isTitleVisible {
+                        titleView
+                    }
+                    if isDescriptionVisible {
+                        descriptionView
+                    }
                 }
+                .padding(.horizontal)
             }
         }
         .scrollIndicators(.hidden)
         .ignoresSafeArea(edges: .top)
         .safeAreaInset(edge: .bottom) {
-            nextButton
+            if isButtonVisible {
+                nextButton
+            }
         }
         .background(viewModel.colorPalette.backgroundColor)
+        .task {
+            withAnimation {
+                isTitleVisible = true
+            }
+            withAnimation(.easeInOut.delay(2)) {
+                isDescriptionVisible = true
+            }
+            withAnimation(.easeInOut.delay(4)) {
+                isButtonVisible = true
+            }
+        }
     }
 
     @ViewBuilder
@@ -47,6 +69,7 @@ struct DescriptionStepView: View {
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
             .padding(.horizontal)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     @ViewBuilder
@@ -56,6 +79,7 @@ struct DescriptionStepView: View {
                 .font(.headline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 

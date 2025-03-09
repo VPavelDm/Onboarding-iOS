@@ -11,12 +11,14 @@ import CoreUI
 struct OneAnswerView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
+    @State private var selectedAnswer: StepAnswer?
+
     var step: OneAnswerStep
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 12) {
                     titleView
                     descriptionView
                 }
@@ -27,6 +29,9 @@ struct OneAnswerView: View {
                 }
             }
             .padding()
+        }
+        .safeAreaInset(edge: .bottom) {
+            nextButton
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(viewModel.colorPalette.backgroundColor)
@@ -49,17 +54,42 @@ struct OneAnswerView: View {
     }
 
     private func buttonView(answer: StepAnswer) -> some View {
-        AsyncButton {
-            await viewModel.onAnswer(answers: [answer])
+        Button {
+            selectedAnswer = answer
         } label: {
-            Text(answer.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                Text(answer.title)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                RadioButton(
+                    colorPalette: viewModel.colorPalette,
+                    isSelected: .constant(selectedAnswer == answer)
+                )
+            }
         }
         .buttonStyle(AnswerButtonStyle())
+    }
+
+    private var nextButton: some View {
+        AsyncButton {
+            if let selectedAnswer {
+                await viewModel.onAnswer(answers: [selectedAnswer])
+            }
+        } label: {
+            Text(step.buttonTitle)
+        }
+        .buttonStyle(PrimaryButtonStyle())
+        .padding([.horizontal, .bottom])
+        .disabled(selectedAnswer == nil)
+        .animation(.easeInOut, value: selectedAnswer)
     }
 }
 
 #Preview {
     OneAnswerView(step: .testData())
+        .environmentObject(OnboardingViewModel(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData
+        ))
         .preferredColorScheme(.dark)
 }

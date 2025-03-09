@@ -10,6 +10,7 @@ import Foundation
 struct OneAnswerStep: Sendable, Equatable, Hashable {
     let title: String
     let description: String?
+    let buttonTitle: String
     let answers: [StepAnswer]
 }
 
@@ -21,6 +22,7 @@ extension OneAnswerStep {
         self.init(
             title: response.title,
             description: response.description,
+            buttonTitle: response.buttonTitle,
             answers: response.answers.map(StepAnswer.init(response:))
         )
     }

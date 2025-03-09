@@ -15,7 +15,7 @@ struct BinaryAnswerView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 12) {
                 titleView
                 descriptionView
             }

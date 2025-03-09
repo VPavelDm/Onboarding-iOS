@@ -90,6 +90,7 @@ struct OnboardingStepResponse: Decodable {
     struct OneAnswerStep: Decodable {
         let title: String
         let description: String?
+        let buttonTitle: String
         let answers: [StepAnswer]
     }
 
@@ -130,6 +131,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct ProgressStep: Decodable {
         let title: String
+        let description: String?
         let steps: [String]
         let answer: StepAnswer
     }
