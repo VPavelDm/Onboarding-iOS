@@ -33,7 +33,7 @@ struct DescriptionStepView: View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
                 .frame(maxWidth: .infinity)
-                .aspectRatio(1.0, contentMode: image.contentMode)
+                .aspectRatio(contentMode: image.contentMode)
                 .clipShape(BottomWaveShape())
         }
     }

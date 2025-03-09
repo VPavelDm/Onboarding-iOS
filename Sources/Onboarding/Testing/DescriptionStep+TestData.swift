@@ -11,7 +11,7 @@ extension DescriptionStep {
 
     static func testData() -> Self {
         Self(
-            image: ImageMeta(imageType: .named("songwriting"), aspectRationType: "fill"),
+            image: ImageMeta(imageType: .named("songwriting_1"), aspectRationType: "fill"),
             title: "Awesome! That's a great starting point.",
             description: "Studies have shown that regularly tracking your calories is directly linked to the self-motivation needed to successfully lose weight!", 
             answer: StepAnswer(
