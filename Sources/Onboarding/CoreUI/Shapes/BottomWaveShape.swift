@@ -14,9 +14,9 @@ struct BottomWaveShape: Shape {
 
         path.move(to: .zero)
         path.addLine(to: .init(x: rect.maxX, y: rect.minY))
-        path.addLine(to: .init(x: rect.maxX, y: rect.maxY * 0.85))
+        path.addLine(to: .init(x: rect.maxX, y: rect.maxY * 0.9))
         path.addQuadCurve(
-            to: .init(x: rect.minX, y: rect.maxY * 0.85),
+            to: .init(x: rect.minX, y: rect.maxY * 0.9),
             control: .init(x: rect.midX * 0.75, y: rect.maxY)
         )
         path.closeSubpath()
