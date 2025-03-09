@@ -31,11 +31,11 @@ extension ProgressStepView {
             .background {
                 if stepCompleted(at: index) {
                     Circle()
-                        .fill(Color.accentColor)
+                        .fill(viewModel.colorPalette.accentColor)
                 } else {
                     Circle()
                         .stroke(lineWidth: 1)
-                        .fill(Color(uiColor: .systemGray2))
+                        .fill(viewModel.colorPalette.backgroundColor)
                 }
             }
     }

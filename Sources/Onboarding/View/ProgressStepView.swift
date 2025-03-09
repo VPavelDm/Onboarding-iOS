@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProgressStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @EnvironmentObject var viewModel: OnboardingViewModel
 
     @State var progress: CGFloat = 0
     @State private var isButtonLoading: Bool = false
