@@ -78,9 +78,10 @@ struct OneAnswerView: View {
             Text(step.buttonTitle)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding([.horizontal, .bottom])
+        .padding()
         .disabled(selectedAnswer == nil)
         .animation(.easeInOut, value: selectedAnswer)
+        .background(viewModel.colorPalette.backgroundColor)
     }
 }
 
