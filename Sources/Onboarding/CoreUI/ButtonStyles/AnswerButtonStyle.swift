@@ -12,6 +12,8 @@ struct AnswerButtonStyle: ButtonStyle {
 
     @Environment(\.isEnabled) private var isEnabled
 
+    var isSelected: Bool
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(viewModel.colorPalette.secondaryButtonForegroundColor)
@@ -22,8 +24,10 @@ struct AnswerButtonStyle: ButtonStyle {
             .background(viewModel.colorPalette.secondaryButtonBackgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay {
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
+                if isSelected {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
+                }
             }
             .scaleEffect(x: configuration.isPressed ? 0.95 : 1, y: configuration.isPressed ? 0.95 : 1)
             .opacity(isEnabled ? 1.0 : 0.65)

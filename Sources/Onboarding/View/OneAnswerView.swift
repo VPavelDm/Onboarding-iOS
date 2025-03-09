@@ -57,16 +57,10 @@ struct OneAnswerView: View {
         Button {
             selectedAnswer = answer
         } label: {
-            HStack {
-                Text(answer.title)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                RadioButton(
-                    colorPalette: viewModel.colorPalette,
-                    isSelected: .constant(selectedAnswer == answer)
-                )
-            }
+            Text(answer.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .buttonStyle(AnswerButtonStyle())
+        .buttonStyle(AnswerButtonStyle(isSelected: selectedAnswer == answer))
     }
 
     private var nextButton: some View {
