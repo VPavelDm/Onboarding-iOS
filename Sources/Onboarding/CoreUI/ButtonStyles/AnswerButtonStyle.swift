@@ -26,7 +26,7 @@ struct AnswerButtonStyle: ButtonStyle {
             .overlay {
                 if isSelected {
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
+                        .stroke(viewModel.colorPalette.primaryButtonBackgroundColor, lineWidth: 2)
                 }
             }
             .scaleEffect(x: configuration.isPressed ? 0.95 : 1, y: configuration.isPressed ? 0.95 : 1)
