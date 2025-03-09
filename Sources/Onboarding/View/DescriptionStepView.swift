@@ -24,8 +24,8 @@ struct DescriptionStepView: View {
             Spacer(minLength: 24)
             nextButton
         }
-        .background(.black)
-        .ignoresSafeArea(edges: .top)
+        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
+        .background(viewModel.colorPalette.backgroundColor)
     }
 
     @ViewBuilder
@@ -42,7 +42,7 @@ struct DescriptionStepView: View {
         Text(step.title)
             .font(.title)
             .fontWeight(.bold)
-            .foregroundStyle(.white)
+            .foregroundStyle(viewModel.colorPalette.textColor)
             .padding(.horizontal)
     }
 
@@ -51,7 +51,7 @@ struct DescriptionStepView: View {
         if let description = step.description {
             Text(description)
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .padding(.horizontal)
         }
     }
@@ -74,4 +74,5 @@ struct DescriptionStepView: View {
             delegate: MockOnboardingDelegate(),
             colorPalette: .testData
         ))
+        .preferredColorScheme(.dark)
 }
