@@ -24,10 +24,8 @@ struct AnswerButtonStyle: ButtonStyle {
             .background(viewModel.colorPalette.secondaryButtonBackgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay {
-                if isSelected {
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(viewModel.colorPalette.primaryButtonBackgroundColor, lineWidth: 2)
-                }
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(isSelected ? viewModel.colorPalette.primaryButtonBackgroundColor : viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
             }
             .scaleEffect(x: configuration.isPressed ? 0.95 : 1, y: configuration.isPressed ? 0.95 : 1)
             .opacity(isEnabled ? 1.0 : 0.65)
