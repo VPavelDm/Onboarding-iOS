@@ -67,6 +67,9 @@ struct OnboardingStepResponse: Decodable {
         case "discountWheel":
             let payload = try container.decode(DiscountWheelStep.self, forKey: .payload)
             self.type = .discountWheel(payload)
+        case "widget":
+            let payload = try container.decode(WidgetStep.self, forKey: .payload)
+            self.type = .widget(payload)
         default:
             self.type = .unknown
         }
@@ -84,6 +87,7 @@ struct OnboardingStepResponse: Decodable {
         case progress(ProgressStep)
         case timePicker(TimePickerStep)
         case discountWheel(DiscountWheelStep)
+        case widget(WidgetStep)
         case unknown
     }
 
@@ -134,6 +138,14 @@ struct OnboardingStepResponse: Decodable {
         let description: String?
         let steps: [String]
         let answer: StepAnswer
+    }
+
+    struct WidgetStep: Decodable {
+        let title: String
+        let description: String
+        let image: ImageResponse?
+        let installWidgetAnswer: StepAnswer
+        let remindLaterAnswer: StepAnswer
     }
 
     struct TimePickerStep: Decodable {
