@@ -39,6 +39,7 @@ struct WidgetStepView: View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
                 .aspectRatio(1.0, contentMode: image.contentMode)
+                .padding(.horizontal)
         }
     }
 

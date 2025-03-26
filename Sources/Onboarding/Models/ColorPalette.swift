@@ -36,7 +36,7 @@ public struct TestColorPalette: ColorPalette {
     public var primaryButtonForegroundColor: Color = .primary
     public var primaryButtonBackgroundColor: Color = .blue
     public var secondaryButtonForegroundColor: Color = .white
-    public var secondaryButtonBackgroundColor: Color = .gray
+    public var secondaryButtonBackgroundColor: Color = .black
     public var secondaryButtonStrokeColor: Color = .blue
     public var plainButtonColor: Color = .white
     public var progressBarBackgroundColor: Color = .red
