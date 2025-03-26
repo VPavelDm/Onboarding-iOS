@@ -96,6 +96,8 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                 TimePickerStepView(step: step)
             case .discountWheel(let step):
                 DiscountWheelStepView(step: step)
+            case .widget(let step):
+                WidgetStepView(step: step)
             case .unknown, .none:
                 EmptyView()
             }
