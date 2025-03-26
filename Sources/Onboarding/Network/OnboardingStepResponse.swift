@@ -144,8 +144,7 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let description: String
         let image: ImageResponse?
-        let installWidgetAnswer: StepAnswer
-        let remindLaterAnswer: StepAnswer
+        let answer: StepAnswer
     }
 
     struct TimePickerStep: Decodable {

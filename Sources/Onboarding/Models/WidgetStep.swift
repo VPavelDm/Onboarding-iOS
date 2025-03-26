@@ -4,8 +4,7 @@ struct WidgetStep: Sendable, Equatable, Hashable {
     let title: String
     let description: String
     let image: ImageMeta?
-    let installWidgetAnswer: StepAnswer
-    let remindLaterAnswer: StepAnswer
+    let answer: StepAnswer
 }
 
 // MARK: - Convert
@@ -21,8 +20,7 @@ extension WidgetStep {
             title: response.title,
             description: response.description,
             image: image,
-            installWidgetAnswer: StepAnswer(response: response.installWidgetAnswer),
-            remindLaterAnswer: StepAnswer(response: response.remindLaterAnswer)
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

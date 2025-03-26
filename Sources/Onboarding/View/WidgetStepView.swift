@@ -11,8 +11,7 @@ struct WidgetStepView: View {
             descriptionView
             iPhoneImageView
                 .frame(maxHeight: .infinity)
-            installWidgetButton
-            remindLaterButton
+            continueButton
         }
         .padding()
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
@@ -43,22 +42,11 @@ struct WidgetStepView: View {
         }
     }
 
-    var installWidgetButton: some View {
-        Button {
-            if let url = URL(string: "app-prefs:") {
-                UIApplication.shared.open(url)
-            }
-        } label: {
-            Text(step.installWidgetAnswer.title)
-        }
-        .buttonStyle(PrimaryButtonStyle())
-    }
-
-    var remindLaterButton: some View {
+    var continueButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.remindLaterAnswer])
+            await viewModel.onAnswer(answers: [step.answer])
         } label: {
-            Text(step.remindLaterAnswer.title)
+            Text(step.answer.title)
         }
         .buttonStyle(SecondaryButtonStyle())
     }
