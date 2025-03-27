@@ -16,6 +16,24 @@ struct StepAnswer: Sendable, Equatable, Hashable {
     enum Payload: Sendable, Equatable, Hashable {
         case string(String)
         case json(Data)
+
+        var string: String? {
+            switch self {
+            case .string(let string):
+                return string
+            case .json:
+                return nil
+            }
+        }
+
+        var data: Data? {
+            switch self {
+            case .string:
+                return nil
+            case .json(let data):
+                return data
+            }
+        }
     }
 }
 
