@@ -15,6 +15,24 @@ public struct UserAnswer: Sendable, Equatable, Hashable {
     public enum Payload: Sendable, Equatable, Hashable {
         case string(String)
         case json(Data)
+
+        public var string: String? {
+            switch self {
+            case .string(let string):
+                string
+            case .json:
+                nil
+            }
+        }
+
+        public var data: Data? {
+            switch self {
+            case .string:
+                nil
+            case .json(let data):
+                data
+            }
+        }
     }
 }
 
