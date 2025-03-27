@@ -95,6 +95,7 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let description: String?
         let buttonTitle: String
+        let skippable: Bool
         let answers: [StepAnswer]
     }
 
@@ -102,6 +103,7 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let description: String?
         let buttonTitle: String
+        let minAnswersAmount: Int
         let answers: [StepAnswer]
     }
 
@@ -136,6 +138,7 @@ struct OnboardingStepResponse: Decodable {
     struct ProgressStep: Decodable {
         let title: String
         let description: String?
+        let duration: Double
         let steps: [String]
         let answer: StepAnswer
     }

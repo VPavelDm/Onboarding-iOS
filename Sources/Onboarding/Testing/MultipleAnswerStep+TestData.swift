@@ -16,6 +16,7 @@ extension MultipleAnswerStep {
             title: "What challenges did you face?",
             description: "Choose at least one option", 
             buttonTitle: "Next",
+            minAnswersAmount: 0,
             answers: [
                 StepAnswer(title:  "🍟 Resting cravings", nextStepID: nextStepID),
                 StepAnswer(title:  "✨ Staying motivated", nextStepID: nextStepID),

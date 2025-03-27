@@ -31,7 +31,14 @@ struct OneAnswerView: View {
             .padding()
         }
         .safeAreaInset(edge: .bottom) {
-            nextButton
+            VStack {
+                nextButton
+                if step.skippable {
+                    skipButton
+                }
+            }
+            .padding()
+            .background(viewModel.colorPalette.backgroundColor)
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(viewModel.colorPalette.backgroundColor)
@@ -72,10 +79,17 @@ struct OneAnswerView: View {
             Text(step.buttonTitle)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding()
         .disabled(selectedAnswer == nil)
         .animation(.easeInOut, value: selectedAnswer)
-        .background(viewModel.colorPalette.backgroundColor)
+    }
+
+    private var skipButton: some View {
+        AsyncButton {
+            await viewModel.onAnswer(answers: [])
+        } label: {
+            Text("Skip")
+        }
+        .buttonStyle(SecondaryButtonStyle())
     }
 }
 

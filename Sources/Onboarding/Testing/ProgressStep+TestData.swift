@@ -12,6 +12,7 @@ extension ProgressStep {
     static func testData() -> Self {
         ProgressStep(
             title: "We're creating your plan...",
+            duration: 15,
             steps: [
                 "Analysing your answers",
                 "Calculating your calorie goal",

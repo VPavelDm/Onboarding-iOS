@@ -10,6 +10,7 @@ import Foundation
 struct ProgressStep: Sendable, Equatable, Hashable {
     var title: String
     var description: String?
+    var duration: Double
     var steps: [String]
     var answer: StepAnswer
 }
@@ -22,6 +23,7 @@ extension ProgressStep {
         self.init(
             title: response.title,
             description: response.description,
+            duration: response.duration,
             steps: response.steps,
             answer: StepAnswer(response: response.answer)
         )

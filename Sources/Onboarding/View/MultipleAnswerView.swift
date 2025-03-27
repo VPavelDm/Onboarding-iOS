@@ -84,8 +84,8 @@ struct MultipleAnswerView: View {
         }
         .buttonStyle(PrimaryButtonStyle())
         .padding([.horizontal, .bottom])
-        .disabled(answers.isDisabled)
-        .animation(.easeInOut, value: answers.isDisabled)
+        .disabled(answers.isDisabled(step: step))
+        .animation(.easeInOut, value: answers.isDisabled(step: step))
     }
 
 }
@@ -98,8 +98,8 @@ private struct BoxModel: Identifiable {
 
 private extension Array where Element == BoxModel {
 
-    var isDisabled: Bool {
-        !contains(where: { element in element.isChose })
+    func isDisabled(step: MultipleAnswerStep) -> Bool {
+        filter(\.isChose).count < step.minAnswersAmount
     }
 }
 

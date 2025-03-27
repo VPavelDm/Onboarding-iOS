@@ -19,7 +19,7 @@ struct ProgressStepView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 64) {
-                ProgressCircleView(duration: 15, progress: $progress, finished: finishedProcessing)
+                ProgressCircleView(duration: step.duration, progress: $progress, finished: finishedProcessing)
                 VStack(spacing: 32) {
                     VStack(spacing: 12) {
                         titleView
