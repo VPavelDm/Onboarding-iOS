@@ -16,7 +16,7 @@ extension OneAnswerStep {
             title: "What's your main goal?",
             description: "Choose only one answer",
             buttonTitle: "Continue",
-            skippable: false,
+            skip: StepAnswer(title: "Skip", nextStepID: nextStepID),
             answers: [
                 StepAnswer(title: "📉 Lose weight", nextStepID: nextStepID),
                 StepAnswer(title: "👀 Maintain weight", nextStepID: nextStepID),
