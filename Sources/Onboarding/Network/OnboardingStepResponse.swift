@@ -95,7 +95,7 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let description: String?
         let buttonTitle: String
-        let skippable: Bool
+        let skip: StepAnswer?
         let answers: [StepAnswer]
     }
 

@@ -11,7 +11,7 @@ struct OneAnswerStep: Sendable, Equatable, Hashable {
     let title: String
     let description: String?
     let buttonTitle: String
-    let skippable: Bool
+    let skip: StepAnswer?
     let answers: [StepAnswer]
 }
 
@@ -24,7 +24,7 @@ extension OneAnswerStep {
             title: response.title,
             description: response.description,
             buttonTitle: response.buttonTitle,
-            skippable: response.skippable,
+            skip: response.skip.map(StepAnswer.init(response:)),
             answers: response.answers.map(StepAnswer.init(response:))
         )
     }

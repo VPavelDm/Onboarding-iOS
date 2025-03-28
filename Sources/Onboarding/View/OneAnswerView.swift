@@ -33,8 +33,8 @@ struct OneAnswerView: View {
         .safeAreaInset(edge: .bottom) {
             VStack {
                 nextButton
-                if step.skippable {
-                    skipButton
+                if let skip = step.skip {
+                    skipButton(skip: skip)
                 }
             }
             .padding()
@@ -83,11 +83,11 @@ struct OneAnswerView: View {
         .animation(.easeInOut, value: selectedAnswer)
     }
 
-    private var skipButton: some View {
+    private func skipButton(skip: StepAnswer) -> some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [])
+            await viewModel.onAnswer(answers: [skip])
         } label: {
-            Text("Skip")
+            Text(skip.title)
         }
         .buttonStyle(SecondaryButtonStyle())
     }
