@@ -93,7 +93,9 @@ struct SocialProofView: View {
     }
 
     private var nextButton: some View {
-        Button {} label: {
+        AsyncButton {
+            await viewModel.onAnswer(answers: [step.answer])
+        } label: {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
