@@ -15,11 +15,17 @@ struct NameStepView: View {
     var step: EnterNameStep
 
     var body: some View {
-        VStack {
-            titleView
-            descriptionView
+        VStack(spacing: 26) {
+            VStack(spacing: 16) {
+                titleView
+                descriptionView
+            }
             nameInputView
+            Spacer()
+            nextButton
         }
+        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
+        .background(viewModel.colorPalette.backgroundColor)
     }
 
     private var titleView: some View {
@@ -32,15 +38,28 @@ struct NameStepView: View {
 
     private var descriptionView: some View {
         Text(step.description)
-            .font(.headline)
+            .font(.title3)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
             .multilineTextAlignment(.center)
+            .padding(.horizontal, 32)
     }
 
     private var nameInputView: some View {
         TextField("Enter your name", text: $name)
             .textFieldStyle(NameTextFieldStyle(colorPalette: viewModel.colorPalette))
             .padding()
+    }
+
+    private var nextButton: some View {
+        AsyncButton {
+            await viewModel.onAnswer(answers: [step.answer])
+        } label: {
+            Text(step.answer.title)
+        }
+        .buttonStyle(PrimaryButtonStyle())
+        .disabled(name.isEmpty)
+        .animation(.easeInOut, value: name.isEmpty)
+        .padding([.horizontal, .bottom])
     }
 }
 

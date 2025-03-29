@@ -15,6 +15,8 @@ struct SocialProofView: View {
             nextButton
         }
         .ignoresSafeArea(edges: .top)
+        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
+        .background(viewModel.colorPalette.backgroundColor)
     }
 
     @ViewBuilder
