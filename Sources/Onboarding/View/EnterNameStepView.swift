@@ -47,6 +47,14 @@ struct NameStepView: View {
     private var nameInputView: some View {
         TextField("Enter your name", text: $name)
             .textFieldStyle(NameTextFieldStyle(colorPalette: viewModel.colorPalette))
+            .textContentType(.name)
+            .keyboardType(.namePhonePad)
+            .submitLabel(.continue)
+            .onSubmit {
+                Task {
+                    await viewModel.onAnswer(answers: [step.answer])
+                }
+            }
             .padding()
     }
 
