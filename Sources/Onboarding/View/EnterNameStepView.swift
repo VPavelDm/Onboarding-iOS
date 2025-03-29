@@ -50,6 +50,7 @@ struct NameStepView: View {
             .textContentType(.name)
             .keyboardType(.namePhonePad)
             .submitLabel(.continue)
+            .textInputAutocapitalization(.words)
             .onSubmit {
                 Task {
                     await viewModel.onAnswer(answers: [step.answer])
