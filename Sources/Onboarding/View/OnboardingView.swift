@@ -100,6 +100,8 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                 WidgetStepView(step: step)
             case .socialProof(let step):
                 SocialProofView(step: step)
+            case .enterName(let step):
+                NameStepView(step: step)
             case .unknown, .none:
                 EmptyView()
             }

@@ -1,23 +1,16 @@
 [
     {
         "id": "welcome",
-        "type": "socialProof",
+        "type": "enterName",
         "passedPercent": 0.1,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "You can’t change your mindset with words, some say",
-            "image": {
-                "type": "named",
-                "value": "hands",
-                "aspectRationType": "fit"
-            },
-            "palmBranchTitle": "+15 million",
-            "palmBranchDescription": "Positive users",
-            "userReview": "Life-changing",
+            "title": "Hello! What do you want to be called?",
+            "description": "Your name will appear in your affirmations",
             "answer": {
-                "title": "Start Now",
+                "title": "Continue",
                 "nextStepID": "gender"
             }
         }

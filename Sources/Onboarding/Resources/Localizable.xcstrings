@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "%@" : {
       "localizations" : {
         "de" : {
@@ -580,6 +583,9 @@
           }
         }
       }
+    },
+    "Enter your name" : {
+
     },
     "Expires In" : {
       "localizations" : {
