@@ -90,16 +90,16 @@ struct DescriptionStepView: View {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding([.horizontal, .bottom])
+        .padding()
     }
 }
 
 #Preview {
-    DescriptionStepView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
+    OnboardingView(
+        configuration: .testData(),
+        delegate: MockOnboardingDelegate(),
+        colorPalette: .testData,
+        outerScreen: { _ in }
+    )
+    .preferredColorScheme(.dark)
 }
