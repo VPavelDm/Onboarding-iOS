@@ -28,6 +28,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case timePicker(TimePickerStep)
         case discountWheel(DiscountWheelStep)
         case widget(WidgetStep)
+        case socialProof(SocialProofStep)
         case unknown
 
         var title: String? {
@@ -55,6 +56,8 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
             case .discountWheel(let step):
                 step.title
             case .widget(let step):
+                step.title
+            case .socialProof(let step):
                 step.title
             case .unknown:
                 nil
@@ -94,6 +97,7 @@ extension OnboardingStep {
         case .timePicker(let payload): .timePicker(TimePickerStep(response: payload))
         case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload))
         case .widget(let payload): .widget(WidgetStep(response: payload))
+        case .socialProof(let payload): .socialProof(SocialProofStep(response: payload))
         default: .unknown
         }
 

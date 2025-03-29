@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 06.09.24.
 //

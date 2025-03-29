@@ -1,19 +1,21 @@
 [
     {
         "id": "welcome",
-        "type": "description",
+        "type": "socialProof",
         "passedPercent": 0.1,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
             "title": "You can’t change your mindset with words, some say",
-            "description": "unless... you use the right ones consistently",
             "image": {
                 "type": "named",
-                "value": "welcomeScreen",
+                "value": "hands",
                 "aspectRationType": "fit"
             },
+            "palmBranchTitle": "+15 million",
+            "palmBranchDescription": "Positive users",
+            "userReview": "Life-changing",
             "answer": {
                 "title": "Start Now",
                 "nextStepID": "gender"

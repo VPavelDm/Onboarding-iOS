@@ -98,6 +98,8 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                 DiscountWheelStepView(step: step)
             case .widget(let step):
                 WidgetStepView(step: step)
+            case .socialProof(let step):
+                SocialProofView(step: step)
             case .unknown, .none:
                 EmptyView()
             }
