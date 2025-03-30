@@ -56,7 +56,7 @@ struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
     }
 
     private var labelView: some View {
-        VStack(alignment: .leading) {
+        VStack {
             Spacer()
             Spacer()
             ForEach(step.messages.indices, id: \.self) { index in
@@ -64,7 +64,13 @@ struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
                     Text(step.messages[index])
                         .foregroundStyle(onboarding.colorPalette.textColor)
                         .font(.title)
-                        .fontWeight(.semibold)
+                        .applyIf { view in
+                            if #available(iOS 16.1, *) {
+                                view.fontDesign(.rounded)
+                            }
+                        }
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
                         .transition(.asymmetric(
                             insertion: .move(edge: .bottom),
                             removal: .move(edge: .top))
