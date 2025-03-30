@@ -8,13 +8,6 @@
 import SwiftUI
 import CoreUI
 
-struct EmptyButtonStyle: ButtonStyle {
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-    }
-}
-
 struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
     @EnvironmentObject private var onboarding: OnboardingViewModel
 
@@ -26,73 +19,63 @@ struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
 
     var body: some View {
         VStack {
-            if displayFadeContent {
-                fadeContentView
+            if activeElementIndex.map({ $0 < step.messages.count }) ?? true {
+                contentView
             } else if onboarding.steps.count > 1 {
                 NavigationStackContent(step: onboarding.steps[1], outerScreen: outerScreen)
             }
         }
         .onAppear {
-            withAnimation(.easeInOut.delay(2)) {
-                activeElementIndex = 0
-            }
+            displayNextText()
         }
     }
 
-    private var fadeContentView: some View {
-        AsyncButton {
-            guard let activeElementIndex else { return }
-            withAnimation {
-                if activeElementIndex == step.messages.count - 1 {
-                    displayFadeContent = false
-                } else {
-                    self.activeElementIndex = activeElementIndex + 1
-                }
-            }
-        } label: {
-            labelView
-        }
-        .buttonStyle(EmptyButtonStyle())
-    }
-
-    private var labelView: some View {
+    private var contentView: some View {
         VStack {
-            Spacer()
-            Spacer()
+            Spacer(); Spacer()
             ForEach(step.messages.indices, id: \.self) { index in
-                if activeElementIndex == index {
-                    Text(step.messages[index])
-                        .foregroundStyle(onboarding.colorPalette.textColor)
-                        .font(.title)
-                        .applyIf { view in
-                            if #available(iOS 16.1, *) {
-                                view.fontDesign(.rounded)
-                            }
-                        }
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .transition(.asymmetric(
-                            insertion: .move(edge: .bottom),
-                            removal: .move(edge: .top))
-                            .combined(with: .opacity)
-                        )
+                VStack {
+                    if activeElementIndex == index {
+                        messageView(step.messages[index])
+                    }
                 }
+                .blur(radius: activeElementIndex == index ? 0 : 10)
             }
-            Spacer()
-            Spacer()
-            Spacer()
-            instructionView
+            Spacer(); Spacer(); Spacer()
         }
         .padding(.horizontal)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .contentShape(Rectangle())
     }
 
-    private var instructionView: some View {
-        Text("Tap to continue")
-            .font(.footnote.bold())
-            .frame(maxWidth: .infinity)
-            .opacity(activeElementIndex != nil && activeElementIndex != step.messages.count ? 1 : 0)
+    private func messageView(_ message: String) -> some View {
+        Text(message)
+            .foregroundStyle(onboarding.colorPalette.textColor)
+            .font(.title)
+            .applyIf { view in
+                if #available(iOS 16.1, *) {
+                    view.fontDesign(.rounded)
+                }
+            }
+            .fontWeight(.bold)
+            .multilineTextAlignment(.center)
+            .transition(.opacity)
+    }
+
+    func displayNextText() {
+        if #available(iOS 17.0, *) {
+            withAnimation(.default.delay(3)) {
+                activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
+            } completion: {
+                displayNextText()
+            }
+        } else {
+            withAnimation(.easeInOut(duration: 3)) {
+                activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+                displayNextText()
+            }
+        }
     }
 }
 
