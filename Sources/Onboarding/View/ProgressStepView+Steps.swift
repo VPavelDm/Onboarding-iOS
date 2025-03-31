@@ -50,13 +50,3 @@ extension ProgressStepView {
         CGFloat(index + 1) / CGFloat(step.steps.count) * 100 <= progress
     }
 }
-
-#Preview {
-    ProgressStepView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
-}

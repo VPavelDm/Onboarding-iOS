@@ -78,13 +78,3 @@ struct ProgressStepView: View {
         .animation(.easeInOut, value: progress == 100)
     }
 }
-
-#Preview {
-    ProgressStepView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
-}

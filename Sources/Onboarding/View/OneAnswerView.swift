@@ -39,7 +39,7 @@ struct OneAnswerView: View {
             }
             .padding()
         }
-        .background(viewModel.colorPalette.backgroundColor)
+        .background(viewModel.colorPalette.anyBackgroundView)
     }
 
     private var titleView: some View {

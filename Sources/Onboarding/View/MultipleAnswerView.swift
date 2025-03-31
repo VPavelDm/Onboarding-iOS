@@ -100,14 +100,3 @@ private extension Array where Element == BoxModel {
         filter(\.isChose).count < step.minAnswersAmount
     }
 }
-
-#Preview {
-    MultipleAnswerView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
-        .tint(Color(hex: "E8FF00"))
-}

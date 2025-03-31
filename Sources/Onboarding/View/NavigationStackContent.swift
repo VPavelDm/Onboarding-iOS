@@ -45,12 +45,3 @@ struct NavigationStackContent: View {
         }
     }
 }
-
-#Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData
-    )
-    .preferredColorScheme(.dark)
-}

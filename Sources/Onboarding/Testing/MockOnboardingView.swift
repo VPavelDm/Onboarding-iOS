@@ -10,10 +10,15 @@ import SwiftUI
 struct MockOnboardingView: View {
 
     var body: some View {
-        OnboardingView(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        )
+        if #available(iOS 18.0, *) {
+            OnboardingView(
+                configuration: .testData(),
+                delegate: MockOnboardingDelegate(),
+                colorPalette: .testData
+            )
+            .preferredColorScheme(.dark)
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }

@@ -71,7 +71,7 @@ struct NameStepView: View {
 }
 
 private struct NameTextFieldStyle: TextFieldStyle {
-    var colorPalette: ColorPalette
+    var colorPalette: any ColorPalette
 
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
@@ -84,13 +84,4 @@ private struct NameTextFieldStyle: TextFieldStyle {
             )
             .clipShape(RoundedRectangle(cornerRadius: 16))
     }
-}
-
-#Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData
-    )
-    .preferredColorScheme(.dark)
 }

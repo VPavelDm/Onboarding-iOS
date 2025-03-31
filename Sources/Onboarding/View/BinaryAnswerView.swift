@@ -26,7 +26,7 @@ struct BinaryAnswerView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding()
-        .background(viewModel.colorPalette.backgroundColor)
+        .background(viewModel.colorPalette.anyBackgroundView)
     }
 
     private var titleView: some View {
@@ -74,13 +74,4 @@ struct BinaryAnswerView: View {
         }
         .buttonStyle(BinaryAnswerButtonStyle())
     }
-}
-
-#Preview {
-    BinaryAnswerView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
 }

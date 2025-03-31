@@ -24,7 +24,7 @@ struct WelcomeView: View {
             }
             .padding([.horizontal, .bottom])
         }
-        .background(viewModel.colorPalette.backgroundColor)
+        .background(viewModel.colorPalette.anyBackgroundView)
     }
 
     private var getStartedButton: some View {
@@ -44,14 +44,4 @@ struct WelcomeView: View {
         }
         .buttonStyle(SecondaryButtonStyle())
     }
-}
-
-#Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData
-    )
-    .preferredColorScheme(.dark)
-    .background(Color.red)
 }

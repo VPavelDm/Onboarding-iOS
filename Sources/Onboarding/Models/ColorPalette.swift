@@ -8,7 +8,8 @@
 import SwiftUI
 
 public protocol ColorPalette {
-    var backgroundColor: Color { get }
+    associatedtype BackgroundView: View
+    var backgroundView: BackgroundView { get }
     var textColor: Color { get }
     var secondaryTextColor: Color { get }
     var primaryButtonForegroundColor: Color { get }
@@ -22,6 +23,14 @@ public protocol ColorPalette {
     var accentColor: Color { get }
 }
 
+extension ColorPalette {
+
+    var anyBackgroundView: AnyView {
+        AnyView(backgroundView)
+    }
+}
+
+@available(iOS 18.0, *)
 public extension ColorPalette where Self == TestColorPalette {
 
     static var testData: Self {
@@ -29,8 +38,10 @@ public extension ColorPalette where Self == TestColorPalette {
     }
 }
 
+@available(iOS 18.0, *)
 public struct TestColorPalette: ColorPalette {
-    public var backgroundColor: Color = .green
+    public typealias BackgroundView = AffirmationBackgroundView
+    public var backgroundView: BackgroundView = AffirmationBackgroundView()
     public var textColor: Color = .primary
     public var secondaryTextColor: Color = .secondary
     public var primaryButtonForegroundColor: Color = .primary

@@ -17,17 +17,16 @@ struct SocialProofView: View {
             Spacer()
             nextButton
         }
-        .ignoresSafeArea(edges: .top)
+        .padding()
     }
 
     @ViewBuilder
     private var imageView: some View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 200)
-                .clipShape(BottomWaveShape())
         }
     }
 
@@ -123,7 +122,6 @@ struct SocialProofView: View {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding([.horizontal, .bottom])
     }
 }
 

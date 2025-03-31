@@ -28,13 +28,3 @@ struct MultipleAnswerButtonStyle: ButtonStyle {
             .opacity(isEnabled ? 1.0 : 0.65)
     }
 }
-
-#Preview {
-    MultipleAnswerView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
-}

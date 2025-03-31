@@ -37,11 +37,3 @@ struct ProgressBarShape: Shape {
         return path
     }
 }
-
-#Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData
-    )
-}

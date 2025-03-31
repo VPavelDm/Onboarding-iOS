@@ -23,6 +23,7 @@ struct WelcomeFadeView: View {
                 NavigationStackContent(step: onboarding.steps[1])
             }
         }
+        .background(onboarding.colorPalette.anyBackgroundView)
         .onAppear {
             displayNextText()
         }
@@ -58,6 +59,7 @@ struct WelcomeFadeView: View {
     }
 
     func displayNextText() {
+        guard activeElementIndex.map({ $0 < step.messages.count }) ?? true else { return }
         if #available(iOS 17.0, *) {
             withAnimation(.default.delay(3)) {
                 activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
@@ -76,13 +78,5 @@ struct WelcomeFadeView: View {
 }
 
 #Preview {
-    if #available(iOS 18.0, *) {
-        OnboardingView(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        )
-        .preferredColorScheme(.dark)
-        .background(AffirmationBackgroundView())
-    }
+    MockOnboardingView()
 }

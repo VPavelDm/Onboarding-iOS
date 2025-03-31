@@ -92,12 +92,3 @@ struct DescriptionStepView: View {
         .padding()
     }
 }
-
-#Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData
-    )
-    .preferredColorScheme(.dark)
-}

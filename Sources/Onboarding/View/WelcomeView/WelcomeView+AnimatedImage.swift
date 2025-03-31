@@ -92,12 +92,3 @@ private extension CGSize {
         }
     }
 }
-
-#Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData
-    )
-    .preferredColorScheme(.dark)
-}

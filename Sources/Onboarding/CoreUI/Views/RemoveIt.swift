@@ -8,10 +8,10 @@
 import SwiftUI
 
 @available(iOS 18.0, *)
-struct AffirmationBackgroundView: View {
+public struct AffirmationBackgroundView: View {
     @State private var isActive: Bool = true
 
-    var body: some View {
+    public var body: some View {
         TimelineView(.animation) { context in
             let epochTime = context.date.timeIntervalSince1970
             let offset = Float(sin(epochTime)) / 4
@@ -49,4 +49,8 @@ extension Color {
     static let color7 = Color(red: 34/255, green: 34/255, blue: 59/255)
     static let color8 = Color(red: 27/255, green: 27/255, blue: 47/255)
     static let color9 = Color(red: 47/255, green: 47/255, blue: 47/255)
+}
+
+#Preview {
+    MockOnboardingView()
 }
