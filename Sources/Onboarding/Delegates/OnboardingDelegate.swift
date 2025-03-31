@@ -8,11 +8,9 @@
 import Foundation
 
 @MainActor
-public protocol OnboardingDelegate {
-    
-    func setupNotifications(for time: String) async throws
+public protocol OnboardingDelegate {    
     func format(string: String) -> String
-    func onAnswerClick(userAnswer: UserAnswer, allAnswers: [UserAnswer]) async
+    func onAnswer(userAnswer: UserAnswer, allAnswers: [UserAnswer]) async
 }
 
 public extension OnboardingDelegate {

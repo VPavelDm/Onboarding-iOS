@@ -95,9 +95,7 @@ struct OneAnswerView: View {
         OnboardingView(
             configuration: .testData(),
             delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in
-            }
+            colorPalette: .testData
         )
         .preferredColorScheme(.dark)
         .background(AffirmationBackgroundView())

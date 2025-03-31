@@ -8,20 +8,19 @@
 import SwiftUI
 import CoreUI
 
-struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
+struct WelcomeFadeView: View {
     @EnvironmentObject private var onboarding: OnboardingViewModel
 
     @State private var activeElementIndex: Int?
 
     var step: WelcomeFadeStep
-    let outerScreen: (OnboardingOuterScreenCallbackParams) -> OuterScreen
 
     var body: some View {
         VStack {
             if activeElementIndex.map({ $0 < step.messages.count }) ?? true {
                 contentView
             } else if onboarding.steps.count > 1 {
-                NavigationStackContent(step: onboarding.steps[1], outerScreen: outerScreen)
+                NavigationStackContent(step: onboarding.steps[1])
             }
         }
         .onAppear {
@@ -81,9 +80,7 @@ struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
         OnboardingView(
             configuration: .testData(),
             delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in
-            }
+            colorPalette: .testData
         )
         .preferredColorScheme(.dark)
         .background(AffirmationBackgroundView())

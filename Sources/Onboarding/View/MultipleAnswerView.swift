@@ -25,7 +25,6 @@ struct MultipleAnswerView: View {
             scrollView
             nextButton
         }
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
     }
 
     private var scrollView: some View {

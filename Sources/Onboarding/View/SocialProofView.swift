@@ -18,7 +18,6 @@ struct SocialProofView: View {
             nextButton
         }
         .ignoresSafeArea(edges: .top)
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
     }
 
     @ViewBuilder
@@ -133,9 +132,7 @@ struct SocialProofView: View {
         OnboardingView(
             configuration: .testData(),
             delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in
-            }
+            colorPalette: .testData
         )
         .preferredColorScheme(.dark)
         .background(AffirmationBackgroundView())

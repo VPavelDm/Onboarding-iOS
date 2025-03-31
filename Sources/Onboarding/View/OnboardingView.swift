@@ -8,30 +8,26 @@
 import SwiftUI
 import CoreUI
 
-public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
+public struct OnboardingView: View {
     @StateObject private var viewModel: OnboardingViewModel
 
     @State private var showError: Bool = false
 
-    let outerScreen: (OnboardingOuterScreenCallbackParams) -> OuterScreen
-
     public init(
         configuration: OnboardingConfiguration,
         delegate: OnboardingDelegate,
-        colorPalette: any ColorPalette,
-        @ViewBuilder outerScreen: @escaping (OnboardingOuterScreenCallbackParams) -> OuterScreen
+        colorPalette: any ColorPalette
     ) {
         self._viewModel = StateObject(wrappedValue: OnboardingViewModel(
             configuration: configuration,
             delegate: delegate,
             colorPalette: colorPalette
         ))
-        self.outerScreen = outerScreen
     }
 
     public var body: some View {
         NavigationStack(path: $viewModel.passedSteps) {
-            NavigationStackContent(step: viewModel.steps.first, outerScreen: outerScreen)
+            NavigationStackContent(step: viewModel.steps.first)
                 .progressView(isVisible: viewModel.currentStep == nil) {
                     contentLoadingView
                 }
@@ -45,10 +41,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                 .navigationDestination(
                     for: OnboardingStep.self,
                     destination: { step in
-                        NavigationStackContent(
-                            step: step,
-                            outerScreen: outerScreen
-                        )
+                        NavigationStackContent(step: step)
                     }
                 )
                 .navigationBarBackButtonHidden(viewModel.currentStep?.isBackButtonVisible == false)
@@ -73,9 +66,7 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
         OnboardingView(
             configuration: .testData(),
             delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in
-            }
+            colorPalette: .testData
         )
         .preferredColorScheme(.dark)
         .background(AffirmationBackgroundView())

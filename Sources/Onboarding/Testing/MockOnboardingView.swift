@@ -13,8 +13,7 @@ struct MockOnboardingView: View {
         OnboardingView(
             configuration: .testData(),
             delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in }
+            colorPalette: .testData
         )
     }
 }

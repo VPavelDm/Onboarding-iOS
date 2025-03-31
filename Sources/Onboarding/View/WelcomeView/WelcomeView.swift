@@ -50,8 +50,7 @@ struct WelcomeView: View {
     OnboardingView(
         configuration: .testData(),
         delegate: MockOnboardingDelegate(),
-        colorPalette: .testData,
-        outerScreen: { _ in Text("") }
+        colorPalette: .testData
     )
     .preferredColorScheme(.dark)
     .background(Color.red)

@@ -7,11 +7,10 @@
 
 import SwiftUI
 
-struct NavigationStackContent<OuterScreen>: View where OuterScreen: View {
+struct NavigationStackContent: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
     
     var step: OnboardingStep?
-    let outerScreen: (OnboardingOuterScreenCallbackParams) -> OuterScreen
 
     var body: some View {
         Group {
@@ -19,7 +18,7 @@ struct NavigationStackContent<OuterScreen>: View where OuterScreen: View {
             case .welcome(let welcomeStep):
                 WelcomeView(step: welcomeStep)
             case .welcomeFade(let step):
-                WelcomeFadeView(step: step, outerScreen: outerScreen)
+                WelcomeFadeView(step: step)
             case .oneAnswer(let oneAnswerStep):
                 OneAnswerView(step: oneAnswerStep)
             case .binaryAnswer(let binaryAnswerStep):
@@ -28,12 +27,6 @@ struct NavigationStackContent<OuterScreen>: View where OuterScreen: View {
                 MultipleAnswerView(step: multipleAnswerStep)
             case .description(let descriptionStep):
                 DescriptionStepView(step: descriptionStep)
-            case .login:
-                outerScreen((.login, handleOuterScreenCallback))
-            case .custom:
-                if let stepID = step?.id {
-                    outerScreen((.custom(stepID), handleOuterScreenCallback))
-                }
             case .progress(let step):
                 ProgressStepView(step: step)
             case .timePicker(let step):
@@ -52,16 +45,5 @@ struct NavigationStackContent<OuterScreen>: View where OuterScreen: View {
         }
         .toolbar(.hidden, for: .navigationBar)
         .removeBackground()
-    }
-
-    private func handleOuterScreenCallback() async {
-        switch viewModel.currentStep?.type {
-        case .custom(let stepAnswer):
-            await viewModel.onAnswer(answers: [stepAnswer])
-        case .login(let stepAnswer):
-            await viewModel.onAnswer(answers: [stepAnswer])
-        default:
-            break
-        }
     }
 }

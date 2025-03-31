@@ -7,5 +7,4 @@
 
 import Foundation
 
-public typealias OnboardingOuterScreenCallbackParams = (screen: OnboardingOuterScreen, completion: () async -> Void)
 public typealias StepID = String

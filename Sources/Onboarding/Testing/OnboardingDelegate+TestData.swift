@@ -10,6 +10,6 @@ import Foundation
 final class MockOnboardingDelegate: OnboardingDelegate {
     func setupNotifications(for time: String) async throws {
     }
-    func onAnswerClick(userAnswer: UserAnswer, allAnswers: [UserAnswer]) {
+    func onAnswer(userAnswer: UserAnswer, allAnswers: [UserAnswer]) {
     }
 }

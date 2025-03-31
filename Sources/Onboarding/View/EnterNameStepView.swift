@@ -24,7 +24,6 @@ struct NameStepView: View {
             Spacer()
             nextButton
         }
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
     }
 
     private var titleView: some View {
@@ -91,9 +90,7 @@ private struct NameTextFieldStyle: TextFieldStyle {
     OnboardingView(
         configuration: .testData(),
         delegate: MockOnboardingDelegate(),
-        colorPalette: .testData,
-        outerScreen: { _ in
-        }
+        colorPalette: .testData
     )
     .preferredColorScheme(.dark)
 }

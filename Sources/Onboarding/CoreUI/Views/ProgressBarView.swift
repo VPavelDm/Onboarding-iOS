@@ -26,7 +26,6 @@ struct ProgressBarView: View {
                 .animation(.spring(duration: 0.35, bounce: 0.35), value: viewModel.passedStepsPercent)
         }
         .frame(width: 300, height: .size)
-        .frame(height: .progressBarHeight, alignment: .bottom)
         .readSize(size: $size)
     }
 }
@@ -42,8 +41,7 @@ private extension CGFloat {
     OnboardingView(
         configuration: .testData(),
         delegate: MockOnboardingDelegate(),
-        colorPalette: .testData,
-        outerScreen: { _, _ in Text("Hello") }
+        colorPalette: .testData
     )
     .preferredColorScheme(.dark)
 }

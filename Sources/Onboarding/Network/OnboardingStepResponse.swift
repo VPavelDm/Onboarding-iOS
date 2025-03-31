@@ -46,12 +46,6 @@ struct OnboardingStepResponse: Decodable {
         case "description":
             let payload = try container.decode(DescriptionStep.self, forKey: .payload)
             self.type = .description(payload)
-        case "login":
-            let payload = try container.decode(CustomStep.self, forKey: .payload)
-            self.type = .login(payload.answer)
-        case "custom":
-            let payload = try container.decode(CustomStep.self, forKey: .payload)
-            self.type = .custom(payload.answer)
         case "welcome":
             let payload = try container.decode(WelcomeStep.self, forKey: .payload)
             self.type = .welcome(payload)
@@ -86,8 +80,6 @@ struct OnboardingStepResponse: Decodable {
         case multipleAnswer(MultipleAnswerStep)
         case description(DescriptionStep)
         case binaryAnswer(BinaryAnswer)
-        case login(StepAnswer)
-        case custom(StepAnswer)
         case welcome(WelcomeStep)
         case welcomeFade(WelcomeFadeStep)
         case progress(ProgressStep)
@@ -222,9 +214,5 @@ struct OnboardingStepResponse: Decodable {
                 }
             }
         }
-    }
-
-    struct CustomStep: Decodable {
-        let answer: StepAnswer
     }
 }

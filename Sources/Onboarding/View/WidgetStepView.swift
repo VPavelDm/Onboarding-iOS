@@ -14,7 +14,6 @@ struct WidgetStepView: View {
             continueButton
         }
         .padding()
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
     }
 
     var titleView: some View {
