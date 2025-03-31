@@ -43,7 +43,14 @@ struct NavigationStackContent: View {
                 EmptyView()
             }
         }
-        .toolbar(.hidden, for: .navigationBar)
-        .removeBackground()
     }
+}
+
+#Preview {
+    OnboardingView(
+        configuration: .testData(),
+        delegate: MockOnboardingDelegate(),
+        colorPalette: .testData
+    )
+    .preferredColorScheme(.dark)
 }

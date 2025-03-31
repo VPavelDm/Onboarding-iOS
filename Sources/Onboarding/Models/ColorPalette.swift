@@ -30,7 +30,7 @@ public extension ColorPalette where Self == TestColorPalette {
 }
 
 public struct TestColorPalette: ColorPalette {
-    public var backgroundColor: Color = .red
+    public var backgroundColor: Color = .green
     public var textColor: Color = .primary
     public var secondaryTextColor: Color = .secondary
     public var primaryButtonForegroundColor: Color = .primary
@@ -41,5 +41,5 @@ public struct TestColorPalette: ColorPalette {
     public var plainButtonColor: Color = .white
     public var progressBarBackgroundColor: Color = .red
     public var orbitColor: Color = .gray
-    public var accentColor: Color = Color(hex: "22223B")
+    public var accentColor: Color = .green
 }

@@ -44,13 +44,6 @@ public struct OnboardingView: View {
                         NavigationStackContent(step: step)
                     }
                 )
-                .navigationBarBackButtonHidden(viewModel.currentStep?.isBackButtonVisible == false)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        ProgressBarView(viewModel: viewModel)
-                            .opacity(viewModel.isProgressBarVisible ? 1 : 0)
-                    }
-                }
         }
         .environmentObject(viewModel)
     }
@@ -62,13 +55,10 @@ public struct OnboardingView: View {
 }
 
 #Preview {
-    if #available(iOS 18.0, *) {
-        OnboardingView(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        )
-        .preferredColorScheme(.dark)
-        .background(AffirmationBackgroundView())
-    }
+    OnboardingView(
+        configuration: .testData(),
+        delegate: MockOnboardingDelegate(),
+        colorPalette: .testData
+    )
+    .preferredColorScheme(.dark)
 }
