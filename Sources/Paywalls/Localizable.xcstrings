@@ -1,0 +1,33 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@" : {
+
+    },
+    "%lld Days" : {
+
+    },
+    "%lld Hours" : {
+
+    },
+    "%lld Minutes" : {
+
+    },
+    "%lld Seconds" : {
+
+    },
+    "Expires In" : {
+
+    },
+    "No Gift due now" : {
+
+    },
+    "Privacy" : {
+
+    },
+    "Terms" : {
+
+    }
+  },
+  "version" : "1.0"
+}

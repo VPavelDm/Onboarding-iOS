@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension View {
+public extension View {
 
     @ViewBuilder
     func redacted(reason: RedactionReasons, if condition: @autoclosure () -> Bool) -> some View {

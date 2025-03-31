@@ -12,7 +12,6 @@ struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
     @EnvironmentObject private var onboarding: OnboardingViewModel
 
     @State private var activeElementIndex: Int?
-    @State private var displayFadeContent: Bool = true
 
     var step: WelcomeFadeStep
     let outerScreen: (OnboardingOuterScreenCallbackParams) -> OuterScreen

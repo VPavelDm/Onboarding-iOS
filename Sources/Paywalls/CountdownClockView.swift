@@ -12,11 +12,11 @@ struct CountdownClockView: View {
 
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
-    @State private var timeComponents: [DiscountedProduct.TimeComponent]
+    @State private var timeComponents: [DiscountProduct.TimeComponent]
     @State private var isRedacted: Bool = true
-    @Binding var discount: DiscountedProduct.Discount
+    @Binding var discount: DiscountProduct.Discount
 
-    init(discount: Binding<DiscountedProduct.Discount>) {
+    init(discount: Binding<DiscountProduct.Discount>) {
         self._discount = discount
         self._timeComponents = State(initialValue: discount.wrappedValue.timeComponents)
     }
@@ -82,14 +82,4 @@ private extension CountdownClockView {
                 .clipShape(RoundedRectangle(cornerRadius: 4))
         }
     }
-}
-
-#Preview {
-    PrimeStepView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
 }

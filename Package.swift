@@ -26,6 +26,9 @@ let package = Package(
         .library(
             name: "CoreStorage",
             targets: ["CoreStorage"]),
+        .library(
+            name: "Paywalls",
+            targets: ["Paywalls"]),
     ],
     dependencies: [
         .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0")
@@ -58,6 +61,12 @@ let package = Package(
         .target(
             name: "CoreStorage",
             dependencies: []
+        ),
+        .target(
+            name: "Paywalls",
+            dependencies: [
+                "CoreUI"
+            ]
         ),
     ]
 )

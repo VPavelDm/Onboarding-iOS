@@ -43,17 +43,3 @@ public struct TestColorPalette: ColorPalette {
     public var orbitColor: Color = .gray
     public var accentColor: Color = Color(hex: "22223B")
 }
-
-#Preview {
-    if #available(iOS 18.0, *) {
-        OnboardingView(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in
-            }
-        )
-        .preferredColorScheme(.dark)
-        .background(AffirmationBackgroundView())
-    }
-}
