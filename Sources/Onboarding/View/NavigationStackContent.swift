@@ -34,8 +34,6 @@ struct NavigationStackContent<OuterScreen>: View where OuterScreen: View {
                 if let stepID = step?.id {
                     outerScreen((.custom(stepID), handleOuterScreenCallback))
                 }
-            case .prime(let step):
-                PrimeStepView(step: step)
             case .progress(let step):
                 ProgressStepView(step: step)
             case .timePicker(let step):

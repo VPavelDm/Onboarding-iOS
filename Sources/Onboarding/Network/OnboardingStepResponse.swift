@@ -52,9 +52,6 @@ struct OnboardingStepResponse: Decodable {
         case "custom":
             let payload = try container.decode(CustomStep.self, forKey: .payload)
             self.type = .custom(payload.answer)
-        case "prime":
-            let payload = try container.decode(PrimeStep.self, forKey: .payload)
-            self.type = .prime(payload)
         case "welcome":
             let payload = try container.decode(WelcomeStep.self, forKey: .payload)
             self.type = .welcome(payload)
@@ -91,7 +88,6 @@ struct OnboardingStepResponse: Decodable {
         case binaryAnswer(BinaryAnswer)
         case login(StepAnswer)
         case custom(StepAnswer)
-        case prime(PrimeStep)
         case welcome(WelcomeStep)
         case welcomeFade(WelcomeFadeStep)
         case progress(ProgressStep)
@@ -192,12 +188,6 @@ struct OnboardingStepResponse: Decodable {
         var spinFootnote: String
         var successTitle: String
         var successDescription: String
-        let answer: StepAnswer
-    }
-
-    struct PrimeStep: Decodable {
-        let title: String
-        let description: String
         let answer: StepAnswer
     }
 

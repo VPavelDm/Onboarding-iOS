@@ -94,8 +94,6 @@ final class OnboardingViewModel: ObservableObject {
         if let nextStepIndex = steps.firstIndex(where: { $0.id == answers.last?.nextStepID }) {
             passedSteps.append(steps[nextStepIndex])
             self.currentStep = passedSteps.last
-        } else {
-            await delegate.finalise()
         }
     }
 
@@ -110,18 +108,7 @@ final class OnboardingViewModel: ObservableObject {
             }
             .store(in: &cancellations)
         
-        try? await delegate.processAnswers(userAnswers)
         progressSubject.send(Void())
-    }
-
-    func onBack() {
-        if !userAnswers.isEmpty {
-            userAnswers.removeLast()
-        }
-        if !passedSteps.isEmpty {
-            passedSteps.removeLast()
-            currentStep = passedSteps.last
-        }
     }
 
     func format(string: String) -> String {

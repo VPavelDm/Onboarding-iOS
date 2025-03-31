@@ -24,7 +24,6 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case description(DescriptionStep)
         case login(StepAnswer)
         case custom(StepAnswer)
-        case prime(PrimeStep)
         case progress(ProgressStep)
         case timePicker(TimePickerStep)
         case discountWheel(DiscountWheelStep)
@@ -50,8 +49,6 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
             case .login(let stepAnswer):
                 stepAnswer.title
             case .custom(let stepAnswer):
-                stepAnswer.title
-            case .prime(let stepAnswer):
                 stepAnswer.title
             case .progress(let progressStep):
                 progressStep.title
@@ -99,7 +96,6 @@ extension OnboardingStep {
         case .binaryAnswer(let payload): .binaryAnswer(BinaryAnswerStep(response: payload))
         case .login(let payload): .login(StepAnswer(response: payload))
         case .custom(let payload): .custom(StepAnswer(response: payload))
-        case .prime(let payload): .prime(PrimeStep(response: payload))
         case .progress(let payload): .progress(ProgressStep(response: payload))
         case .timePicker(let payload): .timePicker(TimePickerStep(response: payload))
         case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload))
