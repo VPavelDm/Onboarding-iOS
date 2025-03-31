@@ -9,7 +9,7 @@ import SwiftUI
 
 extension View {
 
-    func applyIf(@ViewBuilder transform: (Self) -> some View) -> some View {
+    func apply(@ViewBuilder transform: (Self) -> some View) -> some View {
         transform(self)
     }
 }

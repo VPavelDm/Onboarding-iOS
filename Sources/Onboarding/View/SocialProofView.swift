@@ -56,7 +56,7 @@ struct SocialProofView: View {
         Text(step.laurelTitle)
             .font(.title.bold())
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .applyIf { view in
+            .apply { view in
                 if #available(iOS 16.1, *) {
                     view.fontDesign(.rounded)
                 }
@@ -67,7 +67,7 @@ struct SocialProofView: View {
         Text(step.laurelDescription)
             .font(.title2)
             .fontWeight(.medium)
-            .applyIf { view in
+            .apply { view in
                 if #available(iOS 16.1, *) {
                     view.fontDesign(.rounded)
                 }
@@ -79,7 +79,7 @@ struct SocialProofView: View {
         Text(step.title)
             .font(.title3)
             .fontWeight(.medium)
-            .applyIf { view in
+            .apply { view in
                 if #available(iOS 16.1, *) {
                     view.fontDesign(.rounded)
                 }
@@ -110,7 +110,7 @@ struct SocialProofView: View {
         Text(step.userReview)
             .font(.headline)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-            .applyIf { view in
+            .apply { view in
                 if #available(iOS 16.1, *) {
                     view.fontDesign(.rounded)
                 }

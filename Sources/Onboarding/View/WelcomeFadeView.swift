@@ -49,7 +49,7 @@ struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
         Text(message)
             .foregroundStyle(onboarding.colorPalette.textColor)
             .font(.title)
-            .applyIf { view in
+            .apply { view in
                 if #available(iOS 16.1, *) {
                     view.fontDesign(.rounded)
                 }
