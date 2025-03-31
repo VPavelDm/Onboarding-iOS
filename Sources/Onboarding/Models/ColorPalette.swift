@@ -42,15 +42,15 @@ public extension ColorPalette where Self == TestColorPalette {
 public struct TestColorPalette: ColorPalette {
     public typealias BackgroundView = AffirmationBackgroundView
     public var backgroundView: BackgroundView = AffirmationBackgroundView()
-    public var textColor: Color = .primary
+    public var textColor: Color = .white
     public var secondaryTextColor: Color = .secondary
-    public var primaryButtonForegroundColor: Color = .primary
-    public var primaryButtonBackgroundColor: Color = Color(red: 108/255, green: 71/255, blue: 214/255)
+    public var primaryButtonForegroundColor: Color = .black
+    public var primaryButtonBackgroundColor: Color = Color(uiColor: .systemYellow)
     public var secondaryButtonForegroundColor: Color = .white
-    public var secondaryButtonBackgroundColor: Color = .black
-    public var secondaryButtonStrokeColor: Color = .blue
-    public var plainButtonColor: Color = .white
-    public var progressBarBackgroundColor: Color = .red
-    public var orbitColor: Color = .gray
-    public var accentColor: Color = .green
+    public var secondaryButtonBackgroundColor: Color = Color(uiColor: .systemGray6)
+    public var secondaryButtonStrokeColor: Color = Color(uiColor: .systemGray6)
+    public var plainButtonColor: Color = .primary
+    public var progressBarBackgroundColor: Color = Color(uiColor: .systemGray6)
+    public var orbitColor: Color = Color(uiColor: .systemGray6)
+    public var accentColor: Color = Color(uiColor: .systemYellow)
 }

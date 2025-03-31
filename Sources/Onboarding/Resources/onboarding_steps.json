@@ -33,8 +33,55 @@
             "userReview": "Life-changing",
             "answer": {
                 "title": "Continue",
-                "nextStepID": "gender"
+                "nextStepID": "native_language"
             }
+        }
+    },
+    {
+        "id": "native_language",
+        "type": "oneAnswer",
+        "passedPercent": 0.2,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": true,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Select Your Native Language",
+            "description": "We’ll use it for translations to help you learn German faster and more confidently.",
+            "buttonTitle": "Next",
+            "answers": [
+                {
+                    "title": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "en-EN"
+                    },
+                },
+                {
+                    "title": "🇺🇦 Ukrainian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "uk-UA"
+                    },
+                },
+                {
+                    "title": "🇷🇺 Russian",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "ru-RU"
+                    },
+                },
+                {
+                    "title": "🇫🇷 French",
+                    "nextStepID": "customer_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "fr-FR"
+                    },
+                }
+            ]
         }
     },
 ]
