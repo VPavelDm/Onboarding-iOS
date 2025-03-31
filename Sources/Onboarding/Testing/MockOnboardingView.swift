@@ -13,7 +13,8 @@ struct MockOnboardingView: View {
         if #available(iOS 18.0, *) {
             OnboardingView(
                 configuration: .testData(),
-                delegate: MockOnboardingDelegate(),
+                delegate: MockOnboardingDelegate(onAnswerCallback: {
+                }),
                 colorPalette: .testData
             )
             .preferredColorScheme(.dark)
@@ -21,4 +22,8 @@ struct MockOnboardingView: View {
             // Fallback on earlier versions
         }
     }
+}
+
+#Preview {
+    MockOnboardingView()
 }

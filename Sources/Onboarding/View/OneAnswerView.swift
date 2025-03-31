@@ -91,13 +91,5 @@ struct OneAnswerView: View {
 }
 
 #Preview {
-    if #available(iOS 18.0, *) {
-        OnboardingView(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        )
-        .preferredColorScheme(.dark)
-        .background(AffirmationBackgroundView())
-    }
+    MockOnboardingView()
 }

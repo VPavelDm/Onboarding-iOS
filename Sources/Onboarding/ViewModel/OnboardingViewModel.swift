@@ -73,8 +73,7 @@ final class OnboardingViewModel: ObservableObject {
     func loadSteps() async throws {
         steps = try await service.fetchSteps()
             .filter(\.isNotUnknown)
-        guard let firstStep = steps.first else { throw OnboardingError.noSteps }
-        self.currentStep = firstStep
+        currentStep = steps.first
     }
 
     func onAnswer(answers: [StepAnswer]) async {
