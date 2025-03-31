@@ -42,7 +42,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                         showError = true
                     }
                 }
-                .background(viewModel.colorPalette.backgroundColor)
                 .navigationDestination(
                     for: OnboardingStep.self,
                     destination: { step in
@@ -59,7 +58,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
                             .opacity(viewModel.isProgressBarVisible ? 1 : 0)
                     }
                 }
-                .removeBackground()
         }
         .environmentObject(viewModel)
     }

@@ -35,7 +35,6 @@ struct ProgressStepView: View {
         .safeAreaInset(edge: .bottom) {
             nextButton
         }
-        .background(viewModel.colorPalette.backgroundColor)
         .task {
             await viewModel.processAnswers(step: step)
             finishedProcessing = true

@@ -15,7 +15,7 @@ struct WelcomeView: View {
 
     var body: some View {
         VStack(spacing: 26) {
-            imageView
+            AnimatedImageView(step: step)
             VStack {
                 getStartedButton
                 if let answer = step.secondAnswer {
@@ -24,26 +24,7 @@ struct WelcomeView: View {
             }
             .padding([.horizontal, .bottom])
         }
-        .ignoresSafeArea(edges: [.top])
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(viewModel.colorPalette.backgroundColor)
-    }
-
-    @ViewBuilder
-    private var imageView: some View {
-        AnimatedImageView(step: step)
-    }
-
-    private var imageGradientView: some View {
-        LinearGradient(
-            colors: [
-                .black.opacity(0),
-                .black
-            ],
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .frame(height: 50)
     }
 
     private var getStartedButton: some View {
@@ -73,4 +54,5 @@ struct WelcomeView: View {
         outerScreen: { _ in Text("") }
     )
     .preferredColorScheme(.dark)
+    .background(Color.red)
 }

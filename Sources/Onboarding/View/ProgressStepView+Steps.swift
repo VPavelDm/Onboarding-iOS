@@ -26,7 +26,7 @@ extension ProgressStepView {
             .resizable()
             .font(.system(size: 128, weight: .bold))
             .frame(width: 12, height: 12)
-            .foregroundStyle(viewModel.colorPalette.backgroundColor)
+            .foregroundStyle(.clear)
             .padding(8)
             .background {
                 if stepCompleted(at: index) {

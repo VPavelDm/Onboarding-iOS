@@ -30,7 +30,7 @@ public extension ColorPalette where Self == TestColorPalette {
 }
 
 public struct TestColorPalette: ColorPalette {
-    public var backgroundColor: Color = .clear
+    public var backgroundColor: Color = .red
     public var textColor: Color = .primary
     public var secondaryTextColor: Color = .secondary
     public var primaryButtonForegroundColor: Color = .primary

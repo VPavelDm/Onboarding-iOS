@@ -25,7 +25,6 @@ struct NameStepView: View {
             nextButton
         }
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(viewModel.colorPalette.backgroundColor)
     }
 
     private var titleView: some View {

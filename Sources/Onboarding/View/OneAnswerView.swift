@@ -38,9 +38,7 @@ struct OneAnswerView: View {
                 }
             }
             .padding()
-            .background(viewModel.colorPalette.backgroundColor)
         }
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
         .background(viewModel.colorPalette.backgroundColor)
     }
 
@@ -65,7 +63,6 @@ struct OneAnswerView: View {
             selectedAnswer = answer
         } label: {
             Text(answer.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .buttonStyle(AnswerButtonStyle(isSelected: selectedAnswer == answer))
     }
@@ -94,11 +91,15 @@ struct OneAnswerView: View {
 }
 
 #Preview {
-    OneAnswerView(step: .testData())
-        .environmentObject(OnboardingViewModel(
+    if #available(iOS 18.0, *) {
+        OnboardingView(
             configuration: .testData(),
             delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
+            colorPalette: .testData,
+            outerScreen: { _ in
+            }
+        )
         .preferredColorScheme(.dark)
+        .background(AffirmationBackgroundView())
+    }
 }

@@ -14,7 +14,7 @@ struct NavigationStackContent<OuterScreen>: View where OuterScreen: View {
     let outerScreen: (OnboardingOuterScreenCallbackParams) -> OuterScreen
 
     var body: some View {
-        VStack(spacing: 0) {
+        Group {
             switch step?.type {
             case .welcome(let welcomeStep):
                 WelcomeView(step: welcomeStep)
@@ -53,6 +53,7 @@ struct NavigationStackContent<OuterScreen>: View where OuterScreen: View {
             }
         }
         .toolbar(.hidden, for: .navigationBar)
+        .removeBackground()
     }
 
     private func handleOuterScreenCallback() async {

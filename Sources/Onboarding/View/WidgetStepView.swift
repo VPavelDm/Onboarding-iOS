@@ -15,7 +15,6 @@ struct WidgetStepView: View {
         }
         .padding()
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(viewModel.colorPalette.backgroundColor)
     }
 
     var titleView: some View {

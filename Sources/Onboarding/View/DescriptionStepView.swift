@@ -39,7 +39,6 @@ struct DescriptionStepView: View {
                 nextButton
             }
         }
-        .background(viewModel.colorPalette.backgroundColor)
         .task {
             withAnimation {
                 isTitleVisible = true
