@@ -7,7 +7,7 @@
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "messages": ["You can't change your mindset, some say", "unless...", "...you use the right ones consistently"],
+            "messages": ["You can’t change your mindset, some say", "Unless...", "...you finally choose to believe you’re worthy of more"],
             "answer": {
                 "title": "Start your growth",
                 "nextStepID": "social_proof"

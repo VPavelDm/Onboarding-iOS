@@ -32,7 +32,6 @@ struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
 
     private var contentView: some View {
         VStack {
-            Spacer(); Spacer()
             ForEach(step.messages.indices, id: \.self) { index in
                 VStack {
                     if activeElementIndex == index {
@@ -41,7 +40,6 @@ struct WelcomeFadeView<OuterScreen>: View where OuterScreen: View {
                 }
                 .blur(radius: activeElementIndex == index ? 0 : 10)
             }
-            Spacer(); Spacer(); Spacer()
         }
         .padding(.horizontal)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

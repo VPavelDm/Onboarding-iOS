@@ -34,7 +34,7 @@ public struct TestColorPalette: ColorPalette {
     public var textColor: Color = .primary
     public var secondaryTextColor: Color = .secondary
     public var primaryButtonForegroundColor: Color = .primary
-    public var primaryButtonBackgroundColor: Color = Color(red: 58/255, green: 12/255, blue: 163/255)
+    public var primaryButtonBackgroundColor: Color = Color(red: 108/255, green: 71/255, blue: 214/255)
     public var secondaryButtonForegroundColor: Color = .white
     public var secondaryButtonBackgroundColor: Color = .black
     public var secondaryButtonStrokeColor: Color = .blue
@@ -44,3 +44,16 @@ public struct TestColorPalette: ColorPalette {
     public var accentColor: Color = Color(hex: "22223B")
 }
 
+#Preview {
+    if #available(iOS 18.0, *) {
+        OnboardingView(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData,
+            outerScreen: { _ in
+            }
+        )
+        .preferredColorScheme(.dark)
+        .background(AffirmationBackgroundView())
+    }
+}
