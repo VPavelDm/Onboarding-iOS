@@ -9,7 +9,6 @@ import Foundation
 
 struct WelcomeFadeStep: Sendable, Equatable, Hashable {
     let messages: [String]
-    let answer: StepAnswer
 }
 
 // MARK: - Convert
@@ -17,9 +16,6 @@ struct WelcomeFadeStep: Sendable, Equatable, Hashable {
 extension WelcomeFadeStep {
 
     init(response: OnboardingStepResponse.WelcomeFadeStep) {
-        self.init(
-            messages: response.messages,
-            answer: StepAnswer(response: response.answer)
-        )
+        self.init(messages: response.messages)
     }
 }

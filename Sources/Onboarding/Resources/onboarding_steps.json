@@ -7,11 +7,11 @@
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "messages": ["You can’t change your mindset, some say", "Unless...", "...you finally choose to believe you’re worthy of more"],
-            "answer": {
-                "title": "Start your growth",
-                "nextStepID": "social_proof"
-            }
+            "messages": [
+                "You can’t change your mindset, some say",
+                "Unless...",
+                "...you finally choose to believe you’re worthy of more"
+            ]
         }
     },
     {
@@ -28,8 +28,8 @@
                 "value": "hands",
                 "aspectRationType": "fit"
             },
-            "palmBranchTitle": "+15 million",
-            "palmBranchDescription": "Positive users",
+            "laurelTitle": "+15 million",
+            "laurelDescription": "Positive users",
             "userReview": "Life-changing",
             "answer": {
                 "title": "Continue",

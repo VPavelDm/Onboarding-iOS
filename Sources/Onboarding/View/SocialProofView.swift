@@ -8,19 +8,17 @@ struct SocialProofView: View {
     var body: some View {
         VStack {
             imageView
-            Spacer()
             VStack(spacing: 64) {
                 laurelsView
                 titleView
                 reviewView
             }
-            Spacer()
+            .frame(maxHeight: .infinity)
             Spacer()
             nextButton
         }
         .ignoresSafeArea(edges: .top)
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-//        .background(viewModel.colorPalette.backgroundColor)
     }
 
     @ViewBuilder
@@ -55,7 +53,7 @@ struct SocialProofView: View {
     }
 
     private var laurelTitleView: some View {
-        Text(step.palmBranchTitle)
+        Text(step.laurelTitle)
             .font(.title.bold())
             .foregroundStyle(viewModel.colorPalette.textColor)
             .applyIf { view in
@@ -66,7 +64,7 @@ struct SocialProofView: View {
     }
 
     private var laurelDescriptionView: some View {
-        Text(step.palmBranchDescription)
+        Text(step.laurelDescription)
             .font(.title2)
             .fontWeight(.medium)
             .applyIf { view in

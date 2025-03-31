@@ -149,7 +149,6 @@ struct OnboardingStepResponse: Decodable {
 
     struct WelcomeFadeStep: Decodable {
         let messages: [String]
-        let answer: StepAnswer
     }
 
     struct ProgressStep: Decodable {
@@ -176,8 +175,8 @@ struct OnboardingStepResponse: Decodable {
     struct SocialProofStep: Decodable { 
         let title: String
         let image: ImageResponse
-        let palmBranchTitle: String
-        let palmBranchDescription: String
+        let laurelTitle: String
+        let laurelDescription: String
         let userReview: String
         let answer: StepAnswer
     }
