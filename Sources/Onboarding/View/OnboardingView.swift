@@ -30,87 +30,43 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     }
 
     public var body: some View {
-        contentView
-            .progressView(isVisible: viewModel.currentStep == nil) {
-                contentLoadingView
-            }
-            .background(viewModel.colorPalette.backgroundColor)
-            .onFirstAppear {
-                do {
-                    try await viewModel.loadSteps()
-                } catch {
-                    showError = true
+        NavigationStack(path: $viewModel.passedSteps) {
+            NavigationStackContent(step: viewModel.steps.first, outerScreen: outerScreen)
+                .progressView(isVisible: viewModel.currentStep == nil) {
+                    contentLoadingView
                 }
-            }
-    }
-
-    @ViewBuilder
-    private var contentView: some View {
-        ZStack(alignment: .top) {
-            NavigationStack(path: $viewModel.passedSteps) {
-                NavigationStackContent(step: viewModel.steps.first, outerScreen: outerScreen)
-                    .background(viewModel.colorPalette.backgroundColor)
-                    .navigationDestination(
-                        for: OnboardingStep.self,
-                        destination: { step in
-                            NavigationStackContent(
-                                step: step,
-                                outerScreen: outerScreen
-                            )
-                        }
-                    )
-                    .removeBackground()
-            }
-            .environmentObject(viewModel)
-            if viewModel.shouldShowToolbar {
-                customToolbarView
-                    .frame(height: .progressBarHeight, alignment: .bottom)
-            }
+                .onFirstAppear {
+                    do {
+                        try await viewModel.loadSteps()
+                    } catch {
+                        showError = true
+                    }
+                }
+                .background(viewModel.colorPalette.backgroundColor)
+                .navigationDestination(
+                    for: OnboardingStep.self,
+                    destination: { step in
+                        NavigationStackContent(
+                            step: step,
+                            outerScreen: outerScreen
+                        )
+                    }
+                )
+                .navigationBarBackButtonHidden(viewModel.currentStep?.isBackButtonVisible == false)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        ProgressBarView(viewModel: viewModel)
+                            .opacity(viewModel.isProgressBarVisible ? 1 : 0)
+                    }
+                }
+                .removeBackground()
         }
-    }
-
-    private var customToolbarView: some View {
-        HStack(spacing: 12) {
-            backButton.opacity(viewModel.isBackButtonVisible ? 1 : 0)
-            ProgressBarView(viewModel: viewModel)
-                .opacity(viewModel.isProgressBarVisible ? 1 : 0)
-            closeButton.opacity(viewModel.isCloseButtonVisible ? 1 : 0)
-        }
-        .padding(.horizontal, 12)
+        .environmentObject(viewModel)
     }
 
     private var contentLoadingView: some View {
         ProgressView()
             .tint(viewModel.colorPalette.accentColor)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(viewModel.colorPalette.backgroundColor)
-    }
-
-    private var backButton: some View {
-        AsyncButton {
-            await viewModel.delegate.onBackButtonClick()
-            viewModel.onBack()
-        } label: {
-            Image(systemName: "chevron.left")
-                .tint(viewModel.colorPalette.plainButtonColor)
-                .frame(width: 24, height: 24)
-                .frame(width: 40, height: 40)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-
-    private var closeButton: some View {
-        AsyncButton {
-            await viewModel.onAnswer(answers: [])
-        } label: {
-            Image(systemName: "xmark.circle.fill")
-                .resizable()
-                .frame(width: 24, height: 24)
-                .frame(width: 40, height: 40)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 

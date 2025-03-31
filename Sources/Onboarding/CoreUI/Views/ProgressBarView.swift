@@ -21,11 +21,12 @@ struct ProgressBarView: View {
                 .clipShape(ProgressBarShape(isCompleted: true))
             Rectangle()
                 .fill(viewModel.colorPalette.accentColor)
-                .frame(width: size.width * viewModel.passedStepsProcent)
-                .clipShape(ProgressBarShape(isCompleted: viewModel.passedStepsProcent == 1))
-                .animation(.spring(duration: 0.35, bounce: 0.35), value: viewModel.passedStepsProcent)
+                .frame(width: size.width * viewModel.passedStepsPercent)
+                .clipShape(ProgressBarShape(isCompleted: viewModel.passedStepsPercent == 1))
+                .animation(.spring(duration: 0.35, bounce: 0.35), value: viewModel.passedStepsPercent)
         }
-        .frame(height: .size)
+        .frame(width: 300, height: .size)
+        .frame(height: .progressBarHeight, alignment: .bottom)
         .readSize(size: $size)
     }
 }

@@ -25,7 +25,7 @@ final class OnboardingViewModel: ObservableObject {
     @Published var currentStep: OnboardingStep?
     @Published var userAnswers: [UserAnswer] = []
 
-    var passedStepsProcent: CGFloat {
+    var passedStepsPercent: CGFloat {
         passedSteps.last?.passedPercent ?? 0.05
     }
 

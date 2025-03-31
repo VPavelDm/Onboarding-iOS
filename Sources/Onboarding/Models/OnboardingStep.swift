@@ -37,7 +37,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
             switch self {
             case .welcome(let welcomeStep):
                 welcomeStep.title
-            case .welcomeFade(let step):
+            case .welcomeFade:
                 nil
             case .oneAnswer(let oneAnswerStep):
                 oneAnswerStep.title

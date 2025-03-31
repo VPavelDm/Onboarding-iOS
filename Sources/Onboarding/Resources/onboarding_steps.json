@@ -2,7 +2,7 @@
     {
         "id": "welcome",
         "type": "welcomeFade",
-        "passedPercent": 0.1,
+        "passedPercent": 0.5,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
@@ -17,7 +17,7 @@
     {
         "id": "social_proof",
         "type": "socialProof",
-        "passedPercent": 0.15,
+        "passedPercent": 0.7,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
