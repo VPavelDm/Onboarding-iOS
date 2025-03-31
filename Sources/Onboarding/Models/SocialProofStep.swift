@@ -10,8 +10,8 @@ import Foundation
 struct SocialProofStep: Sendable, Hashable {
     let title: String
     let image: ImageMeta?
-    let palmBranchTitle: String
-    let palmBranchDescription: String
+    let laurelTitle: String
+    let laurelDescription: String
     let userReview: String
     let answer: StepAnswer
 }
@@ -22,8 +22,8 @@ extension SocialProofStep {
         self.init(
             title: response.title,
             image: ImageMeta(response: response.image),
-            palmBranchTitle: response.palmBranchTitle,
-            palmBranchDescription: response.palmBranchDescription,
+            laurelTitle: response.laurelTitle,
+            laurelDescription: response.laurelDescription,
             userReview: response.userReview,
             answer: StepAnswer(response: response.answer)
         )

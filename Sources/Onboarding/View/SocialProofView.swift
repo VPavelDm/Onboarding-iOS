@@ -6,30 +6,33 @@ struct SocialProofView: View {
     let step: SocialProofStep
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack {
             imageView
-            palmBranchView
-            titleView
-            reviewView
+            VStack(spacing: 64) {
+                laurelsView
+                titleView
+                reviewView
+            }
+            .frame(maxHeight: .infinity)
             Spacer()
             nextButton
         }
         .ignoresSafeArea(edges: .top)
         .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(viewModel.colorPalette.backgroundColor)
     }
 
     @ViewBuilder
     private var imageView: some View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
+                .foregroundStyle(.secondary)
                 .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity)
+                .frame(width: 200)
                 .clipShape(BottomWaveShape())
         }
     }
 
-    private var palmBranchView: some View {
+    private var laurelsView: some View {
         HStack {
             laurelView
             VStack {
@@ -45,31 +48,45 @@ struct SocialProofView: View {
         Image("laurel", bundle: .module)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(height: 75)
-            .foregroundStyle(viewModel.colorPalette.textColor)
+            .frame(height: 52)
+            .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
     }
 
     private var laurelTitleView: some View {
-        Text(step.palmBranchTitle)
+        Text(step.laurelTitle)
             .font(.title.bold())
             .foregroundStyle(viewModel.colorPalette.textColor)
+            .apply { view in
+                if #available(iOS 16.1, *) {
+                    view.fontDesign(.rounded)
+                }
+            }
     }
 
     private var laurelDescriptionView: some View {
-        Text(step.palmBranchDescription)
+        Text(step.laurelDescription)
             .font(.title2)
-            .fontWeight(.semibold)
+            .fontWeight(.medium)
+            .apply { view in
+                if #available(iOS 16.1, *) {
+                    view.fontDesign(.rounded)
+                }
+            }
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
     }
 
     private var titleView: some View {
         Text(step.title)
             .font(.title3)
-            .fontWeight(.semibold)
+            .fontWeight(.medium)
+            .apply { view in
+                if #available(iOS 16.1, *) {
+                    view.fontDesign(.rounded)
+                }
+            }
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 64)
-            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var reviewView: some View {
@@ -80,9 +97,10 @@ struct SocialProofView: View {
     }
 
     private var reviewStarsView: some View {
-        HStack {
+        HStack(spacing: 6) {
             ForEach(0..<5, id: \.self) { _ in
                 Image(systemName: "star.fill")
+                    .font(.callout)
                     .foregroundStyle(viewModel.colorPalette.textColor)
             }
         }
@@ -92,6 +110,11 @@ struct SocialProofView: View {
         Text(step.userReview)
             .font(.headline)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+            .apply { view in
+                if #available(iOS 16.1, *) {
+                    view.fontDesign(.rounded)
+                }
+            }
     }
 
     private var nextButton: some View {
@@ -106,12 +129,15 @@ struct SocialProofView: View {
 }
 
 #Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData,
-        outerScreen: { _ in
-        }
-    )
-    .preferredColorScheme(.dark)
+    if #available(iOS 18.0, *) {
+        OnboardingView(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData,
+            outerScreen: { _ in
+            }
+        )
+        .preferredColorScheme(.dark)
+        .background(AffirmationBackgroundView())
+    }
 }

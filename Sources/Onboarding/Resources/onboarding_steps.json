@@ -1,18 +1,40 @@
 [
     {
         "id": "welcome",
-        "type": "enterName",
+        "type": "welcomeFade",
         "passedPercent": 0.1,
         "isBackButtonVisible": false,
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "Hello! What do you want to be called?",
-            "description": "Your name will appear in your affirmations",
+            "messages": [
+                "You can’t change your mindset, some say",
+                "Unless...",
+                "...you finally choose to believe you’re worthy of more"
+            ]
+        }
+    },
+    {
+        "id": "social_proof",
+        "type": "socialProof",
+        "passedPercent": 0.15,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Transform your mindset with powerful affirmations",
+            "image": {
+                "type": "named",
+                "value": "hands",
+                "aspectRationType": "fit"
+            },
+            "laurelTitle": "+15 million",
+            "laurelDescription": "Positive users",
+            "userReview": "Life-changing",
             "answer": {
                 "title": "Continue",
                 "nextStepID": "gender"
             }
         }
-    }
+    },
 ]

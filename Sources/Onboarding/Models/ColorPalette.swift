@@ -30,17 +30,30 @@ public extension ColorPalette where Self == TestColorPalette {
 }
 
 public struct TestColorPalette: ColorPalette {
-    public var backgroundColor: Color = .black
+    public var backgroundColor: Color = .clear
     public var textColor: Color = .primary
     public var secondaryTextColor: Color = .secondary
     public var primaryButtonForegroundColor: Color = .primary
-    public var primaryButtonBackgroundColor: Color = .blue
+    public var primaryButtonBackgroundColor: Color = Color(red: 108/255, green: 71/255, blue: 214/255)
     public var secondaryButtonForegroundColor: Color = .white
     public var secondaryButtonBackgroundColor: Color = .black
     public var secondaryButtonStrokeColor: Color = .blue
     public var plainButtonColor: Color = .white
     public var progressBarBackgroundColor: Color = .red
     public var orbitColor: Color = .gray
-    public var accentColor: Color = .blue
+    public var accentColor: Color = Color(hex: "22223B")
 }
 
+#Preview {
+    if #available(iOS 18.0, *) {
+        OnboardingView(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData,
+            outerScreen: { _ in
+            }
+        )
+        .preferredColorScheme(.dark)
+        .background(AffirmationBackgroundView())
+    }
+}

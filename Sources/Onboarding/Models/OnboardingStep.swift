@@ -17,6 +17,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
 
     enum OnboardingStepType: Sendable, Equatable, Hashable {
         case welcome(WelcomeStep)
+        case welcomeFade(WelcomeFadeStep)
         case oneAnswer(OneAnswerStep)
         case binaryAnswer(BinaryAnswerStep)
         case multipleAnswer(MultipleAnswerStep)
@@ -36,6 +37,8 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
             switch self {
             case .welcome(let welcomeStep):
                 welcomeStep.title
+            case .welcomeFade(let step):
+                nil
             case .oneAnswer(let oneAnswerStep):
                 oneAnswerStep.title
             case .binaryAnswer(let binaryAnswerStep):
@@ -89,6 +92,7 @@ extension OnboardingStep {
     init?(response: OnboardingStepResponse) {
         let type: OnboardingStepType = switch response.type {
         case .welcome(let payload): .welcome(WelcomeStep(response: payload))
+        case .welcomeFade(let payload): .welcomeFade(WelcomeFadeStep(response: payload))
         case .oneAnswer(let payload): .oneAnswer(OneAnswerStep(response: payload))
         case .multipleAnswer(let payload): .multipleAnswer(MultipleAnswerStep(response: payload))
         case .description(let payload): .description(DescriptionStep(response: payload))

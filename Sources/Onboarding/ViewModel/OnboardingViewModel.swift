@@ -74,7 +74,6 @@ final class OnboardingViewModel: ObservableObject {
         steps = try await service.fetchSteps()
             .filter(\.isNotUnknown)
         guard let firstStep = steps.first else { throw OnboardingError.noSteps }
-        passedSteps.append(firstStep)
         self.currentStep = firstStep
     }
 

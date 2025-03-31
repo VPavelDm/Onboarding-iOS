@@ -48,8 +48,18 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
     private var contentView: some View {
         ZStack(alignment: .top) {
             NavigationStack(path: $viewModel.passedSteps) {
-                navigationStackContentView(step: viewModel.steps.first)
-                    .navigationDestination(for: OnboardingStep.self, destination: navigationStackContentView(step:))
+                NavigationStackContent(step: viewModel.steps.first, outerScreen: outerScreen)
+                    .background(viewModel.colorPalette.backgroundColor)
+                    .navigationDestination(
+                        for: OnboardingStep.self,
+                        destination: { step in
+                            NavigationStackContent(
+                                step: step,
+                                outerScreen: outerScreen
+                            )
+                        }
+                    )
+                    .removeBackground()
             }
             .environmentObject(viewModel)
             if viewModel.shouldShowToolbar {
@@ -67,46 +77,6 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
             closeButton.opacity(viewModel.isCloseButtonVisible ? 1 : 0)
         }
         .padding(.horizontal, 12)
-    }
-
-    private func navigationStackContentView(step: OnboardingStep?) -> some View {
-        VStack(spacing: 0) {
-            switch step?.type {
-            case .welcome(let welcomeStep):
-                WelcomeView(step: welcomeStep)
-            case .oneAnswer(let oneAnswerStep):
-                OneAnswerView(step: oneAnswerStep)
-            case .binaryAnswer(let binaryAnswerStep):
-                BinaryAnswerView(step: binaryAnswerStep)
-            case .multipleAnswer(let multipleAnswerStep):
-                MultipleAnswerView(step: multipleAnswerStep)
-            case .description(let descriptionStep):
-                DescriptionStepView(step: descriptionStep)
-            case .login:
-                outerScreen((.login, handleOuterScreenCallback))
-            case .custom:
-                if let stepID = step?.id {
-                    outerScreen((.custom(stepID), handleOuterScreenCallback))
-                }
-            case .prime(let step):
-                PrimeStepView(step: step)
-            case .progress(let step):
-                ProgressStepView(step: step)
-            case .timePicker(let step):
-                TimePickerStepView(step: step)
-            case .discountWheel(let step):
-                DiscountWheelStepView(step: step)
-            case .widget(let step):
-                WidgetStepView(step: step)
-            case .socialProof(let step):
-                SocialProofView(step: step)
-            case .enterName(let step):
-                NameStepView(step: step)
-            case .unknown, .none:
-                EmptyView()
-            }
-        }
-        .toolbar(.hidden, for: .navigationBar)
     }
 
     private var contentLoadingView: some View {
@@ -142,31 +112,18 @@ public struct OnboardingView<OuterScreen>: View where OuterScreen: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
-
-    private func handleOuterScreenCallback() async {
-        switch viewModel.currentStep?.type {
-        case .custom(let stepAnswer):
-            await viewModel.onAnswer(answers: [stepAnswer])
-        case .login(let stepAnswer):
-            await viewModel.onAnswer(answers: [stepAnswer])
-        default:
-            break
-        }
-    }
 }
 
 #Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData,
-        outerScreen: { type, completion in
-            Button {
-            } label: {
-                Text("Next")
+    if #available(iOS 18.0, *) {
+        OnboardingView(
+            configuration: .testData(),
+            delegate: MockOnboardingDelegate(),
+            colorPalette: .testData,
+            outerScreen: { _ in
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-    )
-    .preferredColorScheme(.dark)
+        )
+        .preferredColorScheme(.dark)
+        .background(AffirmationBackgroundView())
+    }
 }
