@@ -11,9 +11,6 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
     var id: StepID
     var type: OnboardingStepType
     var passedPercent: Double
-    var isBackButtonVisible: Bool
-    var isProgressBarVisible: Bool
-    var isCloseButtonVisible: Bool
 
     enum OnboardingStepType: Sendable, Equatable, Hashable {
         case welcome(WelcomeStep)
@@ -100,10 +97,7 @@ extension OnboardingStep {
         self.init(
             id: response.id,
             type: type,
-            passedPercent: response.passedPercent,
-            isBackButtonVisible: response.isBackButtonVisible,
-            isProgressBarVisible: response.isProgressBarVisible,
-            isCloseButtonVisible: response.isCloseButtonVisible
+            passedPercent: response.passedPercent
         )
     }
 }

@@ -39,26 +39,6 @@ final class OnboardingViewModel: ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    var isBackButtonVisible: Bool {
-        guard passedSteps.count > 1 else { return false }
-        return passedSteps.last?.isBackButtonVisible ?? true
-    }
-
-    var isProgressBarVisible: Bool {
-        guard passedSteps.count > 1 else { return false }
-        return passedSteps.last?.isProgressBarVisible ?? true
-    }
-
-    var isCloseButtonVisible: Bool {
-        passedSteps.last?.isCloseButtonVisible ?? false
-    }
-
-    var shouldShowToolbar: Bool {
-        steps.contains(where: { step in
-            step.isCloseButtonVisible || step.isProgressBarVisible
-        })
-    }
-
     // MARK: - Inits
 
     init(configuration: OnboardingConfiguration, delegate: OnboardingDelegate, colorPalette: any ColorPalette) {

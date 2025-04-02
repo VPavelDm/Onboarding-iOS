@@ -26,11 +26,20 @@ public struct OnboardingView: View {
     }
 
     public var body: some View {
-        NavigationStack(path: $viewModel.passedSteps) {
-            NavigationStackContent(step: viewModel.steps.first)
+        NavigationStack {
+            NavigationStackContent(step: viewModel.currentStep)
+                .id(viewModel.currentStep)
+                .transition(
+                    .asymmetric(
+                        insertion: .offset(y: -30).combined(with: .opacity).animation(.default.delay(0.35)),
+                        removal: .offset(y: 30).combined(with: .opacity)
+                    )
+                )
                 .progressView(isVisible: viewModel.currentStep == nil) {
                     contentLoadingView
                 }
+                .background(viewModel.colorPalette.anyBackgroundView)
+                .animation(.easeInOut, value: viewModel.currentStep)
                 .onFirstAppear {
                     do {
                         try await viewModel.loadSteps()

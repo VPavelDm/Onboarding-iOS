@@ -24,7 +24,6 @@ struct WelcomeView: View {
             }
             .padding([.horizontal, .bottom])
         }
-        .background(viewModel.colorPalette.anyBackgroundView)
     }
 
     private var getStartedButton: some View {

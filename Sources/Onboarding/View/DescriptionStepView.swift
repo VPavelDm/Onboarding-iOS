@@ -33,7 +33,7 @@ struct DescriptionStepView: View {
             }
         }
         .scrollIndicators(.hidden)
-        .ignoresSafeArea(edges: .top)
+//        .ignoresSafeArea(edges: .top)
         .safeAreaInset(edge: .bottom) {
             if isButtonVisible {
                 nextButton
@@ -56,9 +56,14 @@ struct DescriptionStepView: View {
     private var imageView: some View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
+//                .aspectRatio(contentMode: .fill)
+                .frame(width: 200, height: 115)
+                .frame(height: 300)
                 .frame(maxWidth: .infinity)
-                .aspectRatio(contentMode: image.contentMode)
-                .clipShape(BottomWaveShape())
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+//                .frame(maxWidth: .infinity)
+//                .aspectRatio(contentMode: image.contentMode)
+//                .clipShape(BottomWaveShape())
         }
     }
 
@@ -91,4 +96,8 @@ struct DescriptionStepView: View {
         .buttonStyle(PrimaryButtonStyle())
         .padding()
     }
+}
+
+#Preview {
+    MockOnboardingView()
 }

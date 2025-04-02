@@ -6,18 +6,18 @@ struct SocialProofView: View {
     let step: SocialProofStep
 
     var body: some View {
-        VStack {
+        VStack(spacing: 32) {
+            Spacer()
             imageView
-            VStack(spacing: 64) {
+            VStack(spacing: 32) {
                 laurelsView
                 titleView
-                reviewView
             }
-            .frame(maxHeight: .infinity)
             Spacer()
             nextButton
         }
         .padding()
+        .padding(.bottom)
     }
 
     @ViewBuilder
@@ -26,17 +26,14 @@ struct SocialProofView: View {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 200)
+                .frame(width: 250)
         }
     }
 
     private var laurelsView: some View {
         HStack {
             laurelView
-            VStack {
-                laurelTitleView
-                laurelDescriptionView
-            }
+            reviewView
             laurelView
                 .scaleEffect(x: -1, y: 1)
         }

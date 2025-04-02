@@ -40,7 +40,8 @@ struct MultipleAnswerView: View {
                     }
                 }
             }
-            .padding([.horizontal, .top])
+            .padding(.vertical, 32)
+            .padding(.horizontal, 16)
         }
     }
 
@@ -81,7 +82,6 @@ struct MultipleAnswerView: View {
             Text(step.buttonTitle)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding([.horizontal, .bottom])
         .disabled(answers.isDisabled(step: step))
         .animation(.easeInOut, value: answers.isDisabled(step: step))
     }

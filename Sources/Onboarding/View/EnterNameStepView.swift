@@ -24,6 +24,8 @@ struct NameStepView: View {
             Spacer()
             nextButton
         }
+        .padding(.vertical, 32)
+        .padding(.horizontal, 16)
     }
 
     private var titleView: some View {
@@ -39,7 +41,7 @@ struct NameStepView: View {
             .font(.title3)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
             .multilineTextAlignment(.center)
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 16)
     }
 
     private var nameInputView: some View {
@@ -66,7 +68,6 @@ struct NameStepView: View {
         .buttonStyle(PrimaryButtonStyle())
         .disabled(name.isEmpty)
         .animation(.easeInOut, value: name.isEmpty)
-        .padding([.horizontal, .bottom])
     }
 }
 
@@ -84,4 +85,8 @@ private struct NameTextFieldStyle: TextFieldStyle {
             )
             .clipShape(RoundedRectangle(cornerRadius: 16))
     }
+}
+
+#Preview {
+    MockOnboardingView()
 }

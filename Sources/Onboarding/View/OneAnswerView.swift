@@ -12,6 +12,7 @@ struct OneAnswerView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var selectedAnswer: StepAnswer?
+    @State private var isButtonVisible: Bool = false
 
     var step: OneAnswerStep
 
@@ -28,18 +29,22 @@ struct OneAnswerView: View {
                     }
                 }
             }
-            .padding()
+            .padding(.vertical, 32)
+            .padding(.horizontal, 20)
         }
+        .scrollContentBackground(.hidden)
         .safeAreaInset(edge: .bottom) {
             VStack {
-                nextButton
+                if selectedAnswer != nil {
+                    nextButton
+                }
                 if let skip = step.skip {
                     skipButton(skip: skip)
                 }
             }
-            .padding()
+            .padding(16)
         }
-        .background(viewModel.colorPalette.anyBackgroundView)
+        .animation(.easeInOut, value: selectedAnswer != nil)
     }
 
     private var titleView: some View {

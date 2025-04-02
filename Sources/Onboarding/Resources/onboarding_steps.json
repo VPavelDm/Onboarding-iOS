@@ -22,10 +22,10 @@
         "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "Transform your mindset with powerful affirmations",
+            "title": "Transform your mindset with powerful audio affirmations",
             "image": {
                 "type": "named",
-                "value": "hands",
+                "value": "headphones",
                 "aspectRationType": "fit"
             },
             "laurelTitle": "+15 million",
@@ -33,55 +33,315 @@
             "userReview": "Life-changing",
             "answer": {
                 "title": "Continue",
-                "nextStepID": "native_language"
+                "nextStepID": "gender"
             }
         }
     },
     {
-        "id": "native_language",
+        "id": "gender",
         "type": "oneAnswer",
         "passedPercent": 0.2,
         "isBackButtonVisible": false,
-        "isProgressBarVisible": true,
+        "isProgressBarVisible": false,
         "isCloseButtonVisible": false,
         "payload": {
-            "title": "Select Your Native Language",
-            "description": "We’ll use it for translations to help you learn German faster and more confidently.",
-            "buttonTitle": "Next",
+            "title": "What's your gender?",
+            "description": "This helps us tailor your experience",
+            "buttonTitle": "Continue",
             "answers": [
                 {
-                    "title": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 English",
-                    "nextStepID": "customer_age",
-                    "payload": {
-                        "type": "string",
-                        "value": "en-EN"
-                    },
+                    "title": "Male",
+                    "nextStepID": "age"
                 },
                 {
-                    "title": "🇺🇦 Ukrainian",
-                    "nextStepID": "customer_age",
-                    "payload": {
-                        "type": "string",
-                        "value": "uk-UA"
-                    },
+                    "title": "Female",
+                    "nextStepID": "age"
                 },
                 {
-                    "title": "🇷🇺 Russian",
-                    "nextStepID": "customer_age",
-                    "payload": {
-                        "type": "string",
-                        "value": "ru-RU"
-                    },
+                    "title": "Others",
+                    "nextStepID": "age"
                 },
                 {
-                    "title": "🇫🇷 French",
-                    "nextStepID": "customer_age",
-                    "payload": {
-                        "type": "string",
-                        "value": "fr-FR"
-                    },
+                    "title": "Prefer not to say",
+                    "nextStepID": "age"
                 }
             ]
         }
     },
+    {
+        "id": "age",
+        "type": "oneAnswer",
+        "passedPercent": 0.3,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "How old are you?",
+            "description": "This helps us tailor your experience",
+            "buttonTitle": "Continue",
+            "answers": [
+                {
+                    "title": "Under 18",
+                    "nextStepID": "name"
+                },
+                {
+                    "title": "18-24",
+                    "nextStepID": "name"
+                },
+                {
+                    "title": "25-34",
+                    "nextStepID": "name"
+                },
+                {
+                    "title": "35-44",
+                    "nextStepID": "name"
+                },
+                {
+                    "title": "45+",
+                    "nextStepID": "name"
+                }
+            ]
+        }
+    },
+    {
+        "id": "name",
+        "type": "enterName",
+        "passedPercent": 0.4,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Hello! What do you want to be called?",
+            "description": "Your name will appear in your affirmations",
+            "answer": {
+                "title": "Continue",
+                "nextStepID": "greeting"
+            }
+        }
+    },
+    {
+        "id": "greeting",
+        "type": "description",
+        "passedPercent": 0.5,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Nice to meet you, Pavel",
+            "description": "Let's personalise your experience with Affirmations",
+            "image": {
+                "type": "named",
+                "value": "star_heart",
+                "aspectRationType": "fit"
+            },
+            "answer": {
+                "title": "Personalise",
+                "nextStepID": "negative_thoughts"
+            }
+        }
+    },
+    {
+        "id": "negative_thoughts",
+        "type": "oneAnswer",
+        "passedPercent": 0.6,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Do you often catch yourself thinking negative thoughts about yourself or your abilities?",
+            "buttonTitle": "Continue",
+            "answers": [
+                {
+                    "title": "All the time",
+                    "nextStepID": "dream_person"
+                },
+                {
+                    "title": "Sometimes",
+                    "nextStepID": "dream_person"
+                },
+                {
+                    "title": "Rarely",
+                    "nextStepID": "dream_person"
+                },
+                {
+                    "title": "Never",
+                    "nextStepID": "dream_person"
+                }
+            ]
+        }
+    },
+    {
+        "id": "dream_person",
+        "type": "oneAnswer",
+        "passedPercent": 0.7,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "What do you think stops you from being the person you dream?",
+            "buttonTitle": "Continue",
+            "answers": [
+                {
+                    "title": "Lack of confidence",
+                    "nextStepID": "all_answers"
+                },
+                {
+                    "title": "lack if time",
+                    "nextStepID": "all_answers"
+                },
+                {
+                    "title": "third parties",
+                    "nextStepID": "all_answers"
+                },
+                {
+                    "title": "all the above",
+                    "nextStepID": "all_answers"
+                },
+                {
+                    "title": "I don’t know",
+                    "nextStepID": "all_answers"
+                },
+                {
+                    "title": "other",
+                    "nextStepID": "all_answers"
+                }
+            ]
+        }
+    },
+    {
+        "id": "all_answers",
+        "type": "description",
+        "passedPercent": 0.8,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "All the answers are within us.",
+            "description": "We'll show you the way to find them",
+            "image": {
+                "type": "named",
+                "value": "welcomeScreen",
+                "aspectRationType": "fit"
+            },
+            "answer": {
+                "title": "Continue",
+                "nextStepID": "goal"
+            }
+        }
+    },
+    {
+        "id": "goal",
+        "type": "multipleAnswer",
+        "passedPercent": 0.9,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Whats is your goal?",
+            "description": "Select all that apply",
+            "buttonTitle": "Continue",
+            "minAnswersAmount": 1,
+            "answers": [
+                {
+                    "title": "become confident",
+                    "nextStepID": "voice"
+                },
+                {
+                    "title": "improve health",
+                    "nextStepID": "voice"
+                },
+                {
+                    "title": "improve relationship",
+                    "nextStepID": "voice"
+                },
+                {
+                    "title": "heal trauma",
+                    "nextStepID": "voice"
+                },
+                {
+                    "title": "become happy",
+                    "nextStepID": "voice"
+                }
+            ]
+        }
+    },
+    {
+        "id": "voice",
+        "type": "oneAnswer",
+        "passedPercent": 0.91,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Choose the voice you prefer",
+            "description": "Select one",
+            "buttonTitle": "Continue",
+            "minAnswersAmount": 1,
+            "answers": [
+                {
+                    "title": "become confident",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "improve health",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "improve relationship",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "heal trauma",
+                    "nextStepID": "analyse_answers"
+                },
+                {
+                    "title": "become happy",
+                    "nextStepID": "analyse_answers"
+                }
+            ]
+        }
+    },
+    {
+        "id": "analyse_answers",
+        "type": "progress",
+        "passedPercent": 0.92,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Just a moment...",
+            "description": "We are analyzing your answers and customizing your experience!",
+            "duration": 10,
+            "steps": [
+                "Analyzing your goals",
+                "Analyzing your interests",
+                "Personalizing your experience",
+                "Preparing affirmations"
+            ],
+            "answer": {
+                "title": "Continue",
+                "nextStepID": "ready_plan"
+            }
+        }
+    },
+    {
+        "id": "ready_plan",
+        "type": "description",
+        "passedPercent": 1,
+        "isBackButtonVisible": false,
+        "isProgressBarVisible": false,
+        "isCloseButtonVisible": false,
+        "payload": {
+            "title": "Pavel, your plan is ready",
+            "description": "Your can start changing your life",
+            "image": {
+                "type": "named",
+                "value": "welcomeScreen",
+                "aspectRationType": "fit"
+            },
+            "answer": {
+                "title": "Continue"
+            }
+        }
+    }
 ]
