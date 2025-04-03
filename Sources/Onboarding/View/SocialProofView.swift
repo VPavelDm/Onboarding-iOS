@@ -28,7 +28,7 @@ struct SocialProofView: View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .aspectRatio(4/5, contentMode: .fit)
+                .aspectRatio(1.0, contentMode: .fit)
                 .frame(maxWidth: .infinity)
         }
     }

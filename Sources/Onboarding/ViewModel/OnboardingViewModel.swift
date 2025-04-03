@@ -21,13 +21,8 @@ final class OnboardingViewModel: ObservableObject {
     // MARK: - Outputs
 
     @Published var steps: [OnboardingStep] = []
-    @Published var passedSteps: [OnboardingStep] = []
     @Published var currentStep: OnboardingStep?
     @Published var userAnswers: [UserAnswer] = []
-
-    var passedStepsPercent: CGFloat {
-        passedSteps.last?.passedPercent ?? 0.05
-    }
 
     let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
@@ -70,9 +65,8 @@ final class OnboardingViewModel: ObservableObject {
 
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
-        if let nextStepIndex = steps.firstIndex(where: { $0.id == answers.last?.nextStepID }) {
-            passedSteps.append(steps[nextStepIndex])
-            self.currentStep = passedSteps.last
+        if let nextStep = steps.first(where: { $0.id == answers.last?.nextStepID }) {
+            self.currentStep = nextStep
         }
     }
 
