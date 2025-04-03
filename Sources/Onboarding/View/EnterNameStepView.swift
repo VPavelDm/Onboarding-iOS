@@ -15,8 +15,8 @@ struct NameStepView: View {
     var step: EnterNameStep
 
     var body: some View {
-        VStack(spacing: 26) {
-            VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: 12) {
                 titleView
                 descriptionView
             }
@@ -25,7 +25,7 @@ struct NameStepView: View {
             nextButton
         }
         .padding(.vertical, 32)
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 20)
     }
 
     private var titleView: some View {
@@ -33,15 +33,14 @@ struct NameStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .multilineTextAlignment(.center)
+            .multilineTextAlignment(.leading)
     }
 
     private var descriptionView: some View {
         Text(step.description)
             .font(.title3)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 16)
+            .multilineTextAlignment(.leading)
     }
 
     private var nameInputView: some View {
@@ -56,7 +55,6 @@ struct NameStepView: View {
                     await viewModel.onAnswer(answers: [step.answer])
                 }
             }
-            .padding()
     }
 
     private var nextButton: some View {

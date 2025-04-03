@@ -26,12 +26,12 @@ extension ProgressStepView {
             .resizable()
             .font(.system(size: 128, weight: .bold))
             .frame(width: 12, height: 12)
-            .foregroundStyle(.clear)
+            .foregroundStyle(viewModel.colorPalette.primaryButtonForegroundColor)
             .padding(8)
             .background {
                 if stepCompleted(at: index) {
                     Circle()
-                        .fill(viewModel.colorPalette.accentColor)
+                        .fill(viewModel.colorPalette.primaryButtonBackgroundColor)
                 } else {
                     Circle()
                         .stroke(lineWidth: 1)

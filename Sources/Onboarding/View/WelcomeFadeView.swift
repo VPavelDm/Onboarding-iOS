@@ -23,7 +23,6 @@ struct WelcomeFadeView: View {
                 NavigationStackContent(step: onboarding.steps[1])
             }
         }
-        .background(onboarding.colorPalette.anyBackgroundView)
         .onAppear {
             displayNextText()
         }

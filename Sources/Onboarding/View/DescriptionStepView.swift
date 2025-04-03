@@ -18,31 +18,24 @@ struct DescriptionStepView: View {
     var step: DescriptionStep
 
     var body: some View {
-        ScrollView {
-            VStack {
-                imageView
-                VStack(alignment: .leading, spacing: 12) {
-                    if isTitleVisible {
-                        titleView
-                    }
-                    if isDescriptionVisible {
-                        descriptionView
-                    }
-                }
-                .padding(.horizontal)
+        VStack(spacing: 32) {
+            imageView
+            Spacer()
+            VStack(alignment: .leading, spacing: 12) {
+                titleView
+                descriptionView
+                    .opacity(isDescriptionVisible ? 1 : 0)
             }
+            .padding(.horizontal, 20)
+            Spacer()
+            Spacer()
+            nextButton
+                .padding(.horizontal, 20)
+                .opacity(isButtonVisible ? 1 : 0)
         }
-        .scrollIndicators(.hidden)
-//        .ignoresSafeArea(edges: .top)
-        .safeAreaInset(edge: .bottom) {
-            if isButtonVisible {
-                nextButton
-            }
-        }
+        .padding(.vertical, 32)
+        .ignoresSafeArea(edges: .top)
         .task {
-            withAnimation {
-                isTitleVisible = true
-            }
             withAnimation(.easeInOut.delay(2)) {
                 isDescriptionVisible = true
             }
@@ -56,14 +49,9 @@ struct DescriptionStepView: View {
     private var imageView: some View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
-//                .aspectRatio(contentMode: .fill)
-                .frame(width: 200, height: 115)
-                .frame(height: 300)
-                .frame(maxWidth: .infinity)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-//                .frame(maxWidth: .infinity)
-//                .aspectRatio(contentMode: image.contentMode)
-//                .clipShape(BottomWaveShape())
+                .aspectRatio(1.0, contentMode: .fit)
+                .frame(maxWidth: .infinity)
         }
     }
 
@@ -72,8 +60,7 @@ struct DescriptionStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .padding(.horizontal)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.center)
     }
 
     @ViewBuilder
@@ -82,8 +69,6 @@ struct DescriptionStepView: View {
             Text(description)
                 .font(.headline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -94,7 +79,6 @@ struct DescriptionStepView: View {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding()
     }
 }
 

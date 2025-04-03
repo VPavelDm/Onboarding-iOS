@@ -42,7 +42,7 @@ struct OneAnswerView: View {
                     skipButton(skip: skip)
                 }
             }
-            .padding(16)
+            .padding()
         }
         .animation(.easeInOut, value: selectedAnswer != nil)
     }

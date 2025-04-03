@@ -60,6 +60,7 @@ public struct OnboardingView: View {
     private var contentLoadingView: some View {
         ProgressView()
             .tint(viewModel.colorPalette.accentColor)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

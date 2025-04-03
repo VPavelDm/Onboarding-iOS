@@ -7,17 +7,20 @@ struct SocialProofView: View {
 
     var body: some View {
         VStack(spacing: 32) {
-            Spacer()
             imageView
+            Spacer()
             VStack(spacing: 32) {
                 laurelsView
                 titleView
             }
+            .padding(.horizontal, 20)
+            Spacer()
             Spacer()
             nextButton
+                .padding(.horizontal)
         }
-        .padding()
-        .padding(.bottom)
+        .padding(.vertical, 32)
+        .ignoresSafeArea(edges: .top)
     }
 
     @ViewBuilder
@@ -25,8 +28,8 @@ struct SocialProofView: View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 250)
+                .aspectRatio(4/5, contentMode: .fit)
+                .frame(maxWidth: .infinity)
         }
     }
 

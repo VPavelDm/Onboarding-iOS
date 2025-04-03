@@ -67,7 +67,7 @@ struct ProgressStepView: View {
             ZStack {
                 Text(step.answer.title).opacity(isButtonLoading ? 0 : 1)
                 ProgressView()
-                    .tint(.accentColor)
+                    .tint(viewModel.colorPalette.primaryButtonForegroundColor)
                     .opacity(isButtonLoading ? 1 : 0)
             }
         }
@@ -77,4 +77,8 @@ struct ProgressStepView: View {
         .opacity(progress == 100 ? 1 : 0)
         .animation(.easeInOut, value: progress == 100)
     }
+}
+
+#Preview {
+    MockOnboardingView()
 }
