@@ -60,9 +60,11 @@ struct WelcomeFadeView: View {
     func displayNextText() {
         guard activeElementIndex.map({ $0 < step.messages.count }) ?? true else { return }
         if #available(iOS 17.0, *) {
-            withAnimation(.default.delay(3)) {
+            print("LOG: Animation initiated")
+            withAnimation(.easeInOut.delay(3)) {
                 activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
             } completion: {
+                print("LOG: Animation completed")
                 displayNextText()
             }
         } else {
