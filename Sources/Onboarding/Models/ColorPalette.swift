@@ -30,33 +30,27 @@ extension ColorPalette {
     }
 }
 
-@available(iOS 18.0, *)
-public extension ColorPalette where Self == TestColorPalette {
+extension ColorPalette where Self == TestColorPalette {
 
-    static func testData(isAnimating: Binding<Bool>) -> Self {
-        TestColorPalette(isAnimating: isAnimating)
+    static var testData: Self {
+        TestColorPalette()
     }
 }
 
-@available(iOS 18.0, *)
-public struct TestColorPalette: ColorPalette {
-    public typealias BackgroundView = AffirmationBackgroundView
-    public var backgroundView: BackgroundView
-    public var textColor: Color = .white
-    public var secondaryTextColor: Color = .secondary
-    public var primaryButtonForegroundColor: Color = .white
-    public var primaryButtonBackgroundColor: Color = Color(red: 90/255, green: 70/255, blue: 200/255)
-    public var secondaryButtonForegroundColor: Color = .white
-    public var secondaryButtonBackgroundColor: Color = Color(red: 90/255, green: 70/255, blue: 200/255).opacity(0.2)
-    public var secondaryButtonStrokeColor: Color = Color(red: 90/255, green: 70/255, blue: 200/255).opacity(0.2)
-    public var plainButtonColor: Color = .white
-    public var progressBarBackgroundColor: Color = Color(red: 90/255, green: 70/255, blue: 200/255).opacity(0.2)
-    public var orbitColor: Color = Color(uiColor: .systemGray6)
-    public var accentColor: Color = Color(uiColor: .systemYellow)
-
-    init(isAnimating: Binding<Bool>) {
-        self.backgroundView = AffirmationBackgroundView(isAnimating: isAnimating)
-    }
+struct TestColorPalette: ColorPalette {
+    typealias BackgroundView = Color
+    var backgroundView: Color = .black
+    var textColor: Color = .white
+    var secondaryTextColor: Color = .secondary
+    var primaryButtonForegroundColor: Color = .black
+    var primaryButtonBackgroundColor: Color = Color(uiColor: .systemYellow)
+    var secondaryButtonForegroundColor: Color = .white
+    var secondaryButtonBackgroundColor: Color = Color(uiColor: .systemGray6)
+    var secondaryButtonStrokeColor: Color = Color(uiColor: .systemGray6)
+    var plainButtonColor: Color = .primary
+    var progressBarBackgroundColor: Color = Color(uiColor: .systemGray6)
+    var orbitColor: Color = Color(uiColor: .systemGray6)
+    var accentColor: Color = Color(uiColor: .systemYellow)
 }
 
 #Preview {
