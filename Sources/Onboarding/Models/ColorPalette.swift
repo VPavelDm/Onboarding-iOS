@@ -50,7 +50,7 @@ public struct TestColorPalette: ColorPalette {
     public var secondaryButtonBackgroundColor: Color = Color(red: 90/255, green: 70/255, blue: 200/255).opacity(0.2)
     public var secondaryButtonStrokeColor: Color = Color(red: 90/255, green: 70/255, blue: 200/255).opacity(0.2)
     public var plainButtonColor: Color = .white
-    public var progressBarBackgroundColor: Color = Color(red: 90/255, green: 70/255, blue: 200/255)
+    public var progressBarBackgroundColor: Color = Color(red: 90/255, green: 70/255, blue: 200/255).opacity(0.2)
     public var orbitColor: Color = Color(uiColor: .systemGray6)
     public var accentColor: Color = Color(uiColor: .systemYellow)
 

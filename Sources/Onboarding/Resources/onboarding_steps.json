@@ -131,7 +131,7 @@
             "description": "Let's personalise your experience with Affirmations",
             "image": {
                 "type": "named",
-                "value": "star_heart",
+                "value": "headphones",
                 "aspectRationType": "fit"
             },
             "answer": {
@@ -220,7 +220,7 @@
             "description": "We'll show you the way to find them",
             "image": {
                 "type": "named",
-                "value": "welcomeScreen",
+                "value": "headphones",
                 "aspectRationType": "fit"
             },
             "answer": {
@@ -336,7 +336,7 @@
             "description": "Your can start changing your life",
             "image": {
                 "type": "named",
-                "value": "welcomeScreen",
+                "value": "headphones",
                 "aspectRationType": "fit"
             },
             "answer": {

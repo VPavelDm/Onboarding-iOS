@@ -16,7 +16,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             .foregroundStyle(viewModel.colorPalette.primaryButtonForegroundColor)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: 500)
-            .frame(height: 60)
+            .frame(height: 54)
             .background(viewModel.colorPalette.primaryButtonBackgroundColor.opacity(configuration.isPressed || !isEnabled ? 0.65 : 1))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .frame(maxWidth: .infinity)

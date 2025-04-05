@@ -10,7 +10,7 @@ import SwiftUI
 extension ProgressStepView {
 
     var stepsView: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: .buttonsSpacing) {
             ForEach(step.steps.indices, id: \.self) { index in
                 HStack(spacing: 12) {
                     checkmarkView(at: index)
@@ -21,23 +21,24 @@ extension ProgressStepView {
         }
     }
 
+    @ViewBuilder
     private func checkmarkView(at index: Int) -> some View {
-        Image(systemName: "checkmark")
-            .resizable()
-            .font(.system(size: 128, weight: .bold))
-            .frame(width: 12, height: 12)
-            .foregroundStyle(viewModel.colorPalette.primaryButtonForegroundColor)
-            .padding(8)
-            .background {
-                if stepCompleted(at: index) {
-                    Circle()
-                        .fill(viewModel.colorPalette.primaryButtonBackgroundColor)
-                } else {
-                    Circle()
-                        .stroke(lineWidth: 1)
-                        .fill(viewModel.colorPalette.secondaryTextColor)
-                }
+        if stepCompleted(at: index) {
+            ZStack {
+                Circle()
+                    .fill(viewModel.colorPalette.primaryButtonBackgroundColor)
+                Image(systemName: "checkmark")
+                    .fontWeight(.semibold)
+                    .blendMode(.destinationOut)
             }
+            .frame(width: 28, height: 28)
+            .compositingGroup()
+        } else {
+            Circle()
+                .stroke(lineWidth: 1)
+                .fill(viewModel.colorPalette.secondaryTextColor)
+                .frame(width: 28, height: 28)
+        }
     }
 
     private func stepView(at index: Int) -> some View {
@@ -49,4 +50,8 @@ extension ProgressStepView {
     private func stepCompleted(at index: Int) -> Bool {
         CGFloat(index + 1) / CGFloat(step.steps.count) * 100 <= progress
     }
+}
+
+#Preview {
+    MockOnboardingView()
 }
