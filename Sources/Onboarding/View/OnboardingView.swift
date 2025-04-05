@@ -26,35 +26,27 @@ public struct OnboardingView: View {
     }
 
     public var body: some View {
-        NavigationStack {
-            NavigationStackContent(step: viewModel.currentStep)
-                .id(viewModel.currentStep)
-                .transition(
-                    .asymmetric(
-                        insertion: .offset(y: -30).combined(with: .opacity).animation(.default.delay(0.35)),
-                        removal: .offset(y: 30).combined(with: .opacity)
-                    )
+        NavigationStackContent(step: viewModel.currentStep)
+            .id(viewModel.currentStep)
+            .transition(
+                .asymmetric(
+                    insertion: .offset(y: -30).combined(with: .opacity).animation(.default.delay(0.35)),
+                    removal: .offset(y: 30).combined(with: .opacity)
                 )
-                .progressView(isVisible: viewModel.currentStep == nil) {
-                    contentLoadingView
+            )
+            .progressView(isVisible: viewModel.currentStep == nil) {
+                contentLoadingView
+            }
+            .background(viewModel.colorPalette.anyBackgroundView.ignoresSafeArea())
+            .animation(.easeInOut, value: viewModel.currentStep)
+            .onFirstAppear {
+                do {
+                    try await viewModel.loadSteps()
+                } catch {
+                    showError = true
                 }
-                .background(viewModel.colorPalette.anyBackgroundView)
-                .animation(.easeInOut, value: viewModel.currentStep)
-                .onFirstAppear {
-                    do {
-                        try await viewModel.loadSteps()
-                    } catch {
-                        showError = true
-                    }
-                }
-                .navigationDestination(
-                    for: OnboardingStep.self,
-                    destination: { step in
-                        NavigationStackContent(step: step)
-                    }
-                )
-        }
-        .environmentObject(viewModel)
+            }
+            .environmentObject(viewModel)
     }
 
     private var contentLoadingView: some View {
