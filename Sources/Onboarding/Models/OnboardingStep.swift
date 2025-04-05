@@ -10,7 +10,6 @@ import Foundation
 struct OnboardingStep: Sendable, Equatable, Hashable {
     var id: StepID
     var type: OnboardingStepType
-    var passedPercent: Double
 
     enum OnboardingStepType: Sendable, Equatable, Hashable {
         case welcome(WelcomeStep)
@@ -96,8 +95,7 @@ extension OnboardingStep {
 
         self.init(
             id: response.id,
-            type: type,
-            passedPercent: response.passedPercent
+            type: type
         )
     }
 }
