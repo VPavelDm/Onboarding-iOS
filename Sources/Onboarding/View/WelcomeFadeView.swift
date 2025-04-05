@@ -59,21 +59,11 @@ struct WelcomeFadeView: View {
 
     func displayNextText() {
         guard activeElementIndex.map({ $0 < step.messages.count }) ?? true else { return }
-        if #available(iOS 17.0, *) {
-            print("LOG: initiated")
-            withAnimation(.default.delay(10)) {
-                activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
-            } completion: {
-                print("LOG: completed")
-                displayNextText()
-            }
-        } else {
-            withAnimation(.default) {
-                activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-                displayNextText()
-            }
+        withAnimation(.default) {
+            activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+            displayNextText()
         }
     }
 }
