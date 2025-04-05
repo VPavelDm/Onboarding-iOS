@@ -18,19 +18,19 @@ struct OneAnswerView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: .contentSpacing) {
+                VStack(alignment: .leading, spacing: .headingSpacing) {
                     titleView
                     descriptionView
                 }
-                VStack(spacing: 12) {
+                VStack(spacing: .buttonsSpacing) {
                     ForEach(step.answers.indices, id: \.self) { index in
                         buttonView(answer: step.answers[index])
                     }
                 }
             }
-            .padding(.vertical, 32)
-            .padding(.horizontal, 20)
+            .padding(.vertical, .vScreenPadding)
+            .padding(.horizontal, .hScreenPadding)
         }
         .scrollContentBackground(.hidden)
         .safeAreaInset(edge: .bottom) {
@@ -42,7 +42,8 @@ struct OneAnswerView: View {
                     skipButton(skip: skip)
                 }
             }
-            .padding()
+            .padding(.horizontal, .hScreenPadding)
+            .padding(.bottom, .vScreenPadding)
         }
         .animation(.easeInOut, value: selectedAnswer != nil)
     }

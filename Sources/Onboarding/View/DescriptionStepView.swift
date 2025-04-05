@@ -18,22 +18,20 @@ struct DescriptionStepView: View {
     var step: DescriptionStep
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack {
             imageView
-            Spacer()
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: .headingSpacing) {
                 titleView
                 descriptionView
                     .opacity(isDescriptionVisible ? 1 : 0)
             }
-            .padding(.horizontal, 20)
-            Spacer()
-            Spacer()
+            .padding(.horizontal, .hScreenPadding)
+            .frame(maxHeight: .infinity, alignment: .top)
             nextButton
-                .padding(.horizontal, 20)
+                .padding(.horizontal, .hScreenPadding)
                 .opacity(isButtonVisible ? 1 : 0)
         }
-        .padding(.vertical, 32)
+        .padding(.vertical, .vScreenPadding)
         .ignoresSafeArea(edges: .top)
         .task {
             withAnimation(.easeInOut.delay(2)) {

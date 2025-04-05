@@ -15,8 +15,8 @@ struct NameStepView: View {
     var step: EnterNameStep
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: .contentSpacing) {
+            VStack(alignment: .leading, spacing: .headingSpacing) {
                 titleView
                 descriptionView
             }
@@ -24,8 +24,8 @@ struct NameStepView: View {
             Spacer()
             nextButton
         }
-        .padding(.vertical, 32)
-        .padding(.horizontal, 20)
+        .padding(.vertical, .vScreenPadding)
+        .padding(.horizontal, .hScreenPadding)
     }
 
     private var titleView: some View {

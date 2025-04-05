@@ -6,20 +6,20 @@ struct SocialProofView: View {
     let step: SocialProofStep
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack {
             imageView
             Spacer()
             VStack(spacing: 32) {
                 laurelsView
                 titleView
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, .hScreenPadding)
             Spacer()
             Spacer()
             nextButton
-                .padding(.horizontal)
+                .padding(.horizontal, .hScreenPadding)
         }
-        .padding(.vertical, 32)
+        .padding(.vertical, .vScreenPadding)
         .ignoresSafeArea(edges: .top)
     }
 
@@ -84,7 +84,7 @@ struct SocialProofView: View {
             }
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
             .multilineTextAlignment(.center)
-            .padding(.horizontal, 64)
+            .padding(.horizontal, 2 * .hScreenPadding)
     }
 
     private var reviewView: some View {
