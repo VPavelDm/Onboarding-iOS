@@ -21,13 +21,8 @@ final class OnboardingViewModel: ObservableObject {
     // MARK: - Outputs
 
     @Published var steps: [OnboardingStep] = []
-    @Published var passedSteps: [OnboardingStep] = []
     @Published var currentStep: OnboardingStep?
     @Published var userAnswers: [UserAnswer] = []
-
-    var passedStepsProcent: CGFloat {
-        passedSteps.last?.passedPercent ?? 0.05
-    }
 
     let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
@@ -37,26 +32,6 @@ final class OnboardingViewModel: ObservableObject {
         Publishers.CombineLatest(progressSubject, progressButtonSubject)
             .map { _ in Void() }
             .eraseToAnyPublisher()
-    }
-
-    var isBackButtonVisible: Bool {
-        guard passedSteps.count > 1 else { return false }
-        return passedSteps.last?.isBackButtonVisible ?? true
-    }
-
-    var isProgressBarVisible: Bool {
-        guard passedSteps.count > 1 else { return false }
-        return passedSteps.last?.isProgressBarVisible ?? true
-    }
-
-    var isCloseButtonVisible: Bool {
-        passedSteps.last?.isCloseButtonVisible ?? false
-    }
-
-    var shouldShowToolbar: Bool {
-        steps.contains(where: { step in
-            step.isCloseButtonVisible || step.isProgressBarVisible
-        })
     }
 
     // MARK: - Inits
@@ -73,8 +48,7 @@ final class OnboardingViewModel: ObservableObject {
     func loadSteps() async throws {
         steps = try await service.fetchSteps()
             .filter(\.isNotUnknown)
-        guard let firstStep = steps.first else { throw OnboardingError.noSteps }
-        self.currentStep = firstStep
+        currentStep = steps.first
     }
 
     func onAnswer(answers: [StepAnswer]) async {
@@ -87,15 +61,12 @@ final class OnboardingViewModel: ObservableObject {
             payloads: payloads
         )
         userAnswers.append(answer)
-        await delegate.onAnswerClick(userAnswer: answer, allAnswers: userAnswers)
+        await delegate.onAnswer(userAnswer: answer, allAnswers: userAnswers)
 
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
-        if let nextStepIndex = steps.firstIndex(where: { $0.id == answers.last?.nextStepID }) {
-            passedSteps.append(steps[nextStepIndex])
-            self.currentStep = passedSteps.last
-        } else {
-            await delegate.finalise()
+        if let nextStep = steps.first(where: { $0.id == answers.last?.nextStepID }) {
+            self.currentStep = nextStep
         }
     }
 
@@ -110,18 +81,7 @@ final class OnboardingViewModel: ObservableObject {
             }
             .store(in: &cancellations)
         
-        try? await delegate.processAnswers(userAnswers)
         progressSubject.send(Void())
-    }
-
-    func onBack() {
-        if !userAnswers.isEmpty {
-            userAnswers.removeLast()
-        }
-        if !passedSteps.isEmpty {
-            passedSteps.removeLast()
-            currentStep = passedSteps.last
-        }
     }
 
     func format(string: String) -> String {

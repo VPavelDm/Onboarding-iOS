@@ -20,22 +20,21 @@ struct ProgressStepView: View {
         ScrollView {
             VStack(spacing: 64) {
                 ProgressCircleView(duration: step.duration, progress: $progress, finished: finishedProcessing)
-                VStack(spacing: 32) {
-                    VStack(spacing: 12) {
+                VStack(spacing: 2 * .contentSpacing) {
+                    VStack(spacing: .headingSpacing) {
                         titleView
                         descriptionView
                     }
                     stepsView
                 }
             }
-            .padding(.top, 64)
-            .padding(.horizontal, 32)
+            .padding(.vertical, .vScreenPadding)
+            .padding(.horizontal, .hScreenPadding)
         }
         .scrollIndicators(.hidden)
         .safeAreaInset(edge: .bottom) {
             nextButton
         }
-        .background(viewModel.colorPalette.backgroundColor)
         .task {
             await viewModel.processAnswers(step: step)
             finishedProcessing = true
@@ -66,14 +65,16 @@ struct ProgressStepView: View {
             viewModel.onProgressButton()
         } label: {
             ZStack {
-                Text(step.answer.title).opacity(isButtonLoading ? 0 : 1)
+                Text(step.answer.title)
+                    .opacity(isButtonLoading ? 0 : 1)
                 ProgressView()
-                    .tint(.accentColor)
+                    .tint(viewModel.colorPalette.primaryButtonForegroundColor)
                     .opacity(isButtonLoading ? 1 : 0)
             }
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding([.horizontal, .bottom])
+        .padding(.horizontal, .hScreenPadding)
+        .padding(.vertical, .vScreenPadding)
         .disabled(progress != 100)
         .opacity(progress == 100 ? 1 : 0)
         .animation(.easeInOut, value: progress == 100)
@@ -81,11 +82,5 @@ struct ProgressStepView: View {
 }
 
 #Preview {
-    ProgressStepView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
+    MockOnboardingView()
 }

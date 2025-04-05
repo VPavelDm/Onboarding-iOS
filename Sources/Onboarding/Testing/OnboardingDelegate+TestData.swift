@@ -8,26 +8,15 @@
 import Foundation
 
 final class MockOnboardingDelegate: OnboardingDelegate {
+    var onAnswerCallback: () -> Void
 
-    func processAnswers(_ answers: [UserAnswer]) async throws {
+    init(onAnswerCallback: @escaping () -> Void) {
+        self.onAnswerCallback = onAnswerCallback
     }
 
     func setupNotifications(for time: String) async throws {
     }
-
-    func fetchDiscountedProduct() async throws -> DiscountedProduct {
-        .testData(expirationDate: Date.now.advanced(by: 86400))
-    }
-
-    func makePurchase(_ product: DiscountedProduct) async throws {
-    }
-
-    func finalise() async {
-    }
-
-    func onAnswerClick(userAnswer: UserAnswer, allAnswers: [UserAnswer]) {
-    }
-
-    func onBackButtonClick() {
+    func onAnswer(userAnswer: UserAnswer, allAnswers: [UserAnswer]) {
+        onAnswerCallback()
     }
 }

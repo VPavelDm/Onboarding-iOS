@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ProgressCircleView: View {
 
+    @EnvironmentObject private var viewModel: OnboardingViewModel
+
     @State private var circleProgress: CGFloat = .zero
 
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -43,14 +45,14 @@ struct ProgressCircleView: View {
 
     private var backgroundCircle: some View {
         Circle()
-            .stroke(Color(uiColor: .systemGray6), lineWidth: 12)
+            .stroke(viewModel.colorPalette.progressBarBackgroundColor, lineWidth: 12)
     }
 
     private var progressCircle: some View {
         Circle()
             .trim(from: 0, to: circleProgress)
             .stroke(
-                Color.accentColor,
+                viewModel.colorPalette.primaryButtonBackgroundColor,
                 style: StrokeStyle(lineWidth: 12, lineCap: .round)
             )
             .rotationEffect(.degrees(-90))
@@ -60,9 +62,13 @@ struct ProgressCircleView: View {
     private var progressText: some View {
         Text("\(Int(progress)) %")
             .monospacedDigit()
-            .foregroundStyle(.white)
+            .foregroundStyle(viewModel.colorPalette.textColor)
             .font(.system(size: 32, weight: .bold))
             .contentTransition(.numericText())
             .animation(.linear, value: progress)
     }
+}
+
+#Preview {
+    MockOnboardingView()
 }

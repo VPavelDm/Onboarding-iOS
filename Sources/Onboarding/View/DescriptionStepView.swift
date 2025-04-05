@@ -18,32 +18,22 @@ struct DescriptionStepView: View {
     var step: DescriptionStep
 
     var body: some View {
-        ScrollView {
-            VStack {
-                imageView
-                VStack(alignment: .leading, spacing: 12) {
-                    if isTitleVisible {
-                        titleView
-                    }
-                    if isDescriptionVisible {
-                        descriptionView
-                    }
-                }
-                .padding(.horizontal)
+        VStack {
+            imageView
+            VStack(alignment: .leading, spacing: .headingSpacing) {
+                titleView
+                descriptionView
+                    .opacity(isDescriptionVisible ? 1 : 0)
             }
+            .padding(.horizontal, .hScreenPadding)
+            .frame(maxHeight: .infinity, alignment: .top)
+            nextButton
+                .padding(.horizontal, .hScreenPadding)
+                .opacity(isButtonVisible ? 1 : 0)
         }
-        .scrollIndicators(.hidden)
+        .padding(.vertical, .vScreenPadding)
         .ignoresSafeArea(edges: .top)
-        .safeAreaInset(edge: .bottom) {
-            if isButtonVisible {
-                nextButton
-            }
-        }
-        .background(viewModel.colorPalette.backgroundColor)
         .task {
-            withAnimation {
-                isTitleVisible = true
-            }
             withAnimation(.easeInOut.delay(2)) {
                 isDescriptionVisible = true
             }
@@ -57,9 +47,9 @@ struct DescriptionStepView: View {
     private var imageView: some View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .aspectRatio(1.0, contentMode: .fit)
                 .frame(maxWidth: .infinity)
-                .aspectRatio(contentMode: image.contentMode)
-                .clipShape(BottomWaveShape())
         }
     }
 
@@ -68,8 +58,7 @@ struct DescriptionStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .padding(.horizontal)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.center)
     }
 
     @ViewBuilder
@@ -78,8 +67,6 @@ struct DescriptionStepView: View {
             Text(description)
                 .font(.headline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -90,16 +77,9 @@ struct DescriptionStepView: View {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding()
     }
 }
 
 #Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData,
-        outerScreen: { _ in }
-    )
-    .preferredColorScheme(.dark)
+    MockOnboardingView()
 }

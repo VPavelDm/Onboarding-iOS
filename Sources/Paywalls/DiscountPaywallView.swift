@@ -1,19 +1,23 @@
 //
-//  SwiftUIView.swift
+//  File.swift
 //  onboarding-ios
 //
-//  Created by Pavel Vaitsikhouski on 28.09.24.
+//  Created by Pavel Vaitsikhouski on 31.03.25.
 //
 
 import SwiftUI
+import CoreUI
 
-struct PrimeStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+struct DiscountPaywallView: View {
+    @StateObject private var viewModel = DiscountPaywallViewModel()
 
     @State private var isLoading = true
-    @State private var discountedProduct: DiscountedProduct = .testData()
+    @State private var discountedProduct: DiscountProduct = .testData()
 
-    var step: PrimeStep
+    var info: DiscountPaywallInfo
+    var fetchDiscountedProduct: () async throws -> DiscountProduct
+    var makePurchase: (DiscountProduct) async throws -> Void
+    var onClose: () async -> Void
 
     var body: some View {
         VStack(spacing: 32) {
@@ -48,7 +52,7 @@ struct PrimeStepView: View {
         .background(.black)
         .task {
             do {
-                discountedProduct = try await viewModel.delegate.fetchDiscountedProduct()
+                discountedProduct = try await fetchDiscountedProduct()
                 isLoading = false
             } catch {
                 print(error.localizedDescription)
@@ -57,7 +61,7 @@ struct PrimeStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(info.title)
             .font(.title.bold())
             .foregroundStyle(.white)
             .multilineTextAlignment(.center)
@@ -70,7 +74,7 @@ struct PrimeStepView: View {
     }
 
     private var descriptionView: some View {
-        Text(viewModel.format(string: step.description))
+        Text(info.description)
             .font(.system(size: 46, weight: .bold))
             .minimumScaleFactor(0.5)
             .foregroundStyle(Color.accentColor)
@@ -130,13 +134,12 @@ struct PrimeStepView: View {
     private var continueButton: some View {
         AsyncButton {
             do {
-                try await viewModel.delegate.makePurchase(discountedProduct)
-                await viewModel.onAnswer(answers: [step.answer])
+                try await makePurchase(discountedProduct)
             } catch {
                 print(error.localizedDescription)
             }
         } label: {
-            Text(step.answer.title)
+            Text(info.buttonText)
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(isLoading)
@@ -144,7 +147,7 @@ struct PrimeStepView: View {
 
     private var closeButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [])
+            await onClose()
         } label: {
             Text("No Gift due now", bundle: .module)
         }
@@ -164,14 +167,4 @@ struct PrimeStepView: View {
             .frame(maxWidth: .infinity)
             .buttonStyle(SimpleButtonStyle())
     }
-}
-
-#Preview {
-    PrimeStepView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
 }

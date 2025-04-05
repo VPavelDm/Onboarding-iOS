@@ -21,15 +21,6 @@ struct MultipleAnswerView: View {
     }
 
     var body: some View {
-        VStack {
-            scrollView
-            nextButton
-        }
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(viewModel.colorPalette.backgroundColor)
-    }
-
-    private var scrollView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 12) {
@@ -42,7 +33,13 @@ struct MultipleAnswerView: View {
                     }
                 }
             }
-            .padding([.horizontal, .top])
+            .padding(.vertical, 32)
+            .padding(.horizontal, 20)
+        }
+        .safeAreaInset(edge: .bottom) {
+            nextButton
+                .padding(.horizontal, 20)
+                .padding(.bottom, 32)
         }
     }
 
@@ -67,13 +64,9 @@ struct MultipleAnswerView: View {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
             answer.wrappedValue.isChose.toggle()
         } label: {
-            HStack {
-                Text(answer.wrappedValue.value.title)
-                Spacer()
-                RadioButton(colorPalette: viewModel.colorPalette, isSelected: answer.isChose)
-            }
+            Text(answer.wrappedValue.value.title)
         }
-        .buttonStyle(MultipleAnswerButtonStyle())
+        .buttonStyle(MultipleAnswerButtonStyle(isSelected: answer.isChose.wrappedValue))
     }
 
     private var nextButton: some View {
@@ -83,8 +76,7 @@ struct MultipleAnswerView: View {
             Text(step.buttonTitle)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding([.horizontal, .bottom])
-        .disabled(answers.isDisabled(step: step))
+        .opacity(answers.isDisabled(step: step) ? 0 : 1)
         .animation(.easeInOut, value: answers.isDisabled(step: step))
     }
 
@@ -104,12 +96,5 @@ private extension Array where Element == BoxModel {
 }
 
 #Preview {
-    MultipleAnswerView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
-        .tint(Color(hex: "E8FF00"))
+    MockOnboardingView()
 }

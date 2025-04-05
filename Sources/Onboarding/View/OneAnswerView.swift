@@ -12,36 +12,40 @@ struct OneAnswerView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var selectedAnswer: StepAnswer?
+    @State private var isButtonVisible: Bool = false
 
     var step: OneAnswerStep
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: .contentSpacing) {
+                VStack(alignment: .leading, spacing: .headingSpacing) {
                     titleView
                     descriptionView
                 }
-                VStack(spacing: 12) {
+                VStack(spacing: .buttonsSpacing) {
                     ForEach(step.answers.indices, id: \.self) { index in
                         buttonView(answer: step.answers[index])
                     }
                 }
             }
-            .padding()
+            .padding(.vertical, .vScreenPadding)
+            .padding(.horizontal, .hScreenPadding)
         }
+        .scrollContentBackground(.hidden)
         .safeAreaInset(edge: .bottom) {
             VStack {
-                nextButton
+                if selectedAnswer != nil {
+                    nextButton
+                }
                 if let skip = step.skip {
                     skipButton(skip: skip)
                 }
             }
-            .padding()
-            .background(viewModel.colorPalette.backgroundColor)
+            .padding(.horizontal, .hScreenPadding)
+            .padding(.bottom, .vScreenPadding)
         }
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(viewModel.colorPalette.backgroundColor)
+        .animation(.easeInOut, value: selectedAnswer != nil)
     }
 
     private var titleView: some View {
@@ -65,7 +69,6 @@ struct OneAnswerView: View {
             selectedAnswer = answer
         } label: {
             Text(answer.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .buttonStyle(AnswerButtonStyle(isSelected: selectedAnswer == answer))
     }
@@ -94,11 +97,5 @@ struct OneAnswerView: View {
 }
 
 #Preview {
-    OneAnswerView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
+    MockOnboardingView()
 }

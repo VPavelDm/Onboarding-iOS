@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RadioButton: View {
 
-    var colorPalette: ColorPalette
+    var colorPalette: any ColorPalette
     @Binding var isSelected: Bool
 
     var body: some View {
@@ -25,8 +25,4 @@ struct RadioButton: View {
         .frame(width: 20, height: 20)
         .animation(.easeInOut, value: isSelected)
     }
-}
-
-#Preview {
-    RadioButton(colorPalette: .testData, isSelected: .constant(true))
 }

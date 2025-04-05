@@ -2,12 +2,12 @@
 //  File.swift
 //  onboarding-ios
 //
-//  Created by Pavel Vaitsikhouski on 28.09.24.
+//  Created by Pavel Vaitsikhouski on 31.03.25.
 //
 
 import Foundation
 
-public struct DiscountedProduct: Sendable, Equatable, Hashable {
+public struct DiscountProduct: Sendable, Equatable, Hashable {
     var duration: String
     var discountedPrice: String
     var originalAnnualPrice: String

@@ -11,9 +11,6 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
     var id: StepID
     var type: OnboardingStepType
     var passedPercent: Double
-    var isBackButtonVisible: Bool
-    var isProgressBarVisible: Bool
-    var isCloseButtonVisible: Bool
 
     enum OnboardingStepType: Sendable, Equatable, Hashable {
         case welcome(WelcomeStep)
@@ -22,9 +19,6 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case binaryAnswer(BinaryAnswerStep)
         case multipleAnswer(MultipleAnswerStep)
         case description(DescriptionStep)
-        case login(StepAnswer)
-        case custom(StepAnswer)
-        case prime(PrimeStep)
         case progress(ProgressStep)
         case timePicker(TimePickerStep)
         case discountWheel(DiscountWheelStep)
@@ -37,7 +31,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
             switch self {
             case .welcome(let welcomeStep):
                 welcomeStep.title
-            case .welcomeFade(let step):
+            case .welcomeFade:
                 nil
             case .oneAnswer(let oneAnswerStep):
                 oneAnswerStep.title
@@ -47,12 +41,6 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
                 multipleAnswerStep.title
             case .description(let descriptionStep):
                 descriptionStep.title
-            case .login(let stepAnswer):
-                stepAnswer.title
-            case .custom(let stepAnswer):
-                stepAnswer.title
-            case .prime(let stepAnswer):
-                stepAnswer.title
             case .progress(let progressStep):
                 progressStep.title
             case .timePicker(let timePickerStep):
@@ -97,9 +85,6 @@ extension OnboardingStep {
         case .multipleAnswer(let payload): .multipleAnswer(MultipleAnswerStep(response: payload))
         case .description(let payload): .description(DescriptionStep(response: payload))
         case .binaryAnswer(let payload): .binaryAnswer(BinaryAnswerStep(response: payload))
-        case .login(let payload): .login(StepAnswer(response: payload))
-        case .custom(let payload): .custom(StepAnswer(response: payload))
-        case .prime(let payload): .prime(PrimeStep(response: payload))
         case .progress(let payload): .progress(ProgressStep(response: payload))
         case .timePicker(let payload): .timePicker(TimePickerStep(response: payload))
         case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload))
@@ -112,10 +97,7 @@ extension OnboardingStep {
         self.init(
             id: response.id,
             type: type,
-            passedPercent: response.passedPercent,
-            isBackButtonVisible: response.isBackButtonVisible,
-            isProgressBarVisible: response.isProgressBarVisible,
-            isCloseButtonVisible: response.isCloseButtonVisible
+            passedPercent: response.passedPercent
         )
     }
 }

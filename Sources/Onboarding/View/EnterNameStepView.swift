@@ -15,8 +15,8 @@ struct NameStepView: View {
     var step: EnterNameStep
 
     var body: some View {
-        VStack(spacing: 26) {
-            VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: .contentSpacing) {
+            VStack(alignment: .leading, spacing: .headingSpacing) {
                 titleView
                 descriptionView
             }
@@ -24,8 +24,8 @@ struct NameStepView: View {
             Spacer()
             nextButton
         }
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(viewModel.colorPalette.backgroundColor)
+        .padding(.vertical, .vScreenPadding)
+        .padding(.horizontal, .hScreenPadding)
     }
 
     private var titleView: some View {
@@ -33,15 +33,14 @@ struct NameStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .multilineTextAlignment(.center)
+            .multilineTextAlignment(.leading)
     }
 
     private var descriptionView: some View {
         Text(step.description)
             .font(.title3)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 32)
+            .multilineTextAlignment(.leading)
     }
 
     private var nameInputView: some View {
@@ -56,7 +55,6 @@ struct NameStepView: View {
                     await viewModel.onAnswer(answers: [step.answer])
                 }
             }
-            .padding()
     }
 
     private var nextButton: some View {
@@ -68,12 +66,11 @@ struct NameStepView: View {
         .buttonStyle(PrimaryButtonStyle())
         .disabled(name.isEmpty)
         .animation(.easeInOut, value: name.isEmpty)
-        .padding([.horizontal, .bottom])
     }
 }
 
 private struct NameTextFieldStyle: TextFieldStyle {
-    var colorPalette: ColorPalette
+    var colorPalette: any ColorPalette
 
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
@@ -89,12 +86,5 @@ private struct NameTextFieldStyle: TextFieldStyle {
 }
 
 #Preview {
-    OnboardingView(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(),
-        colorPalette: .testData,
-        outerScreen: { _ in
-        }
-    )
-    .preferredColorScheme(.dark)
+    MockOnboardingView()
 }

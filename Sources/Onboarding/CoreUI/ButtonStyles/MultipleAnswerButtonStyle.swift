@@ -12,6 +12,8 @@ struct MultipleAnswerButtonStyle: ButtonStyle {
 
     @Environment(\.isEnabled) private var isEnabled
 
+    var isSelected: Bool
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(viewModel.colorPalette.secondaryButtonForegroundColor)
@@ -23,18 +25,8 @@ struct MultipleAnswerButtonStyle: ButtonStyle {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay {
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
+                    .stroke(isSelected ? viewModel.colorPalette.primaryButtonBackgroundColor : viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
             }
             .opacity(isEnabled ? 1.0 : 0.65)
     }
-}
-
-#Preview {
-    MultipleAnswerView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
 }

@@ -16,7 +16,7 @@ struct SecondaryButtonStyle: ButtonStyle {
             .foregroundStyle(viewModel.colorPalette.secondaryButtonForegroundColor)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: 500)
-            .padding()
+            .frame(height: 54)
             .background(viewModel.colorPalette.secondaryButtonBackgroundColor.opacity(configuration.isPressed || !isEnabled ? 0.65 : 1))
             .overlay {
                 RoundedRectangle(cornerRadius: 16)

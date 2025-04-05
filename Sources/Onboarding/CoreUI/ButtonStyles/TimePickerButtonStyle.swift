@@ -16,7 +16,7 @@ struct TimePickerButtonStyle: ButtonStyle {
             .foregroundStyle(.white)
             .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: 500)
-            .padding()
+            .frame(height: 54)
             .background(Color(hex: "4743A3"))
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .frame(maxWidth: .infinity)

@@ -8,7 +8,8 @@
 import SwiftUI
 
 public protocol ColorPalette {
-    var backgroundColor: Color { get }
+    associatedtype BackgroundView: View
+    var backgroundView: BackgroundView { get }
     var textColor: Color { get }
     var secondaryTextColor: Color { get }
     var primaryButtonForegroundColor: Color { get }
@@ -22,38 +23,36 @@ public protocol ColorPalette {
     var accentColor: Color { get }
 }
 
-public extension ColorPalette where Self == TestColorPalette {
+extension ColorPalette {
+
+    var anyBackgroundView: AnyView {
+        AnyView(backgroundView)
+    }
+}
+
+extension ColorPalette where Self == TestColorPalette {
 
     static var testData: Self {
         TestColorPalette()
     }
 }
 
-public struct TestColorPalette: ColorPalette {
-    public var backgroundColor: Color = .clear
-    public var textColor: Color = .primary
-    public var secondaryTextColor: Color = .secondary
-    public var primaryButtonForegroundColor: Color = .primary
-    public var primaryButtonBackgroundColor: Color = Color(red: 108/255, green: 71/255, blue: 214/255)
-    public var secondaryButtonForegroundColor: Color = .white
-    public var secondaryButtonBackgroundColor: Color = .black
-    public var secondaryButtonStrokeColor: Color = .blue
-    public var plainButtonColor: Color = .white
-    public var progressBarBackgroundColor: Color = .red
-    public var orbitColor: Color = .gray
-    public var accentColor: Color = Color(hex: "22223B")
+struct TestColorPalette: ColorPalette {
+    typealias BackgroundView = Color
+    var backgroundView: Color = .black
+    var textColor: Color = .white
+    var secondaryTextColor: Color = .secondary
+    var primaryButtonForegroundColor: Color = .black
+    var primaryButtonBackgroundColor: Color = Color(uiColor: .systemYellow)
+    var secondaryButtonForegroundColor: Color = .white
+    var secondaryButtonBackgroundColor: Color = Color(uiColor: .systemGray6)
+    var secondaryButtonStrokeColor: Color = Color(uiColor: .systemGray6)
+    var plainButtonColor: Color = .primary
+    var progressBarBackgroundColor: Color = Color(uiColor: .systemGray6)
+    var orbitColor: Color = Color(uiColor: .systemGray6)
+    var accentColor: Color = Color(uiColor: .systemYellow)
 }
 
 #Preview {
-    if #available(iOS 18.0, *) {
-        OnboardingView(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in
-            }
-        )
-        .preferredColorScheme(.dark)
-        .background(AffirmationBackgroundView())
-    }
+    MockOnboardingView()
 }

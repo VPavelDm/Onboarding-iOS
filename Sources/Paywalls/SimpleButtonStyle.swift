@@ -2,7 +2,7 @@
 //  File.swift
 //  onboarding-ios
 //
-//  Created by Pavel Vaitsikhouski on 02.10.24.
+//  Created by Pavel Vaitsikhouski on 31.03.25.
 //
 
 import SwiftUI

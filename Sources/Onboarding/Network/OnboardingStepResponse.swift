@@ -11,27 +11,18 @@ struct OnboardingStepResponse: Decodable {
     let id: StepID
     let type: OnboardingStepType
     let passedPercent: Double
-    let isBackButtonVisible: Bool
-    let isProgressBarVisible: Bool
-    let isCloseButtonVisible: Bool
 
     enum CodingKeys: String, CodingKey {
         case id
         case type
         case passedPercent
         case payload
-        case isBackButtonVisible
-        case isProgressBarVisible
-        case isCloseButtonVisible
     }
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(StepID.self, forKey: .id)
         passedPercent = try container.decode(Double.self, forKey: .passedPercent)
-        isBackButtonVisible = (try? container.decodeIfPresent(Bool.self, forKey: .isBackButtonVisible)) ?? true
-        isProgressBarVisible = (try? container.decodeIfPresent(Bool.self, forKey: .isProgressBarVisible)) ?? true
-        isCloseButtonVisible = (try? container.decodeIfPresent(Bool.self, forKey: .isCloseButtonVisible)) ?? true
         let type = try container.decode(String.self, forKey: .type)
         switch type {
         case "multipleAnswer":
@@ -46,15 +37,6 @@ struct OnboardingStepResponse: Decodable {
         case "description":
             let payload = try container.decode(DescriptionStep.self, forKey: .payload)
             self.type = .description(payload)
-        case "login":
-            let payload = try container.decode(CustomStep.self, forKey: .payload)
-            self.type = .login(payload.answer)
-        case "custom":
-            let payload = try container.decode(CustomStep.self, forKey: .payload)
-            self.type = .custom(payload.answer)
-        case "prime":
-            let payload = try container.decode(PrimeStep.self, forKey: .payload)
-            self.type = .prime(payload)
         case "welcome":
             let payload = try container.decode(WelcomeStep.self, forKey: .payload)
             self.type = .welcome(payload)
@@ -89,9 +71,6 @@ struct OnboardingStepResponse: Decodable {
         case multipleAnswer(MultipleAnswerStep)
         case description(DescriptionStep)
         case binaryAnswer(BinaryAnswer)
-        case login(StepAnswer)
-        case custom(StepAnswer)
-        case prime(PrimeStep)
         case welcome(WelcomeStep)
         case welcomeFade(WelcomeFadeStep)
         case progress(ProgressStep)
@@ -195,12 +174,6 @@ struct OnboardingStepResponse: Decodable {
         let answer: StepAnswer
     }
 
-    struct PrimeStep: Decodable {
-        let title: String
-        let description: String
-        let answer: StepAnswer
-    }
-
     struct StepAnswer: Decodable {
         let title: String
         let icon: String?
@@ -232,9 +205,5 @@ struct OnboardingStepResponse: Decodable {
                 }
             }
         }
-    }
-
-    struct CustomStep: Decodable {
-        let answer: StepAnswer
     }
 }

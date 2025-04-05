@@ -12,9 +12,13 @@ struct MockOnboardingView: View {
     var body: some View {
         OnboardingView(
             configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in }
+            delegate: MockOnboardingDelegate(onAnswerCallback: {}),
+            colorPalette: .testData
         )
+        .preferredColorScheme(.dark)
     }
+}
+
+#Preview {
+    MockOnboardingView()
 }

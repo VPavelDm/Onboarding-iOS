@@ -2,17 +2,17 @@
 //  File.swift
 //  onboarding-ios
 //
-//  Created by Pavel Vaitsikhouski on 28.09.24.
+//  Created by Pavel Vaitsikhouski on 31.03.25.
 //
 
 import Foundation
 
-extension DiscountedProduct {
+extension DiscountProduct {
 
     static func testData(
         expirationDate: Date = Date.now.advanced(by: -86400)
     ) -> Self {
-        DiscountedProduct(
+        DiscountProduct(
             duration: "12 months",
             discountedPrice: "35,99$",
             originalAnnualPrice: "119,99$",

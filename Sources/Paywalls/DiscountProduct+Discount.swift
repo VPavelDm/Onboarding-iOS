@@ -2,7 +2,7 @@
 //  File.swift
 //  onboarding-ios
 //
-//  Created by Pavel Vaitsikhouski on 28.12.24.
+//  Created by Pavel Vaitsikhouski on 31.03.25.
 //
 
 import SwiftUI
@@ -10,7 +10,7 @@ import Combine
 
 // MARK: - Discount
 
-public extension DiscountedProduct {
+public extension DiscountProduct {
 
     struct Discount: Sendable, Equatable, Hashable {
         public var expirationDate: Date
@@ -26,9 +26,9 @@ public extension DiscountedProduct {
     }
 }
 
-extension DiscountedProduct.Discount {
+extension DiscountProduct.Discount {
 
-    var timeComponents: [DiscountedProduct.TimeComponent] {
+    var timeComponents: [DiscountProduct.TimeComponent] {
         let components = calculateRemainingTime()
 
         let labels: [String] = [
@@ -42,7 +42,7 @@ extension DiscountedProduct.Discount {
 
         return zip([components.days, components.hours, components.minutes, components.seconds], labels)
             .map { component, label in
-                DiscountedProduct.TimeComponent(
+                DiscountProduct.TimeComponent(
                     digits: String(format: "%02d", component).compactMap({ $0.wholeNumberValue }),
                     label: label
                 )
@@ -68,14 +68,4 @@ extension DiscountedProduct.Discount {
 
         return (days, hours, minutes, seconds)
     }
-}
-
-#Preview {
-    PrimeStepView(step: .testData())
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
 }

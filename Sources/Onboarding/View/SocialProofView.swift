@@ -8,37 +8,35 @@ struct SocialProofView: View {
     var body: some View {
         VStack {
             imageView
-            VStack(spacing: 64) {
+            Spacer()
+            VStack(spacing: 32) {
                 laurelsView
                 titleView
-                reviewView
             }
-            .frame(maxHeight: .infinity)
+            .padding(.horizontal, .hScreenPadding)
+            Spacer()
             Spacer()
             nextButton
+                .padding(.horizontal, .hScreenPadding)
         }
+        .padding(.vertical, .vScreenPadding)
         .ignoresSafeArea(edges: .top)
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
     }
 
     @ViewBuilder
     private var imageView: some View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
-                .foregroundStyle(.secondary)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 200)
-                .clipShape(BottomWaveShape())
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .aspectRatio(1.0, contentMode: .fit)
+                .frame(maxWidth: .infinity)
         }
     }
 
     private var laurelsView: some View {
         HStack {
             laurelView
-            VStack {
-                laurelTitleView
-                laurelDescriptionView
-            }
+            reviewView
             laurelView
                 .scaleEffect(x: -1, y: 1)
         }
@@ -86,7 +84,7 @@ struct SocialProofView: View {
             }
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
             .multilineTextAlignment(.center)
-            .padding(.horizontal, 64)
+            .padding(.horizontal, 2 * .hScreenPadding)
     }
 
     private var reviewView: some View {
@@ -124,20 +122,9 @@ struct SocialProofView: View {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .padding([.horizontal, .bottom])
     }
 }
 
 #Preview {
-    if #available(iOS 18.0, *) {
-        OnboardingView(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData,
-            outerScreen: { _ in
-            }
-        )
-        .preferredColorScheme(.dark)
-        .background(AffirmationBackgroundView())
-    }
+    MockOnboardingView()
 }

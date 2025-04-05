@@ -14,8 +14,6 @@ struct WidgetStepView: View {
             continueButton
         }
         .padding()
-        .padding(.top, .progressBarHeight + .progressBarBottomPadding)
-        .background(viewModel.colorPalette.backgroundColor)
     }
 
     var titleView: some View {
@@ -50,14 +48,4 @@ struct WidgetStepView: View {
         }
         .buttonStyle(SecondaryButtonStyle())
     }
-}
-
-#Preview {
-    WidgetStepView(step: .testData)
-        .environmentObject(OnboardingViewModel(
-            configuration: .testData(),
-            delegate: MockOnboardingDelegate(),
-            colorPalette: .testData
-        ))
-        .preferredColorScheme(.dark)
 }
