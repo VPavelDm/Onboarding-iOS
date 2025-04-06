@@ -11,7 +11,7 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
     
     var step: OnboardingStep?
-    var customStepView: (StepID) -> CustomStepView
+    var customStepView: (CustomStepParams) -> CustomStepView
 
     var body: some View {
         Group {

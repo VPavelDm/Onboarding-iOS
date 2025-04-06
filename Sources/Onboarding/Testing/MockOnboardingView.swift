@@ -14,8 +14,20 @@ struct MockOnboardingView: View {
             configuration: .testData(),
             delegate: MockOnboardingDelegate(onAnswerCallback: {}),
             colorPalette: .testData,
-            customStepView: { _ in
-                Text(verbatim: "appHome")
+            customStepView: { params in
+                switch params.currentStepID {
+                case "appHome":
+                    Text(verbatim: "appHome")
+                case "voices":
+                    AsyncButton {
+                        await params()
+                    } label: {
+                        Text(verbatim: "Choose")
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                default:
+                    EmptyView()
+                }
             }
         )
         .preferredColorScheme(.dark)

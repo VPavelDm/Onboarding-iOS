@@ -14,7 +14,7 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
     @State private var activeElementIndex: Int?
 
     var step: WelcomeFadeStep
-    var customStepView: (StepID) -> CustomStepView
+    var customStepView: (CustomStepParams) -> CustomStepView
 
     var body: some View {
         VStack {

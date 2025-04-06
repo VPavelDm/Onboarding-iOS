@@ -238,25 +238,32 @@
             "answers": [
                 {
                     "title": "become confident",
-                    "nextStepID": "analyse_answers"
+                    "nextStepID": "voices"
                 },
                 {
                     "title": "improve health",
-                    "nextStepID": "analyse_answers"
+                    "nextStepID": "voices"
                 },
                 {
                     "title": "improve relationship",
-                    "nextStepID": "analyse_answers"
+                    "nextStepID": "voices"
                 },
                 {
                     "title": "heal trauma",
-                    "nextStepID": "analyse_answers"
+                    "nextStepID": "voices"
                 },
                 {
                     "title": "become happy",
-                    "nextStepID": "analyse_answers"
+                    "nextStepID": "voices"
                 }
             ]
+        }
+    },
+    {
+        "id": "voices",
+        "type": "custom",
+        "payload": {
+            "nextStepID": "analyse_answers"
         }
     },
     {
@@ -290,8 +297,13 @@
                 "aspectRationType": "fit"
             },
             "answer": {
-                "title": "Continue"
+                "title": "Continue",
+                "nextStepID": "appHome"
             }
         }
+    },
+    {
+        "id": "appHome",
+        "type": "custom"
     }
 ]

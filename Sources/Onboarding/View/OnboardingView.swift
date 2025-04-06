@@ -13,13 +13,13 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
 
     @State private var showError: Bool = false
 
-    private let customStepView: (StepID) -> CustomStepView
+    private let customStepView: (CustomStepParams) -> CustomStepView
 
     public init(
         configuration: OnboardingConfiguration,
         delegate: OnboardingDelegate,
         colorPalette: any ColorPalette,
-        customStepView: @escaping (StepID) -> CustomStepView
+        @ViewBuilder customStepView: @escaping (CustomStepParams) -> CustomStepView
     ) {
         self._viewModel = StateObject(wrappedValue: OnboardingViewModel(
             configuration: configuration,

@@ -59,17 +59,8 @@ final class OnboardingViewModel: ObservableObject {
             onboardingStepID: currentStep.id,
             payloads: payloads
         )
-        userAnswers.append(answer)
-        await delegate.onAnswer(userAnswer: answer, allAnswers: userAnswers)
 
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-
-        if let nextStep = steps.first(where: { $0.id == answers.last?.nextStepID }) {
-            self.currentStep = nextStep
-        } else {
-            let stepID = StepID("appHome")
-            self.currentStep = OnboardingStep(id: stepID, type: .custom(stepID))
-        }
+        await onStepCompletion(answer: answer, nextStepID: answers.last?.nextStepID)
     }
 
     func onProgressButton() {
@@ -88,5 +79,24 @@ final class OnboardingViewModel: ObservableObject {
 
     func format(string: String) -> String {
         delegate.format(string: string)
+    }
+
+    // MARK: - Utils
+
+    @Sendable
+    private func onStepCompletion(answer: UserAnswer, nextStepID: StepID?) async {
+        userAnswers.append(answer)
+        await delegate.onAnswer(userAnswer: answer, allAnswers: userAnswers)
+
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+
+        guard var nextStep = steps.first(where: { $0.id == nextStepID }) else { return }
+
+        if case .custom(var params) = nextStep.type {
+            params.callback = onStepCompletion(answer:nextStepID:)
+            nextStep.type = .custom(params)
+        }
+
+        self.currentStep = nextStep
     }
 }

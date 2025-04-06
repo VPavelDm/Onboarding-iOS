@@ -24,7 +24,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case widget(WidgetStep)
         case socialProof(SocialProofStep)
         case enterName(EnterNameStep)
-        case custom(StepID)
+        case custom(CustomStepParams)
         case unknown
     }
 }
@@ -60,6 +60,7 @@ extension OnboardingStep {
         case .widget(let payload): .widget(WidgetStep(response: payload))
         case .socialProof(let payload): .socialProof(SocialProofStep(response: payload))
         case .enterName(let payload): .enterName(EnterNameStep(response: payload))
+        case .custom(let payload): .custom(CustomStepParams(currentStepID: response.id, nextStepID: payload?.nextStepID))
         default: .unknown
         }
 
