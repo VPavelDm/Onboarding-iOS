@@ -8,25 +8,29 @@
 import SwiftUI
 import CoreUI
 
-public struct OnboardingView: View {
+public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
     @StateObject private var viewModel: OnboardingViewModel
 
     @State private var showError: Bool = false
 
+    private let customStepView: (StepID) -> CustomStepView
+
     public init(
         configuration: OnboardingConfiguration,
         delegate: OnboardingDelegate,
-        colorPalette: any ColorPalette
+        colorPalette: any ColorPalette,
+        customStepView: @escaping (StepID) -> CustomStepView
     ) {
         self._viewModel = StateObject(wrappedValue: OnboardingViewModel(
             configuration: configuration,
             delegate: delegate,
             colorPalette: colorPalette
         ))
+        self.customStepView = customStepView
     }
 
     public var body: some View {
-        NavigationStackContent(step: viewModel.currentStep)
+        NavigationStackContent(step: viewModel.currentStep, customStepView: customStepView)
             .id(viewModel.currentStep)
             .transition(
                 .asymmetric(

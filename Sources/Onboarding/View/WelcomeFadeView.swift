@@ -8,19 +8,23 @@
 import SwiftUI
 import CoreUI
 
-struct WelcomeFadeView: View {
+struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
     @EnvironmentObject private var onboarding: OnboardingViewModel
 
     @State private var activeElementIndex: Int?
 
     var step: WelcomeFadeStep
+    var customStepView: (StepID) -> CustomStepView
 
     var body: some View {
         VStack {
             if activeElementIndex.map({ $0 < step.messages.count }) ?? true {
                 contentView
             } else if onboarding.steps.count > 1 {
-                NavigationStackContent(step: onboarding.steps[1])
+                NavigationStackContent(
+                    step: onboarding.steps[1],
+                    customStepView: customStepView
+                )
             }
         }
         .onAppear {

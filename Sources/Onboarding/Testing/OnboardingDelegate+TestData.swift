@@ -14,8 +14,6 @@ final class MockOnboardingDelegate: OnboardingDelegate {
         self.onAnswerCallback = onAnswerCallback
     }
 
-    func setupNotifications(for time: String) async throws {
-    }
     func onAnswer(userAnswer: UserAnswer, allAnswers: [UserAnswer]) {
         onAnswerCallback()
     }

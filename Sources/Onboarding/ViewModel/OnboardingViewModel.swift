@@ -57,7 +57,6 @@ final class OnboardingViewModel: ObservableObject {
         let payloads = answers.compactMap(\.payload).map(UserAnswer.Payload.init(payload:))
         let answer = UserAnswer(
             onboardingStepID: currentStep.id,
-            title: currentStep.type.title,
             payloads: payloads
         )
         userAnswers.append(answer)
@@ -67,6 +66,9 @@ final class OnboardingViewModel: ObservableObject {
 
         if let nextStep = steps.first(where: { $0.id == answers.last?.nextStepID }) {
             self.currentStep = nextStep
+        } else {
+            let stepID = StepID("appHome")
+            self.currentStep = OnboardingStep(id: stepID, type: .custom(stepID))
         }
     }
 

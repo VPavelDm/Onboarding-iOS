@@ -13,7 +13,10 @@ struct MockOnboardingView: View {
         OnboardingView(
             configuration: .testData(),
             delegate: MockOnboardingDelegate(onAnswerCallback: {}),
-            colorPalette: .testData
+            colorPalette: .testData,
+            customStepView: { _ in
+                Text(verbatim: "appHome")
+            }
         )
         .preferredColorScheme(.dark)
     }

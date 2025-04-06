@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct NavigationStackContent: View {
+struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
     
     var step: OnboardingStep?
+    var customStepView: (StepID) -> CustomStepView
 
     var body: some View {
         Group {
@@ -18,7 +19,7 @@ struct NavigationStackContent: View {
             case .welcome(let welcomeStep):
                 WelcomeView(step: welcomeStep)
             case .welcomeFade(let step):
-                WelcomeFadeView(step: step)
+                WelcomeFadeView(step: step, customStepView: customStepView)
             case .oneAnswer(let oneAnswerStep):
                 OneAnswerView(step: oneAnswerStep)
             case .binaryAnswer(let binaryAnswerStep):
@@ -39,6 +40,8 @@ struct NavigationStackContent: View {
                 SocialProofView(step: step)
             case .enterName(let step):
                 NameStepView(step: step)
+            case .custom(let stepID):
+                customStepView(stepID)
             case .unknown, .none:
                 EmptyView()
             }

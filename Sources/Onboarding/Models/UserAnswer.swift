@@ -9,7 +9,6 @@ import Foundation
 
 public struct UserAnswer: Sendable, Equatable, Hashable {
     public var onboardingStepID: StepID
-    public var title: String?
     public var payloads: [Payload]
 
     public enum Payload: Sendable, Equatable, Hashable {
