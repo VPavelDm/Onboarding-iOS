@@ -8,9 +8,9 @@
 import Foundation
 
 struct EnterNameStep: Sendable, Hashable {
-    let title: String
-    let description: String
-    let answer: StepAnswer
+    var title: String
+    var description: String
+    var answer: StepAnswer
 }
 
 // MARK: - Convert

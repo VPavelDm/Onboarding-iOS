@@ -59,6 +59,8 @@ struct NameStepView: View {
 
     private var nextButton: some View {
         AsyncButton {
+            var step = step
+            step.answer.payload = .string(name)
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(step.answer.title)
