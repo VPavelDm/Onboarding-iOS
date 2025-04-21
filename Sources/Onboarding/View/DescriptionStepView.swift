@@ -54,7 +54,7 @@ struct DescriptionStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.delegate.format(string: step.title))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
