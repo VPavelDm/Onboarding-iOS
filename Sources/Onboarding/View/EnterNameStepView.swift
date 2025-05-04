@@ -10,6 +10,8 @@ import SwiftUI
 struct NameStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
+    @FocusState private var isFocused: Bool
+
     @State private var name: String = ""
 
     var step: EnterNameStep
@@ -26,6 +28,9 @@ struct NameStepView: View {
         }
         .padding(.vertical, .vScreenPadding)
         .padding(.horizontal, .hScreenPadding)
+        .onAppear {
+            isFocused = true
+        }
     }
 
     private var titleView: some View {
@@ -48,6 +53,7 @@ struct NameStepView: View {
 
     private var nameInputView: some View {
         TextField("Enter your name", text: $name)
+            .focused($isFocused)
             .textFieldStyle(NameTextFieldStyle(colorPalette: viewModel.colorPalette))
             .textContentType(.name)
             .keyboardType(.namePhonePad)
@@ -55,22 +61,26 @@ struct NameStepView: View {
             .textInputAutocapitalization(.words)
             .onSubmit {
                 Task {
-                    await viewModel.onAnswer(answers: [step.answer])
+                    await onContinue()
                 }
             }
     }
 
     private var nextButton: some View {
         AsyncButton {
-            var step = step
-            step.answer.payload = .string(name)
-            await viewModel.onAnswer(answers: [step.answer])
+            await onContinue()
         } label: {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
         .disabled(name.isEmpty)
         .animation(.easeInOut, value: name.isEmpty)
+    }
+
+    private func onContinue() async {
+        var step = step
+        step.answer.payload = .string(name)
+        await viewModel.onAnswer(answers: [step.answer])
     }
 }
 
