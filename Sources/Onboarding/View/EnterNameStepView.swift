@@ -28,7 +28,8 @@ struct NameStepView: View {
         }
         .padding(.vertical, .vScreenPadding)
         .padding(.horizontal, .hScreenPadding)
-        .onAppear {
+        .task {
+            try? await Task.sleep(for: .milliseconds(400))
             isFocused = true
         }
     }
@@ -58,7 +59,7 @@ struct NameStepView: View {
             .textContentType(.name)
             .keyboardType(.namePhonePad)
             .submitLabel(.continue)
-            .textInputAutocapitalization(.words)
+            .textInputAutocapitalization(.sentences)
             .onSubmit {
                 Task {
                     await onContinue()
