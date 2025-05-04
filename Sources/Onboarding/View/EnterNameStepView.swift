@@ -78,6 +78,7 @@ struct NameStepView: View {
     }
 
     private func onContinue() async {
+        isFocused = false
         var step = step
         step.answer.payload = .string(name)
         await viewModel.onAnswer(answers: [step.answer])
