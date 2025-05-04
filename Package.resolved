@@ -1,6 +1,15 @@
 {
-  "originHash" : "579a081e46eb86b2f59248318b23e03dad0c7b197f09e202f3aa80b741476152",
+  "originHash" : "838d3d9dc9e07068d10389d065c9d0744cbec33d99545451a14b93858480ad42",
   "pins" : [
+    {
+      "identity" : "adaptysdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/adaptyteam/AdaptySDK-iOS.git",
+      "state" : {
+        "revision" : "8961d64773de145797f351b352136ff23f856de8",
+        "version" : "3.5.0"
+      }
+    },
     {
       "identity" : "confettiswiftui",
       "kind" : "remoteSourceControl",

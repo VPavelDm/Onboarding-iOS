@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "%@" : {
 
     },
@@ -16,13 +19,22 @@
     "%lld Seconds" : {
 
     },
+    "Error 🥲" : {
+
+    },
     "Expires In" : {
 
     },
     "No Gift due now" : {
 
     },
+    "Payment is failed. Try again later!" : {
+
+    },
     "Privacy" : {
+
+    },
+    "Sorry, cannot find purchases to restore." : {
 
     },
     "Terms" : {

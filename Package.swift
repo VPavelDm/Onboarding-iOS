@@ -31,7 +31,8 @@ let package = Package(
             targets: ["Paywalls"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0")
+        .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0"),
+        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS.git", from: "3.5.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -65,6 +66,8 @@ let package = Package(
         .target(
             name: "Paywalls",
             dependencies: [
+                .product(name: "Adapty", package: "AdaptySDK-iOS"),
+                .product(name: "AdaptyUI", package: "AdaptySDK-iOS"),
                 "CoreUI"
             ]
         ),
