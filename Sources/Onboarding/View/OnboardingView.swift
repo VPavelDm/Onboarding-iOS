@@ -34,8 +34,8 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
             .id(viewModel.currentStep)
             .transition(
                 .asymmetric(
-                    insertion: .offset(y: -30).combined(with: .opacity).animation(.default.delay(0.35)),
-                    removal: .offset(y: 30).combined(with: .opacity)
+                    insertion: .opacity.animation(.easeInOut.delay(0.35)),
+                    removal: .offset(y: 20).combined(with: .opacity).animation(.default)
                 )
             )
             .progressView(isVisible: viewModel.currentStep == nil) {
