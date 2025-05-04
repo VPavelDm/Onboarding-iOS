@@ -29,7 +29,7 @@ struct NameStepView: View {
         .padding(.vertical, .vScreenPadding)
         .padding(.horizontal, .hScreenPadding)
         .task {
-            try? await Task.sleep(for: .milliseconds(400))
+            try? await Task.sleep(for: .seconds(2))
             isFocused = true
         }
     }
