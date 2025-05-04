@@ -20,7 +20,7 @@ struct DescriptionStepView: View {
     var body: some View {
         VStack {
             imageView
-            VStack(alignment: .leading, spacing: .headingSpacing) {
+            VStack(spacing: .headingSpacing) {
                 titleView
                 descriptionView
                     .opacity(isDescriptionVisible ? 1 : 0)
