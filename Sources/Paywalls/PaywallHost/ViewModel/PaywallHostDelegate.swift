@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 public protocol PaywallHostDelegate: AnyObject {
     func fetchSubscriptionStatus() async throws
     func track(event: String, parameters: [String: Any])
