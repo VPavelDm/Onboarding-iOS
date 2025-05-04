@@ -59,7 +59,6 @@ struct NameStepView: View {
             .textContentType(.name)
             .keyboardType(.namePhonePad)
             .submitLabel(.continue)
-            .textInputAutocapitalization(.sentences)
             .onSubmit {
                 Task {
                     await onContinue()
