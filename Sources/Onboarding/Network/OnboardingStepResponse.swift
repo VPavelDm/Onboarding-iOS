@@ -142,7 +142,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct EnterNameStep: Decodable {
         let title: String
-        let description: String
+        let description: String?
         let answer: StepAnswer
     }
 

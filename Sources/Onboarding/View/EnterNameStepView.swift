@@ -36,11 +36,14 @@ struct NameStepView: View {
             .multilineTextAlignment(.leading)
     }
 
+    @ViewBuilder
     private var descriptionView: some View {
-        Text(step.description)
-            .font(.title3)
-            .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-            .multilineTextAlignment(.leading)
+        if let description = step.description {
+            Text(description)
+                .font(.title3)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .multilineTextAlignment(.leading)
+        }
     }
 
     private var nameInputView: some View {

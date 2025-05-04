@@ -9,7 +9,7 @@ import Foundation
 
 struct EnterNameStep: Sendable, Hashable {
     var title: String
-    var description: String
+    var description: String?
     var answer: StepAnswer
 }
 
