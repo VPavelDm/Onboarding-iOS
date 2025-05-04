@@ -227,7 +227,7 @@ public extension View {
         isPresented: Binding<Bool>,
         placementID: String,
         delegate: any PaywallHostDelegate,
-        close: @escaping () async -> Void
+        close: @escaping () async -> Void = {}
     ) -> some View {
         modifier(PaywallHostViewModifier(isPresented: isPresented, placementID: placementID, delegate: delegate, close: close))
     }
