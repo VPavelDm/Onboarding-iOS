@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     @State private var showPaywall: Bool = false
@@ -139,6 +140,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         } label: {
             Text("Close")
         }
+        .buttonStyle(ToolbarButtonStyle())
     }
 
     func imageView(name: String, color: Color) -> some View {

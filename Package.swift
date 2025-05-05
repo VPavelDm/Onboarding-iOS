@@ -76,7 +76,9 @@ let package = Package(
         ),
         .target(
             name: "Profile",
-            dependencies: []
+            dependencies: [
+                "CoreUI"
+            ]
         ),
     ]
 )
