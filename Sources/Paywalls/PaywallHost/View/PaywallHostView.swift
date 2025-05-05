@@ -28,7 +28,7 @@ public struct PaywallHostView: View {
     }
 
     public var body: some View {
-        Group {
+        VStack {
             if let paywallConfiguration {
                 AdaptyPaywallView(
                     paywallConfiguration: paywallConfiguration,
@@ -48,6 +48,7 @@ public struct PaywallHostView: View {
                 )
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ratingSheet(isPresented: $showRating)
         .task {
             do {
