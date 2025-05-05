@@ -46,9 +46,11 @@ public struct PaywallHostView: View {
                     showAlertItem: $alertItem,
                     showAlertBuilder: alert(item:)
                 )
+            } else {
+                AdaptyLoadingPlaceholderView()
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.easeInOut, value: paywallConfiguration == nil)
         .ratingSheet(isPresented: $showRating)
         .task {
             do {
