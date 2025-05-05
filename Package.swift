@@ -29,6 +29,9 @@ let package = Package(
         .library(
             name: "Paywalls",
             targets: ["Paywalls"]),
+        .library(
+            name: "Profile",
+            targets: ["Profile"]),
     ],
     dependencies: [
         .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0"),
@@ -70,6 +73,10 @@ let package = Package(
                 .product(name: "AdaptyUI", package: "AdaptySDK-iOS"),
                 "CoreUI"
             ]
+        ),
+        .target(
+            name: "Profile",
+            dependencies: []
         ),
     ]
 )
