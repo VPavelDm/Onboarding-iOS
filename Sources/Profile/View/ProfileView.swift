@@ -10,6 +10,8 @@ import SwiftUI
 public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     @State private var showPaywall: Bool = false
 
+    @Environment(\.dismiss) private var dismiss
+
     private var showBuySubscriptionButton: Bool
     private var appLink: String
     private var supportEmail: String
@@ -52,6 +54,11 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 Section {
                     termsButton
                     privacyButton
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    closeButton
                 }
             }
             .navigationTitle("Profile")
@@ -124,6 +131,14 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
             }
         }
         .buttonStyle(ProfileButtonStyle())
+    }
+
+    private var closeButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Text("Close")
+        }
     }
 
     func imageView(name: String, color: Color) -> some View {
