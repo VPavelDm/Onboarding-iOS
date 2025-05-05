@@ -19,7 +19,6 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     private var fetchSubscriptionStatus: () async throws -> Void
 
     public init(
-        showPaywall: Bool,
         showBuySubscriptionButton: Bool,
         appLink: String,
         supportEmail: String,
@@ -28,7 +27,6 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         paywall: @escaping () -> PaywallScreen,
         fetchSubscriptionStatus: @escaping () -> Void
     ) {
-        self.showPaywall = showPaywall
         self.showBuySubscriptionButton = showBuySubscriptionButton
         self.appLink = appLink
         self.supportEmail = supportEmail
