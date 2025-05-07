@@ -38,9 +38,6 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
                     removal: .offset(y: 20).combined(with: .opacity).animation(.default)
                 )
             )
-            .progressView(isVisible: viewModel.currentStep == nil) {
-                contentLoadingView
-            }
             .background(viewModel.colorPalette.anyBackgroundView.ignoresSafeArea())
             .animation(.easeInOut, value: viewModel.currentStep)
             .onFirstAppear {
