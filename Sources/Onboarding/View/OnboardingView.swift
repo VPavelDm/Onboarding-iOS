@@ -54,7 +54,7 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
     }
 
     private var contentLoadingView: some View {
-        EmptyView()
+        Color.clear
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

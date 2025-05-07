@@ -39,7 +39,7 @@ extension ColorPalette where Self == TestColorPalette {
 
 struct TestColorPalette: ColorPalette {
     typealias BackgroundView = Color
-    var backgroundView: Color = .black
+    var backgroundView: Color = .red
     var textColor: Color = .white
     var secondaryTextColor: Color = .secondary
     var primaryButtonForegroundColor: Color = .black
