@@ -130,6 +130,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct WelcomeFadeStep: Decodable {
         let messages: [String]
+        let delay: Double
     }
 
     struct ProgressStep: Decodable {

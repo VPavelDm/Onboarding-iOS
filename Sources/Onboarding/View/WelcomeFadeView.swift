@@ -27,7 +27,8 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
                 )
             }
         }
-        .onAppear {
+        .task {
+            try? await Task.sleep(for: .seconds(step.delay))
             displayNextText()
         }
     }
