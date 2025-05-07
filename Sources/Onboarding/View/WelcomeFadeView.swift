@@ -67,7 +67,7 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
         withAnimation(.default) {
             activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
             displayNextText()
         }
     }
