@@ -38,6 +38,7 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
                     removal: .offset(y: 20).combined(with: .opacity).animation(.default)
                 )
             )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(viewModel.colorPalette.anyBackgroundView.ignoresSafeArea())
             .animation(.easeInOut, value: viewModel.currentStep)
             .onFirstAppear {
@@ -48,12 +49,6 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
                 }
             }
             .environmentObject(viewModel)
-    }
-
-    private var contentLoadingView: some View {
-        ProgressView()
-            .tint(viewModel.colorPalette.accentColor)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
