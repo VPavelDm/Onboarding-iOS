@@ -7,24 +7,29 @@
 
 import Foundation
 
-public struct GPTRequestBody: Codable {
-    let model: String
-    let responseFormat: String
-    let messages: [GPTMessage]
+public struct GPTRequestBody: Encodable {
+    var model: String = "gpt-4o-mini"
+    var messages: [GPTMessage]
+    var responseFormat: AnyEncodable?
 
-    public init(
-        model: String = "gpt-4o-mini",
-        responseFormat: String,
-        messages: [GPTMessage]
-    ) {
-        self.model = model
-        self.responseFormat = responseFormat
+    public init(messages: [GPTMessage], responseFormat: AnyEncodable?) throws {
         self.messages = messages
+        self.responseFormat = responseFormat
     }
 
     enum CodingKeys: String, CodingKey {
         case model
-        case responseFormat = "response_format"
         case messages
+        case responseFormat = "response_format"
+    }
+}
+
+private extension GPTRequestBody {
+
+    var json: String {
+        get throws {
+            let data = try JSONEncoder().encode(self)
+            return String(data: data, encoding: .utf8)!
+        }
     }
 }
