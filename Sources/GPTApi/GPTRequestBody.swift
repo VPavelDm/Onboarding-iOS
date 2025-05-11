@@ -12,7 +12,11 @@ public struct GPTRequestBody: Codable {
     let responseFormat: String
     let messages: [GPTMessage]
 
-    public init(model: String, responseFormat: String, messages: [GPTMessage]) {
+    public init(
+        model: String = "gpt-4o-mini",
+        responseFormat: String,
+        messages: [GPTMessage]
+    ) {
         self.model = model
         self.responseFormat = responseFormat
         self.messages = messages
