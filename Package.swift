@@ -32,6 +32,9 @@ let package = Package(
         .library(
             name: "Profile",
             targets: ["Profile"]),
+        .library(
+            name: "GPTApi",
+            targets: ["GPTApi"]),
     ],
     dependencies: [
         .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0"),
@@ -79,6 +82,10 @@ let package = Package(
             dependencies: [
                 "CoreUI"
             ]
+        ),
+        .target(
+            name: "GPTApi",
+            dependencies: []
         ),
     ]
 )
