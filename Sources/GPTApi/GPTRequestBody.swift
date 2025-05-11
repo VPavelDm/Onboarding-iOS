@@ -21,4 +21,10 @@ public struct GPTRequestBody: Codable {
         self.responseFormat = responseFormat
         self.messages = messages
     }
+
+    enum CodingKeys: String, CodingKey {
+        case model
+        case responseFormat = "response_format"
+        case messages
+    }
 }
