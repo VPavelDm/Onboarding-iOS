@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct LoggerAnalytics: AnalyticsProtocol {
-    
-    func track(event: Event) {
+public struct LoggerAnalytics: AnalyticsProtocol {
+
+    public func track(event: Event) {
         if let event = event as? AnyEvent {
             print("Track Event: \(event.name)\(event.parameters.isEmpty ? "" : ", params - \(event.parameters)")")
         }
     }
     
-    func setupUserProperties(_ params: Parameters) {
+    public func setupUserProperties(_ params: Parameters) {
     }
 }
