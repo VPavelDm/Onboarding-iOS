@@ -20,6 +20,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     private var privacyLink: String
     private var paywall: () -> PaywallScreen
     private var fetchSubscriptionStatus: () async throws -> Void
+    private var trackEvent: (String) -> Void
 
     public init(
         showBuySubscriptionButton: Bool,
@@ -28,7 +29,8 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         termsLink: String,
         privacyLink: String,
         paywall: @escaping () -> PaywallScreen,
-        fetchSubscriptionStatus: @escaping () -> Void
+        fetchSubscriptionStatus: @escaping () -> Void,
+        trackEvent: @escaping (String) -> Void
     ) {
         self.showBuySubscriptionButton = showBuySubscriptionButton
         self.appLink = appLink
@@ -37,6 +39,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         self.privacyLink = privacyLink
         self.paywall = paywall
         self.fetchSubscriptionStatus = fetchSubscriptionStatus
+        self.trackEvent = trackEvent
     }
 
     public var body: some View {
@@ -74,6 +77,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
 
     private var buySubscriptionButton: some View {
         Button {
+            trackEvent("buy_subscription_button_tapped")
             showPaywall = true
         } label: {
             HStack(spacing: 12) {
@@ -91,6 +95,9 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 Text("Rate the App")
             }
         }
+        .simultaneousGesture(TapGesture().onEnded {
+            trackEvent("rate_app_button_tapped")
+        })
         .buttonStyle(ProfileButtonStyle())
     }
 
@@ -101,6 +108,9 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 Text("Share the App")
             }
         }
+        .simultaneousGesture(TapGesture().onEnded {
+            trackEvent("share_app_button_tapped")
+        })
         .buttonStyle(ProfileButtonStyle())
     }
 
@@ -111,6 +121,9 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 Text("Leave feedback")
             }
         }
+        .simultaneousGesture(TapGesture().onEnded {
+            trackEvent("leave_feedback_button_tapped")
+        })
         .buttonStyle(ProfileButtonStyle())
     }
 
@@ -121,6 +134,9 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 Text("Terms & Conditions")
             }
         }
+        .simultaneousGesture(TapGesture().onEnded {
+            trackEvent("terms_and_conditions_button_tapped")
+        })
         .buttonStyle(ProfileButtonStyle())
     }
 
@@ -131,11 +147,15 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 Text("Privacy Policy")
             }
         }
+        .simultaneousGesture(TapGesture().onEnded {
+            trackEvent("privacy_policy_button_tapped")
+        })
         .buttonStyle(ProfileButtonStyle())
     }
 
     private var closeButton: some View {
         Button {
+            trackEvent("close_profile_button_tapped")
             dismiss()
         } label: {
             Text("Close")
