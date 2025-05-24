@@ -8,10 +8,10 @@
 import Foundation
 
 public struct GPTResponse: Codable {
-    let choices: [Choice]
-    let model: String
+    public let choices: [Choice]
+    public let model: String
 
-    struct Choice: Codable {
-        let message: GPTMessage
+    public struct Choice: Codable {
+        public let message: GPTMessage
     }
 }
