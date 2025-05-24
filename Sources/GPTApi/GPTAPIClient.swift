@@ -37,7 +37,7 @@ public final class GPTAPIClient {
         return try JSONDecoder().decode(Model.self, from: data)
     }
 
-    enum GPTApiClientError: Error {
+    public enum GPTApiClientError: Error {
         case invalidResponse
         case urlFormat
         case dataFormat
