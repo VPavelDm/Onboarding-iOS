@@ -7,15 +7,21 @@
 
 import SwiftUI
 
-public struct AsyncButton<Label>: View where Label: View {
+public struct AsyncButton<Label, CircularProgress>: View where Label: View, CircularProgress: View {
     @State private var isLoading: Bool = false
 
     var perform: () async -> Void
     var label: () -> Label
+    var progress: () -> CircularProgress
 
-    public init(perform: @escaping () async -> Void, label: @escaping () -> Label) {
+    public init(
+        perform: @escaping () async -> Void,
+        @ViewBuilder label: @escaping () -> Label,
+        @ViewBuilder progress: @escaping () -> CircularProgress = { ProgressView().tint(.black) }
+    ) {
         self.perform = perform
         self.label = label
+        self.progress = progress
     }
 
     public var body: some View {
@@ -28,9 +34,7 @@ public struct AsyncButton<Label>: View where Label: View {
         } label: {
             ZStack {
                 label().opacity(isLoading ? 0 : 1)
-                ProgressView()
-                    .tint(.black)
-                    .opacity(isLoading ? 1 : 0)
+                progress().opacity(isLoading ? 1 : 0)
             }
         }
     }
