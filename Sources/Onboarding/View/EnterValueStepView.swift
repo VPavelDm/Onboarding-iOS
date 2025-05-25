@@ -27,7 +27,7 @@ struct EnterValueStepView: View {
         switch step.valueType {
         case "name":
             UIKeyboardType.namePhonePad
-        case "age", "height":
+        case "number":
             UIKeyboardType.numberPad
         default:
             UIKeyboardType.default
