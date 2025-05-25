@@ -108,7 +108,7 @@ struct SocialProofView: View {
         Text(step.userReview)
             .font(.headline)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-            .fixedSize(horizontal: false, vertical: true)
+            .fixedSize(horizontal: true, vertical: false)
             .apply { view in
                 if #available(iOS 16.1, *) {
                     view.fontDesign(.rounded)

@@ -1,15 +1,21 @@
 [
     {
-        "id": "name",
-        "type": "enterValue",
+        "id": "social_proof",
+        "type": "socialProof",
         "payload": {
-            "title": "Hello! What do you want to be called?",
-            "description": "Your name will appear in your affirmations",
-            "valueType": "name",
+            "title": "Осознанность каждый день — результат на всю жизнь.",
+            "image": {
+                "type": "named",
+                "value": "womanBitingPear",
+                "aspectRatioType": "fit"
+            },
+            "laurelTitle": "15+ миллионов",
+            "laurelDescription": "Улучшенных жизней",
+            "userReview": "Меняем жизни",
             "answer": {
-                "title": "Continue",
-                "nextStepID": "greeting"
+                "title": "Начать",
+                "nextStepID": "enter_name"
             }
         }
-    }
+    },
 ]
