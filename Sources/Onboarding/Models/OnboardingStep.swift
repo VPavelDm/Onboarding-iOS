@@ -23,7 +23,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case discountWheel(DiscountWheelStep)
         case widget(WidgetStep)
         case socialProof(SocialProofStep)
-        case enterName(EnterNameStep)
+        case enterValue(EnterValueStep)
         case custom(CustomStepParams)
         case unknown
     }
@@ -59,7 +59,7 @@ extension OnboardingStep {
         case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload))
         case .widget(let payload): .widget(WidgetStep(response: payload))
         case .socialProof(let payload): .socialProof(SocialProofStep(response: payload))
-        case .enterName(let payload): .enterName(EnterNameStep(response: payload))
+        case .enterValue(let payload): .enterValue(EnterValueStep(response: payload))
         case .custom(let payload): .custom(CustomStepParams(currentStepID: response.id, nextStepID: payload?.nextStepID))
         default: .unknown
         }

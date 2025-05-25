@@ -7,19 +7,21 @@
 
 import Foundation
 
-struct EnterNameStep: Sendable, Hashable {
+struct EnterValueStep: Sendable, Hashable {
     var title: String
     var description: String?
+    var valueType: String
     var answer: StepAnswer
 }
 
 // MARK: - Convert
 
-extension EnterNameStep {
+extension EnterValueStep {
 
-    init(response: OnboardingStepResponse.EnterNameStep) {
+    init(response: OnboardingStepResponse.EnterValueStep) {
         self.title = response.title
         self.description = response.description
+        self.valueType = response.valueType
         self.answer = StepAnswer(response: response.answer)
     }
 }

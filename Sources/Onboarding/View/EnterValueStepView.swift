@@ -7,14 +7,34 @@
 
 import SwiftUI
 
-struct NameStepView: View {
+struct EnterValueStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @FocusState private var isFocused: Bool
 
-    @State private var name: String = ""
+    @State private var value: String = ""
 
-    var step: EnterNameStep
+    private var textContentType: UITextContentType? {
+        switch step.valueType {
+        case "name":
+            UITextContentType.name
+        default:
+            nil
+        }
+    }
+
+    private var keyboardType: UIKeyboardType {
+        switch step.valueType {
+        case "name":
+            UIKeyboardType.namePhonePad
+        case "age", "height":
+            UIKeyboardType.numberPad
+        default:
+            UIKeyboardType.default
+        }
+    }
+
+    var step: EnterValueStep
 
     var body: some View {
         VStack(alignment: .leading, spacing: .contentSpacing) {
@@ -22,7 +42,7 @@ struct NameStepView: View {
                 titleView
                 descriptionView
             }
-            nameInputView
+            valueInputView
             Spacer()
             nextButton
         }
@@ -52,12 +72,12 @@ struct NameStepView: View {
         }
     }
 
-    private var nameInputView: some View {
-        TextField("Enter your name", text: $name)
+    private var valueInputView: some View {
+        TextField("Enter your name", text: $value)
             .focused($isFocused)
             .textFieldStyle(NameTextFieldStyle(colorPalette: viewModel.colorPalette))
-            .textContentType(.name)
-            .keyboardType(.namePhonePad)
+            .textContentType(textContentType)
+            .keyboardType(keyboardType)
             .submitLabel(.continue)
             .onSubmit {
                 Task {
@@ -73,14 +93,14 @@ struct NameStepView: View {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .disabled(name.isEmpty)
-        .animation(.easeInOut, value: name.isEmpty)
+        .disabled(value.isEmpty)
+        .animation(.easeInOut, value: value.isEmpty)
     }
 
     private func onContinue() async {
         isFocused = false
         var step = step
-        step.answer.payload = .string(name)
+        step.answer.payload = .string(value)
         await viewModel.onAnswer(answers: [step.answer])
     }
 }
