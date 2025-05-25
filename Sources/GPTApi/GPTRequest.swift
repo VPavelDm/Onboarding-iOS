@@ -21,14 +21,19 @@ public extension Resource where Value: Codable {
             try request.setHTTPBody(.json(body))
             return request
         } transform: { data, response in
-            let response = try JSONDecoder().decode(GPTResponse.self, from: data)
+            guard let response = try? JSONDecoder().decode(GPTResponse.self, from: data) else {
+                throw GPTApiClientError.parseError(data)
+            }
             guard let content = response.choices.first?.message.content else {
                 throw GPTApiClientError.invalidResponse
             }
             guard let data = content.data(using: .utf8) else {
                 throw GPTApiClientError.dataFormat
             }
-            return try JSONDecoder().decode(Value.self, from: data)
+            guard let value = try? JSONDecoder().decode(Value.self, from: data) else {
+                throw GPTApiClientError.parseError(data)
+            }
+            return value
         }
     }
 
@@ -36,5 +41,6 @@ public extension Resource where Value: Codable {
         case invalidResponse
         case urlFormat
         case dataFormat
+        case parseError(Data)
     }
 }
