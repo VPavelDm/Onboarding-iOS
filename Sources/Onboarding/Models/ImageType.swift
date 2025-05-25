@@ -14,10 +14,10 @@ enum ImageType: Sendable, Equatable, Hashable {
 
 struct ImageMeta: Sendable, Equatable, Hashable {
     var imageType: ImageType
-    var aspectRationType: String
+    var aspectRatioType: String
 
     var contentMode: ContentMode {
-        switch aspectRationType {
+        switch aspectRatioType {
         case "fill":
                 .fill
         default:
@@ -32,7 +32,7 @@ extension ImageMeta {
 
     init?(response: OnboardingStepResponse.ImageResponse) {
         guard let type = ImageType(response: response) else { return nil }
-        self.init(imageType: type, aspectRationType: response.aspectRationType)
+        self.init(imageType: type, aspectRatioType: response.aspectRatioType)
     }
 }
 
