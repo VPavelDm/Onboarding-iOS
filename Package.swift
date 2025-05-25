@@ -85,7 +85,9 @@ let package = Package(
         ),
         .target(
             name: "GPTApi",
-            dependencies: []
+            dependencies: [
+                "CoreNetwork"
+            ]
         ),
     ]
 )
