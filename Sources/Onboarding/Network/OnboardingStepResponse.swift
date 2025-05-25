@@ -144,6 +144,7 @@ struct OnboardingStepResponse: Decodable {
     struct EnterValueStep: Decodable {
         let title: String
         let description: String?
+        let placeholder: String
         let valueType: String
         let answer: StepAnswer
     }

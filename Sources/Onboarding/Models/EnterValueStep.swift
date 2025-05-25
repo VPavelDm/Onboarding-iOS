@@ -10,6 +10,7 @@ import Foundation
 struct EnterValueStep: Sendable, Hashable {
     var title: String
     var description: String?
+    var placeholder: String
     var valueType: String
     var answer: StepAnswer
 }
@@ -21,6 +22,7 @@ extension EnterValueStep {
     init(response: OnboardingStepResponse.EnterValueStep) {
         self.title = response.title
         self.description = response.description
+        self.placeholder = response.placeholder
         self.valueType = response.valueType
         self.answer = StepAnswer(response: response.answer)
     }

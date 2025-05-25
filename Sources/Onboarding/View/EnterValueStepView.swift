@@ -73,7 +73,7 @@ struct EnterValueStepView: View {
     }
 
     private var valueInputView: some View {
-        TextField("Enter your name", text: $value)
+        TextField(step.placeholder, text: $value)
             .focused($isFocused)
             .textFieldStyle(NameTextFieldStyle(colorPalette: viewModel.colorPalette))
             .textContentType(textContentType)
