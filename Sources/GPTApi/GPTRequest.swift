@@ -38,7 +38,7 @@ public extension Resource where Value: Codable {
     }
 }
 
-enum GPTApiClientError: Error {
+public enum GPTApiClientError: Error {
     case invalidResponse
     case urlFormat
     case dataFormat
