@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreUI
 
-public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
+public struct ProfileView<PaywallScreen, Actions>: View where PaywallScreen: View, Actions: View {
     @State private var showPaywall: Bool = false
 
     @Environment(\.dismiss) private var dismiss
@@ -19,6 +19,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     private var termsLink: String
     private var privacyLink: String
     private var paywall: () -> PaywallScreen
+    private var actions: (() -> Actions)?
     private var fetchSubscriptionStatus: () async throws -> Void
     private var trackEvent: (String) -> Void
 
@@ -28,8 +29,9 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         supportEmail: String,
         termsLink: String,
         privacyLink: String,
-        paywall: @escaping () -> PaywallScreen,
-        fetchSubscriptionStatus: @escaping () -> Void,
+        paywall: @escaping () -> PaywallScreen = { EmptyView() },
+        actions: (() -> Actions)? = nil,
+        fetchSubscriptionStatus: @escaping () -> Void = {},
         trackEvent: @escaping (String) -> Void
     ) {
         self.showBuySubscriptionButton = showBuySubscriptionButton
@@ -38,6 +40,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         self.termsLink = termsLink
         self.privacyLink = privacyLink
         self.paywall = paywall
+        self.actions = actions
         self.fetchSubscriptionStatus = fetchSubscriptionStatus
         self.trackEvent = trackEvent
     }
@@ -45,6 +48,11 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     public var body: some View {
         NavigationStack {
             Form {
+                if let actions {
+                    Section {
+                        actions()
+                    }
+                }
                 if showBuySubscriptionButton {
                     Section {
                         buySubscriptionButton

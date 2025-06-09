@@ -165,7 +165,7 @@ public struct PaywallHostView: View {
         alertItem = .restoreError
     }
 
-    func didFailRendering(error: AdaptyError) {
+    func didFailRendering(error: AdaptyUIError) {
         viewModel.delegate?.track(event: "didFailRenderingError", parameters: [
             "placementID": viewModel.placementID,
             "error": error
