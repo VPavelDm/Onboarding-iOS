@@ -173,6 +173,9 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
             }
         }
         .buttonStyle(ProfileButtonStyle())
+        .sheet(isPresented: action.isPresented) {
+            action.wrappedValue.action()
+        }
     }
 
     private var closeButton: some View {
