@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreUI
 
-public struct ProfileView<PaywallScreen, Actions>: View where PaywallScreen: View, Actions: View {
+public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     @State private var showPaywall: Bool = false
 
     @Environment(\.dismiss) private var dismiss
@@ -19,7 +19,7 @@ public struct ProfileView<PaywallScreen, Actions>: View where PaywallScreen: Vie
     private var termsLink: String
     private var privacyLink: String
     private var paywall: () -> PaywallScreen
-    private var actions: (() -> Actions)?
+    @State private var actions: [Action]
     private var fetchSubscriptionStatus: () async throws -> Void
     private var trackEvent: (String) -> Void
 
@@ -30,7 +30,7 @@ public struct ProfileView<PaywallScreen, Actions>: View where PaywallScreen: Vie
         termsLink: String,
         privacyLink: String,
         paywall: @escaping () -> PaywallScreen = { EmptyView() },
-        actions: (() -> Actions)? = nil,
+        actions: [Action] = [],
         fetchSubscriptionStatus: @escaping () -> Void = {},
         trackEvent: @escaping (String) -> Void
     ) {
@@ -40,7 +40,7 @@ public struct ProfileView<PaywallScreen, Actions>: View where PaywallScreen: Vie
         self.termsLink = termsLink
         self.privacyLink = privacyLink
         self.paywall = paywall
-        self.actions = actions
+        self._actions = State(initialValue: actions)
         self.fetchSubscriptionStatus = fetchSubscriptionStatus
         self.trackEvent = trackEvent
     }
@@ -48,9 +48,11 @@ public struct ProfileView<PaywallScreen, Actions>: View where PaywallScreen: Vie
     public var body: some View {
         NavigationStack {
             Form {
-                if let actions {
+                if !actions.isEmpty {
                     Section {
-                        actions()
+                        ForEach($actions) { action in
+                            actionButton(action)
+                        }
                     }
                 }
                 if showBuySubscriptionButton {
@@ -158,6 +160,18 @@ public struct ProfileView<PaywallScreen, Actions>: View where PaywallScreen: Vie
         .simultaneousGesture(TapGesture().onEnded {
             trackEvent("privacy_policy_button_tapped")
         })
+        .buttonStyle(ProfileButtonStyle())
+    }
+
+    private func actionButton(_ action: Binding<Action>) -> some View {
+        Button {
+            action.wrappedValue.isPresented = true
+        } label: {
+            HStack(spacing: 12) {
+                imageView(name: action.wrappedValue.image, color: action.wrappedValue.color)
+                Text(action.wrappedValue.title)
+            }
+        }
         .buttonStyle(ProfileButtonStyle())
     }
 
