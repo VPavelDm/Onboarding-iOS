@@ -71,7 +71,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     closeButton
                 }
             }
