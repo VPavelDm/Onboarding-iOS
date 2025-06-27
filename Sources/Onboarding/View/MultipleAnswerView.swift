@@ -22,19 +22,19 @@ struct MultipleAnswerView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: .contentSpacing) {
+                VStack(alignment: .leading, spacing: .headingSpacing) {
                     titleView
                     descriptionView
                 }
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: .buttonsSpacing) {
                     ForEach($answers) { answer in
                         buttonView(answer: answer)
                     }
                 }
             }
-            .padding(.vertical, 32)
-            .padding(.horizontal, 20)
+            .padding(.vertical, .vScreenPadding)
+            .padding(.horizontal, .hScreenPadding)
         }
         .safeAreaInset(edge: .bottom) {
             nextButton
@@ -48,6 +48,7 @@ struct MultipleAnswerView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
+            .padding(.horizontal, .titlePadding)
     }
 
     @ViewBuilder

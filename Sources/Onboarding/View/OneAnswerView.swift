@@ -53,6 +53,7 @@ struct OneAnswerView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
+            .padding(.horizontal, .titlePadding)
     }
 
     @ViewBuilder

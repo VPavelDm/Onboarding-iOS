@@ -1,19 +1,36 @@
 [
     {
-        "id": "enter_name",
-        "type": "enterValue",
+        "id": "select_gender",
+        "type": "oneAnswer",
         "payload": {
-            "title": "What do your friends call you?",
-            "placeholder": "Enter name",
-            "valueType": "name",
-            "primaryAnswer": {
-                "title": "Continue",
-                "nextStepID": "greet_user"
-            },
-            "skipAnswer": {
-                "title": "Skip",
-                "nextStepID": "user_doubts"
-            }
+            "title": "What's your gender?",
+            "buttonTitle": "Continue",
+            "answers": [
+                {
+                    "title": "Male",
+                    "nextStepID": "select_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "male"
+                    }
+                },
+                {
+                    "title": "Female",
+                    "nextStepID": "select_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "female"
+                    }
+                },
+                {
+                    "title": "Non-binary",
+                    "nextStepID": "select_age",
+                    "payload": {
+                        "type": "string",
+                        "value": "non_binary"
+                    }
+                }
+            ]
         }
     }
 ]

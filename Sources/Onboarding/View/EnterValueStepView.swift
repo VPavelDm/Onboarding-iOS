@@ -44,7 +44,7 @@ struct EnterValueStepView: View {
             }
             valueInputView
             Spacer()
-            VStack {
+            VStack(spacing: .buttonsSpacing) {
                 nextButton
                 if let skipAnswer = step.skipAnswer {
                     skipButton(skipAnswer)
@@ -65,6 +65,7 @@ struct EnterValueStepView: View {
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
             .multilineTextAlignment(.leading)
+            .padding(.horizontal, .titlePadding)
     }
 
     @ViewBuilder

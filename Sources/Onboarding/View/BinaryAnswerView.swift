@@ -14,18 +14,19 @@ struct BinaryAnswerView: View {
     var step: BinaryAnswerStep
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: .contentSpacing) {
+            VStack(alignment: .leading, spacing: .headingSpacing) {
                 titleView
                 descriptionView
             }
-            HStack(spacing: 16) {
+            HStack(spacing: .buttonsSpacing) {
                 firstAnswerButton
                 secondAnswerButton
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding()
+        .padding(.vertical, .vScreenPadding)
+        .padding(.horizontal, .hScreenPadding)
         .background(viewModel.colorPalette.anyBackgroundView)
     }
 
