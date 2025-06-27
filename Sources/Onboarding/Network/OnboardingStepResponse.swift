@@ -146,6 +146,7 @@ struct OnboardingStepResponse: Decodable {
         let description: String?
         let placeholder: String
         let valueType: String
+        let isOptional: Bool
         let answer: StepAnswer
     }
 

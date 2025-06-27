@@ -44,7 +44,12 @@ struct EnterValueStepView: View {
             }
             valueInputView
             Spacer()
-            nextButton
+            VStack {
+                nextButton
+                if step.isOptional {
+                    skipButton
+                }
+            }
         }
         .padding(.vertical, .vScreenPadding)
         .padding(.horizontal, .hScreenPadding)
@@ -93,7 +98,7 @@ struct EnterValueStepView: View {
             Text(step.answer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .disabled(value.isEmpty)
+        .disabled(value.isEmpty && step.isOptional)
         .animation(.easeInOut, value: value.isEmpty)
     }
 
@@ -102,6 +107,15 @@ struct EnterValueStepView: View {
         var step = step
         step.answer.payload = .string(value)
         await viewModel.onAnswer(answers: [step.answer])
+    }
+
+    private var skipButton: some View {
+        AsyncButton {
+            await onContinue()
+        } label: {
+            Text("Skip")
+        }
+        .buttonStyle(SecondaryButtonStyle())
     }
 }
 

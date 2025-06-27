@@ -12,6 +12,7 @@ struct EnterValueStep: Sendable, Hashable {
     var description: String?
     var placeholder: String
     var valueType: String
+    var isOptional: Bool
     var answer: StepAnswer
 }
 
@@ -20,10 +21,13 @@ struct EnterValueStep: Sendable, Hashable {
 extension EnterValueStep {
 
     init(response: OnboardingStepResponse.EnterValueStep) {
-        self.title = response.title
-        self.description = response.description
-        self.placeholder = response.placeholder
-        self.valueType = response.valueType
-        self.answer = StepAnswer(response: response.answer)
+        self.init(
+            title: response.title,
+            description: response.description,
+            placeholder: response.placeholder,
+            valueType: response.valueType,
+            isOptional: response.isOptional,
+            answer: StepAnswer(response: response.answer)
+        )
     }
 }

@@ -1,19 +1,15 @@
 [
     {
-        "id": "social_proof",
-        "type": "socialProof",
+        "id": "enter_name",
+        "type": "enterValue",
         "payload": {
-            "image": {
-                "type": "named",
-                "value": "headphones",
-                "aspectRatioType": "fit"
-            },
-            "welcomeText": "Welcome to\nI'm here",
-            "userReview": "Life-changing",
-            "message": "Daily audio affirmations for lasting inner change",
+            "title": "What do your friends call you?",
+            "placeholder": "Enter name",
+            "valueType": "name",
+            "isOptional": true,
             "answer": {
-                "title": "Get Started",
-                "nextStepID": "select_gender"
+                "title": "Continue",
+                "nextStepID": "greet_user"
             }
         }
     }
