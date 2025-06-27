@@ -13,9 +13,9 @@ struct SocialProofView: View {
                 VStack {
                     welcomeHeadlineView
                     welcomeSubheadlineView
-                    messageView
                 }
                 laurelsView
+                messageView
             }
             .padding(.horizontal, .hScreenPadding)
             Spacer()
