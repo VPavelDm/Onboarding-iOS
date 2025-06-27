@@ -105,6 +105,7 @@ struct EnterValueStepView: View {
 
     private func onContinue() async {
         if let skipAnswer = step.skipAnswer, value.isEmpty {
+            isFocused = false
             await viewModel.onAnswer(answers: [skipAnswer])
         } else {
             isFocused = false
