@@ -10,9 +10,12 @@ struct SocialProofView: View {
             imageView
             Spacer()
             VStack(spacing: 32) {
-                welcomeView
-                laurelsView
+                VStack {
+                    welcomeHeadlineView
+                    welcomeSubheadlineView
+                }
                 messageView
+                laurelsView
             }
             .padding(.horizontal, .hScreenPadding)
             Spacer()
@@ -34,8 +37,20 @@ struct SocialProofView: View {
         }
     }
 
-    private var welcomeView: some View {
-        Text(step.welcomeText)
+    private var welcomeHeadlineView: some View {
+        Text(step.welcomeHeadline)
+            .font(.title.weight(.medium))
+            .foregroundStyle(viewModel.colorPalette.textColor)
+            .apply { view in
+                if #available(iOS 16.1, *) {
+                    view.fontDesign(.rounded)
+                }
+            }
+            .multilineTextAlignment(.center)
+    }
+
+    private var welcomeSubheadlineView: some View {
+        Text(step.welcomeSubheadline)
             .font(.largeTitle.bold())
             .foregroundStyle(viewModel.colorPalette.textColor)
             .apply { view in

@@ -159,7 +159,8 @@ struct OnboardingStepResponse: Decodable {
 
     struct SocialProofStep: Decodable { 
         let image: ImageResponse
-        let welcomeText: String
+        let welcomeHeadline: String
+        let welcomeSubheadline: String
         let userReview: String
         let message: String
         let answer: StepAnswer
