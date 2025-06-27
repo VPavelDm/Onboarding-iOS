@@ -46,8 +46,8 @@ struct EnterValueStepView: View {
             Spacer()
             VStack {
                 nextButton
-                if step.isOptional {
-                    skipButton
+                if let skipAnswer = step.skipAnswer {
+                    skipButton(skipAnswer)
                 }
             }
         }
@@ -95,23 +95,23 @@ struct EnterValueStepView: View {
         AsyncButton {
             await onContinue()
         } label: {
-            Text(step.answer.title)
+            Text(step.primaryAnswer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .disabled(value.isEmpty && step.isOptional)
+        .disabled(value.isEmpty && step.skipAnswer == nil)
         .animation(.easeInOut, value: value.isEmpty)
     }
 
     private func onContinue() async {
         isFocused = false
         var step = step
-        step.answer.payload = .string(value)
-        await viewModel.onAnswer(answers: [step.answer])
+        step.primaryAnswer.payload = .string(value)
+        await viewModel.onAnswer(answers: [step.primaryAnswer])
     }
 
-    private var skipButton: some View {
+    private func skipButton(_ answer: StepAnswer) -> some View {
         AsyncButton {
-            await onContinue()
+            await viewModel.onAnswer(answers: [answer])
         } label: {
             Text("Skip")
         }

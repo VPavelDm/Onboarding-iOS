@@ -12,8 +12,8 @@ struct EnterValueStep: Sendable, Hashable {
     var description: String?
     var placeholder: String
     var valueType: String
-    var isOptional: Bool
-    var answer: StepAnswer
+    var primaryAnswer: StepAnswer
+    var skipAnswer: StepAnswer?
 }
 
 // MARK: - Convert
@@ -26,8 +26,8 @@ extension EnterValueStep {
             description: response.description,
             placeholder: response.placeholder,
             valueType: response.valueType,
-            isOptional: response.isOptional,
-            answer: StepAnswer(response: response.answer)
+            primaryAnswer: StepAnswer(response: response.primaryAnswer),
+            skipAnswer: response.skipAnswer.map(StepAnswer.init(response:))
         )
     }
 }
