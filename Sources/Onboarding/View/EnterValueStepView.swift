@@ -103,15 +103,19 @@ struct EnterValueStepView: View {
     }
 
     private func onContinue() async {
-        isFocused = false
-        var step = step
-        step.primaryAnswer.payload = .string(value)
-        await viewModel.onAnswer(answers: [step.primaryAnswer])
+        if let skipAnswer = step.skipAnswer, value.isEmpty {
+            await viewModel.onAnswer(answers: [skipAnswer])
+        } else {
+            isFocused = false
+            var step = step
+            step.primaryAnswer.payload = .string(value)
+            await viewModel.onAnswer(answers: [step.primaryAnswer])
+        }
     }
 
     private func skipButton(_ answer: StepAnswer) -> some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [answer])
+            await onContinue()
         } label: {
             Text("Skip")
         }
