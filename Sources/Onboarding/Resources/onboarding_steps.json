@@ -3,19 +3,18 @@
         "id": "social_proof",
         "type": "socialProof",
         "payload": {
-            "title": "Осознанность каждый день — результат на всю жизнь.",
             "image": {
                 "type": "named",
-                "value": "womanBitingPear",
+                "value": "headphones",
                 "aspectRatioType": "fit"
             },
-            "laurelTitle": "15+ миллионов",
-            "laurelDescription": "Улучшенных жизней",
-            "userReview": "Меняем жизни",
+            "welcomeText": "Welcome to\nI'm here",
+            "userReview": "Life-changing",
+            "message": "Daily audio affirmations for lasting inner change",
             "answer": {
-                "title": "Начать",
-                "nextStepID": "enter_name"
+                "title": "Get Started",
+                "nextStepID": "select_gender"
             }
         }
-    },
+    }
 ]

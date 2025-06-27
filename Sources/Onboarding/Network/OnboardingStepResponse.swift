@@ -157,11 +157,10 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct SocialProofStep: Decodable { 
-        let title: String
         let image: ImageResponse
-        let laurelTitle: String
-        let laurelDescription: String
+        let welcomeText: String
         let userReview: String
+        let message: String
         let answer: StepAnswer
     }
 

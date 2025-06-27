@@ -10,8 +10,9 @@ struct SocialProofView: View {
             imageView
             Spacer()
             VStack(spacing: 32) {
+                welcomeView
                 laurelsView
-                titleView
+                messageView
             }
             .padding(.horizontal, .hScreenPadding)
             Spacer()
@@ -33,6 +34,18 @@ struct SocialProofView: View {
         }
     }
 
+    private var welcomeView: some View {
+        Text(step.welcomeText)
+            .font(.largeTitle.bold())
+            .foregroundStyle(viewModel.colorPalette.textColor)
+            .apply { view in
+                if #available(iOS 16.1, *) {
+                    view.fontDesign(.rounded)
+                }
+            }
+            .multilineTextAlignment(.center)
+    }
+
     private var laurelsView: some View {
         HStack {
             laurelView
@@ -50,31 +63,8 @@ struct SocialProofView: View {
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
     }
 
-    private var laurelTitleView: some View {
-        Text(step.laurelTitle)
-            .font(.title.bold())
-            .foregroundStyle(viewModel.colorPalette.textColor)
-            .apply { view in
-                if #available(iOS 16.1, *) {
-                    view.fontDesign(.rounded)
-                }
-            }
-    }
-
-    private var laurelDescriptionView: some View {
-        Text(step.laurelDescription)
-            .font(.title2)
-            .fontWeight(.medium)
-            .apply { view in
-                if #available(iOS 16.1, *) {
-                    view.fontDesign(.rounded)
-                }
-            }
-            .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-    }
-
-    private var titleView: some View {
-        Text(step.title)
+    private var messageView: some View {
+        Text(step.message)
             .font(.title3)
             .fontWeight(.medium)
             .apply { view in
