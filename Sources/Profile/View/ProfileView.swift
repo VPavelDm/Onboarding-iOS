@@ -18,7 +18,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     private var supportEmail: String
     private var termsLink: String
     private var privacyLink: String
-    private var paywall: () -> PaywallScreen
+    private var paywall: (Binding<Bool>) -> PaywallScreen
     @State private var actions: [Action]
     private var fetchSubscriptionStatus: () async throws -> Void
     private var trackEvent: (String) -> Void
@@ -29,9 +29,9 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         supportEmail: String,
         termsLink: String,
         privacyLink: String,
-        paywall: @escaping () -> PaywallScreen = { EmptyView() },
+        paywall: @escaping (Binding<Bool>) -> PaywallScreen = { _ in EmptyView() },
         actions: [Action] = [],
-        fetchSubscriptionStatus: @escaping () -> Void = {},
+        fetchSubscriptionStatus: @escaping () async throws -> Void = {},
         trackEvent: @escaping (String) -> Void
     ) {
         self.showBuySubscriptionButton = showBuySubscriptionButton
@@ -77,7 +77,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
             }
             .navigationTitle("Profile")
             .sheet(isPresented: $showPaywall) {
-                paywall()
+                paywall($showPaywall)
             }
             .task {
                 try? await fetchSubscriptionStatus()
