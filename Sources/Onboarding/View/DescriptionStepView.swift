@@ -37,7 +37,7 @@ struct DescriptionStepView: View {
             withAnimation(.easeInOut.delay(2)) {
                 isDescriptionVisible = true
             }
-            withAnimation(.easeInOut.delay(4)) {
+            withAnimation(.easeInOut.delay(3)) {
                 isButtonVisible = true
             }
         }

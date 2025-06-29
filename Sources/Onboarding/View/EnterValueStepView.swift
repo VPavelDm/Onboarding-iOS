@@ -84,7 +84,7 @@ struct EnterValueStepView: View {
             .textFieldStyle(NameTextFieldStyle(colorPalette: viewModel.colorPalette))
             .textContentType(textContentType)
             .keyboardType(keyboardType)
-            .submitLabel(.continue)
+            .submitLabel(.next)
             .onSubmit {
                 Task {
                     await onContinue()
