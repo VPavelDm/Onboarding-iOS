@@ -11,7 +11,7 @@ extension CGFloat {
 
     static let titlePadding: CGFloat = 6
     static let hScreenPadding: CGFloat = 20
-    static let vScreenPadding: CGFloat = 32
+    static let vScreenPadding: CGFloat = 36
     static let headingSpacing: CGFloat = 12
     static let contentSpacing: CGFloat = 20
     static let buttonsSpacing: CGFloat = 12

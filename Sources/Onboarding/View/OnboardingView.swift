@@ -41,7 +41,6 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
             .progressView(isVisible: viewModel.currentStep == nil) {
                 contentLoadingView
             }
-//            .background(viewModel.colorPalette.anyBackgroundView.ignoresSafeArea())
             .animation(.easeInOut, value: viewModel.currentStep)
             .onFirstAppear {
                 do {

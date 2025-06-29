@@ -18,8 +18,8 @@ struct OneAnswerView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: .contentSpacing) {
-                VStack(alignment: .leading, spacing: .headingSpacing) {
+            VStack(spacing: .contentSpacing) {
+                VStack(spacing: .headingSpacing) {
                     titleView
                     descriptionView
                 }
@@ -50,6 +50,7 @@ struct OneAnswerView: View {
 
     private var titleView: some View {
         Text(step.title)
+            .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)

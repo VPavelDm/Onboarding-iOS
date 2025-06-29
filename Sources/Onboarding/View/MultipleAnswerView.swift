@@ -22,8 +22,8 @@ struct MultipleAnswerView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: .contentSpacing) {
-                VStack(alignment: .leading, spacing: .headingSpacing) {
+            VStack(spacing: .contentSpacing) {
+                VStack(spacing: .headingSpacing) {
                     titleView
                     descriptionView
                 }
@@ -45,6 +45,7 @@ struct MultipleAnswerView: View {
 
     private var titleView: some View {
         Text(step.title)
+            .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -55,6 +56,7 @@ struct MultipleAnswerView: View {
     private var descriptionView: some View {
         if let description = step.description {
             Text(description)
+                .multilineTextAlignment(.center)
                 .font(.headline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
         }

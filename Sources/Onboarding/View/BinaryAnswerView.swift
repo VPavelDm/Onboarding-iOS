@@ -14,8 +14,8 @@ struct BinaryAnswerView: View {
     var step: BinaryAnswerStep
     
     var body: some View {
-        VStack(alignment: .leading, spacing: .contentSpacing) {
-            VStack(alignment: .leading, spacing: .headingSpacing) {
+        VStack(spacing: .contentSpacing) {
+            VStack(spacing: .headingSpacing) {
                 titleView
                 descriptionView
             }
@@ -35,6 +35,7 @@ struct BinaryAnswerView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(.white)
+            .multilineTextAlignment(.center)
     }
 
     @ViewBuilder
