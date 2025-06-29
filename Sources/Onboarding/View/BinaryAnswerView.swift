@@ -27,7 +27,6 @@ struct BinaryAnswerView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.vertical, .vScreenPadding)
         .padding(.horizontal, .hScreenPadding)
-        .background(viewModel.colorPalette.anyBackgroundView)
     }
 
     private var titleView: some View {

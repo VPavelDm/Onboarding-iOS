@@ -8,8 +8,6 @@
 import SwiftUI
 
 public protocol ColorPalette {
-    associatedtype BackgroundView: View
-    var backgroundView: BackgroundView { get }
     var textColor: Color { get }
     var secondaryTextColor: Color { get }
     var primaryButtonForegroundColor: Color { get }
@@ -23,13 +21,6 @@ public protocol ColorPalette {
     var accentColor: Color { get }
 }
 
-extension ColorPalette {
-
-    var anyBackgroundView: AnyView {
-        AnyView(backgroundView)
-    }
-}
-
 extension ColorPalette where Self == TestColorPalette {
 
     static var testData: Self {
@@ -38,8 +29,6 @@ extension ColorPalette where Self == TestColorPalette {
 }
 
 struct TestColorPalette: ColorPalette {
-    typealias BackgroundView = Color
-    var backgroundView: Color = .red
     var textColor: Color = .white
     var secondaryTextColor: Color = .secondary
     var primaryButtonForegroundColor: Color = .black
