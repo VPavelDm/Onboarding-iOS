@@ -37,8 +37,8 @@ struct EnterValueStepView: View {
     var step: EnterValueStep
 
     var body: some View {
-        VStack(alignment: .leading, spacing: .contentSpacing) {
-            VStack(alignment: .leading, spacing: .headingSpacing) {
+        VStack(spacing: .contentSpacing) {
+            VStack(spacing: .headingSpacing) {
                 titleView
                 descriptionView
             }
@@ -61,10 +61,10 @@ struct EnterValueStepView: View {
 
     private var titleView: some View {
         Text(step.title)
+            .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .multilineTextAlignment(.leading)
             .padding(.horizontal, .titlePadding)
     }
 
@@ -72,9 +72,9 @@ struct EnterValueStepView: View {
     private var descriptionView: some View {
         if let description = step.description {
             Text(description)
+                .multilineTextAlignment(.center)
                 .font(.title3)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .multilineTextAlignment(.leading)
         }
     }
 
@@ -99,7 +99,7 @@ struct EnterValueStepView: View {
             Text(step.primaryAnswer.title)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .disabled(value.isEmpty && step.skipAnswer == nil)
+        .disabled(value.isEmpty)
         .animation(.easeInOut, value: value.isEmpty)
     }
 
