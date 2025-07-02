@@ -16,6 +16,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     private var showBuySubscriptionButton: Bool
     private var appLink: String
     private var supportEmail: String
+    private var supportSubject: String
     private var termsLink: String
     private var privacyLink: String
     private var paywall: (Binding<Bool>) -> PaywallScreen
@@ -27,6 +28,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         showBuySubscriptionButton: Bool,
         appLink: String,
         supportEmail: String,
+        supportSubject: String,
         termsLink: String,
         privacyLink: String,
         paywall: @escaping (Binding<Bool>) -> PaywallScreen = { _ in EmptyView() },
@@ -37,6 +39,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         self.showBuySubscriptionButton = showBuySubscriptionButton
         self.appLink = appLink
         self.supportEmail = supportEmail
+        self.supportSubject = supportSubject
         self.termsLink = termsLink
         self.privacyLink = privacyLink
         self.paywall = paywall
@@ -125,7 +128,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     }
 
     private var shareFeedbackButton: some View {
-        Link(destination: URL(string: "mailto:\(supportEmail)")!) {
+        Link(destination: URL(string: "mailto:\(supportEmail)?subject=\(supportSubject)")!) {
             HStack(spacing: 12) {
                 imageView(name: "ellipsis.message.fill", color: .pink)
                 Text("Leave feedback")
