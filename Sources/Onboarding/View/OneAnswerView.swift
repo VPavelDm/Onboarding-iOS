@@ -61,6 +61,7 @@ struct OneAnswerView: View {
     private var descriptionView: some View {
         if let description = step.description {
             Text(description)
+                .multilineTextAlignment(.center)
                 .font(.headline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
         }
