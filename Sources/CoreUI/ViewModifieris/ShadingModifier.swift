@@ -38,7 +38,9 @@ private struct ShadingModifier<ShadingContent>: ViewModifier where ShadingConten
                 ZStack {
                     if isContentVisible {
                         backgroundView.zIndex(1)
-                        content().zIndex(2)
+                        content()
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .zIndex(2)
                     }
                 }
                 .presentationBackground(.clear)
