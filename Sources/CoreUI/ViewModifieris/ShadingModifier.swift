@@ -39,7 +39,7 @@ private struct ShadingModifier<ShadingContent>: ViewModifier where ShadingConten
                     if isContentVisible {
                         backgroundView.zIndex(1)
                         content()
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .transition(transitionAnimation)
                             .zIndex(2)
                     }
                 }
@@ -58,6 +58,10 @@ private struct ShadingModifier<ShadingContent>: ViewModifier where ShadingConten
     private var backgroundView: some View {
         Color.black.opacity(0.65)
             .ignoresSafeArea()
+    }
+
+    private var transitionAnimation: AnyTransition {
+        .offset(y: 60).combined(with: .opacity)
     }
 }
 
