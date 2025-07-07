@@ -8,25 +8,26 @@
 import SwiftUI
 
 @available(iOS 17.0, *)
-private struct ShadingModifier<ShadingContent>: ViewModifier where ShadingContent: View {
+private struct ShadingModifier<Item, ShadingContent>: ViewModifier where Item: Identifiable & Hashable, ShadingContent: View {
 
-    @State private var isFullScreenPresented: Bool = false
+    @State private var presentedItem: Item?
     @State private var isContentVisible: Bool = false
 
-    @Binding var isPresented: Bool
-    @ViewBuilder var content: () -> ShadingContent
+    @Binding var item: Item?
+    @ViewBuilder var content: (Item) -> ShadingContent
 
     func body(content: Content) -> some View {
         content
+            .presentationBackground(Color(.systemBackground))
             .background(leaf)
-            .onChange(of: isPresented) { isPresented in
-                if isPresented {
-                    isFullScreenPresented = true
+            .onChange(of: item) { _, newItem in
+                if newItem != nil {
+                    presentedItem = newItem
                 } else {
                     withAnimation {
                         isContentVisible = false
                     } completion: {
-                        isFullScreenPresented = false
+                        presentedItem = nil
                     }
                 }
             }
@@ -34,21 +35,21 @@ private struct ShadingModifier<ShadingContent>: ViewModifier where ShadingConten
 
     private var leaf: some View {
         Text("")
-            .fullScreenCover(isPresented: $isFullScreenPresented) {
+            .fullScreenCover(item: $presentedItem) { item in
                 ZStack {
                     if isContentVisible {
                         backgroundView.zIndex(1)
-                        content()
+                        content(item)
                             .transition(transitionAnimation)
                             .zIndex(2)
                     }
                 }
-                .presentationBackground(.clear)
                 .onAppear {
                     withAnimation {
                         isContentVisible = true
                     }
                 }
+                .presentationBackground(.clear)
             }
             .transaction { transaction in
                 transaction.disablesAnimations = true
@@ -68,10 +69,10 @@ private struct ShadingModifier<ShadingContent>: ViewModifier where ShadingConten
 @available(iOS 17.0, *)
 public extension View {
 
-    func shading<ShadingContent>(
-        isPresented: Binding<Bool>,
-        @ViewBuilder content: @escaping () -> ShadingContent
-    ) -> some View where ShadingContent: View {
-        modifier(ShadingModifier(isPresented: isPresented, content: content))
+    func shading<Item, ShadingContent>(
+        item: Binding<Item?>,
+        @ViewBuilder content: @escaping (Item) -> ShadingContent
+    ) -> some View where Item: Identifiable & Hashable, ShadingContent: View {
+        modifier(ShadingModifier(item: item, content: content))
     }
 }
