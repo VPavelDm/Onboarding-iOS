@@ -35,9 +35,7 @@ struct OneAnswerView: View {
         .scrollContentBackground(.hidden)
         .safeAreaInset(edge: .bottom) {
             VStack {
-                if selectedAnswer != nil {
-                    nextButton
-                }
+                nextButton
                 if let skip = step.skip {
                     skipButton(skip: skip)
                 }
