@@ -34,14 +34,11 @@ struct OneAnswerView: View {
         }
         .scrollContentBackground(.hidden)
         .safeAreaInset(edge: .bottom) {
-            VStack {
+            if selectedAnswer != nil || step.skip != nil {
                 nextButton
-                if let skip = step.skip {
-                    skipButton(skip: skip)
-                }
+                    .padding(.horizontal, .hScreenPadding)
+                    .padding(.bottom, .vScreenPadding)
             }
-            .padding(.horizontal, .hScreenPadding)
-            .padding(.bottom, .vScreenPadding)
         }
         .animation(.easeInOut, value: selectedAnswer != nil)
     }
@@ -78,12 +75,14 @@ struct OneAnswerView: View {
         AsyncButton {
             if let selectedAnswer {
                 await viewModel.onAnswer(answers: [selectedAnswer])
+            } else if let skip = step.skip {
+                await viewModel.onAnswer(answers: [skip])
             }
         } label: {
             Text(step.buttonTitle)
         }
         .buttonStyle(PrimaryButtonStyle())
-        .disabled(selectedAnswer == nil)
+        .disabled(selectedAnswer == nil && step.skip == nil)
         .animation(.easeInOut, value: selectedAnswer)
     }
 
