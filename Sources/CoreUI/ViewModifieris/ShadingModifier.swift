@@ -49,7 +49,10 @@ private struct ShadingModifier<Item, ShadingContent>: ViewModifier where Item: I
                         isContentVisible = true
                     }
                 }
-                .presentationBackground(.clear)
+                .if(self.item != nil) { content in
+                    content
+                        .presentationBackground(.clear)
+                }
             }
             .transaction { transaction in
                 transaction.disablesAnimations = true
