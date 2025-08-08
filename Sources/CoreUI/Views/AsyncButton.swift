@@ -37,5 +37,6 @@ public struct AsyncButton<Label, CircularProgress>: View where Label: View, Circ
                 progress().opacity(isLoading ? 1 : 0)
             }
         }
+        .disabled(isLoading)
     }
 }
