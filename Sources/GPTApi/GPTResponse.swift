@@ -27,7 +27,12 @@ public struct GPTResponse: Codable {
         }
     }
 
-    public func decoded<T: Decodable>(as type: T.Type) throws -> T {
-        try JSONDecoder().decode(type, from: data)
+    public func decoded<T: Decodable>(as type: T.Type, params: [String: String] = [:]) throws -> T {
+        let decoder = JSONDecoder()
+        for (key, value) in params {
+            guard let key = CodingUserInfoKey(rawValue: key) else { continue }
+            decoder.userInfo[key] = value
+        }
+        return try decoder.decode(type, from: data)
     }
 }
