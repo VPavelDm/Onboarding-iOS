@@ -24,6 +24,35 @@ public struct GPTRequestBody: Encodable {
     }
 }
 
+public extension GPTRequestBody {
+
+    init(fileName: String, systemMessage: String, userMessage: String) throws {
+        guard let responseFormat = Bundle.main.url(forResource: fileName, withExtension: "json") else {
+            throw FillError.responseFormatFileNotExists
+        }
+        let data = try Data(contentsOf: responseFormat)
+        guard let jsonObject = try? JSONSerialization.jsonObject(with: data) else {
+            throw FillError.stringFormatError
+        }
+
+        let messages: [GPTMessage] = [
+            GPTMessage(role: "system", content: systemMessage),
+            GPTMessage(role: "user", content: userMessage)
+        ]
+
+        self = try .init(
+            messages: messages,
+            responseFormat: AnyEncodable(value: jsonObject)
+        )
+    }
+
+    private enum FillError: Error {
+        case responseFormatFileNotExists
+        case dataFormatError
+        case stringFormatError
+    }
+}
+
 private extension GPTRequestBody {
 
     var json: String {
