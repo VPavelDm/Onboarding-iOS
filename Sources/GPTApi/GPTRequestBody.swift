@@ -26,8 +26,8 @@ public struct GPTRequestBody: Encodable {
 
 public extension GPTRequestBody {
 
-    init(fileName: String, systemMessage: String, userMessage: String) throws {
-        guard let responseFormat = Bundle.main.url(forResource: fileName, withExtension: "json") else {
+    init(fileName: String, systemMessage: String, userMessage: String, in bundle: Bundle) throws {
+        guard let responseFormat = bundle.url(forResource: fileName, withExtension: "json") else {
             throw FillError.responseFormatFileNotExists
         }
         let data = try Data(contentsOf: responseFormat)
