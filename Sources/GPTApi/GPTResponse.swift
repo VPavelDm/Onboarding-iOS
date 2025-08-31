@@ -26,4 +26,8 @@ public struct GPTResponse: Codable {
             return data
         }
     }
+
+    public func decoded<T: Decodable>(as type: T.Type) throws -> T {
+        try JSONDecoder().decode(type, from: data)
+    }
 }
