@@ -12,7 +12,12 @@ public struct GPTRequestBody: Encodable {
     var messages: [GPTMessage]
     var responseFormat: AnyEncodable?
 
-    public init(messages: [GPTMessage], responseFormat: AnyEncodable?) throws {
+    public init(
+        model: String = "gpt-4o-mini",
+        messages: [GPTMessage],
+        responseFormat: AnyEncodable?
+    ) throws {
+        self.model = model
         self.messages = messages
         self.responseFormat = responseFormat
     }
