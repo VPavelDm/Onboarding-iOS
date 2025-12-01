@@ -21,6 +21,7 @@ private struct PopupModifier<Item, PopupContent>: ViewModifier where Item: Ident
                     .background(Color(uiColor: .systemGray6))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .padding(32)
+                    .frame(maxWidth: 500)
             }
     }
 }
@@ -52,6 +53,7 @@ private struct PopupBoolModifier<PopupContent>: ViewModifier where PopupContent:
                     .background(Color(uiColor: .systemGray6))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .padding(32)
+                    .frame(maxWidth: 500)
             }
     }
 }
