@@ -74,9 +74,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    closeButton
-                }
+                closeButton
             }
             .navigationTitle("Profile")
             .sheet(isPresented: $showPaywall) {
@@ -182,13 +180,10 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     }
 
     private var closeButton: some View {
-        Button {
+        CloseButton {
             trackEvent("close_profile_button_tapped")
             dismiss()
-        } label: {
-            Text("Close")
         }
-        .buttonStyle(ToolbarButtonStyle())
     }
 
     func imageView(name: String, color: Color) -> some View {
