@@ -64,7 +64,7 @@ struct HeightPickerStepView: View {
                 isMetric.toggle()
             }
         } label: {
-            Text(isMetric ? "cm" : "ft")
+            Text(isMetric ? step.metricUnit : step.imperialUnit)
                 .font(.subheadline)
                 .fontWeight(.medium)
                 .foregroundStyle(viewModel.colorPalette.textColor)
@@ -89,7 +89,7 @@ struct HeightPickerStepView: View {
     private var metricPicker: some View {
         Picker("Height", selection: $centimeters) {
             ForEach(100...250, id: \.self) { cm in
-                Text("\(cm) cm")
+                Text("\(cm) \(step.metricUnit)")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(cm)
             }

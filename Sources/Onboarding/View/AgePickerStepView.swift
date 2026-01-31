@@ -51,7 +51,7 @@ struct AgePickerStepView: View {
     private var agePicker: some View {
         Picker("Age", selection: $age) {
             ForEach(4...100, id: \.self) { year in
-                Text("\(year)")
+                Text("\(year) \(step.unit)")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(year)
             }

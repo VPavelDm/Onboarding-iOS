@@ -15,6 +15,8 @@ extension HeightPickerStep {
         Self(
             title: "What's your height?",
             description: "This helps us personalize your experience",
+            metricUnit: "cm",
+            imperialUnit: "ft",
             answer: StepAnswer(
                 title: "Continue",
                 nextStepID: nextStepID

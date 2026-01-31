@@ -63,7 +63,7 @@ struct WeightPickerStepView: View {
                 isMetric.toggle()
             }
         } label: {
-            Text(isMetric ? "kg" : "lbs")
+            Text(isMetric ? step.metricUnit : step.imperialUnit)
                 .font(.subheadline)
                 .fontWeight(.medium)
                 .foregroundStyle(viewModel.colorPalette.textColor)
@@ -88,7 +88,7 @@ struct WeightPickerStepView: View {
     private var metricPicker: some View {
         Picker("Weight", selection: $kilograms) {
             ForEach(30...250, id: \.self) { kg in
-                Text("\(kg) kg")
+                Text("\(kg) \(step.metricUnit)")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(kg)
             }
@@ -102,7 +102,7 @@ struct WeightPickerStepView: View {
     private var imperialPicker: some View {
         Picker("Weight", selection: $pounds) {
             ForEach(66...550, id: \.self) { lb in
-                Text("\(lb) lbs")
+                Text("\(lb) \(step.imperialUnit)")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(lb)
             }

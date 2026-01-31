@@ -5,6 +5,8 @@
         "payload": {
             "title": "Какой ваш рост?",
             "description": "Это поможет персонализировать ваш опыт",
+            "metricUnit": "см",
+            "imperialUnit": "фт",
             "answer": {
                 "title": "Продолжить",
                 "icon": null,
@@ -19,6 +21,23 @@
         "payload": {
             "title": "Какой ваш вес?",
             "description": "Это поможет персонализировать ваш опыт",
+            "metricUnit": "кг",
+            "imperialUnit": "фунт",
+            "answer": {
+                "title": "Продолжить",
+                "icon": null,
+                "nextStepID": "age-picker-step",
+                "payload": null
+            }
+        }
+    },
+    {
+        "id": "age-picker-step",
+        "type": "agePicker",
+        "payload": {
+            "title": "Сколько вам лет?",
+            "description": "Это поможет персонализировать ваш опыт",
+            "unit": "лет",
             "answer": {
                 "title": "Продолжить",
                 "icon": null,

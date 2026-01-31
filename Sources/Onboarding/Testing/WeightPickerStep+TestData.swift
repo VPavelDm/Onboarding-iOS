@@ -15,6 +15,8 @@ extension WeightPickerStep {
         Self(
             title: "What's your weight?",
             description: "This helps us personalize your experience",
+            metricUnit: "kg",
+            imperialUnit: "lbs",
             answer: StepAnswer(
                 title: "Continue",
                 nextStepID: nextStepID

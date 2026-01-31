@@ -10,6 +10,7 @@ import Foundation
 struct AgePickerStep: Sendable, Equatable, Hashable {
     var title: String
     var description: String?
+    var unit: String
     var answer: StepAnswer
 }
 
@@ -21,6 +22,7 @@ extension AgePickerStep {
         self.init(
             title: response.title.localized(using: localizer),
             description: response.description?.localized(using: localizer),
+            unit: response.unit.localized(using: localizer),
             answer: StepAnswer(response: response.answer, localizer: localizer)
         )
     }

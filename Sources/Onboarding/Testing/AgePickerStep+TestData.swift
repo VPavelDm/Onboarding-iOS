@@ -15,6 +15,7 @@ extension AgePickerStep {
         Self(
             title: "How old are you?",
             description: "This helps us personalize your experience",
+            unit: "years",
             answer: StepAnswer(
                 title: "Continue",
                 nextStepID: nextStepID

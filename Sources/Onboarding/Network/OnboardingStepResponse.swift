@@ -165,18 +165,23 @@ struct OnboardingStepResponse: Decodable {
     struct HeightPickerStep: Decodable {
         let title: String
         let description: String?
+        let metricUnit: String
+        let imperialUnit: String
         let answer: StepAnswer
     }
 
     struct WeightPickerStep: Decodable {
         let title: String
         let description: String?
+        let metricUnit: String
+        let imperialUnit: String
         let answer: StepAnswer
     }
 
     struct AgePickerStep: Decodable {
         let title: String
         let description: String?
+        let unit: String
         let answer: StepAnswer
     }
 

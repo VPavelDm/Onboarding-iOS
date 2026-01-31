@@ -10,6 +10,8 @@ import Foundation
 struct HeightPickerStep: Sendable, Equatable, Hashable {
     var title: String
     var description: String?
+    var metricUnit: String
+    var imperialUnit: String
     var answer: StepAnswer
 }
 
@@ -21,6 +23,8 @@ extension HeightPickerStep {
         self.init(
             title: response.title.localized(using: localizer),
             description: response.description?.localized(using: localizer),
+            metricUnit: response.metricUnit.localized(using: localizer),
+            imperialUnit: response.imperialUnit.localized(using: localizer),
             answer: StepAnswer(response: response.answer, localizer: localizer)
         )
     }
