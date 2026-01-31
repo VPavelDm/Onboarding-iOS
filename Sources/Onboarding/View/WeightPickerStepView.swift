@@ -29,7 +29,7 @@ struct WeightPickerStepView: View {
                 descriptionView
             }
             Spacer()
-            unitToggleButton
+            unitSelector
             weightPicker
             Spacer()
             continueButton
@@ -57,18 +57,30 @@ struct WeightPickerStepView: View {
         }
     }
 
-    private var unitToggleButton: some View {
-        Button {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                isMetric.toggle()
+    private var unitSelector: some View {
+        HStack(spacing: 8) {
+            unitButton(title: step.metricUnit, isSelected: isMetric) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isMetric = true
+                }
             }
-        } label: {
-            Text(isMetric ? step.metricUnit : step.imperialUnit)
+            unitButton(title: step.imperialUnit, isSelected: !isMetric) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isMetric = false
+                }
+            }
+        }
+    }
+
+    private func unitButton(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
                 .font(.subheadline)
                 .fontWeight(.medium)
-                .foregroundStyle(viewModel.colorPalette.textColor)
+                .foregroundStyle(isSelected ? viewModel.colorPalette.primaryButtonForegroundColor : viewModel.colorPalette.textColor)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
+                .background(isSelected ? viewModel.colorPalette.primaryButtonBackgroundColor : .clear)
                 .background(.ultraThinMaterial)
                 .clipShape(Capsule())
         }
