@@ -14,5 +14,41 @@
                 "payload": null
             }
         }
+    },
+    {
+        "id": "social-proof-step",
+        "type": "socialProof",
+        "payload": {
+            "image": {
+                "type": "system",
+                "value": "star.fill",
+                "aspectRatioType": "square"
+            },
+            "welcomeHeadline": "Присоединяйтесь к 1 млн+ пользователей",
+            "welcomeSubheadline": "Худейте в 2 раза эффективнее с Calo",
+            "userReview": "50 000+ отзывов",
+            "stats": [
+                {
+                    "value": "4.8",
+                    "label": "Рейтинг"
+                },
+                {
+                    "value": "50K+",
+                    "label": "Отзывов"
+                },
+                {
+                    "value": "1M+",
+                    "label": "Пользователей"
+                }
+            ],
+            "message": "78% наших пользователей отмечают, что Calo помог им достичь долгосрочных результатов в снижении веса.",
+            "messageAuthor": "Анна, пользователь Calo",
+            "answer": {
+                "title": "Продолжить",
+                "icon": null,
+                "nextStepID": "next-step-id",
+                "payload": null
+            }
+        }
     }
 ]
