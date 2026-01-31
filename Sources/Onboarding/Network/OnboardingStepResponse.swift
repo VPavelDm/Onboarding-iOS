@@ -102,6 +102,7 @@ struct OnboardingStepResponse: Decodable {
         let buttonTitle: String
         let skip: StepAnswer?
         let answers: [StepAnswer]
+        let autoNavigateOnSingleAnswer: Bool?
     }
 
     struct MultipleAnswerStep: Decodable {

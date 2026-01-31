@@ -13,6 +13,7 @@ struct OneAnswerStep: Sendable, Equatable, Hashable {
     let buttonTitle: String
     let skip: StepAnswer?
     let answers: [StepAnswer]
+    let autoNavigateOnSingleAnswer: Bool
 }
 
 // MARK: - Convert
@@ -25,7 +26,8 @@ extension OneAnswerStep {
             description: response.description?.localized(using: localizer),
             buttonTitle: response.buttonTitle.localized(using: localizer),
             skip: response.skip.map { StepAnswer(response: $0, localizer: localizer) },
-            answers: response.answers.map { StepAnswer(response: $0, localizer: localizer) }
+            answers: response.answers.map { StepAnswer(response: $0, localizer: localizer) },
+            autoNavigateOnSingleAnswer: response.autoNavigateOnSingleAnswer ?? false
         )
     }
 }

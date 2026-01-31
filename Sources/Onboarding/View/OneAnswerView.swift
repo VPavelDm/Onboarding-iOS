@@ -16,6 +16,10 @@ struct OneAnswerView: View {
 
     var step: OneAnswerStep
 
+    private var shouldAutoNavigate: Bool {
+        step.autoNavigateOnSingleAnswer
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: .contentSpacing) {
@@ -34,7 +38,7 @@ struct OneAnswerView: View {
         }
         .scrollContentBackground(.hidden)
         .safeAreaInset(edge: .bottom) {
-            if selectedAnswer != nil || step.skip != nil {
+            if !shouldAutoNavigate && (selectedAnswer != nil || step.skip != nil) {
                 nextButton
                     .padding(.horizontal, .hScreenPadding)
                     .padding(.bottom, .vScreenPadding)
@@ -63,8 +67,12 @@ struct OneAnswerView: View {
     }
 
     private func buttonView(answer: StepAnswer) -> some View {
-        Button {
-            selectedAnswer = answer
+        AsyncButton {
+            if shouldAutoNavigate {
+                await viewModel.onAnswer(answers: [answer])
+            } else {
+                selectedAnswer = answer
+            }
         } label: {
             Text(answer.title)
         }

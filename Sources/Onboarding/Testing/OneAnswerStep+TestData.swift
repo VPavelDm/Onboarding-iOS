@@ -10,7 +10,8 @@ import Foundation
 extension OneAnswerStep {
 
     static func testData(
-        nextStepID: StepID = StepID("starting_point")
+        nextStepID: StepID = StepID("starting_point"),
+        autoNavigateOnSingleAnswer: Bool = false
     ) -> Self {
         Self(
             title: "What's your main goal?",
@@ -23,7 +24,8 @@ extension OneAnswerStep {
                 StepAnswer(title: "📈 Gain weight", nextStepID: nextStepID),
                 StepAnswer(title: "💪 Build weight", nextStepID: nextStepID),
                 StepAnswer(title: "💬 Something else", nextStepID: nextStepID),
-            ]
+            ],
+            autoNavigateOnSingleAnswer: autoNavigateOnSingleAnswer
         )
     }
 }
