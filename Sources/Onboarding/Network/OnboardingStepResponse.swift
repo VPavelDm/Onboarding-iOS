@@ -59,6 +59,9 @@ struct OnboardingStepResponse: Decodable {
         case "enterValue":
             let payload = try container.decode(EnterValueStep.self, forKey: .payload)
             self.type = .enterValue(payload)
+        case "heightPicker":
+            let payload = try container.decode(HeightPickerStep.self, forKey: .payload)
+            self.type = .heightPicker(payload)
         case "custom":
             let payload = try container.decodeIfPresent(CustomStep.self, forKey: .payload)
             self.type = .custom(payload)
@@ -80,6 +83,7 @@ struct OnboardingStepResponse: Decodable {
         case widget(WidgetStep)
         case socialProof(SocialProofStep)
         case enterValue(EnterValueStep)
+        case heightPicker(HeightPickerStep)
         case custom(CustomStep?)
         case unknown
     }
@@ -148,6 +152,14 @@ struct OnboardingStepResponse: Decodable {
         let valueType: String
         let primaryAnswer: StepAnswer
         let skipAnswer: StepAnswer?
+    }
+
+    struct HeightPickerStep: Decodable {
+        let title: String
+        let description: String?
+        let metricTitle: String
+        let imperialTitle: String
+        let answer: StepAnswer
     }
 
     struct WidgetStep: Decodable {

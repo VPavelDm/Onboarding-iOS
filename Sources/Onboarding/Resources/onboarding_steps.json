@@ -1,36 +1,16 @@
 [
     {
-        "id": "social-proof-step",
-        "type": "socialProof",
+        "id": "height-picker-step",
+        "type": "heightPicker",
         "payload": {
-            "image": {
-                "type": "system",
-                "value": "star.fill",
-                "aspectRatioType": "square"
-            },
-            "welcomeHeadline": "Присоединяйтесь к 1 млн+ пользователей",
-            "welcomeSubheadline": "Худейте в 2 раза эффективнее с Calo",
-            "userReview": "50 000+ отзывов",
-            "stats": [
-                {
-                    "value": "4.8",
-                    "label": "Рейтинг"
-                },
-                {
-                    "value": "50K+",
-                    "label": "Отзывов"
-                },
-                {
-                    "value": "1M+",
-                    "label": "Пользователей"
-                }
-            ],
-            "message": "78% наших пользователей отмечают, что Calo помог им достичь долгосрочных результатов в снижении веса.",
-            "messageAuthor": "Анна, пользователь Calo",
+            "title": "Какой ваш рост?",
+            "description": "Это поможет персонализировать ваш опыт",
+            "metricTitle": "см",
+            "imperialTitle": "фт'дюйм",
             "answer": {
                 "title": "Продолжить",
                 "icon": null,
-                "nextStepID": "next-step-id",
+                "nextStepID": "social-proof-step",
                 "payload": null
             }
         }

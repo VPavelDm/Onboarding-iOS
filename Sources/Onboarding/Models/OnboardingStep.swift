@@ -24,6 +24,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case widget(WidgetStep)
         case socialProof(SocialProofStep)
         case enterValue(EnterValueStep)
+        case heightPicker(HeightPickerStep)
         case custom(CustomStepParams)
         case unknown
     }
@@ -60,6 +61,7 @@ extension OnboardingStep {
         case .widget(let payload): .widget(WidgetStep(response: payload, localizer: localizer))
         case .socialProof(let payload): .socialProof(SocialProofStep(response: payload, localizer: localizer))
         case .enterValue(let payload): .enterValue(EnterValueStep(response: payload, localizer: localizer))
+        case .heightPicker(let payload): .heightPicker(HeightPickerStep(response: payload, localizer: localizer))
         case .custom(let payload): .custom(CustomStepParams(currentStepID: response.id, nextStepID: payload?.nextStepID))
         default: .unknown
         }
