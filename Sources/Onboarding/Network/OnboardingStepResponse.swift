@@ -157,13 +157,20 @@ struct OnboardingStepResponse: Decodable {
         let answer: StepAnswer
     }
 
-    struct SocialProofStep: Decodable { 
+    struct SocialProofStep: Decodable {
         let image: ImageResponse
         let welcomeHeadline: String
         let welcomeSubheadline: String
         let userReview: String
+        let stats: [StatItem]
         let message: String
+        let messageAuthor: String
         let answer: StepAnswer
+    }
+
+    struct StatItem: Decodable {
+        let value: String
+        let label: String
     }
 
     struct TimePickerStep: Decodable {

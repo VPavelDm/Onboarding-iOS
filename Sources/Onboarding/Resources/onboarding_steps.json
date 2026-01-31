@@ -1,36 +1,38 @@
 [
     {
-        "id": "select_gender",
-        "type": "oneAnswer",
+        "id": "social-proof-step",
+        "type": "socialProof",
         "payload": {
-            "title": "What's your gender?",
-            "buttonTitle": "Continue",
-            "answers": [
+            "image": {
+                "type": "system",
+                "value": "star.fill",
+                "aspectRatioType": "square"
+            },
+            "welcomeHeadline": "Присоединяйтесь к 1 млн+ пользователей",
+            "welcomeSubheadline": "Худейте в 2 раза эффективнее с Calo",
+            "userReview": "50 000+ отзывов",
+            "stats": [
                 {
-                    "title": "Male",
-                    "nextStepID": "select_age",
-                    "payload": {
-                        "type": "string",
-                        "value": "male"
-                    }
+                    "value": "4.8",
+                    "label": "Рейтинг"
                 },
                 {
-                    "title": "Female",
-                    "nextStepID": "select_age",
-                    "payload": {
-                        "type": "string",
-                        "value": "female"
-                    }
+                    "value": "50K+",
+                    "label": "Отзывов"
                 },
                 {
-                    "title": "Non-binary",
-                    "nextStepID": "select_age",
-                    "payload": {
-                        "type": "string",
-                        "value": "non_binary"
-                    }
+                    "value": "1M+",
+                    "label": "Пользователей"
                 }
-            ]
+            ],
+            "message": "78% наших пользователей отмечают, что Calo помог им достичь долгосрочных результатов в снижении веса.",
+            "messageAuthor": "Анна, пользователь Calo",
+            "answer": {
+                "title": "Продолжить",
+                "icon": null,
+                "nextStepID": "next-step-id",
+                "payload": null
+            }
         }
     }
 ]

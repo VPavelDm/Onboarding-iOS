@@ -12,8 +12,15 @@ struct SocialProofStep: Sendable, Hashable {
     let welcomeHeadline: String
     let welcomeSubheadline: String
     let userReview: String
+    let stats: [StatItem]
     let message: String
+    let messageAuthor: String
     let answer: StepAnswer
+
+    struct StatItem: Sendable, Hashable {
+        let value: String
+        let label: String
+    }
 }
 
 extension SocialProofStep {
@@ -24,7 +31,9 @@ extension SocialProofStep {
             welcomeHeadline: response.welcomeHeadline,
             welcomeSubheadline: response.welcomeSubheadline,
             userReview: response.userReview,
+            stats: response.stats.map { StatItem(value: $0.value, label: $0.label) },
             message: response.message,
+            messageAuthor: response.messageAuthor,
             answer: StepAnswer(response: response.answer)
         )
     }
