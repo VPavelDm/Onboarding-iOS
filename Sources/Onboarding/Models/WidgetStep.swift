@@ -11,16 +11,16 @@ struct WidgetStep: Sendable, Equatable, Hashable {
 
 extension WidgetStep {
 
-    init(response: OnboardingStepResponse.WidgetStep) {
+    init(response: OnboardingStepResponse.WidgetStep, bundle: Bundle) {
         var image: ImageMeta?
         if let imageResponse = response.image {
             image = ImageMeta(response: imageResponse)
         }
         self.init(
-            title: response.title,
-            description: response.description,
+            title: response.title.localized(bundle: bundle),
+            description: response.description.localized(bundle: bundle),
             image: image,
-            answer: StepAnswer(response: response.answer)
+            answer: StepAnswer(response: response.answer, bundle: bundle)
         )
     }
 }

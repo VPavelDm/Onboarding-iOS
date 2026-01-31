@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 04.09.24.
 //
@@ -19,13 +19,13 @@ struct MultipleAnswerStep: Sendable, Equatable, Hashable {
 
 extension MultipleAnswerStep {
 
-    init(response: OnboardingStepResponse.MultipleAnswerStep) {
+    init(response: OnboardingStepResponse.MultipleAnswerStep, bundle: Bundle) {
         self.init(
-            title: response.title,
-            description: response.description,
-            buttonTitle: response.buttonTitle,
+            title: response.title.localized(bundle: bundle),
+            description: response.description?.localized(bundle: bundle),
+            buttonTitle: response.buttonTitle.localized(bundle: bundle),
             minAnswersAmount: response.minAnswersAmount,
-            answers: response.answers.map(StepAnswer.init(response:))
+            answers: response.answers.map { StepAnswer(response: $0, bundle: bundle) }
         )
     }
 }

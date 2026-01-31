@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 04.09.24.
 //
@@ -18,16 +18,16 @@ struct DescriptionStep: Sendable, Equatable, Hashable {
 
 extension DescriptionStep {
 
-    init(response: OnboardingStepResponse.DescriptionStep) {
+    init(response: OnboardingStepResponse.DescriptionStep, bundle: Bundle) {
         var image: ImageMeta?
         if let imageResponse = response.image {
             image = ImageMeta(response: imageResponse)
         }
         self.init(
             image: image,
-            title: response.title,
-            description: response.description,
-            answer: StepAnswer(response: response.answer)
+            title: response.title.localized(bundle: bundle),
+            description: response.description?.localized(bundle: bundle),
+            answer: StepAnswer(response: response.answer, bundle: bundle)
         )
     }
 }

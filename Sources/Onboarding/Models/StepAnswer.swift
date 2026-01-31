@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 08.09.24.
 //
@@ -41,9 +41,9 @@ struct StepAnswer: Sendable, Equatable, Hashable {
 
 extension StepAnswer {
 
-    init(response: OnboardingStepResponse.StepAnswer) {
+    init(response: OnboardingStepResponse.StepAnswer, bundle: Bundle) {
         self.init(
-            title: response.title,
+            title: response.title.localized(bundle: bundle),
             icon: response.icon,
             nextStepID: response.nextStepID,
             payload: response.payload.map(Payload.init(response:))
@@ -52,7 +52,7 @@ extension StepAnswer {
 }
 
 extension StepAnswer.Payload {
-    
+
     init(response: OnboardingStepResponse.StepAnswer.Payload) {
         switch response {
         case .string(let string):

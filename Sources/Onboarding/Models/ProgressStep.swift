@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 18.09.24.
 //
@@ -19,13 +19,13 @@ struct ProgressStep: Sendable, Equatable, Hashable {
 
 extension ProgressStep {
 
-    init(response: OnboardingStepResponse.ProgressStep) {
+    init(response: OnboardingStepResponse.ProgressStep, bundle: Bundle) {
         self.init(
-            title: response.title,
-            description: response.description,
+            title: response.title.localized(bundle: bundle),
+            description: response.description?.localized(bundle: bundle),
             duration: response.duration,
-            steps: response.steps,
-            answer: StepAnswer(response: response.answer)
+            steps: response.steps.map { $0.localized(bundle: bundle) },
+            answer: StepAnswer(response: response.answer, bundle: bundle)
         )
     }
 }

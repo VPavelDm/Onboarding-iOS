@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 04.09.24.
 //
@@ -18,12 +18,12 @@ struct BinaryAnswerStep: Sendable, Equatable, Hashable {
 
 extension BinaryAnswerStep {
 
-    init(response: OnboardingStepResponse.BinaryAnswer) {
+    init(response: OnboardingStepResponse.BinaryAnswer, bundle: Bundle) {
         self.init(
-            title: response.title,
-            description: response.description,
-            firstAnswer: StepAnswer(response: response.firstAnswer),
-            secondAnswer: StepAnswer(response: response.secondAnswer)
+            title: response.title.localized(bundle: bundle),
+            description: response.description?.localized(bundle: bundle),
+            firstAnswer: StepAnswer(response: response.firstAnswer, bundle: bundle),
+            secondAnswer: StepAnswer(response: response.secondAnswer, bundle: bundle)
         )
     }
 }

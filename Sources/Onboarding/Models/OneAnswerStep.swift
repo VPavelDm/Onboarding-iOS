@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 04.09.24.
 //
@@ -19,13 +19,13 @@ struct OneAnswerStep: Sendable, Equatable, Hashable {
 
 extension OneAnswerStep {
 
-    init(response: OnboardingStepResponse.OneAnswerStep) {
+    init(response: OnboardingStepResponse.OneAnswerStep, bundle: Bundle) {
         self.init(
-            title: response.title,
-            description: response.description,
-            buttonTitle: response.buttonTitle,
-            skip: response.skip.map(StepAnswer.init(response:)),
-            answers: response.answers.map(StepAnswer.init(response:))
+            title: response.title.localized(bundle: bundle),
+            description: response.description?.localized(bundle: bundle),
+            buttonTitle: response.buttonTitle.localized(bundle: bundle),
+            skip: response.skip.map { StepAnswer(response: $0, bundle: bundle) },
+            answers: response.answers.map { StepAnswer(response: $0, bundle: bundle) }
         )
     }
 }

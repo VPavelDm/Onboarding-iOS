@@ -20,14 +20,14 @@ struct EnterValueStep: Sendable, Hashable {
 
 extension EnterValueStep {
 
-    init(response: OnboardingStepResponse.EnterValueStep) {
+    init(response: OnboardingStepResponse.EnterValueStep, bundle: Bundle) {
         self.init(
-            title: response.title,
-            description: response.description,
-            placeholder: response.placeholder,
+            title: response.title.localized(bundle: bundle),
+            description: response.description?.localized(bundle: bundle),
+            placeholder: response.placeholder.localized(bundle: bundle),
             valueType: response.valueType,
-            primaryAnswer: StepAnswer(response: response.primaryAnswer),
-            skipAnswer: response.skipAnswer.map(StepAnswer.init(response:))
+            primaryAnswer: StepAnswer(response: response.primaryAnswer, bundle: bundle),
+            skipAnswer: response.skipAnswer.map { StepAnswer(response: $0, bundle: bundle) }
         )
     }
 }

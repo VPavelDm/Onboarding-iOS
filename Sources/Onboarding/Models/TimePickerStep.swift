@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 20.09.24.
 //
@@ -16,10 +16,10 @@ struct TimePickerStep: Sendable, Equatable, Hashable {
 
 extension TimePickerStep {
 
-    init(response: OnboardingStepResponse.TimePickerStep) {
+    init(response: OnboardingStepResponse.TimePickerStep, bundle: Bundle) {
         self.init(
-            title: response.title,
-            answer: StepAnswer(response: response.answer)
+            title: response.title.localized(bundle: bundle),
+            answer: StepAnswer(response: response.answer, bundle: bundle)
         )
     }
 }

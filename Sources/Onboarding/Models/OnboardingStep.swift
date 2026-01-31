@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 04.09.24.
 //
@@ -46,20 +46,20 @@ extension OnboardingStep {
 
 extension OnboardingStep {
 
-    init?(response: OnboardingStepResponse) {
+    init?(response: OnboardingStepResponse, bundle: Bundle) {
         let type: OnboardingStepType = switch response.type {
-        case .welcome(let payload): .welcome(WelcomeStep(response: payload))
-        case .welcomeFade(let payload): .welcomeFade(WelcomeFadeStep(response: payload))
-        case .oneAnswer(let payload): .oneAnswer(OneAnswerStep(response: payload))
-        case .multipleAnswer(let payload): .multipleAnswer(MultipleAnswerStep(response: payload))
-        case .description(let payload): .description(DescriptionStep(response: payload))
-        case .binaryAnswer(let payload): .binaryAnswer(BinaryAnswerStep(response: payload))
-        case .progress(let payload): .progress(ProgressStep(response: payload))
-        case .timePicker(let payload): .timePicker(TimePickerStep(response: payload))
-        case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload))
-        case .widget(let payload): .widget(WidgetStep(response: payload))
-        case .socialProof(let payload): .socialProof(SocialProofStep(response: payload))
-        case .enterValue(let payload): .enterValue(EnterValueStep(response: payload))
+        case .welcome(let payload): .welcome(WelcomeStep(response: payload, bundle: bundle))
+        case .welcomeFade(let payload): .welcomeFade(WelcomeFadeStep(response: payload, bundle: bundle))
+        case .oneAnswer(let payload): .oneAnswer(OneAnswerStep(response: payload, bundle: bundle))
+        case .multipleAnswer(let payload): .multipleAnswer(MultipleAnswerStep(response: payload, bundle: bundle))
+        case .description(let payload): .description(DescriptionStep(response: payload, bundle: bundle))
+        case .binaryAnswer(let payload): .binaryAnswer(BinaryAnswerStep(response: payload, bundle: bundle))
+        case .progress(let payload): .progress(ProgressStep(response: payload, bundle: bundle))
+        case .timePicker(let payload): .timePicker(TimePickerStep(response: payload, bundle: bundle))
+        case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload, bundle: bundle))
+        case .widget(let payload): .widget(WidgetStep(response: payload, bundle: bundle))
+        case .socialProof(let payload): .socialProof(SocialProofStep(response: payload, bundle: bundle))
+        case .enterValue(let payload): .enterValue(EnterValueStep(response: payload, bundle: bundle))
         case .custom(let payload): .custom(CustomStepParams(currentStepID: response.id, nextStepID: payload?.nextStepID))
         default: .unknown
         }
