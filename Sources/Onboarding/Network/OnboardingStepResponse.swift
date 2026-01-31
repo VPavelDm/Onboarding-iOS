@@ -161,8 +161,6 @@ struct OnboardingStepResponse: Decodable {
     struct HeightPickerStep: Decodable {
         let title: String
         let description: String?
-        let metricTitle: String
-        let imperialTitle: String
         let answer: StepAnswer
     }
 

@@ -33,7 +33,7 @@ struct BinaryAnswerView: View {
         Text(step.title)
             .font(.title)
             .fontWeight(.bold)
-            .foregroundStyle(.white)
+            .foregroundStyle(viewModel.colorPalette.textColor)
             .multilineTextAlignment(.center)
     }
 
@@ -41,8 +41,9 @@ struct BinaryAnswerView: View {
     private var descriptionView: some View {
         if let description = step.description {
             Text(description)
-                .font(.headline)
-                .foregroundStyle(.secondary)
+                .font(.body)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .multilineTextAlignment(.center)
         }
     }
 

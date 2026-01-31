@@ -12,7 +12,7 @@ struct BinaryAnswerButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(.black)
-            .font(.system(size: 18, weight: .semibold))
+            .font(.system(size: 16, weight: .semibold))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .aspectRatio(1.2, contentMode: .fit)
             .background(.secondary)

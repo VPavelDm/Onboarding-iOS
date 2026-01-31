@@ -57,7 +57,7 @@ struct MultipleAnswerView: View {
         if let description = step.description {
             Text(description)
                 .multilineTextAlignment(.center)
-                .font(.headline)
+                .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
         }
     }

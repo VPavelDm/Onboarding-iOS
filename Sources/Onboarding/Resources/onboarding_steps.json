@@ -5,8 +5,6 @@
         "payload": {
             "title": "Какой ваш рост?",
             "description": "Это поможет персонализировать ваш опыт",
-            "metricTitle": "см",
-            "imperialTitle": "фт'дюйм",
             "answer": {
                 "title": "Продолжить",
                 "icon": null,

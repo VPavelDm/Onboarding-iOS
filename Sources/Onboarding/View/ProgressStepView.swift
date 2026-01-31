@@ -46,14 +46,14 @@ struct ProgressStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
-            .foregroundStyle(.white)
+            .foregroundStyle(viewModel.colorPalette.textColor)
     }
 
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
             Text(description)
-                .font(.headline)
+                .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .multilineTextAlignment(.center)
         }

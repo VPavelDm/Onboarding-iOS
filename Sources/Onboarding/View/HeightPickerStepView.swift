@@ -53,7 +53,7 @@ struct HeightPickerStepView: View {
         if let description = step.description {
             Text(description)
                 .multilineTextAlignment(.center)
-                .font(.title3)
+                .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
         }
     }

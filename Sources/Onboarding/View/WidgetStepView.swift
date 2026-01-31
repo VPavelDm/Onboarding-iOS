@@ -26,7 +26,7 @@ struct WidgetStepView: View {
 
     var descriptionView: some View {
         Text(step.description)
-            .font(.headline)
+            .font(.body)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
             .multilineTextAlignment(.center)
     }

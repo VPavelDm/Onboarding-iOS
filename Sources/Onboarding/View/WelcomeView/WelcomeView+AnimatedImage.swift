@@ -55,7 +55,6 @@ extension WelcomeView {
         private var descriptionView: some View {
             Text(step.description)
                 .font(.body)
-                .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
         }
