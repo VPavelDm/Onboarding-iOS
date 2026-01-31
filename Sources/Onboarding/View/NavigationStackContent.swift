@@ -44,6 +44,8 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 HeightPickerStepView(step: step)
             case .weightPicker(let step):
                 WeightPickerStepView(step: step)
+            case .agePicker(let step):
+                AgePickerStepView(step: step)
             case .custom(let stepParams):
                 customStepView(stepParams)
             case .unknown, .none:

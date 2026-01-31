@@ -26,6 +26,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case enterValue(EnterValueStep)
         case heightPicker(HeightPickerStep)
         case weightPicker(WeightPickerStep)
+        case agePicker(AgePickerStep)
         case custom(CustomStepParams)
         case unknown
     }
@@ -64,6 +65,7 @@ extension OnboardingStep {
         case .enterValue(let payload): .enterValue(EnterValueStep(response: payload, localizer: localizer))
         case .heightPicker(let payload): .heightPicker(HeightPickerStep(response: payload, localizer: localizer))
         case .weightPicker(let payload): .weightPicker(WeightPickerStep(response: payload, localizer: localizer))
+        case .agePicker(let payload): .agePicker(AgePickerStep(response: payload, localizer: localizer))
         case .custom(let payload): .custom(CustomStepParams(currentStepID: response.id, nextStepID: payload?.nextStepID))
         default: .unknown
         }
