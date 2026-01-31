@@ -10,6 +10,20 @@
             "answer": {
                 "title": "Продолжить",
                 "icon": null,
+                "nextStepID": "weight-picker-step",
+                "payload": null
+            }
+        }
+    },
+    {
+        "id": "weight-picker-step",
+        "type": "weightPicker",
+        "payload": {
+            "title": "Какой ваш вес?",
+            "description": "Это поможет персонализировать ваш опыт",
+            "answer": {
+                "title": "Продолжить",
+                "icon": null,
                 "nextStepID": "social-proof-step",
                 "payload": null
             }

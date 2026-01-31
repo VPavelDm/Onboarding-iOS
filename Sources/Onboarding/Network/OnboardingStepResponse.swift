@@ -62,6 +62,9 @@ struct OnboardingStepResponse: Decodable {
         case "heightPicker":
             let payload = try container.decode(HeightPickerStep.self, forKey: .payload)
             self.type = .heightPicker(payload)
+        case "weightPicker":
+            let payload = try container.decode(WeightPickerStep.self, forKey: .payload)
+            self.type = .weightPicker(payload)
         case "custom":
             let payload = try container.decodeIfPresent(CustomStep.self, forKey: .payload)
             self.type = .custom(payload)
@@ -84,6 +87,7 @@ struct OnboardingStepResponse: Decodable {
         case socialProof(SocialProofStep)
         case enterValue(EnterValueStep)
         case heightPicker(HeightPickerStep)
+        case weightPicker(WeightPickerStep)
         case custom(CustomStep?)
         case unknown
     }
@@ -159,6 +163,12 @@ struct OnboardingStepResponse: Decodable {
         let description: String?
         let metricTitle: String
         let imperialTitle: String
+        let answer: StepAnswer
+    }
+
+    struct WeightPickerStep: Decodable {
+        let title: String
+        let description: String?
         let answer: StepAnswer
     }
 
