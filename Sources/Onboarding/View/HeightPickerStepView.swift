@@ -10,17 +10,16 @@ import SwiftUI
 struct HeightPickerStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
-    @State private var centimeters: Int = 170
-    @State private var feet: Int = 5
-    @State private var inches: Int = 7
-
-    private var isMetric: Bool {
+    @State private var isMetric: Bool = {
         if #available(iOS 16.0, *) {
             return Locale.current.measurementSystem == .metric
         } else {
             return Locale.current.usesMetricSystem
         }
-    }
+    }()
+    @State private var centimeters: Int = 170
+    @State private var feet: Int = 5
+    @State private var inches: Int = 7
 
     var step: HeightPickerStep
 
@@ -31,6 +30,7 @@ struct HeightPickerStepView: View {
                 descriptionView
             }
             Spacer()
+            unitToggleButton
             heightPicker
             Spacer()
             continueButton
@@ -58,6 +58,23 @@ struct HeightPickerStepView: View {
         }
     }
 
+    private var unitToggleButton: some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isMetric.toggle()
+            }
+        } label: {
+            Text(isMetric ? "cm" : "ft")
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(viewModel.colorPalette.textColor)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(.ultraThinMaterial)
+                .clipShape(Capsule())
+        }
+    }
+
     private var heightPicker: some View {
         Group {
             if isMetric {
@@ -78,6 +95,9 @@ struct HeightPickerStepView: View {
             }
         }
         .pickerStyle(.wheel)
+        .onChange(of: centimeters) { newValue in
+            updateImperialFromMetric(cm: newValue)
+        }
     }
 
     private var imperialPicker: some View {
@@ -121,6 +141,12 @@ struct HeightPickerStepView: View {
         var answer = step.answer
         answer.payload = .string("\(centimeters)")
         await viewModel.onAnswer(answers: [answer])
+    }
+
+    private func updateImperialFromMetric(cm: Int) {
+        let totalInches = Double(cm) / 2.54
+        feet = Int(totalInches) / 12
+        inches = Int(totalInches.rounded()) % 12
     }
 
     private func updateMetricFromImperial() {

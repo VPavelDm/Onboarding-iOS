@@ -10,16 +10,15 @@ import SwiftUI
 struct WeightPickerStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
-    @State private var kilograms: Int = 70
-    @State private var pounds: Int = 154
-
-    private var isMetric: Bool {
+    @State private var isMetric: Bool = {
         if #available(iOS 16.0, *) {
             return Locale.current.measurementSystem == .metric
         } else {
             return Locale.current.usesMetricSystem
         }
-    }
+    }()
+    @State private var kilograms: Int = 70
+    @State private var pounds: Int = 154
 
     var step: WeightPickerStep
 
@@ -30,6 +29,7 @@ struct WeightPickerStepView: View {
                 descriptionView
             }
             Spacer()
+            unitToggleButton
             weightPicker
             Spacer()
             continueButton
@@ -57,6 +57,23 @@ struct WeightPickerStepView: View {
         }
     }
 
+    private var unitToggleButton: some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isMetric.toggle()
+            }
+        } label: {
+            Text(isMetric ? "kg" : "lbs")
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(viewModel.colorPalette.textColor)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(.ultraThinMaterial)
+                .clipShape(Capsule())
+        }
+    }
+
     private var weightPicker: some View {
         Group {
             if isMetric {
@@ -77,6 +94,9 @@ struct WeightPickerStepView: View {
             }
         }
         .pickerStyle(.wheel)
+        .onChange(of: kilograms) { newValue in
+            updateImperialFromMetric(kg: newValue)
+        }
     }
 
     private var imperialPicker: some View {
@@ -106,6 +126,10 @@ struct WeightPickerStepView: View {
         var answer = step.answer
         answer.payload = .string("\(kilograms)")
         await viewModel.onAnswer(answers: [answer])
+    }
+
+    private func updateImperialFromMetric(kg: Int) {
+        pounds = Int((Double(kg) * 2.20462).rounded())
     }
 
     private func updateMetricFromImperial() {
