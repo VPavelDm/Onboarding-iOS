@@ -78,7 +78,7 @@ struct WeightPickerStepView: View {
                 .font(.subheadline)
                 .fontWeight(.medium)
                 .foregroundStyle(isSelected ? viewModel.colorPalette.primaryButtonForegroundColor : viewModel.colorPalette.textColor)
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 24)
                 .padding(.vertical, 8)
                 .background(isSelected ? viewModel.colorPalette.primaryButtonBackgroundColor : .clear)
                 .background(.ultraThinMaterial)
