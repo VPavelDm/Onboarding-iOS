@@ -1,21 +1,18 @@
 [
     {
-        "id": "analyse_answers",
-        "type": "progress",
+        "id": "value_proposition",
+        "type": "description",
         "payload": {
-            "title": "progress.title",
-            "description": "progress.description",
-            "duration": 10,
-            "steps": [
-                "progress.calories",
-                "progress.carbs",
-                "progress.protein",
-                "progress.fats",
-                "progress.health_score"
-            ],
+            "title": "Lyncil macht das Songwriting mühelos",
+            "description": "Lyncil hilft dir, deine Gedanken in großartige Songtexte in jedem Genre, jeder Stimmung und im Stil jedes Künstlers zu verwandeln – in wenigen Minuten. Lass uns dein Ziel verwirklichen!",
+            "image": {
+                "type": "named",
+                "value": "songwriting_2",
+                "aspectRatioType": "fill"
+            },
             "answer": {
-                "title": "common.continue",
-                "nextStepID": "ready_summary"
+                "title": "Weiter",
+                "nextStepID": "select_favorite_genre"
             }
         }
     }

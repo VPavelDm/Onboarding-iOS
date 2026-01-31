@@ -31,7 +31,7 @@ struct DescriptionStepView: View {
                 .padding(.horizontal, .hScreenPadding)
                 .opacity(isButtonVisible ? 1 : 0)
         }
-        .padding(.vertical, .vScreenPadding)
+        .padding(.bottom, .vScreenPadding)
         .ignoresSafeArea(edges: .top)
         .task {
             withAnimation(.easeInOut.delay(2)) {
@@ -48,7 +48,6 @@ struct DescriptionStepView: View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .aspectRatio(1.0, contentMode: .fit)
                 .frame(maxWidth: .infinity)
         }
     }
