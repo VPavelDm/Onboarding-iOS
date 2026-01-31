@@ -19,13 +19,13 @@ struct OneAnswerStep: Sendable, Equatable, Hashable {
 
 extension OneAnswerStep {
 
-    init(response: OnboardingStepResponse.OneAnswerStep, bundle: Bundle) {
+    init(response: OnboardingStepResponse.OneAnswerStep, localizer: Localizer) {
         self.init(
-            title: response.title.localized(bundle: bundle),
-            description: response.description?.localized(bundle: bundle),
-            buttonTitle: response.buttonTitle.localized(bundle: bundle),
-            skip: response.skip.map { StepAnswer(response: $0, bundle: bundle) },
-            answers: response.answers.map { StepAnswer(response: $0, bundle: bundle) }
+            title: response.title.localized(using: localizer),
+            description: response.description?.localized(using: localizer),
+            buttonTitle: response.buttonTitle.localized(using: localizer),
+            skip: response.skip.map { StepAnswer(response: $0, localizer: localizer) },
+            answers: response.answers.map { StepAnswer(response: $0, localizer: localizer) }
         )
     }
 }

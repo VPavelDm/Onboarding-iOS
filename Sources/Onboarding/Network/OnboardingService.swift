@@ -26,6 +26,7 @@ final class OnboardingService {
     func fetchSteps() async throws -> [OnboardingStep] {
         let (data, _) = try await session.data(from: configuration.url)
         let steps = try JSONDecoder().decode([OnboardingStepResponse].self, from: data)
-        return steps.compactMap { OnboardingStep(response: $0, bundle: configuration.bundle) }
+        let localizer = Localizer(bundle: configuration.bundle, tableName: configuration.tableName)
+        return steps.compactMap { OnboardingStep(response: $0, localizer: localizer) }
     }
 }

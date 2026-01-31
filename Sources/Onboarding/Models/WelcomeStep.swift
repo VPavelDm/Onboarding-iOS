@@ -19,13 +19,13 @@ struct WelcomeStep: Sendable, Equatable, Hashable {
 
 extension WelcomeStep {
 
-    init(response: OnboardingStepResponse.WelcomeStep, bundle: Bundle) {
+    init(response: OnboardingStepResponse.WelcomeStep, localizer: Localizer) {
         self.init(
-            title: response.title.localized(bundle: bundle),
-            description: response.description.localized(bundle: bundle),
+            title: response.title.localized(using: localizer),
+            description: response.description.localized(using: localizer),
             emojis: response.emojis,
-            firstAnswer: StepAnswer(response: response.firstAnswer, bundle: bundle),
-            secondAnswer: response.secondAnswer.map { StepAnswer(response: $0, bundle: bundle) }
+            firstAnswer: StepAnswer(response: response.firstAnswer, localizer: localizer),
+            secondAnswer: response.secondAnswer.map { StepAnswer(response: $0, localizer: localizer) }
         )
     }
 }

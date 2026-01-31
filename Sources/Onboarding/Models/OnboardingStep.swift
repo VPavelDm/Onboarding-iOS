@@ -46,20 +46,20 @@ extension OnboardingStep {
 
 extension OnboardingStep {
 
-    init?(response: OnboardingStepResponse, bundle: Bundle) {
+    init?(response: OnboardingStepResponse, localizer: Localizer) {
         let type: OnboardingStepType = switch response.type {
-        case .welcome(let payload): .welcome(WelcomeStep(response: payload, bundle: bundle))
-        case .welcomeFade(let payload): .welcomeFade(WelcomeFadeStep(response: payload, bundle: bundle))
-        case .oneAnswer(let payload): .oneAnswer(OneAnswerStep(response: payload, bundle: bundle))
-        case .multipleAnswer(let payload): .multipleAnswer(MultipleAnswerStep(response: payload, bundle: bundle))
-        case .description(let payload): .description(DescriptionStep(response: payload, bundle: bundle))
-        case .binaryAnswer(let payload): .binaryAnswer(BinaryAnswerStep(response: payload, bundle: bundle))
-        case .progress(let payload): .progress(ProgressStep(response: payload, bundle: bundle))
-        case .timePicker(let payload): .timePicker(TimePickerStep(response: payload, bundle: bundle))
-        case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload, bundle: bundle))
-        case .widget(let payload): .widget(WidgetStep(response: payload, bundle: bundle))
-        case .socialProof(let payload): .socialProof(SocialProofStep(response: payload, bundle: bundle))
-        case .enterValue(let payload): .enterValue(EnterValueStep(response: payload, bundle: bundle))
+        case .welcome(let payload): .welcome(WelcomeStep(response: payload, localizer: localizer))
+        case .welcomeFade(let payload): .welcomeFade(WelcomeFadeStep(response: payload, localizer: localizer))
+        case .oneAnswer(let payload): .oneAnswer(OneAnswerStep(response: payload, localizer: localizer))
+        case .multipleAnswer(let payload): .multipleAnswer(MultipleAnswerStep(response: payload, localizer: localizer))
+        case .description(let payload): .description(DescriptionStep(response: payload, localizer: localizer))
+        case .binaryAnswer(let payload): .binaryAnswer(BinaryAnswerStep(response: payload, localizer: localizer))
+        case .progress(let payload): .progress(ProgressStep(response: payload, localizer: localizer))
+        case .timePicker(let payload): .timePicker(TimePickerStep(response: payload, localizer: localizer))
+        case .discountWheel(let payload): .discountWheel(DiscountWheelStep(response: payload, localizer: localizer))
+        case .widget(let payload): .widget(WidgetStep(response: payload, localizer: localizer))
+        case .socialProof(let payload): .socialProof(SocialProofStep(response: payload, localizer: localizer))
+        case .enterValue(let payload): .enterValue(EnterValueStep(response: payload, localizer: localizer))
         case .custom(let payload): .custom(CustomStepParams(currentStepID: response.id, nextStepID: payload?.nextStepID))
         default: .unknown
         }

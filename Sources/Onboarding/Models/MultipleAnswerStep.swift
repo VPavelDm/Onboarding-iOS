@@ -19,13 +19,13 @@ struct MultipleAnswerStep: Sendable, Equatable, Hashable {
 
 extension MultipleAnswerStep {
 
-    init(response: OnboardingStepResponse.MultipleAnswerStep, bundle: Bundle) {
+    init(response: OnboardingStepResponse.MultipleAnswerStep, localizer: Localizer) {
         self.init(
-            title: response.title.localized(bundle: bundle),
-            description: response.description?.localized(bundle: bundle),
-            buttonTitle: response.buttonTitle.localized(bundle: bundle),
+            title: response.title.localized(using: localizer),
+            description: response.description?.localized(using: localizer),
+            buttonTitle: response.buttonTitle.localized(using: localizer),
             minAnswersAmount: response.minAnswersAmount,
-            answers: response.answers.map { StepAnswer(response: $0, bundle: bundle) }
+            answers: response.answers.map { StepAnswer(response: $0, localizer: localizer) }
         )
     }
 }

@@ -25,16 +25,16 @@ struct SocialProofStep: Sendable, Hashable {
 
 extension SocialProofStep {
 
-    init(response: OnboardingStepResponse.SocialProofStep, bundle: Bundle) {
+    init(response: OnboardingStepResponse.SocialProofStep, localizer: Localizer) {
         self.init(
             image: ImageMeta(response: response.image),
-            welcomeHeadline: response.welcomeHeadline.localized(bundle: bundle),
-            welcomeSubheadline: response.welcomeSubheadline.localized(bundle: bundle),
-            userReview: response.userReview.localized(bundle: bundle),
-            stats: response.stats.map { StatItem(value: $0.value.localized(bundle: bundle), label: $0.label.localized(bundle: bundle)) },
-            message: response.message.localized(bundle: bundle),
-            messageAuthor: response.messageAuthor.localized(bundle: bundle),
-            answer: StepAnswer(response: response.answer, bundle: bundle)
+            welcomeHeadline: response.welcomeHeadline.localized(using: localizer),
+            welcomeSubheadline: response.welcomeSubheadline.localized(using: localizer),
+            userReview: response.userReview.localized(using: localizer),
+            stats: response.stats.map { StatItem(value: $0.value.localized(using: localizer), label: $0.label.localized(using: localizer)) },
+            message: response.message.localized(using: localizer),
+            messageAuthor: response.messageAuthor.localized(using: localizer),
+            answer: StepAnswer(response: response.answer, localizer: localizer)
         )
     }
 }

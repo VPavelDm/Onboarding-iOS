@@ -20,14 +20,14 @@ struct DiscountWheelStep: Sendable, Equatable, Hashable {
 
 extension DiscountWheelStep {
 
-    init(response: OnboardingStepResponse.DiscountWheelStep, bundle: Bundle) {
+    init(response: OnboardingStepResponse.DiscountWheelStep, localizer: Localizer) {
         self.init(
-            title: response.title.localized(bundle: bundle),
-            spinButtonTitle: response.spinButtonTitle.localized(bundle: bundle),
-            spinFootnote: response.spinFootnote.localized(bundle: bundle),
-            successTitle: response.successTitle.localized(bundle: bundle),
-            successDescription: response.successDescription.localized(bundle: bundle),
-            answer: StepAnswer(response: response.answer, bundle: bundle)
+            title: response.title.localized(using: localizer),
+            spinButtonTitle: response.spinButtonTitle.localized(using: localizer),
+            spinFootnote: response.spinFootnote.localized(using: localizer),
+            successTitle: response.successTitle.localized(using: localizer),
+            successDescription: response.successDescription.localized(using: localizer),
+            answer: StepAnswer(response: response.answer, localizer: localizer)
         )
     }
 }
