@@ -17,6 +17,7 @@ extension ProgressStepView {
                     Spacer()
                     checkmarkView(at: index)
                 }
+                .frame(maxWidth: 250)
                 .animation(.easeInOut, value: stepCompleted(at: index))
             }
         }
@@ -46,7 +47,6 @@ extension ProgressStepView {
         Text("• \(step.steps[index])")
             .font(.system(size: 16))
             .foregroundStyle(stepCompleted(at: index) ? viewModel.colorPalette.textColor : viewModel.colorPalette.secondaryTextColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func stepCompleted(at index: Int) -> Bool {

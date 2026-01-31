@@ -1,84 +1,21 @@
 [
     {
-        "id": "height-picker-step",
-        "type": "heightPicker",
+        "id": "analyse_answers",
+        "type": "progress",
         "payload": {
-            "title": "Какой ваш рост?",
-            "description": "Это поможет персонализировать ваш опыт",
-            "metricUnit": "см",
-            "imperialUnit": "фт",
-            "answer": {
-                "title": "Продолжить",
-                "icon": null,
-                "nextStepID": "weight-picker-step",
-                "payload": null
-            }
-        }
-    },
-    {
-        "id": "weight-picker-step",
-        "type": "weightPicker",
-        "payload": {
-            "title": "Какой ваш вес?",
-            "description": "Это поможет персонализировать ваш опыт",
-            "metricUnit": "кг",
-            "imperialUnit": "фунт",
-            "answer": {
-                "title": "Продолжить",
-                "icon": null,
-                "nextStepID": "age-picker-step",
-                "payload": null
-            }
-        }
-    },
-    {
-        "id": "age-picker-step",
-        "type": "agePicker",
-        "payload": {
-            "title": "Сколько вам лет?",
-            "description": "Это поможет персонализировать ваш опыт",
-            "unit": "лет",
-            "answer": {
-                "title": "Продолжить",
-                "icon": null,
-                "nextStepID": "social-proof-step",
-                "payload": null
-            }
-        }
-    },
-    {
-        "id": "social-proof-step",
-        "type": "socialProof",
-        "payload": {
-            "image": {
-                "type": "system",
-                "value": "star.fill",
-                "aspectRatioType": "square"
-            },
-            "welcomeHeadline": "Присоединяйтесь к 1 млн+ пользователей",
-            "welcomeSubheadline": "Худейте в 2 раза эффективнее с Calo",
-            "userReview": "50 000+ отзывов",
-            "stats": [
-                {
-                    "value": "4.8",
-                    "label": "Рейтинг"
-                },
-                {
-                    "value": "50K+",
-                    "label": "Отзывов"
-                },
-                {
-                    "value": "1M+",
-                    "label": "Пользователей"
-                }
+            "title": "progress.title",
+            "description": "progress.description",
+            "duration": 10,
+            "steps": [
+                "progress.calories",
+                "progress.carbs",
+                "progress.protein",
+                "progress.fats",
+                "progress.health_score"
             ],
-            "message": "78% наших пользователей отмечают, что Calo помог им достичь долгосрочных результатов в снижении веса.",
-            "messageAuthor": "Анна, пользователь Calo",
             "answer": {
-                "title": "Продолжить",
-                "icon": null,
-                "nextStepID": "next-step-id",
-                "payload": null
+                "title": "common.continue",
+                "nextStepID": "ready_summary"
             }
         }
     }
