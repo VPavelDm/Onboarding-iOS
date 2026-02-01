@@ -13,9 +13,8 @@ extension ProgressStepView {
         VStack(alignment: .leading, spacing: .buttonsSpacing) {
             ForEach(step.steps.indices, id: \.self) { index in
                 HStack(spacing: 12) {
-                    stepView(at: index)
-                    Spacer()
                     checkmarkView(at: index)
+                    stepView(at: index)
                 }
                 .frame(maxWidth: 250)
                 .animation(.easeInOut, value: stepCompleted(at: index))
@@ -44,7 +43,7 @@ extension ProgressStepView {
     }
 
     private func stepView(at index: Int) -> some View {
-        Text("• \(step.steps[index])")
+        Text(step.steps[index])
             .font(.system(size: 16))
             .foregroundStyle(stepCompleted(at: index) ? viewModel.colorPalette.textColor : viewModel.colorPalette.secondaryTextColor)
     }
