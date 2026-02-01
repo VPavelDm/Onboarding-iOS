@@ -75,6 +75,11 @@ struct OneAnswerView: View {
             }
         } label: {
             Text(answer.title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        } progress: {
+            ProgressView()
+                .frame(maxWidth: .infinity)
+                .tint(viewModel.colorPalette.primaryButtonForegroundColor)
         }
         .buttonStyle(AnswerButtonStyle(isSelected: selectedAnswer == answer))
     }
