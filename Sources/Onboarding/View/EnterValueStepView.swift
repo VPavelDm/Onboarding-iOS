@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct EnterValueStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct AgePickerStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel

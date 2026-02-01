@@ -74,7 +74,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Adapty", package: "AdaptySDK-iOS"),
                 .product(name: "AdaptyUI", package: "AdaptySDK-iOS"),
-                "CoreUI"
+                "CoreUI",
+                "CoreAnalytics"
             ]
         ),
         .target(

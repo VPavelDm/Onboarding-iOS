@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct WeightPickerStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel

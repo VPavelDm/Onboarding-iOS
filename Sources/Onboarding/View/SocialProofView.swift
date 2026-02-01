@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreUI
 
 struct SocialProofView: View {
     @EnvironmentObject var viewModel: OnboardingViewModel

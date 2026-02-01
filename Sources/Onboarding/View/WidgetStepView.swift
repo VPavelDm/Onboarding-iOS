@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreUI
 
 struct WidgetStepView: View {
     @EnvironmentObject var viewModel: OnboardingViewModel

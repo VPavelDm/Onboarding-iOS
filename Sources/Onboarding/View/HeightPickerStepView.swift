@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct HeightPickerStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
