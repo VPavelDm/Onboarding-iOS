@@ -21,7 +21,7 @@ struct MultipleAnswerButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity, alignment: .leading)
             .frame(height: 64)
             .padding(.horizontal)
-            .background(viewModel.colorPalette.secondaryButtonBackgroundColor)
+            .background(viewModel.colorPalette.secondaryButtonBackground)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay {
                 RoundedRectangle(cornerRadius: 16)

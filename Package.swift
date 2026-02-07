@@ -59,7 +59,10 @@ let package = Package(
         ),
         .target(
             name: "CoreUI",
-            dependencies: []
+            dependencies: [],
+            resources: [
+                .process("Resources")
+            ]
         ),
         .target(
             name: "CoreNetwork",
@@ -82,6 +85,9 @@ let package = Package(
             name: "Profile",
             dependencies: [
                 "CoreUI"
+            ],
+            resources: [
+                .process("Resources")
             ]
         ),
         .target(

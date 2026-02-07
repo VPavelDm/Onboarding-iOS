@@ -133,7 +133,7 @@ private struct NameTextFieldStyle: TextFieldStyle {
         configuration
             .foregroundStyle(colorPalette.secondaryButtonForegroundColor)
             .padding()
-            .background(colorPalette.secondaryButtonBackgroundColor)
+            .background(colorPalette.secondaryButtonBackground)
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(colorPalette.secondaryButtonStrokeColor, lineWidth: 2)

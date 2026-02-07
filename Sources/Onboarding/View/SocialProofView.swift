@@ -107,7 +107,7 @@ struct SocialProofView: View {
         .padding(.horizontal, 28)
         .background {
             RoundedRectangle(cornerRadius: 16)
-                .fill(viewModel.colorPalette.secondaryButtonBackgroundColor.opacity(0.4))
+                .fill(viewModel.colorPalette.secondaryButtonBackground.opacity(0.4))
                 .overlay {
                     RoundedRectangle(cornerRadius: 16)
                         .strokeBorder(viewModel.colorPalette.accentColor.opacity(0.2), lineWidth: 1)
