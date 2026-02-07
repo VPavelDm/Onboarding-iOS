@@ -27,7 +27,7 @@ extension ProgressStepView {
         if stepCompleted(at: index) {
             ZStack {
                 Circle()
-                    .fill(viewModel.colorPalette.primaryButtonBackgroundColor)
+                    .fill(viewModel.colorPalette.primaryButtonBackground)
                 Image(systemName: "checkmark")
                     .fontWeight(.semibold)
                     .blendMode(.destinationOut)

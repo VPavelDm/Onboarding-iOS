@@ -11,7 +11,7 @@ public protocol ColorPalette {
     var textColor: Color { get }
     var secondaryTextColor: Color { get }
     var primaryButtonForegroundColor: Color { get }
-    var primaryButtonBackgroundColor: Color { get }
+    var primaryButtonBackground: AnyShapeStyle { get }
     var secondaryButtonForegroundColor: Color { get }
     var secondaryButtonBackground: AnyShapeStyle { get }
     var secondaryButtonStrokeColor: Color { get }
@@ -32,7 +32,7 @@ struct TestColorPalette: ColorPalette {
     var textColor: Color = .white
     var secondaryTextColor: Color = .secondary
     var primaryButtonForegroundColor: Color = .black
-    var primaryButtonBackgroundColor: Color = Color(uiColor: .systemYellow)
+    var primaryButtonBackground: AnyShapeStyle = AnyShapeStyle(Color(uiColor: .systemYellow))
     var secondaryButtonForegroundColor: Color = .white
     var secondaryButtonBackground: AnyShapeStyle = AnyShapeStyle(Color(uiColor: .systemGray6))
     var secondaryButtonStrokeColor: Color = Color(uiColor: .systemGray6)

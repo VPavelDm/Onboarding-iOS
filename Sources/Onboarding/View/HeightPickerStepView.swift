@@ -82,7 +82,7 @@ struct HeightPickerStepView: View {
                 .foregroundStyle(isSelected ? viewModel.colorPalette.primaryButtonForegroundColor : viewModel.colorPalette.textColor)
                 .padding(.horizontal, 24)
                 .padding(.vertical, 8)
-                .background(isSelected ? viewModel.colorPalette.primaryButtonBackgroundColor : .clear)
+                .background(isSelected ? viewModel.colorPalette.primaryButtonBackground : AnyShapeStyle(.clear))
                 .background(.ultraThinMaterial)
                 .clipShape(Capsule())
         }

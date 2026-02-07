@@ -16,11 +16,11 @@ struct RadioButton: View {
         ZStack {
             if isSelected {
                 Circle()
-                    .fill(colorPalette.primaryButtonBackgroundColor)
+                    .fill(colorPalette.primaryButtonBackground)
                     .padding(4)
             }
             Circle()
-                .stroke(colorPalette.primaryButtonBackgroundColor, lineWidth: 2)
+                .stroke(colorPalette.primaryButtonBackground, lineWidth: 2)
         }
         .frame(width: 20, height: 20)
         .animation(.easeInOut, value: isSelected)

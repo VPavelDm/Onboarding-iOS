@@ -52,7 +52,7 @@ struct ProgressCircleView: View {
         Circle()
             .trim(from: 0, to: circleProgress)
             .stroke(
-                viewModel.colorPalette.primaryButtonBackgroundColor,
+                viewModel.colorPalette.primaryButtonBackground,
                 style: StrokeStyle(lineWidth: 12, lineCap: .round)
             )
             .rotationEffect(.degrees(-90))

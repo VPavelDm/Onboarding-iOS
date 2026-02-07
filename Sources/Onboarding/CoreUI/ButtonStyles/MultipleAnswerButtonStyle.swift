@@ -25,7 +25,7 @@ struct MultipleAnswerButtonStyle: ButtonStyle {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay {
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(isSelected ? viewModel.colorPalette.primaryButtonBackgroundColor : viewModel.colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
+                    .stroke(isSelected ? viewModel.colorPalette.primaryButtonBackground : AnyShapeStyle(viewModel.colorPalette.secondaryButtonStrokeColor), lineWidth: 2)
             }
             .opacity(isEnabled ? 1.0 : 0.65)
     }
