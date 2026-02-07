@@ -16,7 +16,7 @@ public protocol ColorPalette {
     var secondaryButtonBackground: AnyShapeStyle { get }
     var secondaryButtonStrokeColor: Color { get }
     var plainButtonColor: Color { get }
-    var progressBarBackgroundColor: Color { get }
+    var progressBarBackgroundColor: AnyShapeStyle { get }
     var orbitColor: Color { get }
     var accentColor: Color { get }
 }
@@ -37,7 +37,7 @@ struct TestColorPalette: ColorPalette {
     var secondaryButtonBackground: AnyShapeStyle = AnyShapeStyle(Color(uiColor: .systemGray6))
     var secondaryButtonStrokeColor: Color = Color(uiColor: .systemGray6)
     var plainButtonColor: Color = .primary
-    var progressBarBackgroundColor: Color = Color(uiColor: .systemGray6)
+    var progressBarBackgroundColor: AnyShapeStyle = AnyShapeStyle(Color(uiColor: .systemGray6))
     var orbitColor: Color = Color(uiColor: .systemGray6)
     var accentColor: Color = Color(uiColor: .systemYellow)
 }

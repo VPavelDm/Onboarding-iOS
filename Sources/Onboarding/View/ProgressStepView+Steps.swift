@@ -36,8 +36,7 @@ extension ProgressStepView {
             .compositingGroup()
         } else {
             Circle()
-                .stroke(lineWidth: 1)
-                .fill(viewModel.colorPalette.secondaryTextColor)
+                .stroke(viewModel.colorPalette.progressBarBackgroundColor, lineWidth: 1)
                 .frame(width: 28, height: 28)
         }
     }
