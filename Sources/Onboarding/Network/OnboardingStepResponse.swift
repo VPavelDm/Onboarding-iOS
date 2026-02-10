@@ -56,6 +56,9 @@ struct OnboardingStepResponse: Decodable {
         case "socialProof":
             let payload = try container.decode(SocialProofStep.self, forKey: .payload)
             self.type = .socialProof(payload)
+        case "featureShowcase":
+            let payload = try container.decode(FeatureShowcaseStep.self, forKey: .payload)
+            self.type = .featureShowcase(payload)
         case "enterValue":
             let payload = try container.decode(EnterValueStep.self, forKey: .payload)
             self.type = .enterValue(payload)
@@ -88,6 +91,7 @@ struct OnboardingStepResponse: Decodable {
         case discountWheel(DiscountWheelStep)
         case widget(WidgetStep)
         case socialProof(SocialProofStep)
+        case featureShowcase(FeatureShowcaseStep)
         case enterValue(EnterValueStep)
         case heightPicker(HeightPickerStep)
         case weightPicker(WeightPickerStep)
@@ -190,6 +194,13 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let description: String
         let image: ImageResponse?
+        let answer: StepAnswer
+    }
+
+    struct FeatureShowcaseStep: Decodable {
+        let title: String
+        let image: ImageResponse
+        let description: String?
         let answer: StepAnswer
     }
 
