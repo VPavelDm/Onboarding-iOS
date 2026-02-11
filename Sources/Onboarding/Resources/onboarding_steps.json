@@ -1,17 +1,18 @@
 [
     {
-        "id": "value_proposition",
-        "type": "description",
+        "id": "feature_showcase",
+        "type": "featureShowcase",
         "payload": {
-            "title": "Lyncil macht das Songwriting mühelos",
-            "description": "Lyncil hilft dir, deine Gedanken in großartige Songtexte in jedem Genre, jeder Stimmung und im Stil jedes Künstlers zu verwandeln – in wenigen Minuten. Lass uns dein Ziel verwirklichen!",
+            "title": "Track smarter with AI",
+            "description": "Smart food tracking is here. Snap a photo and get instant nutrition info with AI\u2014no manual entry needed.",
             "image": {
                 "type": "named",
-                "value": "songwriting_2",
-                "aspectRatioType": "fill"
+                "value": "showcase",
+                "aspectRatioType": "fit"
             },
+            "backgroundColor": "1A1A1A",
             "answer": {
-                "title": "Weiter",
+                "title": "Continue",
                 "nextStepID": "select_favorite_genre"
             }
         }
