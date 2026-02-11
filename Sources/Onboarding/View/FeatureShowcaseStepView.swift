@@ -28,6 +28,7 @@ struct FeatureShowcaseStepView: View {
     private var topSection: some View {
         imageView
             .frame(maxHeight: .infinity)
+            .layoutPriority(65)
             .opacity(showImage ? 1 : 0)
             .scaleEffect(showImage ? 1 : 0.85)
     }
@@ -39,10 +40,8 @@ struct FeatureShowcaseStepView: View {
             textContent
                 .offset(y: showBottomSection ? 0 : 40)
                 .opacity(showBottomSection ? 1 : 0)
-            Spacer()
             buttonContent
         }
-        .frame(maxHeight: .infinity)
         .background {
             step.backgroundColor
                 .ignoresSafeArea()
@@ -103,6 +102,7 @@ struct FeatureShowcaseStepView: View {
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
