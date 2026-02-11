@@ -201,6 +201,8 @@ struct OnboardingStepResponse: Decodable {
         let title: String
         let image: ImageResponse
         let description: String?
+        let gradient: [String]
+        let backgroundColor: String
         let answer: StepAnswer
     }
 

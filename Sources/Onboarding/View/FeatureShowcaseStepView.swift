@@ -13,7 +13,7 @@ struct FeatureShowcaseStepView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            imageView
+            imageSection
                 .opacity(showImage ? 1 : 0)
                 .offset(y: showImage ? 0 : 20)
             VStack(spacing: .headingSpacing) {
@@ -32,17 +32,33 @@ struct FeatureShowcaseStepView: View {
                 .offset(y: showButton ? 0 : 20)
         }
         .padding(.bottom, .vScreenPadding)
-        .ignoresSafeArea(edges: .top)
+        .background(alignment: .top) {
+            LinearGradient(
+                colors: step.gradient,
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: UIScreen.main.bounds.height * 0.6)
+            .ignoresSafeArea(edges: .top)
+        }
+        .background(step.backgroundColor.ignoresSafeArea())
         .task {
             await animateIn()
         }
     }
 
-    private var imageView: some View {
+    // MARK: - Image
+
+    private var imageSection: some View {
         OnboardingImage(image: step.image, bundle: viewModel.configuration.bundle)
-            .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+            .aspectRatio(contentMode: step.image.contentMode)
             .frame(maxWidth: .infinity)
+            .padding(.horizontal, 40)
+            .padding(.top, 60)
+            .padding(.bottom, 24)
     }
+
+    // MARK: - Title
 
     private var titleView: some View {
         Text(viewModel.delegate.format(string: step.title))
@@ -51,6 +67,8 @@ struct FeatureShowcaseStepView: View {
             .foregroundStyle(viewModel.colorPalette.textColor)
             .multilineTextAlignment(.center)
     }
+
+    // MARK: - Description
 
     @ViewBuilder
     private var descriptionView: some View {
@@ -62,6 +80,8 @@ struct FeatureShowcaseStepView: View {
         }
     }
 
+    // MARK: - Button
+
     private var nextButton: some View {
         AsyncButton {
             await viewModel.onAnswer(answers: [step.answer])
@@ -70,6 +90,8 @@ struct FeatureShowcaseStepView: View {
         }
         .buttonStyle(PrimaryButtonStyle())
     }
+
+    // MARK: - Animation
 
     private func animateIn() async {
         try? await Task.sleep(for: .milliseconds(100))
@@ -92,4 +114,8 @@ struct FeatureShowcaseStepView: View {
             showButton = true
         }
     }
+}
+
+#Preview {
+    MockOnboardingView()
 }
