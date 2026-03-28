@@ -38,17 +38,19 @@ struct EnterValueStepView: View {
     var step: EnterValueStep
 
     var body: some View {
-        VStack(spacing: .contentSpacing) {
-            imageView
-            VStack(spacing: .headingSpacing) {
-                titleView
-                descriptionView
+        ScrollView {
+            VStack(spacing: .contentSpacing) {
+                imageView
+                VStack(spacing: .headingSpacing) {
+                    titleView
+                    descriptionView
+                }
+                valueInputView
             }
-            valueInputView
+            .padding(.vertical, .vScreenPadding)
+            .padding(.horizontal, .hScreenPadding)
         }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .padding(.vertical, .vScreenPadding)
-        .padding(.horizontal, .hScreenPadding)
+        .scrollDismissesKeyboard(.interactively)
         .task {
             try? await Task.sleep(for: .seconds(1))
             isFocused = true
