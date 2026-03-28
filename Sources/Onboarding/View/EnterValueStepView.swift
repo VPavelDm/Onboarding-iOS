@@ -57,6 +57,7 @@ struct EnterValueStepView: View {
             .padding(.horizontal, .hScreenPadding)
         }
         .scrollDismissesKeyboard(.interactively)
+        .ignoresSafeArea(.keyboard)
         .task {
             try? await Task.sleep(for: .seconds(1))
             isFocused = true
