@@ -38,23 +38,25 @@ struct EnterValueStepView: View {
     var step: EnterValueStep
 
     var body: some View {
-        VStack(spacing: .contentSpacing) {
-            imageView
-            VStack(spacing: .headingSpacing) {
-                titleView
-                descriptionView
-            }
-            valueInputView
-            Spacer()
-            VStack(spacing: .buttonsSpacing) {
-                nextButton
-                if let skipAnswer = step.skipAnswer {
-                    skipButton(skipAnswer)
+        ScrollView {
+            VStack(spacing: .contentSpacing) {
+                imageView
+                VStack(spacing: .headingSpacing) {
+                    titleView
+                    descriptionView
+                }
+                valueInputView
+                VStack(spacing: .buttonsSpacing) {
+                    nextButton
+                    if let skipAnswer = step.skipAnswer {
+                        skipButton(skipAnswer)
+                    }
                 }
             }
+            .padding(.vertical, .vScreenPadding)
+            .padding(.horizontal, .hScreenPadding)
         }
-        .padding(.vertical, .vScreenPadding)
-        .padding(.horizontal, .hScreenPadding)
+        .scrollDismissesKeyboard(.interactively)
         .task {
             try? await Task.sleep(for: .seconds(1))
             isFocused = true
