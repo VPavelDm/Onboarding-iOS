@@ -39,6 +39,7 @@ struct EnterValueStepView: View {
 
     var body: some View {
         VStack(spacing: .contentSpacing) {
+            imageView
             VStack(spacing: .headingSpacing) {
                 titleView
                 descriptionView
@@ -57,6 +58,15 @@ struct EnterValueStepView: View {
         .task {
             try? await Task.sleep(for: .seconds(1))
             isFocused = true
+        }
+    }
+
+    @ViewBuilder
+    private var imageView: some View {
+        if let image = step.image {
+            OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .frame(maxWidth: .infinity)
         }
     }
 

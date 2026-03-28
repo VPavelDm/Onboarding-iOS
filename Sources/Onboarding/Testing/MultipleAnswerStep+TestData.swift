@@ -14,7 +14,8 @@ extension MultipleAnswerStep {
     ) -> Self {
         Self(
             title: "What challenges did you face?",
-            description: "Choose at least one option", 
+            description: "Choose at least one option",
+            image: nil,
             buttonTitle: "Next",
             minAnswersAmount: 0,
             answers: [

@@ -10,6 +10,7 @@ import Foundation
 struct OneAnswerStep: Sendable, Equatable, Hashable {
     let title: String
     let description: String?
+    let image: ImageMeta?
     let buttonTitle: String
     let skip: StepAnswer?
     let answers: [StepAnswer]
@@ -24,6 +25,7 @@ extension OneAnswerStep {
         self.init(
             title: response.title.localized(using: localizer),
             description: response.description?.localized(using: localizer),
+            image: response.image.flatMap(ImageMeta.init),
             buttonTitle: response.buttonTitle.localized(using: localizer),
             skip: response.skip.map { StepAnswer(response: $0, localizer: localizer) },
             answers: response.answers.map { StepAnswer(response: $0, localizer: localizer) },
