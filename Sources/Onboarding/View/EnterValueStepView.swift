@@ -51,7 +51,7 @@ struct EnterValueStepView: View {
             .padding(.horizontal, .hScreenPadding)
         }
         .safeAreaInset(edge: .bottom) {
-            Color.clear.frame(height: 24)
+            Color.clear.frame(height: 50)
         }
         .scrollDismissesKeyboard(.interactively)
         .task {
