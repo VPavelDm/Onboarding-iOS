@@ -45,8 +45,8 @@ struct EnterValueStepView: View {
                 descriptionView
             }
             valueInputView
-            Spacer()
         }
+        .frame(maxHeight: .infinity, alignment: .top)
         .padding(.vertical, .vScreenPadding)
         .padding(.horizontal, .hScreenPadding)
         .task {
@@ -59,8 +59,10 @@ struct EnterValueStepView: View {
     private var imageView: some View {
         if let image = step.image {
             OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
+                .aspectRatio(contentMode: image.contentMode)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .frame(maxWidth: .infinity)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
