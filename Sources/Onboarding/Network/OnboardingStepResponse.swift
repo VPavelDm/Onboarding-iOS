@@ -240,6 +240,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct CustomStep: Decodable {
         let nextStepID: StepID?
+        let branches: [String: StepID]?
     }
 
     struct StepAnswer: Decodable {
