@@ -16,6 +16,7 @@ extension OneAnswerStep {
         Self(
             title: "What's your main goal?",
             description: "Choose only one answer",
+            image: nil,
             buttonTitle: "Continue",
             skip: StepAnswer(title: "Skip", nextStepID: nextStepID),
             answers: [

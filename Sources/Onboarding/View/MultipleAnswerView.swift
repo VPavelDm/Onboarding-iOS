@@ -23,6 +23,7 @@ struct MultipleAnswerView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: .contentSpacing) {
+                imageView
                 VStack(spacing: .headingSpacing) {
                     titleView
                     descriptionView
@@ -40,6 +41,15 @@ struct MultipleAnswerView: View {
             nextButton
                 .padding(.horizontal, 20)
                 .padding(.bottom, 32)
+        }
+    }
+
+    @ViewBuilder
+    private var imageView: some View {
+        if let image = step.image {
+            OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .frame(maxWidth: .infinity)
         }
     }
 

@@ -19,12 +19,8 @@ struct DescriptionStep: Sendable, Equatable, Hashable {
 extension DescriptionStep {
 
     init(response: OnboardingStepResponse.DescriptionStep, localizer: Localizer) {
-        var image: ImageMeta?
-        if let imageResponse = response.image {
-            image = ImageMeta(response: imageResponse)
-        }
         self.init(
-            image: image,
+            image: response.image.flatMap(ImageMeta.init),
             title: response.title.localized(using: localizer),
             description: response.description?.localized(using: localizer),
             answer: StepAnswer(response: response.answer, localizer: localizer)

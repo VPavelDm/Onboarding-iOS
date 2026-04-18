@@ -38,25 +38,36 @@ struct EnterValueStepView: View {
     var step: EnterValueStep
 
     var body: some View {
-        VStack(spacing: .contentSpacing) {
-            VStack(spacing: .headingSpacing) {
-                titleView
-                descriptionView
-            }
-            valueInputView
-            Spacer()
-            VStack(spacing: .buttonsSpacing) {
-                nextButton
-                if let skipAnswer = step.skipAnswer {
-                    skipButton(skipAnswer)
+        ScrollView {
+            VStack(spacing: .contentSpacing) {
+                imageView
+                VStack(spacing: .headingSpacing) {
+                    titleView
+                    descriptionView
                 }
+                valueInputView
             }
+            .padding(.vertical, .vScreenPadding)
+            .padding(.horizontal, .hScreenPadding)
         }
-        .padding(.vertical, .vScreenPadding)
-        .padding(.horizontal, .hScreenPadding)
+        .safeAreaInset(edge: .bottom) {
+            Color.clear.frame(height: 50)
+        }
+        .scrollDismissesKeyboard(.interactively)
         .task {
             try? await Task.sleep(for: .seconds(1))
             isFocused = true
+        }
+    }
+
+    @ViewBuilder
+    private var imageView: some View {
+        if let image = step.image {
+            OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
+                .aspectRatio(contentMode: image.contentMode)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .frame(maxWidth: .infinity)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -91,17 +102,30 @@ struct EnterValueStepView: View {
                     await onContinue()
                 }
             }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    skipToolbarButton
+                    Spacer()
+                    continueToolbarButton
+                }
+            }
     }
 
-    private var nextButton: some View {
-        AsyncButton {
-            await onContinue()
-        } label: {
-            Text(step.primaryAnswer.title)
+    @ViewBuilder
+    private var skipToolbarButton: some View {
+        if step.skipAnswer != nil {
+            Button("Skip") {
+                Task { await onContinue() }
+            }
         }
-        .buttonStyle(PrimaryButtonStyle())
+    }
+
+    private var continueToolbarButton: some View {
+        Button(step.primaryAnswer.title) {
+            Task { await onContinue() }
+        }
+        .fontWeight(.semibold)
         .disabled(value.isEmpty)
-        .animation(.easeInOut, value: value.isEmpty)
     }
 
     private func onContinue() async {
@@ -114,15 +138,6 @@ struct EnterValueStepView: View {
             step.primaryAnswer.payload = .string(value)
             await viewModel.onAnswer(answers: [step.primaryAnswer])
         }
-    }
-
-    private func skipButton(_ answer: StepAnswer) -> some View {
-        AsyncButton {
-            await onContinue()
-        } label: {
-            Text("Skip")
-        }
-        .buttonStyle(SecondaryButtonStyle())
     }
 }
 

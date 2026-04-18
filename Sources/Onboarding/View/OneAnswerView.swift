@@ -23,6 +23,7 @@ struct OneAnswerView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: .contentSpacing) {
+                imageView
                 VStack(spacing: .headingSpacing) {
                     titleView
                     descriptionView
@@ -45,6 +46,15 @@ struct OneAnswerView: View {
             }
         }
         .animation(.easeInOut, value: selectedAnswer != nil)
+    }
+
+    @ViewBuilder
+    private var imageView: some View {
+        if let image = step.image {
+            OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
+                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                .frame(maxWidth: .infinity)
+        }
     }
 
     private var titleView: some View {

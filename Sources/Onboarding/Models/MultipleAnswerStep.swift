@@ -10,6 +10,7 @@ import Foundation
 struct MultipleAnswerStep: Sendable, Equatable, Hashable {
     let title: String
     let description: String?
+    let image: ImageMeta?
     let buttonTitle: String
     let minAnswersAmount: Int
     let answers: [StepAnswer]
@@ -23,6 +24,7 @@ extension MultipleAnswerStep {
         self.init(
             title: response.title.localized(using: localizer),
             description: response.description?.localized(using: localizer),
+            image: response.image.flatMap(ImageMeta.init),
             buttonTitle: response.buttonTitle.localized(using: localizer),
             minAnswersAmount: response.minAnswersAmount,
             answers: response.answers.map { StepAnswer(response: $0, localizer: localizer) }

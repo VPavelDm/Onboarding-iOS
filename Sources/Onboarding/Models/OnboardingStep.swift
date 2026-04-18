@@ -68,7 +68,14 @@ extension OnboardingStep {
         case .heightPicker(let payload): .heightPicker(HeightPickerStep(response: payload, localizer: localizer))
         case .weightPicker(let payload): .weightPicker(WeightPickerStep(response: payload, localizer: localizer))
         case .agePicker(let payload): .agePicker(AgePickerStep(response: payload, localizer: localizer))
-        case .custom(let payload): .custom(CustomStepParams(currentStepID: response.id, nextStepID: payload?.nextStepID))
+        case .custom(let payload):
+            .custom(
+                CustomStepParams(
+                    currentStepID: response.id,
+                    nextStepID: payload?.nextStepID,
+                    branches: payload?.branches ?? [:]
+                )
+            )
         default: .unknown
         }
 

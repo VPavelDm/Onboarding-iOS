@@ -103,6 +103,7 @@ struct OnboardingStepResponse: Decodable {
     struct OneAnswerStep: Decodable {
         let title: String
         let description: String?
+        let image: ImageResponse?
         let buttonTitle: String
         let skip: StepAnswer?
         let answers: [StepAnswer]
@@ -112,6 +113,7 @@ struct OnboardingStepResponse: Decodable {
     struct MultipleAnswerStep: Decodable {
         let title: String
         let description: String?
+        let image: ImageResponse?
         let buttonTitle: String
         let minAnswersAmount: Int
         let answers: [StepAnswer]
@@ -161,6 +163,7 @@ struct OnboardingStepResponse: Decodable {
     struct EnterValueStep: Decodable {
         let title: String
         let description: String?
+        let image: ImageResponse?
         let placeholder: String
         let valueType: String
         let primaryAnswer: StepAnswer
@@ -237,6 +240,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct CustomStep: Decodable {
         let nextStepID: StepID?
+        let branches: [String: StepID]?
     }
 
     struct StepAnswer: Decodable {

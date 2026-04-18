@@ -8,6 +8,7 @@
 import Foundation
 
 struct EnterValueStep: Sendable, Hashable {
+    var image: ImageMeta?
     var title: String
     var description: String?
     var placeholder: String
@@ -22,6 +23,7 @@ extension EnterValueStep {
 
     init(response: OnboardingStepResponse.EnterValueStep, localizer: Localizer) {
         self.init(
+            image: response.image.flatMap(ImageMeta.init),
             title: response.title.localized(using: localizer),
             description: response.description?.localized(using: localizer),
             placeholder: response.placeholder.localized(using: localizer),
