@@ -46,8 +46,15 @@ final class OnboardingViewModel: ObservableObject {
     // MARK: - Intents
 
     func loadSteps() async throws {
-        steps = try await service.fetchSteps()
+        var loaded = try await service.fetchSteps()
             .filter(\.isNotUnknown)
+        for index in loaded.indices {
+            if case .custom(var params) = loaded[index].type {
+                params.callback = onStepCompletion(answer:nextStepID:)
+                loaded[index].type = .custom(params)
+            }
+        }
+        steps = loaded
         currentStep = steps.first
     }
 
