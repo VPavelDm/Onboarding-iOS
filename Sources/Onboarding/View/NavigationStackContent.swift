@@ -40,6 +40,8 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 SocialProofView(step: step)
             case .featureShowcase(let step):
                 FeatureShowcaseStepView(step: step)
+            case .intro(let step):
+                IntroStepView(step: step)
             case .enterValue(let step):
                 EnterValueStepView(step: step)
             case .heightPicker(let step):

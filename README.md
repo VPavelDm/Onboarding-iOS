@@ -15,7 +15,7 @@ Add the package via Swift Package Manager:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "1.4")
+    .package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "1.5")
 ]
 ```
 
