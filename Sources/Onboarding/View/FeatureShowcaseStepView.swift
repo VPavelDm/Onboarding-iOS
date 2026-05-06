@@ -26,26 +26,26 @@ struct FeatureShowcaseStepView: View {
     // MARK: - Top Section
 
     private var topSection: some View {
-        imageView
-            .frame(maxHeight: .infinity)
-            .layoutPriority(65)
-            .opacity(showImage ? 1 : 0)
-            .scaleEffect(showImage ? 1 : 0.85)
+        VStack(spacing: 24) {
+            imageView
+                .opacity(showImage ? 1 : 0)
+                .scaleEffect(showImage ? 1 : 0.85)
+            textContent
+                .offset(y: showBottomSection ? 0 : 40)
+                .opacity(showBottomSection ? 1 : 0)
+            Spacer(minLength: 0)
+        }
+        .layoutPriority(65)
     }
 
     // MARK: - Bottom Section
 
     private var bottomSection: some View {
-        VStack {
-            textContent
-                .offset(y: showBottomSection ? 0 : 40)
-                .opacity(showBottomSection ? 1 : 0)
-            buttonContent
-        }
-        .background {
-            step.backgroundColor
-                .ignoresSafeArea()
-        }
+        buttonContent
+            .background {
+                step.backgroundColor
+                    .ignoresSafeArea()
+            }
     }
 
     // MARK: - Text Content
@@ -91,6 +91,7 @@ struct FeatureShowcaseStepView: View {
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
             .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     // MARK: - Description

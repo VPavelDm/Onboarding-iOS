@@ -6,7 +6,6 @@ struct SocialProofView: View {
 
     @State private var showContent = false
     @State private var showStars = false
-    @State private var showStats = false
     @State private var showMessage = false
     @State private var showButton = false
 
@@ -14,7 +13,7 @@ struct SocialProofView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Spacer()
+            imageView
             VStack(spacing: 32) {
                 headerSection
                     .opacity(showContent ? 1 : 0)
@@ -23,10 +22,6 @@ struct SocialProofView: View {
                 ratingSection
                     .opacity(showStars ? 1 : 0)
                     .scaleEffect(showStars ? 1 : 0.9)
-
-                statsSection
-                    .opacity(showStats ? 1 : 0)
-                    .offset(y: showStats ? 0 : 20)
 
                 messageSection
                     .opacity(showMessage ? 1 : 0)
@@ -46,12 +41,21 @@ struct SocialProofView: View {
         }
     }
 
+    // MARK: - Image
+
+    private var imageView: some View {
+        OnboardingImage(image: step.image, bundle: viewModel.configuration.bundle)
+            .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+            .aspectRatio(1.0, contentMode: .fit)
+            .frame(maxWidth: .infinity)
+    }
+
     // MARK: - Header Section
 
     private var headerSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 4) {
             Text(step.welcomeHeadline)
-                .font(.subheadline)
+                .font(.headline)
                 .fontWeight(.semibold)
                 .textCase(.uppercase)
                 .tracking(1.2)
@@ -63,7 +67,7 @@ struct SocialProofView: View {
                 .foregroundStyle(viewModel.colorPalette.accentColor)
 
             Text(step.welcomeSubheadline)
-                .font(.title)
+                .font(.largeTitle)
                 .fontWeight(.bold)
                 .apply { view in
                     if #available(iOS 16.1, *) {
@@ -78,124 +82,65 @@ struct SocialProofView: View {
     // MARK: - Rating Section
 
     private var ratingSection: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 6) {
-                ForEach(0..<5, id: \.self) { index in
-                    Image(systemName: "star.fill")
-                        .font(.title3)
-                        .foregroundStyle(Color.yellow.opacity(0.85))
-                        .scaleEffect(showStars ? 1 : 0)
-                        .animation(
-                            .spring(response: 0.4, dampingFraction: 0.6)
-                                .delay(Double(index) * 0.08),
-                            value: showStars
-                        )
-                }
+        HStack(spacing: 12) {
+            laurelView
+            VStack(spacing: 8) {
+                starsView
+                Text(step.userReview)
+                    .font(.footnote)
+                    .fontWeight(.medium)
+                    .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                    .apply { view in
+                        if #available(iOS 16.1, *) {
+                            view.fontDesign(.rounded)
+                        }
+                    }
             }
-
-            Text(step.userReview)
-                .font(.footnote)
-                .fontWeight(.medium)
-                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .apply { view in
-                    if #available(iOS 16.1, *) {
-                        view.fontDesign(.rounded)
-                    }
-                }
-        }
-        .padding(.vertical, 20)
-        .padding(.horizontal, 28)
-        .background {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(viewModel.colorPalette.secondaryButtonBackground.opacity(0.4))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16)
-                        .strokeBorder(viewModel.colorPalette.accentColor.opacity(0.2), lineWidth: 1)
-                }
+            laurelView
+                .scaleEffect(x: -1, y: 1)
         }
     }
 
-    // MARK: - Stats Section
-
-    @ViewBuilder
-    private var statsSection: some View {
-        if !step.stats.isEmpty {
-            HStack(spacing: 0) {
-                ForEach(Array(step.stats.enumerated()), id: \.offset) { index, stat in
-                    if index > 0 {
-                        statDivider
-                    }
-                    statItem(value: stat.value, label: stat.label)
-                }
+    private var starsView: some View {
+        HStack(spacing: 6) {
+            ForEach(0..<5, id: \.self) { index in
+                Image(systemName: "star.fill")
+                    .font(.title3)
+                    .foregroundStyle(viewModel.colorPalette.ratingStarColor)
+                    .scaleEffect(showStars ? 1 : 0)
+                    .animation(
+                        .spring(response: 0.4, dampingFraction: 0.6)
+                            .delay(Double(index) * 0.08),
+                        value: showStars
+                    )
             }
-            .padding(.vertical, 20)
-            .padding(.horizontal, 12)
         }
     }
 
-    private func statItem(value: String, label: String) -> some View {
-        VStack(spacing: 2) {
-            Text(value)
-                .font(.title3)
-                .fontWeight(.bold)
-                .apply { view in
-                    if #available(iOS 16.1, *) {
-                        view.fontDesign(.rounded)
-                    }
-                }
-                .foregroundStyle(viewModel.colorPalette.textColor)
-
-            Text(label)
-                .font(.caption2)
-                .fontWeight(.medium)
-                .textCase(.uppercase)
-                .tracking(0.5)
-                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .apply { view in
-                    if #available(iOS 16.1, *) {
-                        view.fontDesign(.rounded)
-                    }
-                }
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private var statDivider: some View {
-        Circle()
-            .fill(viewModel.colorPalette.secondaryTextColor.opacity(0.4))
-            .frame(width: 4, height: 4)
+    private var laurelView: some View {
+        Image("laurel", bundle: .module)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(height: 52)
+            .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
     }
 
     // MARK: - Message Section
 
     private var messageSection: some View {
-        VStack(spacing: 16) {
-            Text("\(step.message)")
-                .font(.callout)
-                .fontWeight(.regular)
-                .italic()
-                .apply { view in
-                    if #available(iOS 16.1, *) {
-                        view.fontDesign(.serif)
-                    }
+        Text(step.message)
+            .font(.callout)
+            .fontWeight(.regular)
+            .italic()
+            .apply { view in
+                if #available(iOS 16.1, *) {
+                    view.fontDesign(.serif)
                 }
-                .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.9))
-                .multilineTextAlignment(.center)
-                .lineSpacing(6)
-
-            Text(step.messageAuthor)
-                .font(.caption)
-                .fontWeight(.semibold)
-                .textCase(.uppercase)
-                .tracking(1)
-                .apply { view in
-                    if #available(iOS 16.1, *) {
-                        view.fontDesign(.rounded)
-                    }
-                }
-                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-        }
-        .padding(.horizontal, 8)
+            }
+            .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.9))
+            .multilineTextAlignment(.center)
+            .lineSpacing(6)
+            .padding(.horizontal, 8)
     }
 
     // MARK: - Button
@@ -223,11 +168,6 @@ struct SocialProofView: View {
         }
 
         try? await Task.sleep(for: .milliseconds(400))
-        withAnimation(.easeOut(duration: 0.4)) {
-            showStats = true
-        }
-
-        try? await Task.sleep(for: .milliseconds(200))
         withAnimation(.easeOut(duration: 0.4)) {
             showMessage = true
         }
