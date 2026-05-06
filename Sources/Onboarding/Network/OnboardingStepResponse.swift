@@ -226,9 +226,9 @@ struct OnboardingStepResponse: Decodable {
         let welcomeHeadline: String
         let welcomeSubheadline: String
         let userReview: String
-        let stats: [StatItem]
+        let stats: [StatItem]?
         let message: String
-        let messageAuthor: String
+        let messageAuthor: String?
         let answer: StepAnswer
     }
 
