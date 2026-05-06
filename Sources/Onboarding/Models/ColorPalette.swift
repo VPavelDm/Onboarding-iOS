@@ -19,6 +19,11 @@ public protocol ColorPalette {
     var progressBarBackgroundColor: AnyShapeStyle { get }
     var orbitColor: Color { get }
     var accentColor: Color { get }
+    var ratingStarColor: Color { get }
+}
+
+public extension ColorPalette {
+    var ratingStarColor: Color { Color(red: 0.82, green: 0.65, blue: 0.2) }
 }
 
 extension ColorPalette where Self == TestColorPalette {
@@ -40,6 +45,7 @@ struct TestColorPalette: ColorPalette {
     var progressBarBackgroundColor: AnyShapeStyle = AnyShapeStyle(Color(uiColor: .systemGray6))
     var orbitColor: Color = Color(uiColor: .systemGray6)
     var accentColor: Color = Color(uiColor: .systemYellow)
+    var ratingStarColor: Color = Color(red: 0.82, green: 0.65, blue: 0.2)
 }
 
 #Preview {

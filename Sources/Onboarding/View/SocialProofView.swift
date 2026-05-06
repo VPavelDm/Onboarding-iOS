@@ -106,7 +106,7 @@ struct SocialProofView: View {
             ForEach(0..<5, id: \.self) { index in
                 Image(systemName: "star.fill")
                     .font(.title3)
-                    .foregroundStyle(Color.yellow.opacity(0.85))
+                    .foregroundStyle(viewModel.colorPalette.ratingStarColor)
                     .scaleEffect(showStars ? 1 : 0)
                     .animation(
                         .spring(response: 0.4, dampingFraction: 0.6)
