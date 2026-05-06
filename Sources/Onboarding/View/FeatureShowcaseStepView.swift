@@ -91,6 +91,7 @@ struct FeatureShowcaseStepView: View {
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
             .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     // MARK: - Description
