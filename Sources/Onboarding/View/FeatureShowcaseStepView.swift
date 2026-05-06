@@ -26,14 +26,14 @@ struct FeatureShowcaseStepView: View {
     // MARK: - Top Section
 
     private var topSection: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 24) {
             imageView
-                .frame(maxHeight: .infinity)
                 .opacity(showImage ? 1 : 0)
                 .scaleEffect(showImage ? 1 : 0.85)
             textContent
                 .offset(y: showBottomSection ? 0 : 40)
                 .opacity(showBottomSection ? 1 : 0)
+            Spacer(minLength: 0)
         }
         .layoutPriority(65)
     }
