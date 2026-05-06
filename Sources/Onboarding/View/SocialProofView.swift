@@ -53,7 +53,7 @@ struct SocialProofView: View {
     // MARK: - Header Section
 
     private var headerSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 4) {
             Text(step.welcomeHeadline)
                 .font(.subheadline)
                 .fontWeight(.semibold)
