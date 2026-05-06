@@ -55,7 +55,7 @@ struct SocialProofView: View {
     private var headerSection: some View {
         VStack(spacing: 4) {
             Text(step.welcomeHeadline)
-                .font(.subheadline)
+                .font(.headline)
                 .fontWeight(.semibold)
                 .textCase(.uppercase)
                 .tracking(1.2)
@@ -67,7 +67,7 @@ struct SocialProofView: View {
                 .foregroundStyle(viewModel.colorPalette.accentColor)
 
             Text(step.welcomeSubheadline)
-                .font(.title)
+                .font(.largeTitle)
                 .fontWeight(.bold)
                 .apply { view in
                     if #available(iOS 16.1, *) {
