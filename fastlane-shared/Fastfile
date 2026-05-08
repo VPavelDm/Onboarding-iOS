@@ -1,0 +1,151 @@
+# Shared fastlane lanes for VPavelDm iOS apps.
+#
+# Import this file from a project's own Fastfile:
+#
+#   import "#{ENV['HOME']}/Developer/Onboarding/onboarding-ios/fastlane-shared/Fastfile"
+#
+# Or override the path via env var:
+#
+#   shared = ENV["SHARED_FASTLANE_PATH"] ||
+#            "#{ENV['HOME']}/Developer/Onboarding/onboarding-ios/fastlane-shared"
+#   import "#{shared}/Fastfile"
+#
+# Each consuming project's Appfile must define `app_identifier`.
+
+default_platform(:ios)
+
+API_KEY_PATH = ENV["ASC_API_KEY_PATH"] || "#{ENV['HOME']}/.fastlane/key.json"
+
+def shared_xcodeproj_path
+  candidates = Dir.glob("../*.xcodeproj")
+  UI.user_error!("No .xcodeproj found in parent of fastlane dir") if candidates.empty?
+  UI.user_error!("Multiple .xcodeproj found: #{candidates.join(', ')}. Pass `xcodeproj:` explicitly.") if candidates.size > 1
+  candidates.first
+end
+
+platform :ios do
+  desc "Push metadata-only update to App Store Connect (no binary, no screenshots)"
+  lane :push_metadata do
+    deliver(
+      api_key_path: API_KEY_PATH,
+      force: true,
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      skip_app_version_update: true,
+      precheck_include_in_app_purchases: false
+    )
+  end
+
+  desc "Submit the latest build for review, tag the release, bump versions for the next cycle, and push"
+  desc ""
+  desc "Optional:"
+  desc "  xcodeproj  Path to .xcodeproj (default: auto-detected in parent dir)"
+  desc "  target     Xcode target name (default: derived from xcodeproj basename)"
+  lane :submit_release do |options|
+    ensure_git_status_clean
+
+    xcodeproj = options[:xcodeproj] || shared_xcodeproj_path
+    target = options[:target] || File.basename(xcodeproj, ".xcodeproj")
+
+    current_version = get_version_number(xcodeproj: xcodeproj, target: target)
+    release_tag = "v#{current_version}"
+
+    deliver(
+      api_key_path: API_KEY_PATH,
+      force: true,
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      submit_for_review: true,
+      automatic_release: true,
+      submission_information: {
+        add_id_info_uses_idfa: false,
+        export_compliance_uses_encryption: false
+      },
+      precheck_include_in_app_purchases: false
+    )
+
+    add_git_tag(tag: release_tag)
+
+    parts = current_version.split(".").map(&:to_i)
+    parts[1] += 1
+    next_version = parts.join(".")
+
+    pbxproj_path = "#{xcodeproj}/project.pbxproj"
+    sh(
+      "sed",
+      "-i", "",
+      "-e", "s/MARKETING_VERSION = #{current_version};/MARKETING_VERSION = #{next_version};/g",
+      pbxproj_path
+    )
+
+    git_commit(
+      path: "#{File.basename(xcodeproj)}/project.pbxproj",
+      message: "Bump marketing version to #{next_version}"
+    )
+
+    push_to_git_remote
+    push_git_tags
+  end
+
+  desc "Update subscription prices per territory using a pricing index (default: PPP)"
+  desc ""
+  desc "Optional (will be prompted interactively if omitted):"
+  desc "  product   App Store product ID"
+  desc "  base_usd  USA baseline price as a Number (e.g., 9.99)"
+  desc ""
+  desc "Optional:"
+  desc "  index     Index name in fastlane-shared/pricing/indexes/ (default: ppp)"
+  desc "  dry_run   Print proposed changes without applying (default: true)"
+  desc ""
+  desc "Examples:"
+  desc "  fastlane update_subscription_prices                                  # interactive"
+  desc "  fastlane update_subscription_prices product:com.x.prime.monthly base_usd:9.99"
+  desc "  fastlane update_subscription_prices product:com.x.prime.monthly base_usd:9.99 dry_run:false"
+  lane :update_subscription_prices do |options|
+    require_relative "pricing/price_updater"
+
+    bundle_id = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+    UI.user_error!("Could not read app_identifier from Appfile") if bundle_id.nil? || bundle_id.empty?
+
+    product = options[:product]
+    if product.nil? || product.to_s.empty?
+      product = AppStorePricing.prompt_for_product(
+        api_key_path: API_KEY_PATH,
+        app_bundle_id: bundle_id
+      )
+    end
+
+    if UI.interactive? && UI.confirm("Update display names for #{product}?")
+      AppStorePricing.update_display_name(
+        api_key_path: API_KEY_PATH,
+        app_bundle_id: bundle_id,
+        product_id: product
+      )
+    end
+
+    base_usd_raw = options[:base_usd]
+    if base_usd_raw.nil? || base_usd_raw.to_s.empty?
+      UI.user_error!("Non-interactive mode: re-run with base_usd:<price>") unless UI.interactive?
+      base_usd_raw = UI.input("Enter USA baseline price for #{product} (empty to skip pricing):")
+    end
+
+    if base_usd_raw.nil? || base_usd_raw.to_s.strip.empty?
+      UI.message("Skipping price update.")
+    else
+      base_usd = base_usd_raw.to_f
+      UI.user_error!("base_usd must be > 0 (got #{base_usd_raw})") unless base_usd > 0
+
+      index = options[:index] || "ppp"
+      dry_run = options[:dry_run].to_s.downcase != "false"
+
+      AppStorePricing.update(
+        api_key_path: API_KEY_PATH,
+        app_bundle_id: bundle_id,
+        product_id: product,
+        base_usd: base_usd,
+        index: index,
+        dry_run: dry_run
+      )
+    end
+  end
+end
