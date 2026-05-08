@@ -391,11 +391,15 @@ module AppStorePricing
 
   # === Apply ===
 
+  # `preserveCurrentPrice: true` grandfathers existing subscribers at their
+  # current price — the new price applies only to new subscribers. Without
+  # this, increases trigger Apple's consent flow (and unsubscribe users who
+  # don't opt in before renewal). Safer default for PPP rebalances.
   def create_subscription_price(sub_id:, territory:, price_point_id:, start_date:)
     body = {
       data: {
         type: "subscriptionPrices",
-        attributes: { startDate: start_date },
+        attributes: { startDate: start_date, preserveCurrentPrice: true },
         relationships: {
           subscription: { data: { type: "subscriptions", id: sub_id } },
           subscriptionPricePoint: { data: { type: "subscriptionPricePoints", id: price_point_id } },
