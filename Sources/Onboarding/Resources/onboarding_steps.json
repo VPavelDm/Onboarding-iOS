@@ -1,19 +1,18 @@
 [
     {
-        "id": "feature_showcase",
-        "type": "featureShowcase",
+        "id": "intro",
+        "type": "intro",
         "payload": {
-            "title": "Track smarter with AI",
-            "description": "Smart food tracking is here. Snap a photo and get instant nutrition info with AI\u2014no manual entry needed.",
             "image": {
                 "type": "named",
-                "value": "showcase",
+                "value": "welcomeImage",
                 "aspectRatioType": "fit"
             },
-            "backgroundColor": "1A1A1A",
+            "title": "Less scrolling.\nMore learning.",
+            "description": "Focus Mode hides the apps that pull you away until you've reviewed today's words.",
+            "accentColor": "FFCC00",
             "answer": {
-                "title": "Continue",
-                "nextStepID": "select_favorite_genre"
+                "title": "Get started"
             }
         }
     }

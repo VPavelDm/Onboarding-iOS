@@ -72,7 +72,7 @@ struct ProgressStepView: View {
                     .opacity(isButtonLoading ? 1 : 0)
             }
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .padding(.horizontal, .hScreenPadding)
         .padding(.vertical, .vScreenPadding)
         .disabled(progress != 100)

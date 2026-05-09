@@ -122,7 +122,7 @@ struct IntroStepView: View {
         } label: {
             Text(step.answer.title)
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     // MARK: - Background
@@ -131,7 +131,7 @@ struct IntroStepView: View {
     private var backgroundView: some View {
         if let accent = step.accentColor {
             LinearGradient(
-                colors: [accent, .clear],
+                colors: [accent.opacity(0.25), .clear],
                 startPoint: .top,
                 endPoint: .center
             )
@@ -156,5 +156,11 @@ struct IntroStepView: View {
         try? await Task.sleep(for: .milliseconds(220))
 
         withAnimation(.easeInOut(duration: 0.4)) { showButton = true }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        MockOnboardingView()
     }
 }

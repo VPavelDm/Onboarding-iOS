@@ -25,7 +25,7 @@ struct MockOnboardingView: View {
                     } label: {
                         Text(verbatim: "Choose")
                     }
-                    .buttonStyle(PrimaryButtonStyle())
+                    .buttonStyle(PrimaryButtonStyle(colorPalette: .testData))
                 default:
                     EmptyView()
                 }

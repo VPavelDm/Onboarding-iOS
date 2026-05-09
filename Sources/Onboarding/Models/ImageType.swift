@@ -9,6 +9,7 @@ import SwiftUI
 
 enum ImageType: Sendable, Equatable, Hashable {
     case named(String)
+    case system(String)
     case remote(URL)
 }
 
@@ -42,6 +43,8 @@ extension ImageType {
         switch response.type {
         case "named":
             self = .named(response.value)
+        case "system":
+            self = .system(response.value)
         case "remote":
             if let url = URL(string: response.value) {
                 self = .remote(url)

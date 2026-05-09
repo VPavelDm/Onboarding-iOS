@@ -88,7 +88,7 @@ struct MultipleAnswerView: View {
         } label: {
             Text(step.buttonTitle)
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .opacity(answers.isDisabled(step: step) ? 0 : 1)
         .animation(.easeInOut, value: answers.isDisabled(step: step))
     }

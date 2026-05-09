@@ -16,6 +16,9 @@ struct OnboardingImage: View {
         case .named(let string):
             Image(string, bundle: bundle)
                 .resizable()
+        case .system(let symbolName):
+            Image(systemName: symbolName)
+                .font(.system(size: 80))
         case .remote(let url):
             AsyncImage(url: url)
         }

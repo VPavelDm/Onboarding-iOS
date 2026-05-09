@@ -104,7 +104,7 @@ struct OneAnswerView: View {
         } label: {
             Text(step.buttonTitle)
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .disabled(selectedAnswer == nil && step.skip == nil)
         .animation(.easeInOut, value: selectedAnswer)
     }

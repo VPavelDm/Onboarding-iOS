@@ -46,7 +46,7 @@ struct SocialProofView: View {
     private var imageView: some View {
         OnboardingImage(image: step.image, bundle: viewModel.configuration.bundle)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-            .aspectRatio(1.0, contentMode: .fit)
+            .aspectRatio(contentMode: step.image.contentMode)
             .frame(maxWidth: .infinity)
     }
 
@@ -90,6 +90,7 @@ struct SocialProofView: View {
                     .font(.footnote)
                     .fontWeight(.medium)
                     .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                    .multilineTextAlignment(.center)
                     .apply { view in
                         if #available(iOS 16.1, *) {
                             view.fontDesign(.rounded)
@@ -151,7 +152,7 @@ struct SocialProofView: View {
         } label: {
             Text(step.answer.title)
         }
-        .buttonStyle(PrimaryButtonStyle())
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     // MARK: - Animation
