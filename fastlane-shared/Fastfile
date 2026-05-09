@@ -20,7 +20,7 @@ def shared_xcodeproj_path
   candidates = Dir.glob("../*.xcodeproj")
   UI.user_error!("No .xcodeproj found in parent of fastlane dir") if candidates.empty?
   UI.user_error!("Multiple .xcodeproj found: #{candidates.join(', ')}. Pass `xcodeproj:` explicitly.") if candidates.size > 1
-  candidates.first
+  File.expand_path(candidates.first)
 end
 
 platform :ios do
