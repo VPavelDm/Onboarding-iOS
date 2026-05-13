@@ -70,7 +70,7 @@ public struct PaywallHostView: View {
     }
 
     func didAppear() {
-
+        viewModel.delegate?.track(event: "paywall_viewed", parameters: ["placement_id": viewModel.placementID])
     }
 
     func didDisappear() {
@@ -80,28 +80,28 @@ public struct PaywallHostView: View {
     func didPerformAction(action: AdaptyUI.Action) {
         switch action {
         case .close:
-            viewModel.delegate?.track(event: "paywallCloseButtonTapped", parameters: ["placementID": viewModel.placementID])
+            viewModel.delegate?.track(event: "paywall_close_button_tapped", parameters: ["placement_id": viewModel.placementID])
             close()
         case .custom(let id):
             switch id {
             case "show_all_plans":
-                viewModel.delegate?.track(event: "showMoreSubscriptionsClicked", parameters: ["placementID": viewModel.placementID])
+                viewModel.delegate?.track(event: "show_more_subscriptions_tapped", parameters: ["placement_id": viewModel.placementID])
             default:
-                viewModel.delegate?.track(event: "customButtonTapped", parameters: [
-                    "placementID": viewModel.placementID,
+                viewModel.delegate?.track(event: "custom_button_tapped", parameters: [
+                    "placement_id": viewModel.placementID,
                     "id": id
                 ])
             }
         case .openURL(let url):
-            viewModel.delegate?.track(event: "openURLButtonTapped", parameters: ["placementID": viewModel.placementID])
+            viewModel.delegate?.track(event: "open_url_button_tapped", parameters: ["placement_id": viewModel.placementID])
             UIApplication.shared.open(url)
         }
     }
 
     func didStartPurchase(product: AdaptyPaywallProduct) {
-        viewModel.delegate?.track(event: "trackContinueButtonTapped", parameters: [
-            "placementID": viewModel.placementID,
-            "productID": product.sk2Product?.id ?? ""
+        viewModel.delegate?.track(event: "continue_button_tapped", parameters: [
+            "placement_id": viewModel.placementID,
+            "product_id": product.sk2Product?.id ?? ""
         ])
     }
 
@@ -110,32 +110,32 @@ public struct PaywallHostView: View {
             switch result {
             case .success:
                 try await viewModel.delegate?.fetchSubscriptionStatus()
-                viewModel.delegate?.track(event: "trackSubscriptionStarted", parameters: [
-                    "placementID": viewModel.placementID,
-                    "productID": product.sk2Product?.id ?? ""
+                viewModel.delegate?.track(event: "subscription_started", parameters: [
+                    "placement_id": viewModel.placementID,
+                    "product_id": product.sk2Product?.id ?? ""
                 ])
                 showRating = true
                 close()
             case .pending:
                 try await viewModel.delegate?.fetchSubscriptionStatus()
-                viewModel.delegate?.track(event: "subscriptionPending", parameters: ["placementID": viewModel.placementID])
+                viewModel.delegate?.track(event: "subscription_pending", parameters: ["placement_id": viewModel.placementID])
                 close()
             case .userCancelled:
-                viewModel.delegate?.track(event: "subscriptionPurchaseCancelled", parameters: ["placementID": viewModel.placementID])
+                viewModel.delegate?.track(event: "subscription_purchase_cancelled", parameters: ["placement_id": viewModel.placementID])
             }
         }
     }
 
     func didFailPurchase(product: AdaptyPaywallProduct, error: AdaptyError) {
-        viewModel.delegate?.track(event: "trackSubscriptionPurchaseError", parameters: [
-            "placementID": viewModel.placementID,
+        viewModel.delegate?.track(event: "subscription_purchase_error", parameters: [
+            "placement_id": viewModel.placementID,
             "error": error
         ])
         alertItem = .purchaseError
     }
 
     func didStartRestore() {
-        viewModel.delegate?.track(event: "trackRestoreButtonTapped", parameters: ["placementID": viewModel.placementID])
+        viewModel.delegate?.track(event: "restore_button_tapped", parameters: ["placement_id": viewModel.placementID])
     }
 
     func didFinishRestore(profile: AdaptyProfile) {
@@ -148,8 +148,8 @@ public struct PaywallHostView: View {
                 }
                 close()
             } catch {
-                viewModel.delegate?.track(event: "restorePurchaseFailed", parameters: [
-                    "placementID": viewModel.placementID,
+                viewModel.delegate?.track(event: "restore_purchase_failed", parameters: [
+                    "placement_id": viewModel.placementID,
                     "error": error
                 ])
                 alertItem = .restoreError
@@ -158,31 +158,31 @@ public struct PaywallHostView: View {
     }
 
     func didFailRestore(error: AdaptyError) {
-        viewModel.delegate?.track(event: "restorePurchaseFailed", parameters: [
-            "placementID": viewModel.placementID,
+        viewModel.delegate?.track(event: "restore_purchase_failed", parameters: [
+            "placement_id": viewModel.placementID,
             "error": error
         ])
         alertItem = .restoreError
     }
 
     func didFailRendering(error: AdaptyUIError) {
-        viewModel.delegate?.track(event: "didFailRenderingError", parameters: [
-            "placementID": viewModel.placementID,
+        viewModel.delegate?.track(event: "paywall_rendering_error", parameters: [
+            "placement_id": viewModel.placementID,
             "error": error
         ])
     }
 
     func didFailLoadingProducts(error: AdaptyError) -> Bool {
-        viewModel.delegate?.track(event: "didFailLoadingProductsError", parameters: [
-            "placementID": viewModel.placementID,
+        viewModel.delegate?.track(event: "paywall_products_loading_error", parameters: [
+            "placement_id": viewModel.placementID,
             "error": error
         ])
         return true
     }
 
     func didFail(error: Error) {
-        viewModel.delegate?.track(event: "paywallUnexpectedError", parameters: [
-            "placementID": viewModel.placementID,
+        viewModel.delegate?.track(event: "paywall_unexpected_error", parameters: [
+            "placement_id": viewModel.placementID,
             "error": error
         ])
     }
