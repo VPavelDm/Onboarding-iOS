@@ -55,7 +55,7 @@ final class OnboardingViewModel: ObservableObject {
             }
         }
         steps = loaded
-        currentStep = steps.first
+        await advance(to: steps.first?.id)
     }
 
     func onAnswer(answers: [StepAnswer]) async {
@@ -97,13 +97,29 @@ final class OnboardingViewModel: ObservableObject {
 
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
-        guard var nextStep = steps.first(where: { $0.id == nextStepID }) else { return }
+        await advance(to: nextStepID)
+    }
 
-        if case .custom(var params) = nextStep.type {
-            params.callback = onStepCompletion(answer:nextStepID:)
-            nextStep.type = .custom(params)
+    private func advance(to startID: StepID?) async {
+        var targetID = startID
+        while let id = targetID, var step = steps.first(where: { $0.id == id }) {
+            switch await delegate.routing(forStepID: id) {
+            case .show:
+                if case .custom(var params) = step.type {
+                    params.callback = onStepCompletion(answer:nextStepID:)
+                    step.type = .custom(params)
+                }
+                currentStep = step
+                return
+            case .skip(let branch):
+                guard case .custom(let params) = step.type else {
+                    // Only custom steps carry the branch/next metadata needed
+                    // to resolve a skip target from here. Fall back to showing.
+                    currentStep = step
+                    return
+                }
+                targetID = branch.flatMap { params.branches[$0] } ?? params.nextStepID
+            }
         }
-
-        self.currentStep = nextStep
     }
 }
