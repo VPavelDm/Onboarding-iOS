@@ -64,7 +64,9 @@ platform :ios do
       precheck_include_in_app_purchases: false
     )
 
-    add_git_tag(tag: release_tag)
+    # Force-move the tag so a resubmission of the same marketing version
+    # (e.g. after a rejected build was replaced) just updates the tag in place.
+    add_git_tag(tag: release_tag, force: true)
 
     parts = current_version.split(".").map(&:to_i)
     parts[1] += 1
@@ -84,7 +86,7 @@ platform :ios do
     )
 
     push_to_git_remote
-    push_git_tags
+    push_git_tags(force: true)
   end
 
   desc "Update subscription prices per territory using a pricing index (default: PPP)"
