@@ -39,10 +39,10 @@ struct TestColorPalette: ColorPalette {
     var primaryButtonForegroundColor: Color = .black
     var primaryButtonBackground: AnyShapeStyle = AnyShapeStyle(Color(uiColor: .systemYellow))
     var secondaryButtonForegroundColor: Color = .white
-    var secondaryButtonBackground: AnyShapeStyle = AnyShapeStyle(Color(uiColor: .systemGray6))
-    var secondaryButtonStrokeColor: Color = Color(uiColor: .systemGray6)
+    var secondaryButtonBackground: AnyShapeStyle = AnyShapeStyle(.ultraThinMaterial)
+    var secondaryButtonStrokeColor: Color = Color.white.opacity(0.15)
     var plainButtonColor: Color = .primary
-    var progressBarBackgroundColor: AnyShapeStyle = AnyShapeStyle(Color(uiColor: .systemGray6))
+    var progressBarBackgroundColor: AnyShapeStyle = AnyShapeStyle(.ultraThinMaterial)
     var orbitColor: Color = Color(uiColor: .systemGray6)
     var accentColor: Color = Color(uiColor: .systemYellow)
     var ratingStarColor: Color = Color(red: 0.82, green: 0.65, blue: 0.2)

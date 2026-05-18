@@ -77,6 +77,12 @@ struct OnboardingStepResponse: Decodable {
         case "custom":
             let payload = try container.decodeIfPresent(CustomStep.self, forKey: .payload)
             self.type = .custom(payload)
+        case "survivalFunnel":
+            let payload = try container.decode(SurvivalFunnelStep.self, forKey: .payload)
+            self.type = .survivalFunnel(payload)
+        case "floatingWords":
+            let payload = try container.decode(FloatingWordsStep.self, forKey: .payload)
+            self.type = .floatingWords(payload)
         default:
             self.type = .unknown
         }
@@ -101,6 +107,8 @@ struct OnboardingStepResponse: Decodable {
         case weightPicker(WeightPickerStep)
         case agePicker(AgePickerStep)
         case custom(CustomStep?)
+        case survivalFunnel(SurvivalFunnelStep)
+        case floatingWords(FloatingWordsStep)
         case unknown
     }
 
@@ -254,6 +262,30 @@ struct OnboardingStepResponse: Decodable {
     struct CustomStep: Decodable {
         let nextStepID: StepID?
         let branches: [String: StepID]?
+    }
+
+    struct SurvivalFunnelStep: Decodable {
+        let title: String
+        let description: String?
+        let caption: String?
+        let stages: [Stage]
+        let answer: StepAnswer
+
+        struct Stage: Decodable {
+            let label: String
+            let count: Int
+            let dropoffLabel: String?
+        }
+    }
+
+    struct FloatingWordsStep: Decodable {
+        let title: String
+        let description: String?
+        let caption: String?
+        let centralWord: String
+        let centralTranslation: String?
+        let floatingWords: [String]
+        let answer: StepAnswer
     }
 
     struct StepAnswer: Decodable {

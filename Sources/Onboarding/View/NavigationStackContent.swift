@@ -52,6 +52,10 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 AgePickerStepView(step: step)
             case .custom(let stepParams):
                 customStepView(stepParams)
+            case .survivalFunnel(let step):
+                SurvivalFunnelStepView(step: step)
+            case .floatingWords(let step):
+                FloatingWordsStepView(step: step)
             case .unknown, .none:
                 EmptyView()
             }

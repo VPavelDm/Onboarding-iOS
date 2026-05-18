@@ -30,6 +30,8 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case weightPicker(WeightPickerStep)
         case agePicker(AgePickerStep)
         case custom(CustomStepParams)
+        case survivalFunnel(SurvivalFunnelStep)
+        case floatingWords(FloatingWordsStep)
         case unknown
     }
 }
@@ -78,6 +80,8 @@ extension OnboardingStep {
                     branches: payload?.branches ?? [:]
                 )
             )
+        case .survivalFunnel(let payload): .survivalFunnel(SurvivalFunnelStep(response: payload, localizer: localizer))
+        case .floatingWords(let payload): .floatingWords(FloatingWordsStep(response: payload, localizer: localizer))
         default: .unknown
         }
 

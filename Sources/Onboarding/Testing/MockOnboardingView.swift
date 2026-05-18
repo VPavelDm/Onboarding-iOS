@@ -31,6 +31,7 @@ struct MockOnboardingView: View {
                 }
             }
         )
+        .background(MeshGradientBackground())
         .preferredColorScheme(.dark)
     }
 }
