@@ -131,7 +131,7 @@ struct ProgressBarsStepView: View {
     }
 
     private func runProgress() async {
-        try? await Task.sleep(for: .milliseconds(400))
+        try? await Task.sleep(for: .seconds(1))
         for index in stepProgress.indices {
             withAnimation(.linear(duration: stepDuration)) {
                 stepProgress[index] = 1

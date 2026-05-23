@@ -50,7 +50,7 @@ struct CommitmentHoldStepView: View {
     private var commitmentCard: some View {
         CommitmentCardView(
             prefix: localized("commitmentHold.prefix"),
-            number: step.commitmentNumber,
+            number: viewModel.format(string: step.commitmentNumber),
             suffix: localized("commitmentHold.suffix"),
             footer: localized("commitmentHold.footer")
         )

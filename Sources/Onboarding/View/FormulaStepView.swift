@@ -69,9 +69,9 @@ struct FormulaStepView: View {
 
     private var operandsRow: some View {
         HStack(spacing: 24) {
-            accentOperand(number: step.operandLeftNumber, label: localized("formula.operandLeftLabel"))
+            accentOperand(number: viewModel.format(string: step.operandLeftNumber), label: localized("formula.operandLeftLabel"))
             symbolView
-            accentOperand(number: step.operandRightNumber, label: localized("formula.operandRightLabel"))
+            accentOperand(number: viewModel.format(string: step.operandRightNumber), label: localized("formula.operandRightLabel"))
         }
     }
 
@@ -87,7 +87,7 @@ struct FormulaStepView: View {
     }
 
     private var resultOperand: some View {
-        operandView(number: step.resultNumber, label: localized("formula.resultLabel"), accent: false)
+        operandView(number: viewModel.format(string: step.resultNumber), label: localized("formula.resultLabel"), accent: false)
     }
 
     private func operandView(number: String, label: String, accent: Bool) -> some View {
