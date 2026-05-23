@@ -15,7 +15,7 @@ struct DiscountWheelSuccessView: View {
     @State private var size: CGSize = .zero
 
     @Binding var isPresented: Bool
-    var step: DiscountWheelStep
+    var nextStepID: StepID?
 
     var body: some View {
         VStack(spacing: 32) {
@@ -34,7 +34,7 @@ struct DiscountWheelSuccessView: View {
     }
 
     private var titleView: some View {
-        Text(step.successTitle)
+        Text(localized("discountWheel.successTitle"))
             .font(.title2.bold())
             .foregroundStyle(.white)
             .multilineTextAlignment(.center)
@@ -42,7 +42,7 @@ struct DiscountWheelSuccessView: View {
     }
 
     private var descriptionView: some View {
-        Text(viewModel.format(string: step.successDescription))
+        Text(viewModel.format(string: localized("discountWheel.successDescription")))
             .font(.title3)
             .fontWeight(.semibold)
             .foregroundStyle(.secondary)
@@ -53,17 +53,30 @@ struct DiscountWheelSuccessView: View {
     private var takeButton: some View {
         AsyncButton {
             isPresented = false
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("discountWheel.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("discountWheel.answerTitle"),
+            icon: nil,
+            nextStepID: nextStepID,
+            payload: nil
+        )
     }
 }
 
 #Preview {
     Color.black
         .sheet(isPresented: .constant(true)) {
-            DiscountWheelSuccessView(isPresented: .constant(true), step: .testData())
+            DiscountWheelSuccessView(isPresented: .constant(true), nextStepID: nil)
         }
 }

@@ -31,7 +31,7 @@ struct CommitmentHoldStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(localized("commitmentHold.title"))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -39,8 +39,9 @@ struct CommitmentHoldStepView: View {
 
     @ViewBuilder
     private var subtitleView: some View {
-        if let subtitle = step.subtitle {
-            Text(subtitle)
+        let text = localized("commitmentHold.subtitle")
+        if !text.isEmpty {
+            Text(text)
                 .font(.subheadline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
         }
@@ -48,10 +49,10 @@ struct CommitmentHoldStepView: View {
 
     private var commitmentCard: some View {
         CommitmentCardView(
-            prefix: step.commitmentPrefix,
+            prefix: localized("commitmentHold.prefix"),
             number: step.commitmentNumber,
-            suffix: step.commitmentSuffix,
-            footer: step.commitmentFooter
+            suffix: localized("commitmentHold.suffix"),
+            footer: localized("commitmentHold.footer")
         )
     }
 
@@ -70,6 +71,19 @@ struct CommitmentHoldStepView: View {
             .animation(.easeOut(duration: 0.25), value: isCommitted)
     }
 
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("commitmentHold.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
+    }
+
     private func completeCommitment() {
         withAnimation(.spring(response: 0.45, dampingFraction: 0.65)) {
             isCommitted = true
@@ -77,7 +91,7 @@ struct CommitmentHoldStepView: View {
         hapticTrigger += 1
         Task {
             try? await Task.sleep(for: .milliseconds(1400))
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         }
     }
 }
@@ -85,10 +99,10 @@ struct CommitmentHoldStepView: View {
 private struct CommitmentCardView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
-    let prefix: String?
+    let prefix: String
     let number: String
-    let suffix: String?
-    let footer: String?
+    let suffix: String
+    let footer: String
 
     var body: some View {
         VStack(spacing: 8) {
@@ -105,7 +119,7 @@ private struct CommitmentCardView: View {
 
     @ViewBuilder
     private var prefixText: some View {
-        if let prefix {
+        if !prefix.isEmpty {
             Text(prefix)
                 .font(.title3)
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.85))
@@ -128,7 +142,7 @@ private struct CommitmentCardView: View {
 
     @ViewBuilder
     private var suffixText: some View {
-        if let suffix {
+        if !suffix.isEmpty {
             Text(suffix)
                 .font(.system(size: 30, weight: .semibold))
                 .foregroundStyle(viewModel.colorPalette.textColor)
@@ -137,7 +151,7 @@ private struct CommitmentCardView: View {
 
     @ViewBuilder
     private var footerText: some View {
-        if let footer {
+        if !footer.isEmpty {
             Text(footer)
                 .font(.title3)
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.85))
@@ -241,13 +255,8 @@ private struct CommitmentHoldButton: View {
 
 #Preview {
     let sampleStep = CommitmentHoldStep(
-        title: "Make it real.",
-        subtitle: "Hold to lock in your daily promise.",
-        commitmentPrefix: "I promise to learn",
         commitmentNumber: "10",
-        commitmentSuffix: "German words",
-        commitmentFooter: "every single day.",
-        answer: StepAnswer(title: "", icon: nil, nextStepID: nil, payload: nil)
+        nextStepID: nil
     )
     let viewModel = OnboardingViewModel(
         configuration: .testData(),
@@ -259,4 +268,3 @@ private struct CommitmentHoldButton: View {
         .background(MeshGradientBackground())
         .preferredColorScheme(.dark)
 }
-

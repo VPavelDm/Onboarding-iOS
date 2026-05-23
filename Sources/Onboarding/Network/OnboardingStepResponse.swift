@@ -197,13 +197,8 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct CommitmentHoldStep: Decodable {
-        let title: String
-        let subtitle: String?
-        let commitmentPrefix: String?
         let commitmentNumber: String
-        let commitmentSuffix: String?
-        let commitmentFooter: String?
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct ReceiptStep: Decodable {
@@ -280,10 +275,8 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct WidgetStep: Decodable {
-        let title: String
-        let description: String
         let image: ImageResponse?
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct FeatureShowcaseStep: Decodable {
@@ -305,13 +298,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct SocialProofStep: Decodable {
         let image: ImageResponse
-        let welcomeHeadline: String
-        let welcomeSubheadline: String
-        let userReview: String
-        let stats: [StatItem]?
-        let message: String
-        let messageAuthor: String?
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct StatItem: Decodable {
@@ -325,12 +312,7 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct DiscountWheelStep: Decodable {
-        let title: String
-        var spinButtonTitle: String
-        var spinFootnote: String
-        var successTitle: String
-        var successDescription: String
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct CustomStep: Decodable {
@@ -353,13 +335,10 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct FloatingWordsStep: Decodable {
-        let title: String
-        let description: String?
-        let caption: String?
         let centralWord: String
         let centralTranslation: String?
         let floatingWords: [String]
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct StepAnswer: Decodable {

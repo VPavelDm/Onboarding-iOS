@@ -1,10 +1,8 @@
 import Foundation
 
 struct WidgetStep: Sendable, Equatable, Hashable {
-    let title: String
-    let description: String
     let image: ImageMeta?
-    let answer: StepAnswer
+    let nextStepID: StepID?
 }
 
 // MARK: - Convert
@@ -17,10 +15,8 @@ extension WidgetStep {
             image = ImageMeta(response: imageResponse)
         }
         self.init(
-            title: response.title.localized(using: localizer),
-            description: response.description.localized(using: localizer),
             image: image,
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            nextStepID: response.nextStepID
         )
     }
 }

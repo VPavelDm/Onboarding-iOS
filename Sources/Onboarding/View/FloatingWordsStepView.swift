@@ -120,7 +120,7 @@ struct FloatingWordsStepView: View {
     // MARK: - Copy
 
     private var titleView: some View {
-        Text(viewModel.delegate.format(string: step.title))
+        Text(viewModel.delegate.format(string: localized("floatingWords.title")))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -129,8 +129,9 @@ struct FloatingWordsStepView: View {
 
     @ViewBuilder
     private var descriptionView: some View {
-        if let description = step.description {
-            Text(description)
+        let text = localized("floatingWords.description")
+        if !text.isEmpty {
+            Text(text)
                 .font(.body.weight(.medium))
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.85))
                 .multilineTextAlignment(.center)
@@ -139,8 +140,9 @@ struct FloatingWordsStepView: View {
 
     @ViewBuilder
     private var captionView: some View {
-        if let caption = step.caption {
-            Text(caption)
+        let text = localized("floatingWords.caption")
+        if !text.isEmpty {
+            Text(text)
                 .font(.footnote.italic().weight(.medium))
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.75))
                 .multilineTextAlignment(.center)
@@ -149,11 +151,24 @@ struct FloatingWordsStepView: View {
 
     private var nextButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("floatingWords.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("floatingWords.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
     }
 }
 

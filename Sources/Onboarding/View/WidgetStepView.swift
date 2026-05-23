@@ -18,7 +18,7 @@ struct WidgetStepView: View {
     }
 
     var titleView: some View {
-        Text(step.title)
+        Text(localized("widget.title"))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -26,7 +26,7 @@ struct WidgetStepView: View {
     }
 
     var descriptionView: some View {
-        Text(step.description)
+        Text(localized("widget.description"))
             .font(.body)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
             .multilineTextAlignment(.center)
@@ -43,10 +43,23 @@ struct WidgetStepView: View {
 
     var continueButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("widget.answerTitle"))
         }
         .buttonStyle(SecondaryButtonStyle())
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("widget.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
     }
 }

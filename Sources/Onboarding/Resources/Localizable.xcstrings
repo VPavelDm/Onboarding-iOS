@@ -4,6 +4,270 @@
     "" : {
 
     },
+    "commitmentHold.title" : {
+      "comment" : "Commitment hold step — required, main heading above the commitment card.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make it real."
+          }
+        }
+      }
+    },
+    "commitmentHold.subtitle" : {
+      "comment" : "Commitment hold step — optional subtitle. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold to lock in your daily promise."
+          }
+        }
+      }
+    },
+    "commitmentHold.prefix" : {
+      "comment" : "Commitment hold step — text shown above the commitment number (e.g. \"I promise to learn\"). Empty to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I promise to do"
+          }
+        }
+      }
+    },
+    "commitmentHold.suffix" : {
+      "comment" : "Commitment hold step — text shown next to the commitment number (e.g. \"reps\", \"German words\"). Empty to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "every day"
+          }
+        }
+      }
+    },
+    "commitmentHold.footer" : {
+      "comment" : "Commitment hold step — text shown below the commitment number (e.g. \"every single day.\"). Empty to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no matter what."
+          }
+        }
+      }
+    },
+    "commitmentHold.answerTitle" : {
+      "comment" : "Commitment hold step — answer title sent through OnboardingDelegate when the hold completes. Usually empty; the hold itself is the answer.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "discountWheel.title" : {
+      "comment" : "Discount wheel step — required, headline above the spinning wheel.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spin to win your discount"
+          }
+        }
+      }
+    },
+    "discountWheel.spinButtonTitle" : {
+      "comment" : "Discount wheel step — required, label on the press-and-hold button to spin the wheel.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press & hold to spin"
+          }
+        }
+      }
+    },
+    "discountWheel.spinFootnote" : {
+      "comment" : "Discount wheel step — required, small explanatory text under the spin button.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release when your heart is ready."
+          }
+        }
+      }
+    },
+    "discountWheel.successTitle" : {
+      "comment" : "Discount wheel step — required, headline shown in the success sheet after a winning spin.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You won!"
+          }
+        }
+      }
+    },
+    "discountWheel.successDescription" : {
+      "comment" : "Discount wheel step — required, description in the success sheet. Supports the {discount_value} format token.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's a one-time deal — don't miss it."
+          }
+        }
+      }
+    },
+    "discountWheel.answerTitle" : {
+      "comment" : "Discount wheel step — required, CTA on the success sheet that accepts the discount and continues.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claim it"
+          }
+        }
+      }
+    },
+    "socialProof.welcomeHeadline" : {
+      "comment" : "Social proof step — required, uppercase eyebrow line above the main headline (e.g. \"WELCOME ABOARD\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome aboard"
+          }
+        }
+      }
+    },
+    "socialProof.welcomeSubheadline" : {
+      "comment" : "Social proof step — required, main headline shown under the eyebrow line.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're in good company."
+          }
+        }
+      }
+    },
+    "socialProof.userReview" : {
+      "comment" : "Social proof step — required, short caption shown under the 5-star rating (e.g. \"Loved by 10,000+\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loved by thousands"
+          }
+        }
+      }
+    },
+    "socialProof.message" : {
+      "comment" : "Social proof step — required, the italic user review or message displayed beneath the rating.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"This actually fits into my day. Real change, real progress.\""
+          }
+        }
+      }
+    },
+    "socialProof.answerTitle" : {
+      "comment" : "Social proof step — required, CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "widget.title" : {
+      "comment" : "Widget step — required, headline above the phone mockup.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add the widget"
+          }
+        }
+      }
+    },
+    "widget.description" : {
+      "comment" : "Widget step — required, supporting copy explaining the value of adding the widget.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep your daily practice one glance away from your home screen."
+          }
+        }
+      }
+    },
+    "widget.answerTitle" : {
+      "comment" : "Widget step — required, CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Got it"
+          }
+        }
+      }
+    },
+    "floatingWords.title" : {
+      "comment" : "Floating words step — required, headline shown beneath the central word. Supports format tokens via OnboardingDelegate.format.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One word, everything around it"
+          }
+        }
+      }
+    },
+    "floatingWords.description" : {
+      "comment" : "Floating words step — optional, supporting paragraph. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each word arrives with the context that makes it stick."
+          }
+        }
+      }
+    },
+    "floatingWords.caption" : {
+      "comment" : "Floating words step — optional, smaller italic caption below the description. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "floatingWords.answerTitle" : {
+      "comment" : "Floating words step — required, CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
     "commitmentHold.hold" : {
       "comment" : "Label on the inner button of the commitment-hold step before the user presses and holds. Short, all-caps, gesture-style.",
       "localizations" : {
