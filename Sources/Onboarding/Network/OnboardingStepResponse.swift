@@ -212,19 +212,11 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct FormulaStep: Decodable {
-        let title: String
-        let subtitle: String?
-        let operandLeft: Operand
-        let operandSymbol: String
-        let operandRight: Operand
-        let result: Operand
+        let operandLeftNumber: String
+        let operandRightNumber: String
+        let resultNumber: String
         let detailRows: [DetailRow]
-        let answer: StepAnswer
-
-        struct Operand: Decodable {
-            let number: String
-            let label: String
-        }
+        let nextStepID: StepID?
 
         struct DetailRow: Decodable {
             let label: String

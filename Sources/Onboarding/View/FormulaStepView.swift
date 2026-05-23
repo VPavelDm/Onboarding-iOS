@@ -37,7 +37,7 @@ struct FormulaStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(localized("formula.title"))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -45,8 +45,9 @@ struct FormulaStepView: View {
 
     @ViewBuilder
     private var subtitleView: some View {
-        if let subtitle = step.subtitle {
-            Text(subtitle)
+        let text = localized("formula.subtitle")
+        if !text.isEmpty {
+            Text(text)
                 .font(.subheadline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
         }
@@ -68,34 +69,34 @@ struct FormulaStepView: View {
 
     private var operandsRow: some View {
         HStack(spacing: 24) {
-            accentOperand(step.operandLeft)
+            accentOperand(number: step.operandLeftNumber, label: localized("formula.operandLeftLabel"))
             symbolView
-            accentOperand(step.operandRight)
+            accentOperand(number: step.operandRightNumber, label: localized("formula.operandRightLabel"))
         }
     }
 
     private var symbolView: some View {
-        Text(step.operandSymbol)
+        Text(localized("formula.operandSymbol"))
             .font(.system(size: 26, weight: .light, design: .rounded))
             .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.4))
             .padding(.bottom, 18)
     }
 
-    private func accentOperand(_ operand: FormulaStep.Operand) -> some View {
-        operandView(operand, accent: true)
+    private func accentOperand(number: String, label: String) -> some View {
+        operandView(number: number, label: label, accent: true)
     }
 
     private var resultOperand: some View {
-        operandView(step.result, accent: false)
+        operandView(number: step.resultNumber, label: localized("formula.resultLabel"), accent: false)
     }
 
-    private func operandView(_ operand: FormulaStep.Operand, accent: Bool) -> some View {
+    private func operandView(number: String, label: String, accent: Bool) -> some View {
         VStack(spacing: 4) {
-            Text(operand.number)
+            Text(number)
                 .font(.system(size: accent ? 42 : 60, weight: .bold, design: .rounded))
                 .foregroundStyle(accent ? viewModel.colorPalette.accentColor : viewModel.colorPalette.textColor)
                 .monospacedDigit()
-            Text(operand.label)
+            Text(label)
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.7))
         }
@@ -137,14 +138,27 @@ struct FormulaStepView: View {
 
     private var continueButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("formula.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .opacity(showCTA ? 1 : 0)
         .offset(y: showCTA ? 0 : 16)
         .animation(.easeOut(duration: 0.4), value: showCTA)
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("formula.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
     }
 
     private func animateIn() async {
@@ -162,4 +176,27 @@ struct FormulaStepView: View {
         try? await Task.sleep(for: .milliseconds(200))
         showCTA = true
     }
+}
+
+#Preview {
+    let sampleStep = FormulaStep(
+        operandLeftNumber: "10",
+        operandRightNumber: "365",
+        resultNumber: "3,650",
+        detailRows: [
+            .init(label: "Built on", value: "Travel · Food · Tech · Career"),
+            .init(label: "Enabled",  value: "Daily · Listen · Focus"),
+            .init(label: "Target",   value: "B1 in 90 days")
+        ],
+        nextStepID: nil
+    )
+    let viewModel = OnboardingViewModel(
+        configuration: .testData(),
+        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
+        colorPalette: .testData
+    )
+    return FormulaStepView(step: sampleStep)
+        .environmentObject(viewModel)
+        .background(MeshGradientBackground())
+        .preferredColorScheme(.dark)
 }
