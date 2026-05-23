@@ -32,6 +32,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case custom(CustomStepParams)
         case survivalFunnel(SurvivalFunnelStep)
         case floatingWords(FloatingWordsStep)
+        case commitmentHold(CommitmentHoldStep)
         case unknown
     }
 }
@@ -82,6 +83,7 @@ extension OnboardingStep {
             )
         case .survivalFunnel(let payload): .survivalFunnel(SurvivalFunnelStep(response: payload, localizer: localizer))
         case .floatingWords(let payload): .floatingWords(FloatingWordsStep(response: payload, localizer: localizer))
+        case .commitmentHold(let payload): .commitmentHold(CommitmentHoldStep(response: payload, localizer: localizer))
         default: .unknown
         }
 

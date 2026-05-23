@@ -83,6 +83,9 @@ struct OnboardingStepResponse: Decodable {
         case "floatingWords":
             let payload = try container.decode(FloatingWordsStep.self, forKey: .payload)
             self.type = .floatingWords(payload)
+        case "commitmentHold":
+            let payload = try container.decode(CommitmentHoldStep.self, forKey: .payload)
+            self.type = .commitmentHold(payload)
         default:
             self.type = .unknown
         }
@@ -109,6 +112,7 @@ struct OnboardingStepResponse: Decodable {
         case custom(CustomStep?)
         case survivalFunnel(SurvivalFunnelStep)
         case floatingWords(FloatingWordsStep)
+        case commitmentHold(CommitmentHoldStep)
         case unknown
     }
 
@@ -169,6 +173,16 @@ struct OnboardingStepResponse: Decodable {
         let description: String?
         let duration: Double
         let steps: [String]
+        let answer: StepAnswer
+    }
+
+    struct CommitmentHoldStep: Decodable {
+        let title: String
+        let subtitle: String?
+        let commitmentPrefix: String?
+        let commitmentNumber: String
+        let commitmentSuffix: String?
+        let commitmentFooter: String?
         let answer: StepAnswer
     }
 

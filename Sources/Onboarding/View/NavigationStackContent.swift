@@ -56,6 +56,8 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 SurvivalFunnelStepView(step: step)
             case .floatingWords(let step):
                 FloatingWordsStepView(step: step)
+            case .commitmentHold(let step):
+                CommitmentHoldStepView(step: step)
             case .unknown, .none:
                 EmptyView()
             }
