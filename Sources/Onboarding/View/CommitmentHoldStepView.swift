@@ -64,7 +64,7 @@ struct CommitmentHoldStepView: View {
     }
 
     private var holdHint: some View {
-        Text(String(localized: "commitmentHold.hint", bundle: .module))
+        Text(viewModel.localizer.localize("commitmentHold.hint"))
             .font(.callout)
             .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.65))
             .opacity(isCommitted ? 0 : 1)
@@ -107,7 +107,8 @@ private struct CommitmentCardView: View {
     var body: some View {
         VStack(spacing: 8) {
             prefixText
-            numberRow
+            numberText
+            suffixText
             footerText
         }
         .multilineTextAlignment(.center)
@@ -126,13 +127,6 @@ private struct CommitmentCardView: View {
         }
     }
 
-    private var numberRow: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            numberText
-            suffixText
-        }
-    }
-
     private var numberText: some View {
         Text(number)
             .font(.system(size: 56, weight: .bold, design: .rounded))
@@ -144,7 +138,7 @@ private struct CommitmentCardView: View {
     private var suffixText: some View {
         if !suffix.isEmpty {
             Text(suffix)
-                .font(.system(size: 30, weight: .semibold))
+                .font(.system(size: 24, weight: .semibold))
                 .foregroundStyle(viewModel.colorPalette.textColor)
         }
     }
@@ -231,7 +225,7 @@ private struct CommitmentHoldButton: View {
                 .foregroundStyle(viewModel.colorPalette.primaryButtonForegroundColor)
                 .transition(.scale.combined(with: .opacity))
         } else {
-            Text(String(localized: "commitmentHold.hold", bundle: .module))
+            Text(viewModel.localizer.localize("commitmentHold.hold"))
                 .font(.subheadline.weight(.heavy))
                 .tracking(2.5)
                 .foregroundStyle(viewModel.colorPalette.textColor)

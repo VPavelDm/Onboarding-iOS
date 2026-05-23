@@ -125,9 +125,11 @@ struct FormulaStepView: View {
                 .font(.caption.weight(.medium))
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.5))
                 .frame(width: 70, alignment: .leading)
-            Text(row.value)
+                .lineLimit(1)
+            Text(viewModel.format(string: row.value))
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(viewModel.colorPalette.textColor)
+                .lineLimit(1)
             Spacer(minLength: 0)
         }
         .padding(.horizontal, 18)
