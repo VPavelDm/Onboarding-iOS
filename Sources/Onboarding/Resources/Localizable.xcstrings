@@ -60,12 +60,12 @@
       }
     },
     "commitmentHold.answerTitle" : {
-      "comment" : "Commitment hold step — answer title sent through OnboardingDelegate when the hold completes. Usually empty; the hold itself is the answer.",
+      "comment" : "Commitment hold step — answer title sent through OnboardingDelegate when the hold completes. The hold gesture itself is the answer, so this value is for downstream analytics rather than UI.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : ""
+            "value" : "Locked in"
           }
         }
       }
@@ -594,6 +594,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continue"
+          }
+        }
+      }
+    },
+    "survivalFunnel.title" : {
+      "comment" : "Survival funnel step — required, main heading above the funnel diagram.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Most learners quit before they get fluent."
+          }
+        }
+      }
+    },
+    "survivalFunnel.description" : {
+      "comment" : "Survival funnel step — optional supporting paragraph. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Out of every 100 people who start, only a few stick around."
+          }
+        }
+      }
+    },
+    "survivalFunnel.caption" : {
+      "comment" : "Survival funnel step — optional reassurance caption. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have to be one of the 94."
+          }
+        }
+      }
+    },
+    "survivalFunnel.answerTitle" : {
+      "comment" : "Survival funnel step — primary CTA button label, appears after the stages stagger in.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell me how it's different"
           }
         }
       }

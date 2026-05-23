@@ -155,6 +155,7 @@ struct ReceiptStepView: View {
 
     private func localized(_ key: String) -> String {
         let template = viewModel.localizer.localize(key)
+        guard template.contains("%d") else { return template }
         let days = viewModel.delegate.subscriptionInfo()?.trialDays ?? 3
         return String(format: template, days)
     }

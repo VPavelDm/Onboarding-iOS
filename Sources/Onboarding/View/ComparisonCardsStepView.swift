@@ -21,11 +21,18 @@ struct ComparisonCardsStepView: View {
         .padding(.bottom, 32)
         .task {
             appeared = true
-            try? await Task.sleep(for: .seconds(2.0))
+            try? await Task.sleep(for: .seconds(ctaAppearDelay))
             withAnimation(.easeOut(duration: 0.4)) {
                 showCTA = true
             }
         }
+    }
+
+    /// Matches `ComparisonWordCard`'s fade timing — 0.4 start + 0.3 per-position stagger + 0.7 fade duration.
+    private var ctaAppearDelay: Double {
+        let fadingCount = max(step.items.count - 1, 0)
+        let lastStaggerDelay = Double(max(fadingCount - 1, 0)) * 0.3
+        return 0.4 + lastStaggerDelay + 0.7
     }
 
     private var header: some View {

@@ -120,7 +120,7 @@ struct FloatingWordsStepView: View {
     // MARK: - Copy
 
     private var titleView: some View {
-        Text(viewModel.delegate.format(string: localized("floatingWords.title")))
+        Text(viewModel.format(string: localized("floatingWords.title")))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)

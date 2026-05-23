@@ -321,11 +321,8 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct SurvivalFunnelStep: Decodable {
-        let title: String
-        let description: String?
-        let caption: String?
         let stages: [Stage]
-        let answer: StepAnswer
+        let nextStepID: StepID?
 
         struct Stage: Decodable {
             let label: String

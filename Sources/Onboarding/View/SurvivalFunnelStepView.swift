@@ -132,7 +132,7 @@ struct SurvivalFunnelStepView: View {
     // MARK: - Copy
 
     private var titleView: some View {
-        Text(viewModel.delegate.format(string: step.title))
+        Text(viewModel.format(string: localized("survivalFunnel.title")))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -141,8 +141,9 @@ struct SurvivalFunnelStepView: View {
 
     @ViewBuilder
     private var descriptionView: some View {
-        if let description = step.description {
-            Text(description)
+        let text = localized("survivalFunnel.description")
+        if !text.isEmpty {
+            Text(text)
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -151,8 +152,9 @@ struct SurvivalFunnelStepView: View {
 
     @ViewBuilder
     private var captionView: some View {
-        if let caption = step.caption {
-            Text(caption)
+        let text = localized("survivalFunnel.caption")
+        if !text.isEmpty {
+            Text(text)
                 .multilineTextAlignment(.center)
                 .font(.footnote.italic())
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor.opacity(0.8))
@@ -161,11 +163,24 @@ struct SurvivalFunnelStepView: View {
 
     private var nextButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("survivalFunnel.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("survivalFunnel.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
     }
 }
 
