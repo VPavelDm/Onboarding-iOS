@@ -1,11 +1,8 @@
 import Foundation
 
 struct MilestoneTimelineStep: Sendable, Equatable, Hashable {
-    var title: String
-    var subtitle: String?
-    var floatingLabel: String?
     var milestones: [Milestone]
-    var answer: StepAnswer
+    var nextStepID: StepID?
 
     struct Milestone: Sendable, Equatable, Hashable {
         var label: String
@@ -18,9 +15,6 @@ extension MilestoneTimelineStep {
 
     init(response: OnboardingStepResponse.MilestoneTimelineStep, localizer: Localizer) {
         self.init(
-            title: response.title.localized(using: localizer),
-            subtitle: response.subtitle?.localized(using: localizer),
-            floatingLabel: response.floatingLabel?.localized(using: localizer),
             milestones: response.milestones.map {
                 Milestone(
                     label: $0.label.localized(using: localizer),
@@ -28,7 +22,7 @@ extension MilestoneTimelineStep {
                     delay: $0.delay
                 )
             },
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            nextStepID: response.nextStepID
         )
     }
 }

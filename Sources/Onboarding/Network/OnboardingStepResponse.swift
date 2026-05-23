@@ -238,11 +238,8 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct MilestoneTimelineStep: Decodable {
-        let title: String
-        let subtitle: String?
-        let floatingLabel: String?
         let milestones: [Milestone]
-        let answer: StepAnswer
+        let nextStepID: StepID?
 
         struct Milestone: Decodable {
             let label: String

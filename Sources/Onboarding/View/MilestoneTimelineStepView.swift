@@ -29,7 +29,7 @@ struct MilestoneTimelineStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(localized("milestoneTimeline.title"))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -38,8 +38,9 @@ struct MilestoneTimelineStepView: View {
 
     @ViewBuilder
     private var subtitleView: some View {
-        if let subtitle = step.subtitle {
-            Text(subtitle)
+        let text = localized("milestoneTimeline.subtitle")
+        if !text.isEmpty {
+            Text(text)
                 .font(.subheadline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .multilineTextAlignment(.center)
@@ -49,7 +50,7 @@ struct MilestoneTimelineStepView: View {
     private var timelineCard: some View {
         MilestoneTimeline(
             milestones: step.milestones,
-            floatingLabel: step.floatingLabel,
+            floatingLabel: localized("milestoneTimeline.floatingLabel"),
             triggered: triggered
         )
         .frame(height: 92)
@@ -60,11 +61,24 @@ struct MilestoneTimelineStepView: View {
 
     private var continueButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("milestoneTimeline.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("milestoneTimeline.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
     }
 }
 
@@ -88,7 +102,7 @@ private struct MilestoneTimeline: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     let milestones: [MilestoneTimelineStep.Milestone]
-    let floatingLabel: String?
+    let floatingLabel: String
     let triggered: Bool
 
     var body: some View {
@@ -154,22 +168,11 @@ private struct MilestoneTimeline: View {
 
     @ViewBuilder
     private var floatingChip: some View {
-        if let label = floatingLabel {
-            Text(label)
+        if !floatingLabel.isEmpty {
+            Text(floatingLabel)
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(viewModel.colorPalette.textColor)
-                .padding(.horizontal, 6)
-                .padding(.vertical, 2)
-                .background(
-                    viewModel.colorPalette.accentColor.opacity(0.22),
-                    in: Capsule()
-                )
-                .overlay(
-                    Capsule().strokeBorder(
-                        viewModel.colorPalette.accentColor.opacity(0.6),
-                        lineWidth: 0.5
-                    )
-                )
+                .accentChip(color: viewModel.colorPalette.accentColor)
         }
     }
 
@@ -178,4 +181,25 @@ private struct MilestoneTimeline: View {
             .fill(viewModel.colorPalette.accentColor)
             .frame(width: 9, height: 9)
     }
+}
+
+#Preview {
+    let sampleStep = MilestoneTimelineStep(
+        milestones: [
+            .init(label: "Day 1",  xRatio: 0.10, delay: 0.3),
+            .init(label: "Day 3",  xRatio: 0.32, delay: 0.6),
+            .init(label: "Day 7",  xRatio: 0.58, delay: 1.0),
+            .init(label: "Day 30", xRatio: 0.90, delay: 1.7)
+        ],
+        nextStepID: nil
+    )
+    let viewModel = OnboardingViewModel(
+        configuration: .testData(),
+        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
+        colorPalette: .testData
+    )
+    return MilestoneTimelineStepView(step: sampleStep)
+        .environmentObject(viewModel)
+        .background(MeshGradientBackground())
+        .preferredColorScheme(.dark)
 }
