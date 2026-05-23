@@ -1,5 +1,18 @@
 [
     {
+        "id": "survival_funnel_preview",
+        "type": "survivalFunnel",
+        "payload": {
+            "stages": [
+                { "label": "Day 1",  "count": 100, "dropoffLabel": "60 quit by Day 7" },
+                { "label": "Day 7",  "count": 40,  "dropoffLabel": "22 quit by Day 30" },
+                { "label": "Day 30", "count": 18,  "dropoffLabel": "12 fizzle by Day 90" },
+                { "label": "Day 90", "count": 6 }
+            ],
+            "nextStepID": "intro"
+        }
+    },
+    {
         "id": "intro",
         "type": "intro",
         "payload": {

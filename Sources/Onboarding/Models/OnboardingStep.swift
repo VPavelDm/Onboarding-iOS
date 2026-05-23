@@ -30,6 +30,14 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case weightPicker(WeightPickerStep)
         case agePicker(AgePickerStep)
         case custom(CustomStepParams)
+        case survivalFunnel(SurvivalFunnelStep)
+        case floatingWords(FloatingWordsStep)
+        case commitmentHold(CommitmentHoldStep)
+        case receipt(ReceiptStep)
+        case formula(FormulaStep)
+        case progressBars(ProgressBarsStep)
+        case milestoneTimeline(MilestoneTimelineStep)
+        case comparisonCards(ComparisonCardsStep)
         case unknown
     }
 }
@@ -78,6 +86,14 @@ extension OnboardingStep {
                     branches: payload?.branches ?? [:]
                 )
             )
+        case .survivalFunnel(let payload): .survivalFunnel(SurvivalFunnelStep(response: payload, localizer: localizer))
+        case .floatingWords(let payload): .floatingWords(FloatingWordsStep(response: payload, localizer: localizer))
+        case .commitmentHold(let payload): .commitmentHold(CommitmentHoldStep(response: payload, localizer: localizer))
+        case .receipt(let payload): .receipt(ReceiptStep(response: payload, localizer: localizer))
+        case .formula(let payload): .formula(FormulaStep(response: payload, localizer: localizer))
+        case .progressBars(let payload): .progressBars(ProgressBarsStep(response: payload, localizer: localizer))
+        case .milestoneTimeline(let payload): .milestoneTimeline(MilestoneTimelineStep(response: payload, localizer: localizer))
+        case .comparisonCards(let payload): .comparisonCards(ComparisonCardsStep(response: payload, localizer: localizer))
         default: .unknown
         }
 

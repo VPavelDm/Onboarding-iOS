@@ -77,6 +77,30 @@ struct OnboardingStepResponse: Decodable {
         case "custom":
             let payload = try container.decodeIfPresent(CustomStep.self, forKey: .payload)
             self.type = .custom(payload)
+        case "survivalFunnel":
+            let payload = try container.decode(SurvivalFunnelStep.self, forKey: .payload)
+            self.type = .survivalFunnel(payload)
+        case "floatingWords":
+            let payload = try container.decode(FloatingWordsStep.self, forKey: .payload)
+            self.type = .floatingWords(payload)
+        case "commitmentHold":
+            let payload = try container.decode(CommitmentHoldStep.self, forKey: .payload)
+            self.type = .commitmentHold(payload)
+        case "receipt":
+            let payload = try container.decode(ReceiptStep.self, forKey: .payload)
+            self.type = .receipt(payload)
+        case "formula":
+            let payload = try container.decode(FormulaStep.self, forKey: .payload)
+            self.type = .formula(payload)
+        case "progressBars":
+            let payload = try container.decode(ProgressBarsStep.self, forKey: .payload)
+            self.type = .progressBars(payload)
+        case "milestoneTimeline":
+            let payload = try container.decode(MilestoneTimelineStep.self, forKey: .payload)
+            self.type = .milestoneTimeline(payload)
+        case "comparisonCards":
+            let payload = try container.decode(ComparisonCardsStep.self, forKey: .payload)
+            self.type = .comparisonCards(payload)
         default:
             self.type = .unknown
         }
@@ -101,6 +125,14 @@ struct OnboardingStepResponse: Decodable {
         case weightPicker(WeightPickerStep)
         case agePicker(AgePickerStep)
         case custom(CustomStep?)
+        case survivalFunnel(SurvivalFunnelStep)
+        case floatingWords(FloatingWordsStep)
+        case commitmentHold(CommitmentHoldStep)
+        case receipt(ReceiptStep)
+        case formula(FormulaStep)
+        case progressBars(ProgressBarsStep)
+        case milestoneTimeline(MilestoneTimelineStep)
+        case comparisonCards(ComparisonCardsStep)
         case unknown
     }
 
@@ -164,6 +196,51 @@ struct OnboardingStepResponse: Decodable {
         let answer: StepAnswer
     }
 
+    struct CommitmentHoldStep: Decodable {
+        let commitmentNumber: String
+        let nextStepID: StepID?
+    }
+
+    struct ReceiptStep: Decodable {
+        let items: [String]
+        let nextStepID: StepID?
+    }
+
+    struct FormulaStep: Decodable {
+        let operandLeftNumber: String
+        let operandRightNumber: String
+        let resultNumber: String
+        let detailRows: [DetailRow]
+        let nextStepID: StepID?
+
+        struct DetailRow: Decodable {
+            let label: String
+            let value: String
+        }
+    }
+
+    struct ProgressBarsStep: Decodable {
+        let stepLabels: [String]
+        let nextStepID: StepID?
+    }
+
+    struct MilestoneTimelineStep: Decodable {
+        let milestones: [Milestone]
+        let nextStepID: StepID?
+
+        struct Milestone: Decodable {
+            let label: String
+            let xRatio: Double
+            let delay: Double
+        }
+    }
+
+    struct ComparisonCardsStep: Decodable {
+        let items: [String]
+        let highlightedIndex: Int
+        let nextStepID: StepID?
+    }
+
     struct EnterValueStep: Decodable {
         let title: String
         let description: String?
@@ -198,10 +275,8 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct WidgetStep: Decodable {
-        let title: String
-        let description: String
         let image: ImageResponse?
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct FeatureShowcaseStep: Decodable {
@@ -223,13 +298,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct SocialProofStep: Decodable {
         let image: ImageResponse
-        let welcomeHeadline: String
-        let welcomeSubheadline: String
-        let userReview: String
-        let stats: [StatItem]?
-        let message: String
-        let messageAuthor: String?
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct StatItem: Decodable {
@@ -243,17 +312,30 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct DiscountWheelStep: Decodable {
-        let title: String
-        var spinButtonTitle: String
-        var spinFootnote: String
-        var successTitle: String
-        var successDescription: String
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct CustomStep: Decodable {
         let nextStepID: StepID?
         let branches: [String: StepID]?
+    }
+
+    struct SurvivalFunnelStep: Decodable {
+        let stages: [Stage]
+        let nextStepID: StepID?
+
+        struct Stage: Decodable {
+            let label: String
+            let count: Int
+            let dropoffLabel: String?
+        }
+    }
+
+    struct FloatingWordsStep: Decodable {
+        let centralWord: String
+        let centralTranslation: String?
+        let floatingWords: [String]
+        let nextStepID: StepID?
     }
 
     struct StepAnswer: Decodable {

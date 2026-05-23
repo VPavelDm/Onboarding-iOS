@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Pavel Vaitsikhouski on 23.09.24.
 //
@@ -49,13 +49,16 @@ struct DiscountWheelStepView: View {
         )
         .discountWheelConfetti(throwConfetti: $throwConfetti)
         .sheet(isPresented: $showSuccessAlert) {
-            DiscountWheelSuccessView(isPresented: $showSuccessAlert, step: step)
-                .environmentObject(viewModel)
+            DiscountWheelSuccessView(
+                isPresented: $showSuccessAlert,
+                nextStepID: step.nextStepID
+            )
+            .environmentObject(viewModel)
         }
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(localized("discountWheel.title"))
             .font(.title)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
@@ -70,8 +73,7 @@ struct DiscountWheelStepView: View {
                 DiscountWheelLaunchButton(
                     progress: $progress,
                     pressed: $pressed,
-                    pressingProgress: $pressingProgress,
-                    step: step
+                    pressingProgress: $pressingProgress
                 )
                 explanationView
             }
@@ -105,11 +107,15 @@ struct DiscountWheelStepView: View {
     }
 
     private var explanationView: some View {
-        Text(step.spinFootnote)
+        Text(localized("discountWheel.spinFootnote"))
             .foregroundStyle(.white)
             .font(.footnote)
             .multilineTextAlignment(.center)
             .opacity(0.5)
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
     }
 
     private func initiateSuccessAlert() {

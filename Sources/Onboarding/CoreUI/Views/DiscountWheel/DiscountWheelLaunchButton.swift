@@ -9,16 +9,17 @@ import SwiftUI
 
 struct DiscountWheelLaunchButton: View {
 
+    @EnvironmentObject private var viewModel: OnboardingViewModel
+
     @State private var scaleFactor: CGFloat = 1
     @State private var pressedAt: Date?
 
     @Binding var progress: CGFloat
     @Binding var pressed: Bool
     @Binding var pressingProgress: Double
-    var step: DiscountWheelStep
 
     var body: some View {
-        Text(step.spinButtonTitle)
+        Text(viewModel.localizer.localize("discountWheel.spinButtonTitle"))
             .foregroundStyle(.white)
             .font(.system(size: 16, weight: .semibold))
             .padding()

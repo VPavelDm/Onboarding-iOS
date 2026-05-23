@@ -54,7 +54,7 @@ struct SocialProofView: View {
 
     private var headerSection: some View {
         VStack(spacing: 4) {
-            Text(step.welcomeHeadline)
+            Text(localized("socialProof.welcomeHeadline"))
                 .font(.headline)
                 .fontWeight(.semibold)
                 .textCase(.uppercase)
@@ -66,7 +66,7 @@ struct SocialProofView: View {
                 }
                 .foregroundStyle(viewModel.colorPalette.accentColor)
 
-            Text(step.welcomeSubheadline)
+            Text(localized("socialProof.welcomeSubheadline"))
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .apply { view in
@@ -86,7 +86,7 @@ struct SocialProofView: View {
             laurelView
             VStack(spacing: 8) {
                 starsView
-                Text(step.userReview)
+                Text(localized("socialProof.userReview"))
                     .font(.footnote)
                     .fontWeight(.medium)
                     .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -129,7 +129,7 @@ struct SocialProofView: View {
     // MARK: - Message Section
 
     private var messageSection: some View {
-        Text(step.message)
+        Text(localized("socialProof.message"))
             .font(.callout)
             .fontWeight(.regular)
             .italic()
@@ -148,11 +148,26 @@ struct SocialProofView: View {
 
     private var nextButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("socialProof.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+    }
+
+    // MARK: - Helpers
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("socialProof.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
     }
 
     // MARK: - Animation

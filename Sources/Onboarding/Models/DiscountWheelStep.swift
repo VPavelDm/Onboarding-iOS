@@ -8,12 +8,7 @@
 import Foundation
 
 struct DiscountWheelStep: Sendable, Equatable, Hashable {
-    var title: String
-    var spinButtonTitle: String
-    var spinFootnote: String
-    var successTitle: String
-    var successDescription: String
-    var answer: StepAnswer
+    var nextStepID: StepID?
 }
 
 // MARK: - Convert
@@ -21,13 +16,6 @@ struct DiscountWheelStep: Sendable, Equatable, Hashable {
 extension DiscountWheelStep {
 
     init(response: OnboardingStepResponse.DiscountWheelStep, localizer: Localizer) {
-        self.init(
-            title: response.title.localized(using: localizer),
-            spinButtonTitle: response.spinButtonTitle.localized(using: localizer),
-            spinFootnote: response.spinFootnote.localized(using: localizer),
-            successTitle: response.successTitle.localized(using: localizer),
-            successDescription: response.successDescription.localized(using: localizer),
-            answer: StepAnswer(response: response.answer, localizer: localizer)
-        )
+        self.init(nextStepID: response.nextStepID)
     }
 }

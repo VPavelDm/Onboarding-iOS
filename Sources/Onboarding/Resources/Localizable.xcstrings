@@ -4,6 +4,644 @@
     "" : {
 
     },
+    "commitmentHold.title" : {
+      "comment" : "Commitment hold step — required, main heading above the commitment card.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make it real."
+          }
+        }
+      }
+    },
+    "commitmentHold.subtitle" : {
+      "comment" : "Commitment hold step — optional subtitle. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold to lock in your daily promise."
+          }
+        }
+      }
+    },
+    "commitmentHold.prefix" : {
+      "comment" : "Commitment hold step — text shown above the commitment number (e.g. \"I promise to learn\"). Empty to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I promise to do"
+          }
+        }
+      }
+    },
+    "commitmentHold.suffix" : {
+      "comment" : "Commitment hold step — text shown next to the commitment number (e.g. \"reps\", \"German words\"). Empty to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "every day"
+          }
+        }
+      }
+    },
+    "commitmentHold.footer" : {
+      "comment" : "Commitment hold step — text shown below the commitment number (e.g. \"every single day.\"). Empty to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "no matter what."
+          }
+        }
+      }
+    },
+    "commitmentHold.answerTitle" : {
+      "comment" : "Commitment hold step — answer title sent through OnboardingDelegate when the hold completes. The hold gesture itself is the answer, so this value is for downstream analytics rather than UI.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Locked in"
+          }
+        }
+      }
+    },
+    "discountWheel.title" : {
+      "comment" : "Discount wheel step — required, headline above the spinning wheel.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spin to win your discount"
+          }
+        }
+      }
+    },
+    "discountWheel.spinButtonTitle" : {
+      "comment" : "Discount wheel step — required, label on the press-and-hold button to spin the wheel.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press & hold to spin"
+          }
+        }
+      }
+    },
+    "discountWheel.spinFootnote" : {
+      "comment" : "Discount wheel step — required, small explanatory text under the spin button.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release when your heart is ready."
+          }
+        }
+      }
+    },
+    "discountWheel.successTitle" : {
+      "comment" : "Discount wheel step — required, headline shown in the success sheet after a winning spin.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You won!"
+          }
+        }
+      }
+    },
+    "discountWheel.successDescription" : {
+      "comment" : "Discount wheel step — required, description in the success sheet. Supports the {discount_value} format token.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It's a one-time deal — don't miss it."
+          }
+        }
+      }
+    },
+    "discountWheel.answerTitle" : {
+      "comment" : "Discount wheel step — required, CTA on the success sheet that accepts the discount and continues.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claim it"
+          }
+        }
+      }
+    },
+    "socialProof.welcomeHeadline" : {
+      "comment" : "Social proof step — required, uppercase eyebrow line above the main headline (e.g. \"WELCOME ABOARD\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome aboard"
+          }
+        }
+      }
+    },
+    "socialProof.welcomeSubheadline" : {
+      "comment" : "Social proof step — required, main headline shown under the eyebrow line.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're in good company."
+          }
+        }
+      }
+    },
+    "socialProof.userReview" : {
+      "comment" : "Social proof step — required, short caption shown under the 5-star rating (e.g. \"Loved by 10,000+\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loved by thousands"
+          }
+        }
+      }
+    },
+    "socialProof.message" : {
+      "comment" : "Social proof step — required, the italic user review or message displayed beneath the rating.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"This actually fits into my day. Real change, real progress.\""
+          }
+        }
+      }
+    },
+    "socialProof.answerTitle" : {
+      "comment" : "Social proof step — required, CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "widget.title" : {
+      "comment" : "Widget step — required, headline above the phone mockup.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add the widget"
+          }
+        }
+      }
+    },
+    "widget.description" : {
+      "comment" : "Widget step — required, supporting copy explaining the value of adding the widget.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep your daily practice one glance away from your home screen."
+          }
+        }
+      }
+    },
+    "widget.answerTitle" : {
+      "comment" : "Widget step — required, CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Got it"
+          }
+        }
+      }
+    },
+    "floatingWords.title" : {
+      "comment" : "Floating words step — required, headline shown beneath the central word. Supports format tokens via OnboardingDelegate.format.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One word, everything around it"
+          }
+        }
+      }
+    },
+    "floatingWords.description" : {
+      "comment" : "Floating words step — optional, supporting paragraph. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each word arrives with the context that makes it stick."
+          }
+        }
+      }
+    },
+    "floatingWords.caption" : {
+      "comment" : "Floating words step — optional, smaller italic caption below the description. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "floatingWords.answerTitle" : {
+      "comment" : "Floating words step — required, CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "commitmentHold.hold" : {
+      "comment" : "Label on the inner button of the commitment-hold step before the user presses and holds. Short, all-caps, gesture-style.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HOLD"
+          }
+        }
+      }
+    },
+    "commitmentHold.hint" : {
+      "comment" : "Hint text below the commitment-hold button, instructing the user to press and hold.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press and hold"
+          }
+        }
+      }
+    },
+    "receipt.headerTitle" : {
+      "comment" : "Receipt step — brand name at the top of the receipt. Override with your app's brand in your Onboarding.strings.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ACME"
+          }
+        }
+      }
+    },
+    "receipt.headerSubtitle" : {
+      "comment" : "Receipt step — subtitle under the brand. %d is the trial day count, supplied by the OnboardingDelegate's subscriptionInfo(). Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PREMIUM · %d DAYS"
+          }
+        }
+      }
+    },
+    "receipt.itemValue" : {
+      "comment" : "Receipt step — value shown on the right of every item line. Universal for free trials.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FREE"
+          }
+        }
+      }
+    },
+    "receipt.total" : {
+      "comment" : "Receipt step — total label, shown right before the total value.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TOTAL"
+          }
+        }
+      }
+    },
+    "receipt.totalValue" : {
+      "comment" : "Receipt step — total value. Always zero for a free trial.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "$0.00"
+          }
+        }
+      }
+    },
+    "receipt.stamp" : {
+      "comment" : "Receipt step — accent-bordered stamp at the bottom of the receipt, signalling the trial is on the house.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "✓ ON THE HOUSE"
+          }
+        }
+      }
+    },
+    "receipt.disclaimer" : {
+      "comment" : "Receipt step — small disclaimer line beneath the CTA. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel anytime, in two taps."
+          }
+        }
+      }
+    },
+    "receipt.answerTitle" : {
+      "comment" : "Receipt step — primary CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start free trial"
+          }
+        }
+      }
+    },
+    "progressBars.title" : {
+      "comment" : "Progress bars step — main heading at the top of the loading screen.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizing your plan…"
+          }
+        }
+      }
+    },
+    "progressBars.creditNumber" : {
+      "comment" : "Progress bars step — required, big number in the credibility block (e.g. \"92%\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "92%"
+          }
+        }
+      }
+    },
+    "progressBars.creditDescription" : {
+      "comment" : "Progress bars step — required, description text in the credibility block, below the big number. Use \\n for line breaks.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "of users\nshow up tomorrow"
+          }
+        }
+      }
+    },
+    "progressBars.answerTitle" : {
+      "comment" : "Progress bars step — primary CTA button label, appears after all bars complete.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See my plan"
+          }
+        }
+      }
+    },
+    "milestoneTimeline.title" : {
+      "comment" : "Milestone timeline step — required, main heading above the timeline.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We catch you before you forget."
+          }
+        }
+      }
+    },
+    "milestoneTimeline.subtitle" : {
+      "comment" : "Milestone timeline step — optional subtitle below the title. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Each milestone arrives right when your memory is about to slip."
+          }
+        }
+      }
+    },
+    "milestoneTimeline.floatingLabel" : {
+      "comment" : "Milestone timeline step — optional chip text that floats above every marker on the timeline (e.g. the word/concept being tracked through the timeline). Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "habit"
+          }
+        }
+      }
+    },
+    "milestoneTimeline.answerTitle" : {
+      "comment" : "Milestone timeline step — primary CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tailor it for me"
+          }
+        }
+      }
+    },
+    "formula.title" : {
+      "comment" : "Formula step — required, main heading above the equation card.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your plan."
+          }
+        }
+      }
+    },
+    "formula.subtitle" : {
+      "comment" : "Formula step — optional subtitle below the title. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Built around what you told us."
+          }
+        }
+      }
+    },
+    "formula.operandLeftLabel" : {
+      "comment" : "Formula step — required, small label below the left operand number (e.g. \"per day\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "per day"
+          }
+        }
+      }
+    },
+    "formula.operandSymbol" : {
+      "comment" : "Formula step — required, math symbol between the two operands (e.g. \"×\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "×"
+          }
+        }
+      }
+    },
+    "formula.operandRightLabel" : {
+      "comment" : "Formula step — required, small label below the right operand number (e.g. \"days\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "days"
+          }
+        }
+      }
+    },
+    "formula.resultLabel" : {
+      "comment" : "Formula step — required, small label below the result number (e.g. \"a year\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "a year"
+          }
+        }
+      }
+    },
+    "formula.answerTitle" : {
+      "comment" : "Formula step — primary CTA button label.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "comparisonCards.title" : {
+      "comment" : "Comparison cards step — required, main heading above the two cards.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Same items, different outcomes."
+          }
+        }
+      }
+    },
+    "comparisonCards.subtitle" : {
+      "comment" : "Comparison cards step — optional subtitle. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch how the picture changes."
+          }
+        }
+      }
+    },
+    "comparisonCards.leftLabel" : {
+      "comment" : "Comparison cards step — required, label on the left card (e.g. \"BEFORE\", \"MON\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BEFORE"
+          }
+        }
+      }
+    },
+    "comparisonCards.rightLabel" : {
+      "comment" : "Comparison cards step — required, label on the right card (e.g. \"AFTER\", \"FRI\").",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AFTER"
+          }
+        }
+      }
+    },
+    "comparisonCards.answerTitle" : {
+      "comment" : "Comparison cards step — primary CTA button label, appears after the fade animation completes.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
+    "survivalFunnel.title" : {
+      "comment" : "Survival funnel step — required, main heading above the funnel diagram.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Most learners quit before they get fluent."
+          }
+        }
+      }
+    },
+    "survivalFunnel.description" : {
+      "comment" : "Survival funnel step — optional supporting paragraph. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Out of every 100 people who start, only a few stick around."
+          }
+        }
+      }
+    },
+    "survivalFunnel.caption" : {
+      "comment" : "Survival funnel step — optional reassurance caption. Pass an empty string to hide.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have to be one of the 94."
+          }
+        }
+      }
+    },
+    "survivalFunnel.answerTitle" : {
+      "comment" : "Survival funnel step — primary CTA button label, appears after the stages stagger in.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell me how it's different"
+          }
+        }
+      }
+    },
     "%@" : {
       "comment" : "A centered, italicized text view displaying a message attributed to a specific author. The text is followed by a smaller, bolded text view displaying the author's name.",
       "isCommentAutoGenerated" : true
@@ -35,6 +673,10 @@
           }
         }
       }
+    },
+    "%lld" : {
+      "comment" : "A label displaying the number of steps completed in a survival funnel stage. The argument is the step count.",
+      "isCommentAutoGenerated" : true
     },
     "%lld %@" : {
       "comment" : "A text view displaying a number followed by a unit of measurement. The first argument is the number. The second argument is the unit of measurement.",
@@ -144,6 +786,10 @@
           }
         }
       }
+    },
+    "der Hund" : {
+      "comment" : "A German word for \"the dog\".",
+      "isCommentAutoGenerated" : true
     },
     "Feet" : {
       "comment" : "A label for the feet component of the height picker.",
@@ -290,6 +936,10 @@
           }
         }
       }
+    },
+    "the dog" : {
+      "comment" : "The translation of \"der Hund\" (the dog) into the user's language.",
+      "isCommentAutoGenerated" : true
     },
     "Weight" : {
       "comment" : "A picker to select a user's weight in kilograms.",

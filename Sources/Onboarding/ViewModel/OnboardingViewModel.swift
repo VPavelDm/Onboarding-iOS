@@ -27,6 +27,7 @@ final class OnboardingViewModel: ObservableObject {
     let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
     let colorPalette: any ColorPalette
+    let localizer: Localizer
 
     var finishProgress: AnyPublisher<Void, Never> {
         Publishers.CombineLatest(progressSubject, progressButtonSubject)
@@ -41,6 +42,7 @@ final class OnboardingViewModel: ObservableObject {
         self.delegate = delegate
         self.service = OnboardingService(configuration: configuration)
         self.colorPalette = colorPalette
+        self.localizer = Localizer(bundle: configuration.bundle, tableName: configuration.tableName)
     }
 
     // MARK: - Intents
