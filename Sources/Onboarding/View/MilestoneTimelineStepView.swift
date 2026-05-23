@@ -5,6 +5,7 @@ struct MilestoneTimelineStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var triggered = false
+    @State private var showCTA = false
 
     let step: MilestoneTimelineStep
 
@@ -18,7 +19,14 @@ struct MilestoneTimelineStepView: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 32)
-        .onAppear { triggered = true }
+        .task {
+            triggered = true
+            let lastDelay = step.milestones.map(\.delay).max() ?? 0
+            try? await Task.sleep(for: .seconds(lastDelay + 0.4))
+            withAnimation(.easeOut(duration: 0.4)) {
+                showCTA = true
+            }
+        }
     }
 
     private var header: some View {
@@ -66,6 +74,8 @@ struct MilestoneTimelineStepView: View {
             Text(localized("milestoneTimeline.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .opacity(showCTA ? 1 : 0)
+        .offset(y: showCTA ? 0 : 16)
     }
 
     private func localized(_ key: String) -> String {
