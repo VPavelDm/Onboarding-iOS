@@ -13,7 +13,7 @@ final class MockOnboardingDelegate: OnboardingDelegate {
 
     init(
         onAnswerCallback: @escaping () -> Void,
-        subscriptionInfo: SubscriptionInfo? = SubscriptionInfo(trialDays: 7)
+        subscriptionInfo: SubscriptionInfo? = SubscriptionInfo(trialDays: 3)
     ) {
         self.onAnswerCallback = onAnswerCallback
         self.mockSubscriptionInfo = subscriptionInfo

@@ -155,7 +155,7 @@ struct ReceiptStepView: View {
 
     private func localized(_ key: String) -> String {
         let template = viewModel.localizer.localize(key)
-        let days = viewModel.delegate.subscriptionInfo()?.trialDays ?? 7
+        let days = viewModel.delegate.subscriptionInfo()?.trialDays ?? 3
         return String(format: template, days)
     }
 
