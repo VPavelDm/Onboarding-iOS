@@ -233,11 +233,8 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct ProgressBarsStep: Decodable {
-        let title: String
         let stepLabels: [String]
-        let creditNumber: String?
-        let creditDescription: [String]
-        let answer: StepAnswer
+        let nextStepID: StepID?
     }
 
     struct MilestoneTimelineStep: Decodable {

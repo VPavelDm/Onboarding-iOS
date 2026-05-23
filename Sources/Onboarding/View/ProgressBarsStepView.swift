@@ -14,8 +14,8 @@ struct ProgressBarsStepView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Spacer().frame(height: 60)
             title
+                .padding(.top, 60)
                 .padding(.bottom, 48)
             stepsList
             Spacer()
@@ -33,7 +33,7 @@ struct ProgressBarsStepView: View {
     }
 
     private var title: some View {
-        Text(step.title)
+        Text(localized("progressBars.title"))
             .font(.system(size: 32, weight: .bold))
             .foregroundStyle(viewModel.colorPalette.textColor)
             .multilineTextAlignment(.leading)
@@ -76,17 +76,14 @@ struct ProgressBarsStepView: View {
                     .frame(width: proxy.size.width * progress)
             }
         }
-        .frame(height: 12)
+        .frame(height: 8)
     }
 
-    @ViewBuilder
     private var credibilityBlock: some View {
-        if step.creditNumber != nil || !step.creditDescription.isEmpty {
-            HStack(spacing: 16) {
-                laurel(.leading)
-                creditText
-                laurel(.trailing)
-            }
+        HStack(spacing: 16) {
+            laurel(.leading)
+            creditText
+            laurel(.trailing)
         }
     }
 
@@ -98,29 +95,39 @@ struct ProgressBarsStepView: View {
 
     private var creditText: some View {
         VStack(spacing: 2) {
-            if let number = step.creditNumber {
-                Text(number)
-                    .font(.system(size: 36, weight: .bold, design: .rounded))
-                    .foregroundStyle(viewModel.colorPalette.textColor)
-            }
-            ForEach(step.creditDescription.indices, id: \.self) { index in
-                Text(step.creditDescription[index])
-                    .font(.callout)
-                    .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.7))
-            }
+            Text(localized("progressBars.creditNumber"))
+                .font(.system(size: 36, weight: .bold, design: .rounded))
+                .foregroundStyle(viewModel.colorPalette.textColor)
+            Text(localized("progressBars.creditDescription"))
+                .font(.callout)
+                .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.7))
+                .multilineTextAlignment(.center)
         }
     }
 
     private var continueButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("progressBars.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .opacity(isComplete ? 1 : 0)
         .offset(y: isComplete ? 0 : 20)
         .animation(.easeOut(duration: 0.4), value: isComplete)
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("progressBars.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
     }
 
     private func runProgress() async {
@@ -137,4 +144,25 @@ struct ProgressBarsStepView: View {
     private enum LaurelDirection {
         case leading, trailing
     }
+}
+
+#Preview {
+    let sampleStep = ProgressBarsStep(
+        stepLabels: [
+            "Mapping your level and goals",
+            "Picking words from your topics",
+            "Tuning exercises to your style",
+            "Locking in your daily reminder"
+        ],
+        nextStepID: nil
+    )
+    let viewModel = OnboardingViewModel(
+        configuration: .testData(),
+        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
+        colorPalette: .testData
+    )
+    return ProgressBarsStepView(step: sampleStep)
+        .environmentObject(viewModel)
+        .background(MeshGradientBackground())
+        .preferredColorScheme(.dark)
 }
