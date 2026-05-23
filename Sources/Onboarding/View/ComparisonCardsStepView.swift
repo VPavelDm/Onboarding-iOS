@@ -5,6 +5,7 @@ struct ComparisonCardsStepView: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
     @State private var appeared = false
+    @State private var showCTA = false
 
     let step: ComparisonCardsStep
 
@@ -18,7 +19,13 @@ struct ComparisonCardsStepView: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 32)
-        .onAppear { appeared = true }
+        .task {
+            appeared = true
+            try? await Task.sleep(for: .seconds(2.0))
+            withAnimation(.easeOut(duration: 0.4)) {
+                showCTA = true
+            }
+        }
     }
 
     private var header: some View {
@@ -29,7 +36,7 @@ struct ComparisonCardsStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(localized("comparisonCards.title"))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -38,8 +45,9 @@ struct ComparisonCardsStepView: View {
 
     @ViewBuilder
     private var subtitleView: some View {
-        if let subtitle = step.subtitle {
-            Text(subtitle)
+        let text = localized("comparisonCards.subtitle")
+        if !text.isEmpty {
+            Text(text)
                 .font(.subheadline)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .multilineTextAlignment(.center)
@@ -48,10 +56,15 @@ struct ComparisonCardsStepView: View {
 
     private var cardsRow: some View {
         HStack(spacing: 8) {
-            ComparisonWordCard(card: step.leftCard, highlightedIndex: nil)
+            ComparisonWordCard(
+                label: localized("comparisonCards.leftLabel"),
+                items: step.items,
+                highlightedIndex: nil
+            )
             arrowImage
             ComparisonWordCard(
-                card: step.rightCard,
+                label: localized("comparisonCards.rightLabel"),
+                items: step.items,
                 highlightedIndex: appeared ? step.highlightedIndex : nil
             )
         }
@@ -65,18 +78,34 @@ struct ComparisonCardsStepView: View {
 
     private var continueButton: some View {
         AsyncButton {
-            await viewModel.onAnswer(answers: [step.answer])
+            await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
-            Text(step.answer.title)
+            Text(localized("comparisonCards.answerTitle"))
         }
         .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .opacity(showCTA ? 1 : 0)
+        .offset(y: showCTA ? 0 : 16)
+    }
+
+    private func localized(_ key: String) -> String {
+        viewModel.localizer.localize(key)
+    }
+
+    private func makeAnswer() -> StepAnswer {
+        StepAnswer(
+            title: localized("comparisonCards.answerTitle"),
+            icon: nil,
+            nextStepID: step.nextStepID,
+            payload: nil
+        )
     }
 }
 
 private struct ComparisonWordCard: View {
     @EnvironmentObject private var viewModel: OnboardingViewModel
 
-    let card: ComparisonCardsStep.Card
+    let label: String
+    let items: [String]
     let highlightedIndex: Int?
 
     var body: some View {
@@ -90,7 +119,7 @@ private struct ComparisonWordCard: View {
     }
 
     private var labelView: some View {
-        Text(card.label)
+        Text(label)
             .font(.caption.weight(.semibold))
             .foregroundStyle(viewModel.colorPalette.accentColor)
             .tracking(1.5)
@@ -98,7 +127,7 @@ private struct ComparisonWordCard: View {
 
     private var itemsList: some View {
         VStack(alignment: .leading, spacing: 6) {
-            ForEach(Array(card.items.enumerated()), id: \.offset) { index, item in
+            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                 Text(item)
                     .font(.subheadline)
                     .foregroundStyle(viewModel.colorPalette.textColor)
@@ -127,4 +156,27 @@ private struct ComparisonWordCard: View {
         let positionInFadeOrder = index < highlightedIndex ? index : index - 1
         return 0.4 + Double(positionInFadeOrder) * 0.3
     }
+}
+
+#Preview {
+    let sampleStep = ComparisonCardsStep(
+        items: [
+            "die Erfahrung",
+            "entscheiden",
+            "trotzdem",
+            "die Gewohnheit",
+            "verbessern"
+        ],
+        highlightedIndex: 2,
+        nextStepID: nil
+    )
+    let viewModel = OnboardingViewModel(
+        configuration: .testData(),
+        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
+        colorPalette: .testData
+    )
+    return ComparisonCardsStepView(step: sampleStep)
+        .environmentObject(viewModel)
+        .background(MeshGradientBackground())
+        .preferredColorScheme(.dark)
 }

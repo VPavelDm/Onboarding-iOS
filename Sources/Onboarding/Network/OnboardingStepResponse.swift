@@ -241,17 +241,9 @@ struct OnboardingStepResponse: Decodable {
     }
 
     struct ComparisonCardsStep: Decodable {
-        let title: String
-        let subtitle: String?
-        let leftCard: Card
-        let rightCard: Card
-        let highlightedIndex: Int?
-        let answer: StepAnswer
-
-        struct Card: Decodable {
-            let label: String
-            let items: [String]
-        }
+        let items: [String]
+        let highlightedIndex: Int
+        let nextStepID: StepID?
     }
 
     struct EnterValueStep: Decodable {
