@@ -28,6 +28,10 @@ final class OnboardingViewModel: ObservableObject {
     let configuration: OnboardingConfiguration
     let colorPalette: any ColorPalette
 
+    var localizer: Localizer {
+        Localizer(bundle: configuration.bundle, tableName: configuration.tableName)
+    }
+
     var finishProgress: AnyPublisher<Void, Never> {
         Publishers.CombineLatest(progressSubject, progressButtonSubject)
             .map { _ in Void() }

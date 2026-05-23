@@ -86,6 +86,21 @@ struct OnboardingStepResponse: Decodable {
         case "commitmentHold":
             let payload = try container.decode(CommitmentHoldStep.self, forKey: .payload)
             self.type = .commitmentHold(payload)
+        case "receipt":
+            let payload = try container.decode(ReceiptStep.self, forKey: .payload)
+            self.type = .receipt(payload)
+        case "formula":
+            let payload = try container.decode(FormulaStep.self, forKey: .payload)
+            self.type = .formula(payload)
+        case "progressBars":
+            let payload = try container.decode(ProgressBarsStep.self, forKey: .payload)
+            self.type = .progressBars(payload)
+        case "milestoneTimeline":
+            let payload = try container.decode(MilestoneTimelineStep.self, forKey: .payload)
+            self.type = .milestoneTimeline(payload)
+        case "comparisonCards":
+            let payload = try container.decode(ComparisonCardsStep.self, forKey: .payload)
+            self.type = .comparisonCards(payload)
         default:
             self.type = .unknown
         }
@@ -113,6 +128,11 @@ struct OnboardingStepResponse: Decodable {
         case survivalFunnel(SurvivalFunnelStep)
         case floatingWords(FloatingWordsStep)
         case commitmentHold(CommitmentHoldStep)
+        case receipt(ReceiptStep)
+        case formula(FormulaStep)
+        case progressBars(ProgressBarsStep)
+        case milestoneTimeline(MilestoneTimelineStep)
+        case comparisonCards(ComparisonCardsStep)
         case unknown
     }
 
@@ -184,6 +204,68 @@ struct OnboardingStepResponse: Decodable {
         let commitmentSuffix: String?
         let commitmentFooter: String?
         let answer: StepAnswer
+    }
+
+    struct ReceiptStep: Decodable {
+        let items: [String]
+        let nextStepID: StepID?
+    }
+
+    struct FormulaStep: Decodable {
+        let title: String
+        let subtitle: String?
+        let operandLeft: Operand
+        let operandSymbol: String
+        let operandRight: Operand
+        let result: Operand
+        let detailRows: [DetailRow]
+        let answer: StepAnswer
+
+        struct Operand: Decodable {
+            let number: String
+            let label: String
+        }
+
+        struct DetailRow: Decodable {
+            let label: String
+            let value: String
+        }
+    }
+
+    struct ProgressBarsStep: Decodable {
+        let title: String
+        let stepLabels: [String]
+        let creditNumber: String?
+        let creditDescription: [String]
+        let answer: StepAnswer
+    }
+
+    struct MilestoneTimelineStep: Decodable {
+        let title: String
+        let subtitle: String?
+        let floatingLabel: String?
+        let milestones: [Milestone]
+        let answer: StepAnswer
+
+        struct Milestone: Decodable {
+            let label: String
+            let xRatio: Double
+            let delay: Double
+        }
+    }
+
+    struct ComparisonCardsStep: Decodable {
+        let title: String
+        let subtitle: String?
+        let leftCard: Card
+        let rightCard: Card
+        let highlightedIndex: Int?
+        let answer: StepAnswer
+
+        struct Card: Decodable {
+            let label: String
+            let items: [String]
+        }
     }
 
     struct EnterValueStep: Decodable {

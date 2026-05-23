@@ -9,12 +9,21 @@ import Foundation
 
 final class MockOnboardingDelegate: OnboardingDelegate {
     var onAnswerCallback: () -> Void
+    var mockSubscriptionInfo: SubscriptionInfo?
 
-    init(onAnswerCallback: @escaping () -> Void) {
+    init(
+        onAnswerCallback: @escaping () -> Void,
+        subscriptionInfo: SubscriptionInfo? = SubscriptionInfo(trialDays: 7)
+    ) {
         self.onAnswerCallback = onAnswerCallback
+        self.mockSubscriptionInfo = subscriptionInfo
     }
 
     func onAnswer(userAnswer: UserAnswer, allAnswers: [UserAnswer]) {
         onAnswerCallback()
+    }
+
+    func subscriptionInfo() -> SubscriptionInfo? {
+        mockSubscriptionInfo
     }
 }

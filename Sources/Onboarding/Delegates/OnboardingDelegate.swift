@@ -12,6 +12,7 @@ public protocol OnboardingDelegate {
     func format(string: String) -> String
     func onAnswer(userAnswer: UserAnswer, allAnswers: [UserAnswer]) async
     func routing(forStepID stepID: StepID) async -> StepRouting
+    func subscriptionInfo() -> SubscriptionInfo?
 }
 
 /// How the onboarding flow controller should handle entering a step.
@@ -35,4 +36,6 @@ public extension OnboardingDelegate {
     }
 
     func routing(forStepID stepID: StepID) async -> StepRouting { .show }
+
+    func subscriptionInfo() -> SubscriptionInfo? { nil }
 }
