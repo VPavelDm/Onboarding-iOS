@@ -23,6 +23,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     @State private var actions: [Action]
     private var fetchSubscriptionStatus: () async throws -> Void
     private var trackEvent: (String) -> Void
+    private var showsCloseButton: Bool
 
     public init(
         showBuySubscriptionButton: Bool,
@@ -34,7 +35,8 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         paywall: @escaping (Binding<Bool>) -> PaywallScreen = { _ in EmptyView() },
         actions: [Action] = [],
         fetchSubscriptionStatus: @escaping () async throws -> Void = {},
-        trackEvent: @escaping (String) -> Void
+        trackEvent: @escaping (String) -> Void,
+        showsCloseButton: Bool = true
     ) {
         self.showBuySubscriptionButton = showBuySubscriptionButton
         self.appLink = appLink
@@ -46,6 +48,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         self._actions = State(initialValue: actions)
         self.fetchSubscriptionStatus = fetchSubscriptionStatus
         self.trackEvent = trackEvent
+        self.showsCloseButton = showsCloseButton
     }
 
     public var body: some View {
@@ -74,7 +77,9 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
                 }
             }
             .toolbar {
-                closeButton
+                if showsCloseButton {
+                    closeButton
+                }
             }
             .navigationTitle("Profile")
             .sheet(isPresented: $showPaywall) {
