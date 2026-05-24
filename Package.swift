@@ -38,7 +38,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0"),
-        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS.git", from: "3.5.0")
+        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS.git", from: "3.17.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.

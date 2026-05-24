@@ -92,7 +92,7 @@ public struct PaywallHostView: View {
                     "id": id
                 ])
             }
-        case .openURL(let url):
+        case .openURL(let url, _):
             viewModel.delegate?.track(event: "open_url_button_tapped", parameters: ["placement_id": viewModel.placementID])
             UIApplication.shared.open(url)
         }
