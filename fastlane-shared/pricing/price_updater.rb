@@ -7,6 +7,7 @@ require "base64"
 module AppStorePricing
   API_BASE = "https://api.appstoreconnect.apple.com".freeze
   INDEXES_DIR = File.expand_path("indexes", __dir__).freeze
+  FX_API_URL = "https://open.er-api.com/v6/latest/USD".freeze
   UI = FastlaneCore::UI
 
   module_function
@@ -62,10 +63,11 @@ module AppStorePricing
     end
   end
 
-  def update(api_key_path:, app_bundle_id:, product_id:, base_usd:, index: "ppp", dry_run: true)
+  def update(api_key_path:, app_bundle_id:, product_id:, base_usd:, index: "ppp", dry_run: true, mode: "tier")
     ensure_token(api_key_path)
 
     multipliers = load_index(index)
+    fx_rates = mode == "fx" ? fetch_fx_rates : nil
 
     UI.message("Resolving subscription #{product_id} in #{app_bundle_id}…")
     sub_id = find_subscription_id(app_bundle_id, product_id)
@@ -75,8 +77,11 @@ module AppStorePricing
     usa_points = fetch_price_points(sub_id, "USA")
     UI.user_error!("No USA price points returned — cannot anchor.") if usa_points.empty?
 
-    UI.message("Computing per-territory proposals (#{multipliers.size} territories, parallel)…")
-    proposals, skipped = compute_proposals_parallel(sub_id, usa_points, multipliers, base_usd)
+    UI.message("Computing per-territory proposals (#{multipliers.size} territories, parallel, mode=#{mode})…")
+    proposals, skipped = compute_proposals_parallel(
+      sub_id, usa_points, multipliers, base_usd,
+      mode: mode, fx_rates: fx_rates
+    )
 
     print_table(proposals)
     unless skipped.empty?
@@ -135,6 +140,33 @@ module AppStorePricing
     data = raw["data"]
     UI.user_error!("Malformed index '#{name}': missing 'data' object") if data.nil? || data.empty?
     data
+  end
+
+  # === FX rates ===
+
+  # Fetches live USD-base FX rates from open.er-api.com (free, no key, ~160
+  # currencies). Used by mode:fx to convert the PPP-adjusted USD target into
+  # local currency before snapping to the nearest App Store tier — this
+  # bypasses Apple's cross-market tier mapping, which bakes in its own
+  # implicit PPP for many currencies (KZT, INR, BRL…).
+  def fetch_fx_rates
+    UI.message("Fetching live USD FX rates from open.er-api.com…")
+    uri = URI(FX_API_URL)
+    res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(Net::HTTP::Get.new(uri))
+    end
+    UI.user_error!("FX fetch failed: #{res.code} #{res.message}") unless res.is_a?(Net::HTTPSuccess)
+
+    body = JSON.parse(res.body)
+    if body["result"] != "success"
+      UI.user_error!("FX fetch failed: #{body['error-type'] || 'unknown error'}")
+    end
+
+    rates = body["rates"]
+    UI.user_error!("FX response missing 'rates'") if rates.nil? || rates.empty?
+
+    UI.success("Loaded #{rates.size} FX rates (as of #{body['time_last_update_utc']})")
+    rates
   end
 
   # === HTTP ===
@@ -266,7 +298,7 @@ module AppStorePricing
   # needs one HTTP fetch (the territory's full price-point list); doing them
   # serially for ~100 territories takes minutes. Threads + Net::HTTP release
   # the GIL on I/O so parallelism scales linearly until the ASC API rate-limits.
-  def compute_proposals_parallel(sub_id, usa_points, multipliers, base_usd, concurrency: 4)
+  def compute_proposals_parallel(sub_id, usa_points, multipliers, base_usd, mode: "tier", fx_rates: nil, concurrency: 4)
     queue = Queue.new
     multipliers.each_pair { |t, m| queue << [t, m] }
 
@@ -292,21 +324,31 @@ module AppStorePricing
             if territory_points.empty?
               results_mutex.synchronize { skipped << [territory, "no points in territory"] }
             else
-              anchor_tier = decode_tier(anchor[:id])
-              equivalent = territory_points.find { |pp| decode_tier(pp[:id]) == anchor_tier } ||
-                           nearest_price_point(territory_points, target_usd)
-              selected = snap_to_psych_price(equivalent, territory_points)
+              equivalent, reason = select_equivalent(
+                mode: mode,
+                anchor: anchor,
+                territory_points: territory_points,
+                target_usd: target_usd,
+                currency: currency,
+                fx_rates: fx_rates
+              )
 
-              results_mutex.synchronize do
-                proposals << {
-                  territory: territory,
-                  multiplier: multiplier,
-                  target_usd: target_usd,
-                  anchor_usd: anchor[:price].to_f,
-                  local_price: selected[:price],
-                  local_currency: currency,
-                  price_point_id: selected[:id]
-                }
+              if equivalent.nil?
+                results_mutex.synchronize { skipped << [territory, reason] }
+              else
+                selected = snap_to_psych_price(equivalent, territory_points)
+
+                results_mutex.synchronize do
+                  proposals << {
+                    territory: territory,
+                    multiplier: multiplier,
+                    target_usd: target_usd,
+                    anchor_usd: anchor[:price].to_f,
+                    local_price: selected[:price],
+                    local_currency: currency,
+                    price_point_id: selected[:id]
+                  }
+                end
               end
             end
           end
@@ -321,6 +363,33 @@ module AppStorePricing
 
     workers.each(&:join)
     [proposals, skipped]
+  end
+
+  # Pick the territory price point that should anchor the proposal.
+  # - tier mode: match Apple's cross-market tier id (decode_tier). Inherits
+  #   Apple's per-market price adjustments — e.g. a USA $22.99 tier maps to
+  #   ₸3,550 in KAZ because that is how Apple grades the tier locally.
+  # - fx mode: convert target_usd to local currency via live FX, then pick
+  #   the nearest local tier. Ignores Apple's mapping; gives prices that
+  #   track real exchange rates.
+  def select_equivalent(mode:, anchor:, territory_points:, target_usd:, currency:, fx_rates:)
+    case mode
+    when "tier"
+      anchor_tier = decode_tier(anchor[:id])
+      eq = territory_points.find { |pp| decode_tier(pp[:id]) == anchor_tier } ||
+           nearest_price_point(territory_points, target_usd)
+      [eq, nil]
+    when "fx"
+      rate = fx_rates && fx_rates[currency]
+      if rate.nil?
+        [nil, "no fx rate for #{currency}"]
+      else
+        local_target = target_usd * rate.to_f
+        [nearest_price_point(territory_points, local_target), nil]
+      end
+    else
+      UI.user_error!("Unknown mode: #{mode} (expected 'tier' or 'fx')")
+    end
   end
 
   # Snap the equivalent's local price to the nearest psych endpoint

@@ -98,11 +98,13 @@ platform :ios do
   desc "Optional:"
   desc "  index     Index name in fastlane-shared/pricing/indexes/ (default: ppp)"
   desc "  dry_run   Print proposed changes without applying (default: true)"
+  desc "  mode      'tier' (Apple cross-market tier match, default) or 'fx' (PPP-adjusted USD × live FX rate)"
   desc ""
   desc "Examples:"
   desc "  fastlane update_subscription_prices                                  # interactive"
   desc "  fastlane update_subscription_prices product:com.x.prime.monthly base_usd:9.99"
   desc "  fastlane update_subscription_prices product:com.x.prime.monthly base_usd:9.99 dry_run:false"
+  desc "  fastlane update_subscription_prices product:com.x.prime.monthly base_usd:9.99 mode:fx"
   lane :update_subscription_prices do |options|
     require_relative "pricing/price_updater"
 
@@ -139,6 +141,8 @@ platform :ios do
 
       index = options[:index] || "ppp"
       dry_run = options[:dry_run].to_s.downcase != "false"
+      mode = (options[:mode] || "tier").to_s.downcase
+      UI.user_error!("mode must be 'tier' or 'fx' (got #{mode})") unless %w[tier fx].include?(mode)
 
       AppStorePricing.update(
         api_key_path: API_KEY_PATH,
@@ -146,7 +150,8 @@ platform :ios do
         product_id: product,
         base_usd: base_usd,
         index: index,
-        dry_run: dry_run
+        dry_run: dry_run,
+        mode: mode
       )
     end
   end
