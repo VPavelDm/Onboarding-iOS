@@ -6,7 +6,7 @@ metadata pushes, release submission, and per-territory subscription pricing.
 ## Lanes
 
 - `push_metadata` — push App Store Connect metadata only (no binary, no screenshots)
-- `submit_release` — submit latest build for review, tag the release, bump marketing version, push
+- `submit_release` — create release branch + tag, wait for Xcode Cloud's build to finish processing, submit for review, bump marketing version on main
 - `update_subscription_prices` — interactive flow to update display names and per-territory subscription prices, snapped to psychological endpoints (`X-1.99` / `X.49` / `X.99`)
 
 Run `bundle exec fastlane lanes` from a consuming project for full descriptions.
@@ -91,7 +91,7 @@ Should list `push_metadata`, `submit_release`, `update_subscription_prices`.
 | Lane | Requires |
 |---|---|
 | `push_metadata` | `fastlane/metadata/` populated (step 5 above) |
-| `submit_release` | Steps 1–6 complete. Exactly one `.xcodeproj` next to the fastlane dir (or pass `xcodeproj:` and `target:` explicitly). A reviewable build already uploaded to ASC. Non-empty `release_notes.txt` for the version being shipped |
+| `submit_release` | Steps 1–6 complete. Exactly one `.xcodeproj` next to the fastlane dir (or pass `xcodeproj:` and `target:` explicitly). Xcode Cloud workflow configured to build on push to `release/*` and upload to ASC (the lane pushes the release branch to trigger it, then waits for the build to finish processing). Non-empty `release_notes.txt` for the version being shipped. `gh` CLI installed and authenticated (used on re-submission to open a backport PR from the release branch to `main`) |
 | `update_subscription_prices` | Subscription created in ASC with at least USA pricing set |
 
 ## Environment variables

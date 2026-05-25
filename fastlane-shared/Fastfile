@@ -36,7 +36,7 @@ platform :ios do
     )
   end
 
-  desc "Submit the latest build for review, tag the release, bump versions for the next cycle, and push"
+  desc "Create release/v<version> branch and v<version> tag, push them (triggering Xcode Cloud to build), wait for the new build to finish processing on ASC, submit it for review, then bump main for the next cycle. Re-running from an existing release/v<version> branch cancels the pending review submission, pushes new fix commits (triggering a new Xcode Cloud build), waits, and resubmits — without re-creating the branch or bumping the version."
   desc ""
   desc "Optional:"
   desc "  xcodeproj  Path to .xcodeproj (default: auto-detected in parent dir)"
@@ -47,8 +47,137 @@ platform :ios do
     xcodeproj = options[:xcodeproj] || shared_xcodeproj_path
     target = options[:target] || File.basename(xcodeproj, ".xcodeproj")
 
-    current_version = get_version_number(xcodeproj: xcodeproj, target: target)
-    release_tag = "v#{current_version}"
+    release_version = get_version_number(xcodeproj: xcodeproj, target: target)
+    release_tag = "v#{release_version}"
+    release_branch = "release/#{release_tag}"
+
+    current_branch = sh("git", "rev-parse", "--abbrev-ref", "HEAD").strip
+    resubmit = (current_branch == release_branch)
+
+    bundle_id = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+    UI.user_error!("Could not read app_identifier from Appfile") if bundle_id.nil? || bundle_id.empty?
+
+    require "spaceship"
+    Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.from_json_file(API_KEY_PATH)
+
+    app = Spaceship::ConnectAPI::App.find(bundle_id)
+    UI.user_error!("App #{bundle_id} not found on App Store Connect") unless app
+
+    if resubmit
+      UI.message("Re-submission detected (on #{release_branch}). Looking for an existing review submission to cancel…")
+      submissions = Spaceship::ConnectAPI::ReviewSubmission.all(
+        filter: { "app" => app.id, "platform" => "IOS" }
+      )
+      cancellable_states = %w[READY_FOR_REVIEW WAITING_FOR_REVIEW IN_REVIEW UNRESOLVED_ISSUES]
+      pending = submissions.find { |s| cancellable_states.include?(s.state) }
+      if pending
+        UI.message("Cancelling review submission #{pending.id} (state=#{pending.state})…")
+        pending.cancel_submission
+        UI.success("Existing submission cancelled.")
+      else
+        UI.message("No in-progress review submission found.")
+      end
+    end
+
+    # Snapshot the current newest build before triggering Xcode Cloud, so the wait
+    # loop can tell the new build apart from any pre-existing ones for this version.
+    existing = app.get_builds(
+      filter: {
+        "preReleaseVersion.version" => release_version,
+        "preReleaseVersion.platform" => "IOS"
+      },
+      sort: "-uploadedDate",
+      limit: 1
+    )
+    baseline_build_id = existing.first&.id
+
+    add_git_tag(tag: release_tag, force: true)
+    sh("git", "branch", "-f", release_branch) unless resubmit
+
+    # Push branch + tag — this is what triggers Xcode Cloud to build.
+    # Plain branch push (no --force) so we fail loudly if the remote already
+    # has commits we don't, instead of clobbering someone else's work.
+    sh("git", "push", "origin", release_branch)
+    sh("git", "push", "--force", "origin", release_tag)
+
+    if resubmit
+      # main has already moved on to the next minor — without a PR, fix commits
+      # on the release branch would only ship in the patch, never reaching main.
+      begin
+        existing_pr = sh(
+          "gh", "pr", "list",
+          "--base", "main",
+          "--head", release_branch,
+          "--state", "open",
+          "--json", "number",
+          "--jq", "length"
+        ).strip
+
+        if existing_pr == "0"
+          sh(
+            "gh", "pr", "create",
+            "--base", "main",
+            "--head", release_branch,
+            "--title", "Backport #{release_tag} fixes to main",
+            "--body", "Auto-opened by `submit_release`. Merge or cherry-pick these commits into `main` so they're not lost in the next release."
+          )
+        else
+          UI.message("Backport PR from #{release_branch} to main already open — skipping create.")
+        end
+      rescue => e
+        UI.error("Could not open backport PR (#{e.message}). Open it manually: gh pr create --base main --head #{release_branch}")
+      end
+    else
+      # Bump main now (while XC is building) so a failed wait/deliver still leaves
+      # main moved on and release/v#{release_version} as the recovery point.
+      parts = release_version.split(".").map(&:to_i)
+      parts[1] += 1
+      next_version = parts.join(".")
+
+      pbxproj_path = "#{xcodeproj}/project.pbxproj"
+      sh(
+        "sed",
+        "-i", "",
+        "-e", "s/MARKETING_VERSION = #{release_version};/MARKETING_VERSION = #{next_version};/g",
+        pbxproj_path
+      )
+
+      git_commit(
+        path: "#{File.basename(xcodeproj)}/project.pbxproj",
+        message: "Bump marketing version to #{next_version}"
+      )
+
+      push_to_git_remote
+    end
+
+    # Xcode Cloud builds for this project consistently take 10+ minutes; skip
+    # pointless polling during that window.
+    UI.message("Sleeping 10 min before polling ASC — Xcode Cloud builds never finish sooner than that.")
+    sleep(10 * 60)
+
+    UI.message("Waiting for Xcode Cloud to upload a new build of v#{release_version} and ASC to finish processing it…")
+    loop do
+      builds = app.get_builds(
+        filter: {
+          "preReleaseVersion.version" => release_version,
+          "preReleaseVersion.platform" => "IOS"
+        },
+        sort: "-uploadedDate",
+        limit: 1,
+        includes: "preReleaseVersion"
+      )
+      latest = builds.first
+      if latest.nil? || latest.id == baseline_build_id
+        UI.message("No new build yet — checking again in 30s")
+      else
+        state = latest.processing_state
+        UI.message("Build #{latest.version} state: #{state}")
+        break if state == "VALID"
+        UI.user_error!("Build #{latest.version} failed processing (state=#{state})") if %w[FAILED INVALID].include?(state)
+      end
+      sleep(30)
+    end
+    UI.success("Build is ready — proceeding to submit.")
 
     deliver(
       api_key_path: API_KEY_PATH,
@@ -63,30 +192,6 @@ platform :ios do
       },
       precheck_include_in_app_purchases: false
     )
-
-    # Force-move the tag so a resubmission of the same marketing version
-    # (e.g. after a rejected build was replaced) just updates the tag in place.
-    add_git_tag(tag: release_tag, force: true)
-
-    parts = current_version.split(".").map(&:to_i)
-    parts[1] += 1
-    next_version = parts.join(".")
-
-    pbxproj_path = "#{xcodeproj}/project.pbxproj"
-    sh(
-      "sed",
-      "-i", "",
-      "-e", "s/MARKETING_VERSION = #{current_version};/MARKETING_VERSION = #{next_version};/g",
-      pbxproj_path
-    )
-
-    git_commit(
-      path: "#{File.basename(xcodeproj)}/project.pbxproj",
-      message: "Bump marketing version to #{next_version}"
-    )
-
-    push_to_git_remote
-    push_git_tags(force: true)
   end
 
   desc "Update subscription prices per territory using a pricing index (default: PPP)"
