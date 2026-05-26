@@ -103,7 +103,7 @@ module AppStorePricing
     end
 
     UI.message("Applying #{proposals.size} territory price updates…")
-    start_date = (Date.today + 1).to_s
+    start_date = (Time.now.utc.to_date + 2).to_s
     proposals.each_with_index do |p, i|
       UI.message("  [#{i + 1}/#{proposals.size}] #{p[:territory]} → #{p[:local_price]} #{p[:local_currency]}")
       create_subscription_price(
