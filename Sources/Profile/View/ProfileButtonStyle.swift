@@ -14,8 +14,8 @@ struct ProfileButtonStyle: ButtonStyle {
             .font(.system(size: 16, weight: .medium))
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 40)
-            .contentShape(Rectangle())
+            .padding(16)
+            .contentShape(.rect)
             .opacity(configuration.isPressed ? 0.75 : 1)
     }
 }

@@ -11,8 +11,6 @@ import CoreUI
 public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     @State private var showPaywall: Bool = false
 
-    @Environment(\.dismiss) private var dismiss
-
     private var showBuySubscriptionButton: Bool
     private var appLink: String
     private var supportEmail: String
@@ -23,7 +21,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
     @State private var actions: [Action]
     private var fetchSubscriptionStatus: () async throws -> Void
     private var trackEvent: (String) -> Void
-    private var showsCloseButton: Bool
+    private var rowTint: Color
 
     public init(
         showBuySubscriptionButton: Bool,
@@ -36,7 +34,7 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         actions: [Action] = [],
         fetchSubscriptionStatus: @escaping () async throws -> Void = {},
         trackEvent: @escaping (String) -> Void,
-        showsCloseButton: Bool = true
+        rowTint: Color = .gray
     ) {
         self.showBuySubscriptionButton = showBuySubscriptionButton
         self.appLink = appLink
@@ -48,47 +46,65 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         self._actions = State(initialValue: actions)
         self.fetchSubscriptionStatus = fetchSubscriptionStatus
         self.trackEvent = trackEvent
-        self.showsCloseButton = showsCloseButton
+        self.rowTint = rowTint
     }
 
     public var body: some View {
-        NavigationStack {
-            Form {
+        ScrollView {
+            VStack(spacing: 24) {
                 if !actions.isEmpty {
-                    Section {
-                        ForEach($actions) { action in
-                            actionButton(action)
+                    sectionStack {
+                        ForEach(actions.indices, id: \.self) { index in
+                            actionButton($actions[index])
+                            if index < actions.count - 1 {
+                                rowDivider
+                            }
                         }
                     }
                 }
                 if showBuySubscriptionButton {
-                    Section {
+                    sectionStack {
                         buySubscriptionButton
                     }
                 }
-                Section {
+                sectionStack {
                     rateAppButton
+                    rowDivider
                     shareAppButton
+                    rowDivider
                     shareFeedbackButton
                 }
-                Section {
+                sectionStack {
                     termsButton
+                    rowDivider
                     privacyButton
                 }
             }
-            .toolbar {
-                if showsCloseButton {
-                    closeButton
-                }
-            }
-            .navigationTitle("Profile")
-            .sheet(isPresented: $showPaywall) {
-                paywall($showPaywall)
-            }
-            .task {
-                try? await fetchSubscriptionStatus()
-            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
         }
+        .sheet(isPresented: $showPaywall) {
+            paywall($showPaywall)
+        }
+        .task {
+            try? await fetchSubscriptionStatus()
+        }
+    }
+
+    @ViewBuilder
+    private func sectionStack<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        VStack(spacing: 0) {
+            content()
+        }
+        .background(rowTint.opacity(0.18), in: .rect(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(rowTint.opacity(0.30)))
+    }
+
+    private var rowDivider: some View {
+        rowTint
+            .opacity(0.30)
+            .frame(height: 1)
+            .padding(.leading, 16)
     }
 
     private var buySubscriptionButton: some View {
@@ -181,13 +197,6 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
         .buttonStyle(ProfileButtonStyle())
         .sheet(isPresented: action.isPresented) {
             action.wrappedValue.action()
-        }
-    }
-
-    private var closeButton: some View {
-        CloseButton {
-            trackEvent("close_profile_button_tapped")
-            dismiss()
         }
     }
 
