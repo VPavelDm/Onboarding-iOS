@@ -49,7 +49,7 @@ enum SensoryFeedbackType: String, Identifiable, CaseIterable, Equatable, Hashabl
     }
 }
 
-private struct SensoryFeedbackModifier: ViewModifier {
+ struct SensoryFeedbackModifier: ViewModifier {
 
     var feedback: SensoryFeedbackType
     var trigger: Int

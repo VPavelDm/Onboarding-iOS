@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+#if canImport(ConfettiSwiftUI)
 import ConfettiSwiftUI
 
-private struct DiscountWheelConfettiModifier: ViewModifier {
+ struct DiscountWheelConfettiModifier: ViewModifier {
 
     @Binding var throwConfetti: Int
 
@@ -63,6 +64,13 @@ extension View {
     }
 }
 
-#Preview {
-    DiscountWheelStepView(step: .testData())
+#else
+
+extension View {
+
+    func discountWheelConfetti(throwConfetti: Binding<Int>) -> some View {
+        self
+    }
 }
+
+#endif

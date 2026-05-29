@@ -2,10 +2,10 @@ import SwiftUI
 import CoreUI
 
 struct ComparisonCardsStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var appeared = false
-    @State private var showCTA = false
+    @State var appeared = false
+    @State var showCTA = false
 
     let step: ComparisonCardsStep
 
@@ -89,7 +89,7 @@ struct ComparisonCardsStepView: View {
         } label: {
             Text(localized("comparisonCards.answerTitle"))
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(showCTA ? 1 : 0)
         .offset(y: showCTA ? 0 : 16)
     }
@@ -108,8 +108,8 @@ struct ComparisonCardsStepView: View {
     }
 }
 
-private struct ComparisonWordCard: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+ struct ComparisonWordCard: View {
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     let label: String
     let items: [String]
@@ -165,6 +165,7 @@ private struct ComparisonWordCard: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     let sampleStep = ComparisonCardsStep(
         items: [
@@ -183,7 +184,8 @@ private struct ComparisonWordCard: View {
         colorPalette: .testData
     )
     return ComparisonCardsStepView(step: sampleStep)
-        .environmentObject(viewModel)
+        .environment(viewModel)
         .background(MeshGradientBackground())
         .preferredColorScheme(.dark)
 }
+#endif

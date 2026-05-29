@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -9,7 +10,7 @@ import SwiftUI
 
 struct TimePickerStepView: View {
 
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     var step: TimePickerStep
 
@@ -25,3 +26,4 @@ struct TimePickerStepView: View {
 #Preview {
     TimePickerStepView(step: .testData())
 }
+#endif

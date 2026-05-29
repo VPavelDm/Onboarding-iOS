@@ -9,11 +9,11 @@ import SwiftUI
 import CoreUI
 
 struct EnterValueStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @FocusState private var isFocused: Bool
+    @FocusState var isFocused: Bool
 
-    @State private var value: String = ""
+    @State var value: String = ""
 
     private var textContentType: UITextContentType? {
         switch step.valueType {
@@ -39,21 +39,21 @@ struct EnterValueStepView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: .contentSpacing) {
+            VStack(spacing: UIConstants.contentSpacing) {
                 imageView
-                VStack(spacing: .headingSpacing) {
+                VStack(spacing: UIConstants.headingSpacing) {
                     titleView
                     descriptionView
                 }
                 valueInputView
             }
-            .padding(.vertical, .vScreenPadding)
-            .padding(.horizontal, .hScreenPadding)
+            .padding(.vertical, UIConstants.vScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
         }
-        .safeAreaInset(edge: .bottom) {
+        .bottomBar {
             Color.clear.frame(height: 50)
         }
-        .scrollDismissesKeyboard(.interactively)
+        .scrollDismissesKeyboardCompat()
         .task {
             try? await Task.sleep(for: .seconds(1))
             isFocused = true
@@ -67,7 +67,7 @@ struct EnterValueStepView: View {
                 .aspectRatio(contentMode: image.contentMode)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .frame(maxWidth: .infinity)
-                .fixedSize(horizontal: false, vertical: true)
+                .fixedSizeCompat(horizontal: false, vertical: true)
         }
     }
 
@@ -77,7 +77,7 @@ struct EnterValueStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .padding(.horizontal, .titlePadding)
+            .padding(.horizontal, UIConstants.titlePadding)
     }
 
     @ViewBuilder
@@ -93,7 +93,7 @@ struct EnterValueStepView: View {
     private var valueInputView: some View {
         TextField(step.placeholder, text: $value)
             .focused($isFocused)
-            .textFieldStyle(NameTextFieldStyle(colorPalette: viewModel.colorPalette))
+            .nameTextFieldStyleCompat(colorPalette: viewModel.colorPalette)
             .textContentType(textContentType)
             .keyboardType(keyboardType)
             .submitLabel(.next)
@@ -141,22 +141,42 @@ struct EnterValueStepView: View {
     }
 }
 
+extension View {
+    @ViewBuilder
+    func nameTextFieldStyleCompat(colorPalette: any ColorPalette) -> some View {
+        #if os(Android)
+        nameTextFieldChrome(self, colorPalette: colorPalette)
+        #else
+        textFieldStyle(NameTextFieldStyle(colorPalette: colorPalette))
+        #endif
+    }
+}
+
+@ViewBuilder
+private func nameTextFieldChrome<V: View>(_ view: V, colorPalette: any ColorPalette) -> some View {
+    view
+        .foregroundStyle(colorPalette.secondaryButtonForegroundColor)
+        .padding()
+        .background(colorPalette.secondaryButtonBackground)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+}
+
+#if !os(Android)
 private struct NameTextFieldStyle: TextFieldStyle {
     var colorPalette: any ColorPalette
 
     func _body(configuration: TextField<Self._Label>) -> some View {
-        configuration
-            .foregroundStyle(colorPalette.secondaryButtonForegroundColor)
-            .padding()
-            .background(colorPalette.secondaryButtonBackground)
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(colorPalette.secondaryButtonStrokeColor, lineWidth: 2)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+        nameTextFieldChrome(configuration, colorPalette: colorPalette)
     }
 }
+#endif
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

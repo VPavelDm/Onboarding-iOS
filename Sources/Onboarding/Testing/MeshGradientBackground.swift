@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  MeshGradientBackground.swift
 //  onboarding-ios
@@ -17,8 +18,8 @@ struct MeshGradientBackground: View {
 }
 
 @available(iOS 18.0, *)
-private struct AnimatedMeshGradient: View {
-    @State private var isActive: Bool = false
+ struct AnimatedMeshGradient: View {
+    @State var isActive: Bool = false
 
     var body: some View {
         TimelineView(.animation) { context in
@@ -46,3 +47,4 @@ private struct AnimatedMeshGradient: View {
         }
     }
 }
+#endif

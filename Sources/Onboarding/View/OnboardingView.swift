@@ -9,9 +9,9 @@ import SwiftUI
 import CoreUI
 
 public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
-    @StateObject private var viewModel: OnboardingViewModel
+    @State var viewModel: OnboardingViewModel
 
-    @State private var showError: Bool = false
+    @State var showError: Bool = false
 
     private let customStepView: (CustomStepParams) -> CustomStepView
 
@@ -21,7 +21,7 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
         colorPalette: any ColorPalette,
         @ViewBuilder customStepView: @escaping (CustomStepParams) -> CustomStepView
     ) {
-        self._viewModel = StateObject(wrappedValue: OnboardingViewModel(
+        self._viewModel = State(wrappedValue: OnboardingViewModel(
             configuration: configuration,
             delegate: delegate,
             colorPalette: colorPalette
@@ -32,12 +32,7 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
     public var body: some View {
         NavigationStackContent(step: viewModel.currentStep, customStepView: customStepView)
             .id(viewModel.currentStep)
-            .transition(
-                .asymmetric(
-                    insertion: .opacity.animation(.easeInOut.delay(0.35)),
-                    removal: .offset(y: 20).combined(with: .opacity).animation(.default)
-                )
-            )
+            .onboardingStepTransition()
             .progressView(isVisible: viewModel.currentStep == nil) {
                 contentLoadingView
             }
@@ -49,7 +44,7 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
                     showError = true
                 }
             }
-            .environmentObject(viewModel)
+            .environment(viewModel)
     }
 
     private var contentLoadingView: some View {
@@ -58,6 +53,8 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

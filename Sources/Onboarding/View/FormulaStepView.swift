@@ -2,11 +2,11 @@ import SwiftUI
 import CoreUI
 
 struct FormulaStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var showEquation = false
-    @State private var visibleDetailRows = 0
-    @State private var showCTA = false
+    @State var showEquation = false
+    @State var visibleDetailRows = 0
+    @State var showCTA = false
 
     let step: FormulaStep
 
@@ -95,7 +95,7 @@ struct FormulaStepView: View {
             Text(number)
                 .font(.system(size: accent ? 42 : 60, weight: .bold, design: .rounded))
                 .foregroundStyle(accent ? viewModel.colorPalette.accentColor : viewModel.colorPalette.textColor)
-                .monospacedDigit()
+                .monospacedDigitCompat()
             Text(label)
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.7))
@@ -144,7 +144,7 @@ struct FormulaStepView: View {
         } label: {
             Text(localized("formula.answerTitle"))
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(showCTA ? 1 : 0)
         .offset(y: showCTA ? 0 : 16)
         .animation(.easeOut(duration: 0.4), value: showCTA)
@@ -180,6 +180,7 @@ struct FormulaStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     let sampleStep = FormulaStep(
         operandLeftNumber: "10",
@@ -198,7 +199,8 @@ struct FormulaStepView: View {
         colorPalette: .testData
     )
     return FormulaStepView(step: sampleStep)
-        .environmentObject(viewModel)
+        .environment(viewModel)
         .background(MeshGradientBackground())
         .preferredColorScheme(.dark)
 }
+#endif

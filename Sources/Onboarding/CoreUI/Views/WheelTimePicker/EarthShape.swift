@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -29,3 +30,4 @@ extension WheelTimePicker {
         }
     }
 }
+#endif

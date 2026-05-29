@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -7,7 +8,7 @@
 
 import SwiftUI
 
-private struct DiscountWheelPressSensoryFeedback: ViewModifier, Animatable {
+ struct DiscountWheelPressSensoryFeedback: ViewModifier, Animatable {
 
     var progress: Double
 
@@ -32,4 +33,4 @@ extension View {
 #Preview {
     DiscountWheelStepView(step: .testData())
 }
-
+#endif

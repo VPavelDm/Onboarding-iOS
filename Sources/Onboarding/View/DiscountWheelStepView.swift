@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //
@@ -9,14 +10,14 @@ import SwiftUI
 
 struct DiscountWheelStepView: View {
 
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var currentAngle: Angle = .initialAngle
-    @State private var throwConfetti: Int = 0
-    @State private var showSuccessAlert: Bool = false
-    @State private var pressed: Bool = false
-    @State private var progress: CGFloat = .zero
-    @State private var pressingProgress: Double = 0
+    @State var currentAngle: Angle = .initialAngle
+    @State var throwConfetti: Int = 0
+    @State var showSuccessAlert: Bool = false
+    @State var pressed: Bool = false
+    @State var progress: CGFloat = .zero
+    @State var pressingProgress: Double = 0
 
     private var slices: [DiscountWheel.Slice] { .slices(
         discountValue: viewModel.format(string: "{discount_value}"))
@@ -53,7 +54,7 @@ struct DiscountWheelStepView: View {
                 isPresented: $showSuccessAlert,
                 nextStepID: step.nextStepID
             )
-            .environmentObject(viewModel)
+            .environment(viewModel)
         }
     }
 
@@ -180,3 +181,4 @@ extension CGFloat {
     DiscountWheelStepView(step: .testData())
         .preferredColorScheme(.dark)
 }
+#endif

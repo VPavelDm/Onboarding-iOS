@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //
@@ -11,9 +12,9 @@ import SwiftUI
 extension WheelTimePicker {
 
     struct TimePicker: View {
-        @EnvironmentObject private var viewModel: ViewModel
+        @EnvironmentObject var viewModel: ViewModel
 
-        @State private var size: CGSize = .zero
+        @State var size: CGSize = .zero
 
         var body: some View {
             ScrollView(.horizontal) {
@@ -65,3 +66,4 @@ extension WheelTimePicker {
 #Preview {
     WheelTimePicker(step: .testData(), completion: { _ in })
 }
+#endif

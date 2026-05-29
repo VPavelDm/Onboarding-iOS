@@ -2,13 +2,13 @@ import SwiftUI
 import CoreUI
 
 struct FeatureShowcaseStepView: View {
-    @EnvironmentObject var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var showImage = false
-    @State private var showBottomSection = false
-    @State private var showTitle = false
-    @State private var showDescription = false
-    @State private var showButton = false
+    @State var showImage = false
+    @State var showBottomSection = false
+    @State var showTitle = false
+    @State var showDescription = false
+    @State var showButton = false
 
     let step: FeatureShowcaseStep
 
@@ -35,7 +35,7 @@ struct FeatureShowcaseStepView: View {
                 .opacity(showBottomSection ? 1 : 0)
             Spacer(minLength: 0)
         }
-        .layoutPriority(65)
+        .layoutPriorityCompat(65)
     }
 
     // MARK: - Bottom Section
@@ -51,7 +51,7 @@ struct FeatureShowcaseStepView: View {
     // MARK: - Text Content
 
     private var textContent: some View {
-        VStack(spacing: .headingSpacing) {
+        VStack(spacing: UIConstants.headingSpacing) {
             titleView
                 .opacity(showTitle ? 1 : 0)
                 .offset(y: showTitle ? 0 : 16)
@@ -59,7 +59,7 @@ struct FeatureShowcaseStepView: View {
                 .opacity(showDescription ? 1 : 0)
                 .offset(y: showDescription ? 0 : 16)
         }
-        .padding(.horizontal, .hScreenPadding)
+        .padding(.horizontal, UIConstants.hScreenPadding)
         .padding(.vertical, 24)
     }
 
@@ -67,8 +67,8 @@ struct FeatureShowcaseStepView: View {
 
     private var buttonContent: some View {
         nextButton
-            .padding(.horizontal, .hScreenPadding)
-            .padding(.bottom, .vScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
+            .padding(.bottom, UIConstants.vScreenPadding)
             .opacity(showButton ? 1 : 0)
             .offset(y: showButton ? 0 : 16)
     }
@@ -91,7 +91,7 @@ struct FeatureShowcaseStepView: View {
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
             .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
+            .fixedSizeCompat(horizontal: false, vertical: true)
     }
 
     // MARK: - Description
@@ -103,7 +103,7 @@ struct FeatureShowcaseStepView: View {
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .fixedSize(horizontal: false, vertical: true)
+                .fixedSizeCompat(horizontal: false, vertical: true)
         }
     }
 
@@ -115,7 +115,7 @@ struct FeatureShowcaseStepView: View {
         } label: {
             Text(step.answer.title)
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     // MARK: - Animation
@@ -148,9 +148,11 @@ struct FeatureShowcaseStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
         .background(
             LinearGradient(colors: [.red, .orange], startPoint: .bottom, endPoint: .top)
         )
 }
+#endif

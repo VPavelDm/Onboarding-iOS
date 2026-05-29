@@ -9,10 +9,10 @@ import SwiftUI
 import CoreUI
 
 struct OneAnswerView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var selectedAnswer: StepAnswer?
-    @State private var isButtonVisible: Bool = false
+    @State var selectedAnswer: StepAnswer?
+    @State var isButtonVisible: Bool = false
 
     var step: OneAnswerStep
 
@@ -22,27 +22,27 @@ struct OneAnswerView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: .contentSpacing) {
+            VStack(spacing: UIConstants.contentSpacing) {
                 imageView
-                VStack(spacing: .headingSpacing) {
+                VStack(spacing: UIConstants.headingSpacing) {
                     titleView
                     descriptionView
                 }
-                VStack(spacing: .buttonsSpacing) {
+                VStack(spacing: UIConstants.buttonsSpacing) {
                     ForEach(step.answers.indices, id: \.self) { index in
                         buttonView(answer: step.answers[index])
                     }
                 }
             }
-            .padding(.vertical, .vScreenPadding)
-            .padding(.horizontal, .hScreenPadding)
+            .padding(.vertical, UIConstants.vScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
         }
         .scrollContentBackground(.hidden)
-        .safeAreaInset(edge: .bottom) {
+        .bottomBar {
             if !shouldAutoNavigate && (selectedAnswer != nil || step.skip != nil) {
                 nextButton
-                    .padding(.horizontal, .hScreenPadding)
-                    .padding(.bottom, .vScreenPadding)
+                    .padding(.horizontal, UIConstants.hScreenPadding)
+                    .padding(.bottom, UIConstants.vScreenPadding)
             }
         }
         .animation(.easeInOut, value: selectedAnswer != nil)
@@ -63,7 +63,7 @@ struct OneAnswerView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .padding(.horizontal, .titlePadding)
+            .padding(.horizontal, UIConstants.titlePadding)
     }
 
     @ViewBuilder
@@ -85,13 +85,13 @@ struct OneAnswerView: View {
             }
         } label: {
             Text(answer.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .applyRippleEffect(alignment: .leading)
         } progress: {
             ProgressView()
                 .frame(maxWidth: .infinity)
                 .tint(viewModel.colorPalette.primaryButtonForegroundColor)
         }
-        .buttonStyle(AnswerButtonStyle(isSelected: selectedAnswer == answer))
+        .answerButtonStyleCompat(colorPalette: viewModel.colorPalette, isSelected: selectedAnswer == answer)
     }
 
     private var nextButton: some View {
@@ -103,8 +103,9 @@ struct OneAnswerView: View {
             }
         } label: {
             Text(step.buttonTitle)
+                .applyRippleEffect()
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .disabled(selectedAnswer == nil && step.skip == nil)
         .animation(.easeInOut, value: selectedAnswer)
     }
@@ -114,11 +115,14 @@ struct OneAnswerView: View {
             await viewModel.onAnswer(answers: [skip])
         } label: {
             Text(skip.title)
+                .applyRippleEffect()
         }
-        .buttonStyle(SecondaryButtonStyle())
+        .secondaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

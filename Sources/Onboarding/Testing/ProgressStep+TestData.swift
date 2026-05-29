@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -23,3 +24,4 @@ extension ProgressStep {
         )
     }
 }
+#endif

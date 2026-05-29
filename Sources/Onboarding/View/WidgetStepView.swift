@@ -2,7 +2,7 @@ import SwiftUI
 import CoreUI
 
 struct WidgetStepView: View {
-    @EnvironmentObject var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     let step: WidgetStep
 
@@ -47,7 +47,7 @@ struct WidgetStepView: View {
         } label: {
             Text(localized("widget.answerTitle"))
         }
-        .buttonStyle(SecondaryButtonStyle())
+        .secondaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     private func localized(_ key: String) -> String {

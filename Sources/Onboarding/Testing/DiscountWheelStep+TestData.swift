@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -13,3 +14,4 @@ extension DiscountWheelStep {
         DiscountWheelStep(nextStepID: nil)
     }
 }
+#endif

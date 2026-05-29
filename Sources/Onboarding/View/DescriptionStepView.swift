@@ -9,29 +9,29 @@ import SwiftUI
 import CoreUI
 
 struct DescriptionStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var isTitleVisible: Bool = false
-    @State private var isDescriptionVisible: Bool = false
-    @State private var isButtonVisible: Bool = false
+    @State var isTitleVisible: Bool = false
+    @State var isDescriptionVisible: Bool = false
+    @State var isButtonVisible: Bool = false
 
     var step: DescriptionStep
 
     var body: some View {
         VStack {
             imageView
-            VStack(spacing: .headingSpacing) {
+            VStack(spacing: UIConstants.headingSpacing) {
                 titleView
                 descriptionView
                     .opacity(isDescriptionVisible ? 1 : 0)
             }
-            .padding(.horizontal, .hScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
             .frame(maxHeight: .infinity, alignment: .top)
             nextButton
-                .padding(.horizontal, .hScreenPadding)
+                .padding(.horizontal, UIConstants.hScreenPadding)
                 .opacity(isButtonVisible ? 1 : 0)
         }
-        .padding(.bottom, .vScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .ignoresSafeArea(edges: .top)
         .task {
             withAnimation(.easeInOut.delay(2)) {
@@ -75,11 +75,14 @@ struct DescriptionStepView: View {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(step.answer.title)
+                .applyRippleEffect()
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

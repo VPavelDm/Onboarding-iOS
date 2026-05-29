@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -27,3 +28,4 @@ final class MockOnboardingDelegate: OnboardingDelegate {
         mockSubscriptionInfo
     }
 }
+#endif

@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
+#if canImport(Combine)
 import Combine
+#else
+import OpenCombine
+import OpenCombineFoundation
+#endif
 
 @MainActor
-final class OnboardingViewModel: ObservableObject {
+@Observable
+final class OnboardingViewModel {
 
     // MARK: - Properties
 
@@ -20,9 +26,9 @@ final class OnboardingViewModel: ObservableObject {
 
     // MARK: - Outputs
 
-    @Published var steps: [OnboardingStep] = []
-    @Published var currentStep: OnboardingStep?
-    @Published var userAnswers: [UserAnswer] = []
+    var steps: [OnboardingStep] = []
+    var currentStep: OnboardingStep?
+    var userAnswers: [UserAnswer] = []
 
     let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
@@ -97,9 +103,24 @@ final class OnboardingViewModel: ObservableObject {
         userAnswers.append(answer)
         await delegate.onAnswer(userAnswer: answer, allAnswers: userAnswers)
 
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        playSelectionFeedback()
 
         await advance(to: nextStepID)
+    }
+
+    /// Medium haptic on step completion. No-op where UIKit is unavailable (e.g. Android).
+    private func playSelectionFeedback() {
+        #if canImport(UIKit)
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        #endif
+    }
+
+    /// Light haptic for in-step interactions (e.g. toggling a multi-select option).
+    /// Reusable from any step view. No-op where UIKit is unavailable (e.g. Android).
+    func playToggleFeedback() {
+        #if canImport(UIKit)
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        #endif
     }
 
     private func advance(to startID: StepID?) async {

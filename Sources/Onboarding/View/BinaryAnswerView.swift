@@ -9,24 +9,24 @@ import SwiftUI
 import CoreUI
 
 struct BinaryAnswerView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     var step: BinaryAnswerStep
     
     var body: some View {
-        VStack(spacing: .contentSpacing) {
-            VStack(spacing: .headingSpacing) {
+        VStack(spacing: UIConstants.contentSpacing) {
+            VStack(spacing: UIConstants.headingSpacing) {
                 titleView
                 descriptionView
             }
-            HStack(spacing: .buttonsSpacing) {
+            HStack(spacing: UIConstants.buttonsSpacing) {
                 firstAnswerButton
                 secondAnswerButton
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(.vertical, .vScreenPadding)
-        .padding(.horizontal, .hScreenPadding)
+        .padding(.vertical, UIConstants.vScreenPadding)
+        .padding(.horizontal, UIConstants.hScreenPadding)
     }
 
     private var titleView: some View {
@@ -58,8 +58,9 @@ struct BinaryAnswerView: View {
                 }
                 Text(step.firstAnswer.title)
             }
+            .applyRippleEffect()
         }
-        .buttonStyle(BinaryAnswerButtonStyle())
+        .binaryAnswerButtonStyleCompat()
     }
 
     private var secondAnswerButton: some View {
@@ -73,7 +74,8 @@ struct BinaryAnswerView: View {
                 }
                 Text(step.secondAnswer.title)
             }
+            .applyRippleEffect()
         }
-        .buttonStyle(BinaryAnswerButtonStyle())
+        .binaryAnswerButtonStyleCompat()
     }
 }

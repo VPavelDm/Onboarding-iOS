@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct CommitmentHoldStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var isCommitted = false
-    @State private var hapticTrigger = 0
+    @State var isCommitted = false
+    @State var hapticTrigger = 0
 
     let step: CommitmentHoldStep
 
@@ -96,8 +96,8 @@ struct CommitmentHoldStepView: View {
     }
 }
 
-private struct CommitmentCardView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+ struct CommitmentCardView: View {
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     let prefix: String
     let number: String
@@ -130,7 +130,7 @@ private struct CommitmentCardView: View {
     private var numberText: some View {
         Text(number)
             .font(.system(size: 56, weight: .bold, design: .rounded))
-            .monospacedDigit()
+            .monospacedDigitCompat()
             .foregroundStyle(viewModel.colorPalette.accentColor)
     }
 
@@ -153,14 +153,14 @@ private struct CommitmentCardView: View {
     }
 }
 
-private struct CommitmentHoldButton: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+ struct CommitmentHoldButton: View {
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     let isCommitted: Bool
     let onCommit: () -> Void
 
-    @State private var progress: Double = 0
-    @State private var isPressing = false
+    @State var progress: Double = 0
+    @State var isPressing = false
 
     private let holdDuration: Double = 1.8
 
@@ -172,7 +172,7 @@ private struct CommitmentHoldButton: View {
         }
         .scaleEffect(isPressing && !isCommitted ? 0.94 : 1.0)
         .animation(.snappy, value: isPressing)
-        .contentShape(Circle())
+        .contentShapeCompat(Circle())
         .onLongPressGesture(
             minimumDuration: holdDuration,
             perform: onCommit,
@@ -247,6 +247,7 @@ private struct CommitmentHoldButton: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     let sampleStep = CommitmentHoldStep(
         commitmentNumber: "10",
@@ -258,7 +259,8 @@ private struct CommitmentHoldButton: View {
         colorPalette: .testData
     )
     return CommitmentHoldStepView(step: sampleStep)
-        .environmentObject(viewModel)
+        .environment(viewModel)
         .background(MeshGradientBackground())
         .preferredColorScheme(.dark)
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -9,7 +10,7 @@ import SwiftUI
 
 struct DiscountWheel: View {
 
-    @State private var wheelSize: CGSize = .zero
+    @State var wheelSize: CGSize = .zero
 
     @Binding var currentAngle: Angle
     var slices: [Slice]
@@ -146,3 +147,4 @@ private extension CGFloat {
 #Preview {
     DiscountWheelStepView(step: .testData())
 }
+#endif

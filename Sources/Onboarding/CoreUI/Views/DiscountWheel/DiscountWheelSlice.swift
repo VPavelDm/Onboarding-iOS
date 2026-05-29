@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -31,3 +32,4 @@ struct DiscountWheelSlice: Shape {
         return path
     }
 }
+#endif

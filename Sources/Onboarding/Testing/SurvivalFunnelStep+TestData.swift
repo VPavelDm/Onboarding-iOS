@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  SurvivalFunnelStep+TestData.swift
 //  onboarding-ios
@@ -19,3 +20,4 @@ extension SurvivalFunnelStep {
         )
     }
 }
+#endif

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension CGFloat {
+enum UIConstants {
 
     static let titlePadding: CGFloat = 6
     static let hScreenPadding: CGFloat = 20

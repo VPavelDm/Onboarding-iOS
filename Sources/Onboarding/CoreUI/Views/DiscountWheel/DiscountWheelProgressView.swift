@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -9,7 +10,7 @@ import SwiftUI
 
 struct DiscountWheelProgressView: View {
 
-    @State private var size: CGSize = .zero
+    @State var size: CGSize = .zero
     @Binding var pressed: Bool
 
     var body: some View {
@@ -44,3 +45,4 @@ private extension CGFloat {
 #Preview {
     DiscountWheelStepView(step: .testData())
 }
+#endif

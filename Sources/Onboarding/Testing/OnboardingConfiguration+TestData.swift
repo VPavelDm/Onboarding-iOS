@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -16,3 +17,4 @@ public extension OnboardingConfiguration {
         )
     }
 }
+#endif

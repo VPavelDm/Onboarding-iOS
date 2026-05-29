@@ -9,24 +9,24 @@ import SwiftUI
 import CoreUI
 
 struct HeightPickerStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var isMetric: Bool = {
+    @State var isMetric: Bool = {
         if #available(iOS 16.0, *) {
             return Locale.current.measurementSystem == .metric
         } else {
             return Locale.current.usesMetricSystem
         }
     }()
-    @State private var centimeters: Int = 170
-    @State private var feet: Int = 5
-    @State private var inches: Int = 7
+    @State var centimeters: Int = 170
+    @State var feet: Int = 5
+    @State var inches: Int = 7
 
     var step: HeightPickerStep
 
     var body: some View {
-        VStack(spacing: .contentSpacing) {
-            VStack(spacing: .headingSpacing) {
+        VStack(spacing: UIConstants.contentSpacing) {
+            VStack(spacing: UIConstants.headingSpacing) {
                 titleView
                 descriptionView
             }
@@ -36,8 +36,8 @@ struct HeightPickerStepView: View {
             Spacer()
             continueButton
         }
-        .padding(.vertical, .vScreenPadding)
-        .padding(.horizontal, .hScreenPadding)
+        .padding(.vertical, UIConstants.vScreenPadding)
+        .padding(.horizontal, UIConstants.hScreenPadding)
     }
 
     private var titleView: some View {
@@ -46,7 +46,7 @@ struct HeightPickerStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .padding(.horizontal, .titlePadding)
+            .padding(.horizontal, UIConstants.titlePadding)
     }
 
     @ViewBuilder
@@ -101,13 +101,13 @@ struct HeightPickerStepView: View {
 
     private var metricPicker: some View {
         Picker("Height", selection: $centimeters) {
-            ForEach(100...250, id: \.self) { cm in
+            ForEach(Array(100...250), id: \.self) { cm in
                 Text("\(cm) \(step.metricUnit)")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(cm)
             }
         }
-        .pickerStyle(.wheel)
+        .wheelPickerStyleCompat()
         .onChange(of: centimeters) { newValue in
             updateImperialFromMetric(cm: newValue)
         }
@@ -116,22 +116,22 @@ struct HeightPickerStepView: View {
     private var imperialPicker: some View {
         HStack(spacing: 0) {
             Picker("Feet", selection: $feet) {
-                ForEach(3...8, id: \.self) { ft in
+                ForEach(Array(3...8), id: \.self) { ft in
                     Text("\(ft)'")
                         .foregroundStyle(viewModel.colorPalette.textColor)
                         .tag(ft)
                 }
             }
-            .pickerStyle(.wheel)
+            .wheelPickerStyleCompat()
 
             Picker("Inches", selection: $inches) {
-                ForEach(0...11, id: \.self) { inch in
+                ForEach(Array(0...11), id: \.self) { inch in
                     Text("\(inch)\"")
                         .foregroundStyle(viewModel.colorPalette.textColor)
                         .tag(inch)
                 }
             }
-            .pickerStyle(.wheel)
+            .wheelPickerStyleCompat()
         }
         .onChange(of: feet) { _ in
             updateMetricFromImperial()
@@ -146,8 +146,9 @@ struct HeightPickerStepView: View {
             await onContinue()
         } label: {
             Text(step.answer.title)
+                .applyRippleEffect()
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     private func onContinue() async {
@@ -170,6 +171,8 @@ struct HeightPickerStepView: View {
 
 // MARK: - Preview
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

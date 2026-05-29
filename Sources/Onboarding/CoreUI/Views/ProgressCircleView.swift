@@ -9,11 +9,9 @@ import SwiftUI
 
 struct ProgressCircleView: View {
 
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var circleProgress: CGFloat = .zero
-
-    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State var circleProgress: CGFloat = .zero
 
     let duration: TimeInterval
     @Binding var progress: CGFloat
@@ -21,16 +19,21 @@ struct ProgressCircleView: View {
 
     var body: some View {
         progressView
-            .onReceive(timer) { _ in
-                if progress < 93 {
-                    progress = min(progress + 100 / duration, 100)
-                } else if finished {
-                    progress = 100
-                    timer.upstream.connect().cancel()
-                } else {
-                    progress = 93
+            // `.task`-based tick instead of a Combine `Timer`/`onReceive` (unavailable in Skip).
+            .task {
+                while !Task.isCancelled {
+                    try? await Task.sleep(for: .seconds(1))
+                    if progress < 93 {
+                        progress = min(progress + 100 / duration, 100)
+                    } else if finished {
+                        progress = 100
+                        circleProgress = progress / 100
+                        break
+                    } else {
+                        progress = 93
+                    }
+                    circleProgress = progress / 100
                 }
-                circleProgress = progress / 100
             }
     }
 
@@ -61,14 +64,16 @@ struct ProgressCircleView: View {
 
     private var progressText: some View {
         Text("\(Int(progress)) %")
-            .monospacedDigit()
+            .monospacedDigitCompat()
             .foregroundStyle(viewModel.colorPalette.textColor)
             .font(.system(size: 32, weight: .bold))
-            .contentTransition(.numericText())
+            .numericContentTransitionCompat()
             .animation(.linear, value: progress)
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

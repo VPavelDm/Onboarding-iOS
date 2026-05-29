@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  TimePickerButtonStyle.swift
 //  onboarding-ios
@@ -9,7 +10,7 @@ import SwiftUI
 import CoreUI
 
 struct TimePickerButtonStyle: ButtonStyle {
-    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.isEnabled) var isEnabled
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -28,3 +29,4 @@ struct TimePickerButtonStyle: ButtonStyle {
 #Preview {
     WheelTimePicker(step: .testData(), completion: { _ in })
 }
+#endif

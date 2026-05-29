@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  FloatingWordsStep+TestData.swift
 //  onboarding-ios
@@ -16,3 +17,4 @@ extension FloatingWordsStep {
         )
     }
 }
+#endif

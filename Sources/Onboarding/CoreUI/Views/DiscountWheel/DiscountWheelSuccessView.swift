@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -10,9 +11,9 @@ import CoreUI
 
 struct DiscountWheelSuccessView: View {
 
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var size: CGSize = .zero
+    @State var size: CGSize = .zero
 
     @Binding var isPresented: Bool
     var nextStepID: StepID?
@@ -80,3 +81,4 @@ struct DiscountWheelSuccessView: View {
             DiscountWheelSuccessView(isPresented: .constant(true), nextStepID: nil)
         }
 }
+#endif

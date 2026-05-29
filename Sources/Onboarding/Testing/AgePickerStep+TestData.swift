@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  AgePickerStep+TestData.swift
 //  onboarding-ios
@@ -23,3 +24,4 @@ extension AgePickerStep {
         )
     }
 }
+#endif

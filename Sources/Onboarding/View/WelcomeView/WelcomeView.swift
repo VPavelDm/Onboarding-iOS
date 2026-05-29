@@ -9,7 +9,7 @@ import SwiftUI
 import CoreUI
 
 struct WelcomeView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     var step: WelcomeStep
 
@@ -31,8 +31,9 @@ struct WelcomeView: View {
             await viewModel.onAnswer(answers: [step.firstAnswer])
         } label: {
             Text(step.firstAnswer.title)
+                .applyRippleEffect()
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     private func alreadyHaveAccountButton(answer: StepAnswer) -> some View {
@@ -40,7 +41,8 @@ struct WelcomeView: View {
             await viewModel.onAnswer(answers: [answer])
         } label: {
             Text(answer.title)
+                .applyRippleEffect()
         }
-        .buttonStyle(SecondaryButtonStyle())
+        .secondaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 }

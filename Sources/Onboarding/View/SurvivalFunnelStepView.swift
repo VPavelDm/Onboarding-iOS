@@ -7,12 +7,12 @@ import SwiftUI
 import CoreUI
 
 struct SurvivalFunnelStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var appeared = false
-    @State private var isCaptionVisible = false
-    @State private var isDescriptionVisible = false
-    @State private var isButtonVisible = false
+    @State var appeared = false
+    @State var isCaptionVisible = false
+    @State var isDescriptionVisible = false
+    @State var isButtonVisible = false
 
     var step: SurvivalFunnelStep
 
@@ -27,22 +27,22 @@ struct SurvivalFunnelStepView: View {
     var body: some View {
         VStack {
             funnelView
-                .padding(.horizontal, .hScreenPadding)
+                .padding(.horizontal, UIConstants.hScreenPadding)
                 .padding(.top, 48)
-            VStack(spacing: .headingSpacing) {
+            VStack(spacing: UIConstants.headingSpacing) {
                 titleView
                 descriptionView
                     .opacity(isDescriptionVisible ? 1 : 0)
                 captionView
                     .opacity(isCaptionVisible ? 1 : 0)
             }
-            .padding(.horizontal, .hScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
             .frame(maxHeight: .infinity, alignment: .top)
             nextButton
-                .padding(.horizontal, .hScreenPadding)
+                .padding(.horizontal, UIConstants.hScreenPadding)
                 .opacity(isButtonVisible ? 1 : 0)
         }
-        .padding(.bottom, .vScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .ignoresSafeArea(edges: .top)
         .task {
             withAnimation {
@@ -85,7 +85,9 @@ struct SurvivalFunnelStepView: View {
                 }
             }
         }
-        .aspectRatio(1.1, contentMode: .fit)
+        // A bare GeometryReader collapses to zero under `.aspectRatio(.fit)` in Skip/Compose,
+        // leaving the bars width-0; a concrete height gives it a real size to read.
+        .frame(height: 380)
     }
 
     private func stageBar(stage: SurvivalFunnelStep.Stage, isLast: Bool, fullWidth: CGFloat) -> some View {
@@ -167,7 +169,7 @@ struct SurvivalFunnelStepView: View {
         } label: {
             Text(localized("survivalFunnel.answerTitle"))
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     private func localized(_ key: String) -> String {
@@ -184,6 +186,8 @@ struct SurvivalFunnelStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

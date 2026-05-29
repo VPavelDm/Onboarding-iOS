@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -9,10 +10,10 @@ import SwiftUI
 
 struct DiscountWheelLaunchButton: View {
 
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var scaleFactor: CGFloat = 1
-    @State private var pressedAt: Date?
+    @State var scaleFactor: CGFloat = 1
+    @State var pressedAt: Date?
 
     @Binding var progress: CGFloat
     @Binding var pressed: Bool
@@ -73,3 +74,4 @@ private extension CGFloat {
     DiscountWheelStepView(step: .testData())
         .preferredColorScheme(.dark)
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -10,7 +11,7 @@ import CoreUI
 
 struct WheelTimePicker: View {
 
-    @StateObject private var viewModel = ViewModel()
+    @StateObject var viewModel = ViewModel()
 
     var step: TimePickerStep
     var completion: (String) async -> Void
@@ -98,3 +99,4 @@ extension Color {
 #Preview {
     WheelTimePicker(step: .testData(), completion: { _ in })
 }
+#endif

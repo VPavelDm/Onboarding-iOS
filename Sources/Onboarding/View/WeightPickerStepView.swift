@@ -9,23 +9,23 @@ import SwiftUI
 import CoreUI
 
 struct WeightPickerStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var isMetric: Bool = {
+    @State var isMetric: Bool = {
         if #available(iOS 16.0, *) {
             return Locale.current.measurementSystem == .metric
         } else {
             return Locale.current.usesMetricSystem
         }
     }()
-    @State private var kilograms: Int = 70
-    @State private var pounds: Int = 154
+    @State var kilograms: Int = 70
+    @State var pounds: Int = 154
 
     var step: WeightPickerStep
 
     var body: some View {
-        VStack(spacing: .contentSpacing) {
-            VStack(spacing: .headingSpacing) {
+        VStack(spacing: UIConstants.contentSpacing) {
+            VStack(spacing: UIConstants.headingSpacing) {
                 titleView
                 descriptionView
             }
@@ -35,8 +35,8 @@ struct WeightPickerStepView: View {
             Spacer()
             continueButton
         }
-        .padding(.vertical, .vScreenPadding)
-        .padding(.horizontal, .hScreenPadding)
+        .padding(.vertical, UIConstants.vScreenPadding)
+        .padding(.horizontal, UIConstants.hScreenPadding)
     }
 
     private var titleView: some View {
@@ -45,7 +45,7 @@ struct WeightPickerStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .padding(.horizontal, .titlePadding)
+            .padding(.horizontal, UIConstants.titlePadding)
     }
 
     @ViewBuilder
@@ -100,13 +100,13 @@ struct WeightPickerStepView: View {
 
     private var metricPicker: some View {
         Picker("Weight", selection: $kilograms) {
-            ForEach(30...250, id: \.self) { kg in
+            ForEach(Array(30...250), id: \.self) { kg in
                 Text("\(kg) \(step.metricUnit)")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(kg)
             }
         }
-        .pickerStyle(.wheel)
+        .wheelPickerStyleCompat()
         .onChange(of: kilograms) { newValue in
             updateImperialFromMetric(kg: newValue)
         }
@@ -114,13 +114,13 @@ struct WeightPickerStepView: View {
 
     private var imperialPicker: some View {
         Picker("Weight", selection: $pounds) {
-            ForEach(66...550, id: \.self) { lb in
+            ForEach(Array(66...550), id: \.self) { lb in
                 Text("\(lb) \(step.imperialUnit)")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(lb)
             }
         }
-        .pickerStyle(.wheel)
+        .wheelPickerStyleCompat()
         .onChange(of: pounds) { _ in
             updateMetricFromImperial()
         }
@@ -131,8 +131,9 @@ struct WeightPickerStepView: View {
             await onContinue()
         } label: {
             Text(step.answer.title)
+                .applyRippleEffect()
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     private func onContinue() async {
@@ -152,6 +153,8 @@ struct WeightPickerStepView: View {
 
 // MARK: - Preview
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

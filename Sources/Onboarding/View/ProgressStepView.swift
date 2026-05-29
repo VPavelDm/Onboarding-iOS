@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ProgressStepView: View {
-    @EnvironmentObject var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     @State var progress: CGFloat = 0
-    @State private var isButtonLoading: Bool = false
-    @State private var finishedProcessing: Bool = false
+    @State var isButtonLoading: Bool = false
+    @State var finishedProcessing: Bool = false
 
     var step: ProgressStep
 
@@ -20,19 +20,19 @@ struct ProgressStepView: View {
         ScrollView {
             VStack(spacing: 64) {
                 ProgressCircleView(duration: step.duration, progress: $progress, finished: finishedProcessing)
-                VStack(spacing: 2 * .contentSpacing) {
-                    VStack(spacing: .headingSpacing) {
+                VStack(spacing: 2 * UIConstants.contentSpacing) {
+                    VStack(spacing: UIConstants.headingSpacing) {
                         titleView
                         descriptionView
                     }
                     stepsView
                 }
             }
-            .padding(.vertical, .vScreenPadding)
-            .padding(.horizontal, .hScreenPadding)
+            .padding(.vertical, UIConstants.vScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
         }
         .scrollIndicators(.hidden)
-        .safeAreaInset(edge: .bottom) {
+        .bottomBar {
             nextButton
         }
         .task {
@@ -72,15 +72,17 @@ struct ProgressStepView: View {
                     .opacity(isButtonLoading ? 1 : 0)
             }
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
-        .padding(.horizontal, .hScreenPadding)
-        .padding(.vertical, .vScreenPadding)
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .padding(.horizontal, UIConstants.hScreenPadding)
+        .padding(.vertical, UIConstants.vScreenPadding)
         .disabled(progress != 100)
         .opacity(progress == 100 ? 1 : 0)
         .animation(.easeInOut, value: progress == 100)
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

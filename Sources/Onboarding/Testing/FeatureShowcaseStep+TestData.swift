@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  FeatureShowcaseStep+TestData.swift
 //
@@ -22,3 +23,4 @@ extension FeatureShowcaseStep {
         )
     }
 }
+#endif

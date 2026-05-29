@@ -2,12 +2,12 @@ import SwiftUI
 import CoreUI
 
 struct ReceiptStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var visibleItems = 0
-    @State private var showTotal = false
-    @State private var showStamp = false
-    @State private var showCTA = false
+    @State var visibleItems = 0
+    @State var showTotal = false
+    @State var showStamp = false
+    @State var showCTA = false
 
     let step: ReceiptStep
 
@@ -140,7 +140,7 @@ struct ReceiptStepView: View {
         } label: {
             Text(localized("receipt.answerTitle"))
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     @ViewBuilder
@@ -192,6 +192,7 @@ struct ReceiptStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     let sampleStep = ReceiptStep(
         items: [
@@ -209,7 +210,8 @@ struct ReceiptStepView: View {
         colorPalette: .testData
     )
     return ReceiptStepView(step: sampleStep)
-        .environmentObject(viewModel)
+        .environment(viewModel)
         .background(MeshGradientBackground())
         .preferredColorScheme(.dark)
 }
+#endif

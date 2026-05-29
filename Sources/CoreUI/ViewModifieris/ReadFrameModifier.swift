@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-private struct ReadFrameModifier: ViewModifier {
+struct ReadFrameModifier: ViewModifier {
 
     @Binding var frame: CGRect
     @Binding var size: CGSize

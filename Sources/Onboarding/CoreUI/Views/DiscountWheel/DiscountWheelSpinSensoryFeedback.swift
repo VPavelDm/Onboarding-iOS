@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -7,7 +8,7 @@
 
 import SwiftUI
 
-private struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
+ struct DiscountWheelSpinSensoryFeedback: ViewModifier, Animatable {
 
     var sliceAngle: Angle
     var currentAngle: Angle
@@ -38,3 +39,4 @@ extension View {
 #Preview {
     DiscountWheelStepView(step: .testData())
 }
+#endif

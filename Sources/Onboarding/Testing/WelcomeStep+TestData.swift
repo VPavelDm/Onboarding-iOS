@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -25,3 +26,4 @@ extension WelcomeStep {
         )
     }
 }
+#endif

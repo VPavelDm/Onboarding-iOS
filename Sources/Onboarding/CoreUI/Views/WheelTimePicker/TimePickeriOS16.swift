@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -10,7 +11,7 @@ import SwiftUI
 extension WheelTimePicker {
 
     struct TimePickerIOS16: View {
-        @EnvironmentObject private var viewModel: ViewModel
+        @EnvironmentObject var viewModel: ViewModel
 
         var intProxy: Binding<Double> {
             Binding(
@@ -34,3 +35,4 @@ extension WheelTimePicker {
         completion: { _ in }
     )
 }
+#endif

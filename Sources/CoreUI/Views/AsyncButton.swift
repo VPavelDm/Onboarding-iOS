@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct AsyncButton<Label, CircularProgress>: View where Label: View, CircularProgress: View {
-    @State private var isLoading: Bool = false
+    @State var isLoading: Bool = false
 
     var perform: () async -> Void
     var label: () -> Label

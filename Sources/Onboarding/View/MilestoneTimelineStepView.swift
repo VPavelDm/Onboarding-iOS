@@ -2,10 +2,10 @@ import SwiftUI
 import CoreUI
 
 struct MilestoneTimelineStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var triggered = false
-    @State private var showCTA = false
+    @State var triggered = false
+    @State var showCTA = false
 
     let step: MilestoneTimelineStep
 
@@ -73,7 +73,7 @@ struct MilestoneTimelineStepView: View {
         } label: {
             Text(localized("milestoneTimeline.answerTitle"))
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(showCTA ? 1 : 0)
         .offset(y: showCTA ? 0 : 16)
     }
@@ -108,8 +108,8 @@ private struct MilestoneSegmentShape: Shape {
     }
 }
 
-private struct MilestoneTimeline: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+ struct MilestoneTimeline: View {
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     let milestones: [MilestoneTimelineStep.Milestone]
     let floatingLabel: String
@@ -193,6 +193,7 @@ private struct MilestoneTimeline: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     let sampleStep = MilestoneTimelineStep(
         milestones: [
@@ -209,7 +210,8 @@ private struct MilestoneTimeline: View {
         colorPalette: .testData
     )
     return MilestoneTimelineStepView(step: sampleStep)
-        .environmentObject(viewModel)
+        .environment(viewModel)
         .background(MeshGradientBackground())
         .preferredColorScheme(.dark)
 }
+#endif

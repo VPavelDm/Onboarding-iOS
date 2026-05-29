@@ -10,7 +10,7 @@ import SwiftUI
 extension ProgressStepView {
 
     var stepsView: some View {
-        VStack(alignment: .leading, spacing: .buttonsSpacing) {
+        VStack(alignment: .leading, spacing: UIConstants.buttonsSpacing) {
             ForEach(step.steps.indices, id: \.self) { index in
                 HStack(spacing: 12) {
                     checkmarkView(at: index)
@@ -53,6 +53,8 @@ extension ProgressStepView {
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

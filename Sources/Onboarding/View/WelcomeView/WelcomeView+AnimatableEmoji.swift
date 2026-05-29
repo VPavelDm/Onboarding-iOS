@@ -11,9 +11,9 @@ extension WelcomeView {
 
     struct OrbitView: View {
 
-        @EnvironmentObject private var viewModel: OnboardingViewModel
+        @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-        @State private var progress: CGFloat = .zero
+        @State var progress: CGFloat = .zero
         var emojis: [String]
         var radius: CGFloat
         var progressOffset: CGFloat
@@ -40,7 +40,7 @@ extension WelcomeView {
         }
     }
 
-    private struct EmojiOnOrbitView: View, Animatable {
+     struct EmojiOnOrbitView: View, Animatable {
         var emoji: String
         var progress: CGFloat
         var orbitRadius: CGFloat
@@ -65,7 +65,9 @@ extension WelcomeView {
     }
 }
 
+#if !os(Android)
 #Preview {
     WelcomeView(step: .testData())
         .preferredColorScheme(.dark)
 }
+#endif

@@ -9,15 +9,15 @@ import SwiftUI
 import CoreUI
 
 struct AgePickerStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var age: Int = 25
+    @State var age: Int = 25
 
     var step: AgePickerStep
 
     var body: some View {
-        VStack(spacing: .contentSpacing) {
-            VStack(spacing: .headingSpacing) {
+        VStack(spacing: UIConstants.contentSpacing) {
+            VStack(spacing: UIConstants.headingSpacing) {
                 titleView
                 descriptionView
             }
@@ -26,8 +26,8 @@ struct AgePickerStepView: View {
             Spacer()
             continueButton
         }
-        .padding(.vertical, .vScreenPadding)
-        .padding(.horizontal, .hScreenPadding)
+        .padding(.vertical, UIConstants.vScreenPadding)
+        .padding(.horizontal, UIConstants.hScreenPadding)
     }
 
     private var titleView: some View {
@@ -36,7 +36,7 @@ struct AgePickerStepView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .padding(.horizontal, .titlePadding)
+            .padding(.horizontal, UIConstants.titlePadding)
     }
 
     @ViewBuilder
@@ -51,13 +51,13 @@ struct AgePickerStepView: View {
 
     private var agePicker: some View {
         Picker("Age", selection: $age) {
-            ForEach(4...100, id: \.self) { year in
+            ForEach(Array(4...100), id: \.self) { year in
                 Text("\(year) \(step.unit)")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(year)
             }
         }
-        .pickerStyle(.wheel)
+        .wheelPickerStyleCompat()
         .frame(height: 200)
     }
 
@@ -66,8 +66,9 @@ struct AgePickerStepView: View {
             await onContinue()
         } label: {
             Text(step.answer.title)
+                .applyRippleEffect()
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     private func onContinue() async {
@@ -79,6 +80,8 @@ struct AgePickerStepView: View {
 
 // MARK: - Preview
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

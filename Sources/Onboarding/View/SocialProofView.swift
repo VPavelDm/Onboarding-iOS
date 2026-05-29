@@ -2,12 +2,12 @@ import SwiftUI
 import CoreUI
 
 struct SocialProofView: View {
-    @EnvironmentObject var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var showContent = false
-    @State private var showStars = false
-    @State private var showMessage = false
-    @State private var showButton = false
+    @State var showContent = false
+    @State var showStars = false
+    @State var showMessage = false
+    @State var showButton = false
 
     let step: SocialProofStep
 
@@ -27,15 +27,15 @@ struct SocialProofView: View {
                     .opacity(showMessage ? 1 : 0)
                     .offset(y: showMessage ? 0 : 20)
             }
-            .padding(.horizontal, .hScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
             Spacer()
             Spacer()
             nextButton
-                .padding(.horizontal, .hScreenPadding)
+                .padding(.horizontal, UIConstants.hScreenPadding)
                 .opacity(showButton ? 1 : 0)
                 .offset(y: showButton ? 0 : 20)
         }
-        .padding(.vertical, .vScreenPadding)
+        .padding(.vertical, UIConstants.vScreenPadding)
         .task {
             await animateIn()
         }
@@ -152,7 +152,7 @@ struct SocialProofView: View {
         } label: {
             Text(localized("socialProof.answerTitle"))
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     // MARK: - Helpers
@@ -195,6 +195,8 @@ struct SocialProofView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

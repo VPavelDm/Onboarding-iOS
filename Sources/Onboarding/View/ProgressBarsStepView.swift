@@ -2,10 +2,10 @@ import SwiftUI
 import CoreUI
 
 struct ProgressBarsStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var stepProgress: [Double] = []
-    @State private var isComplete = false
+    @State var stepProgress: [Double] = []
+    @State var isComplete = false
 
     let step: ProgressBarsStep
 
@@ -111,7 +111,7 @@ struct ProgressBarsStepView: View {
         } label: {
             Text(localized("progressBars.answerTitle"))
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(isComplete ? 1 : 0)
         .offset(y: isComplete ? 0 : 20)
         .animation(.easeOut(duration: 0.4), value: isComplete)
@@ -146,6 +146,7 @@ struct ProgressBarsStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     let sampleStep = ProgressBarsStep(
         stepLabels: [
@@ -162,7 +163,8 @@ struct ProgressBarsStepView: View {
         colorPalette: .testData
     )
     return ProgressBarsStepView(step: sampleStep)
-        .environmentObject(viewModel)
+        .environment(viewModel)
         .background(MeshGradientBackground())
         .preferredColorScheme(.dark)
 }
+#endif

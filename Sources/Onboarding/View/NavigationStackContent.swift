@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
     
     var step: OnboardingStep?
     var customStepView: (CustomStepParams) -> CustomStepView
@@ -18,8 +18,6 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
             switch step?.type {
             case .welcome(let welcomeStep):
                 WelcomeView(step: welcomeStep)
-            case .welcomeFade(let step):
-                WelcomeFadeView(step: step, customStepView: customStepView)
             case .oneAnswer(let oneAnswerStep):
                 OneAnswerView(step: oneAnswerStep)
             case .binaryAnswer(let binaryAnswerStep):
@@ -28,12 +26,14 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 MultipleAnswerView(step: multipleAnswerStep)
             case .description(let descriptionStep):
                 DescriptionStepView(step: descriptionStep)
+            case .enterValue(let step):
+                EnterValueStepView(step: step)
+            case .custom(let stepParams):
+                customStepView(stepParams)
+            case .welcomeFade(let step):
+                WelcomeFadeView(step: step, customStepView: customStepView)
             case .progress(let step):
                 ProgressStepView(step: step)
-            case .timePicker(let step):
-                TimePickerStepView(step: step)
-            case .discountWheel(let step):
-                DiscountWheelStepView(step: step)
             case .widget(let step):
                 WidgetStepView(step: step)
             case .socialProof(let step):
@@ -42,20 +42,30 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 FeatureShowcaseStepView(step: step)
             case .intro(let step):
                 IntroStepView(step: step)
-            case .enterValue(let step):
-                EnterValueStepView(step: step)
+            case .survivalFunnel(let step):
+                SurvivalFunnelStepView(step: step)
+            case .floatingWords(let step):
+                FloatingWordsStepView(step: step)
+            // Excluded from Android (Skip): wheel pickers (.wheel unavailable + custom drawing),
+            // discount wheel (Confetti + SIMD), and MeshGradient-based steps.
+            case .timePicker(let step):
+                #if os(Android)
+                EmptyView()
+                #else
+                TimePickerStepView(step: step)
+                #endif
+            case .discountWheel(let step):
+                #if os(Android)
+                EmptyView()
+                #else
+                DiscountWheelStepView(step: step)
+                #endif
             case .heightPicker(let step):
                 HeightPickerStepView(step: step)
             case .weightPicker(let step):
                 WeightPickerStepView(step: step)
             case .agePicker(let step):
                 AgePickerStepView(step: step)
-            case .custom(let stepParams):
-                customStepView(stepParams)
-            case .survivalFunnel(let step):
-                SurvivalFunnelStepView(step: step)
-            case .floatingWords(let step):
-                FloatingWordsStepView(step: step)
             case .commitmentHold(let step):
                 CommitmentHoldStepView(step: step)
             case .receipt(let step):

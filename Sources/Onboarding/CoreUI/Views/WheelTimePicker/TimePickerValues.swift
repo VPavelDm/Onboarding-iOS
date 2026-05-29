@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -64,3 +65,4 @@ struct TimePickerValues {
 #Preview {
     WheelTimePicker(step: .testData(), completion: { _ in })
 }
+#endif

@@ -7,13 +7,13 @@ import SwiftUI
 import CoreUI
 
 struct FloatingWordsStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var driftStarted = false
-    @State private var pulse = false
-    @State private var isDescriptionVisible = false
-    @State private var isCaptionVisible = false
-    @State private var isButtonVisible = false
+    @State var driftStarted = false
+    @State var pulse = false
+    @State var isDescriptionVisible = false
+    @State var isCaptionVisible = false
+    @State var isButtonVisible = false
 
     var step: FloatingWordsStep
 
@@ -37,22 +37,22 @@ struct FloatingWordsStepView: View {
     var body: some View {
         VStack {
             floatingWordsView
-                .padding(.horizontal, .hScreenPadding)
+                .padding(.horizontal, UIConstants.hScreenPadding)
                 .padding(.top, 48)
-            VStack(spacing: .headingSpacing) {
+            VStack(spacing: UIConstants.headingSpacing) {
                 titleView
                 descriptionView
                     .opacity(isDescriptionVisible ? 1 : 0)
                 captionView
                     .opacity(isCaptionVisible ? 1 : 0)
             }
-            .padding(.horizontal, .hScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
             .frame(maxHeight: .infinity, alignment: .top)
             nextButton
-                .padding(.horizontal, .hScreenPadding)
+                .padding(.horizontal, UIConstants.hScreenPadding)
                 .opacity(isButtonVisible ? 1 : 0)
         }
-        .padding(.bottom, .vScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .ignoresSafeArea(edges: .top)
         .task {
             try? await Task.sleep(nanoseconds: 300_000_000)
@@ -155,7 +155,7 @@ struct FloatingWordsStepView: View {
         } label: {
             Text(localized("floatingWords.answerTitle"))
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     private func localized(_ key: String) -> String {
@@ -172,6 +172,8 @@ struct FloatingWordsStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

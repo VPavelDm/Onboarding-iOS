@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  File.swift
 //  
@@ -30,3 +31,4 @@ extension OneAnswerStep {
         )
     }
 }
+#endif

@@ -7,11 +7,12 @@
 
 import SwiftUI
 
+#if !os(Android)
 @available(iOS 17.0, *)
-private struct ShadingModifier<Item, ShadingContent>: ViewModifier where Item: Identifiable & Hashable, ShadingContent: View {
+struct ShadingModifier<Item, ShadingContent>: ViewModifier where Item: Identifiable & Hashable, ShadingContent: View {
 
-    @State private var presentedItem: Item?
-    @State private var isContentVisible: Bool = false
+    @State var presentedItem: Item?
+    @State var isContentVisible: Bool = false
 
     @Binding var item: Item?
     @ViewBuilder var content: (Item) -> ShadingContent
@@ -76,3 +77,4 @@ public extension View {
         modifier(ShadingModifier(item: item, content: content))
     }
 }
+#endif

@@ -9,9 +9,9 @@ import SwiftUI
 import CoreUI
 
 struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
-    @EnvironmentObject private var onboarding: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var onboarding: OnboardingViewModel
 
-    @State private var activeElementIndex: Int?
+    @State var activeElementIndex: Int?
 
     var step: WelcomeFadeStep
     var customStepView: (CustomStepParams) -> CustomStepView
@@ -73,6 +73,8 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

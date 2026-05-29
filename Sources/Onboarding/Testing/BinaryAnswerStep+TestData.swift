@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  SwiftUIView.swift
 //  
@@ -28,3 +29,4 @@ extension BinaryAnswerStep {
         )
     }
 }
+#endif

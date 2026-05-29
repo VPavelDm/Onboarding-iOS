@@ -7,12 +7,11 @@
 
 import SwiftUI
 import CoreUI
-import CoreHaptics
 
 struct MultipleAnswerView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
-    @State private var answers: [BoxModel]
+    @State var answers: [BoxModel]
     private let step: MultipleAnswerStep
 
     init(step: MultipleAnswerStep) {
@@ -22,22 +21,22 @@ struct MultipleAnswerView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: .contentSpacing) {
+            VStack(spacing: UIConstants.contentSpacing) {
                 imageView
-                VStack(spacing: .headingSpacing) {
+                VStack(spacing: UIConstants.headingSpacing) {
                     titleView
                     descriptionView
                 }
-                VStack(alignment: .leading, spacing: .buttonsSpacing) {
+                VStack(alignment: .leading, spacing: UIConstants.buttonsSpacing) {
                     ForEach($answers) { answer in
                         buttonView(answer: answer)
                     }
                 }
             }
-            .padding(.vertical, .vScreenPadding)
-            .padding(.horizontal, .hScreenPadding)
+            .padding(.vertical, UIConstants.vScreenPadding)
+            .padding(.horizontal, UIConstants.hScreenPadding)
         }
-        .safeAreaInset(edge: .bottom) {
+        .bottomBar {
             nextButton
                 .padding(.horizontal, 20)
                 .padding(.bottom, 32)
@@ -59,7 +58,7 @@ struct MultipleAnswerView: View {
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
-            .padding(.horizontal, .titlePadding)
+            .padding(.horizontal, UIConstants.titlePadding)
     }
 
     @ViewBuilder
@@ -74,12 +73,13 @@ struct MultipleAnswerView: View {
 
     private func buttonView(answer: Binding<BoxModel>) -> some View {
         Button {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            viewModel.playToggleFeedback()
             answer.wrappedValue.isChose.toggle()
         } label: {
             Text(answer.wrappedValue.value.title)
+                .applyRippleEffect(alignment: .leading)
         }
-        .buttonStyle(MultipleAnswerButtonStyle(isSelected: answer.isChose.wrappedValue))
+        .multipleAnswerButtonStyleCompat(colorPalette: viewModel.colorPalette, isSelected: answer.isChose.wrappedValue)
     }
 
     private var nextButton: some View {
@@ -87,15 +87,16 @@ struct MultipleAnswerView: View {
             await viewModel.onAnswer(answers: answers.filter(\.isChose).map(\.value))
         } label: {
             Text(step.buttonTitle)
+                .applyRippleEffect()
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(answers.isDisabled(step: step) ? 0 : 1)
         .animation(.easeInOut, value: answers.isDisabled(step: step))
     }
 
 }
 
-private struct BoxModel: Identifiable {
+struct BoxModel: Identifiable {
     var id: StepAnswer { value }
     var isChose: Bool = false
     var value: StepAnswer
@@ -108,6 +109,8 @@ private extension Array where Element == BoxModel {
     }
 }
 
+#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
+#endif

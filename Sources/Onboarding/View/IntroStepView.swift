@@ -6,15 +6,15 @@ import SwiftUI
 import CoreUI
 
 struct IntroStepView: View {
-    @EnvironmentObject private var viewModel: OnboardingViewModel
+    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     let step: IntroStep
 
-    @State private var showImage = false
-    @State private var showTitle = false
-    @State private var showSubtitle = false
-    @State private var showBody = false
-    @State private var showButton = false
+    @State var showImage = false
+    @State var showTitle = false
+    @State var showSubtitle = false
+    @State var showBody = false
+    @State var showButton = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -50,8 +50,8 @@ struct IntroStepView: View {
             nextButton
                 .opacity(showButton ? 1 : 0)
         }
-        .padding(.vertical, .vScreenPadding)
-        .padding(.horizontal, .hScreenPadding)
+        .padding(.vertical, UIConstants.vScreenPadding)
+        .padding(.horizontal, UIConstants.hScreenPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundView.ignoresSafeArea())
         .task { await runEntryAnimations() }
@@ -95,7 +95,7 @@ struct IntroStepView: View {
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.6))
-                .fixedSize(horizontal: false, vertical: true)
+                .fixedSizeCompat(horizontal: false, vertical: true)
         }
     }
 
@@ -122,7 +122,7 @@ struct IntroStepView: View {
         } label: {
             Text(step.answer.title)
         }
-        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
+        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }
 
     // MARK: - Background
@@ -159,8 +159,10 @@ struct IntroStepView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     NavigationStack {
         MockOnboardingView()
     }
 }
+#endif

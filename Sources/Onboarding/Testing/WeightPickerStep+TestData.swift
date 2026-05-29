@@ -1,3 +1,4 @@
+#if !os(Android)
 //
 //  WeightPickerStep+TestData.swift
 //  onboarding-ios
@@ -24,3 +25,4 @@ extension WeightPickerStep {
         )
     }
 }
+#endif
