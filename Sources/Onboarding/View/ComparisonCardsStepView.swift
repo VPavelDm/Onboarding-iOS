@@ -68,12 +68,14 @@ struct ComparisonCardsStepView: View {
                 items: step.items,
                 highlightedIndex: nil
             )
+            .frame(maxWidth: .infinity)
             arrowImage
             ComparisonWordCard(
                 label: localized("comparisonCards.rightLabel"),
                 items: step.items,
                 highlightedIndex: appeared ? step.highlightedIndex : nil
             )
+            .frame(maxWidth: .infinity)
         }
     }
 
@@ -88,6 +90,7 @@ struct ComparisonCardsStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("comparisonCards.answerTitle"))
+                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(showCTA ? 1 : 0)

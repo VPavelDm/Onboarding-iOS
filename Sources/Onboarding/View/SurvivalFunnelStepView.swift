@@ -168,6 +168,7 @@ struct SurvivalFunnelStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("survivalFunnel.answerTitle"))
+                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }

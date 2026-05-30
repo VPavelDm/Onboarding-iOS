@@ -2,10 +2,6 @@
 //  PlatformModifiers.swift
 //  onboarding-ios
 //
-//  Thin wrappers around SwiftUI modifiers that Skip's SwiftUI (Android) doesn't implement.
-//  They no-op on Android and forward to the real modifier on Apple platforms, so views can
-//  use them unconditionally and the platform handling lives in one place.
-//
 
 import SwiftUI
 
@@ -47,7 +43,6 @@ extension View {
         #endif
     }
 
-    /// `.wheel` picker style is unavailable in Skip; fall back to `.menu` (a dropdown) on Android.
     @ViewBuilder
     func wheelPickerStyleCompat() -> some View {
         #if os(Android)
@@ -57,7 +52,6 @@ extension View {
         #endif
     }
 
-    /// `contentShape` is unavailable in Skip; no-op there (gesture falls back to the view bounds).
     @ViewBuilder
     func contentShapeCompat<S: Shape>(_ shape: S) -> some View {
         #if os(Android)
@@ -67,11 +61,8 @@ extension View {
         #endif
     }
 
-    /// Applied to a button's *label* so the Compose tap ripple covers the whole button.
-    /// Skip puts the ripple on the label's bounds, so the label must fill the button.
-    /// Android-only — on iOS the `ButtonStyle` already lays the label out.
     @ViewBuilder
-    func applyRippleEffect(alignment: Alignment = .center) -> some View {
+    public func applyRippleEffect(alignment: Alignment = .center) -> some View {
         #if os(Android)
         self.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
         #else
@@ -80,9 +71,12 @@ extension View {
     }
 
     @ViewBuilder
-    func bottomBar<Bar: View>(@ViewBuilder _ bar: () -> Bar) -> some View {
+    public func bottomBar<Bar: View>(@ViewBuilder _ bar: () -> Bar) -> some View {
         #if os(Android)
-        self.overlay(alignment: .bottom, content: bar)
+        VStack(spacing: 0) {
+            self
+            bar()
+        }
         #else
         self.safeAreaInset(edge: .bottom, content: bar)
         #endif

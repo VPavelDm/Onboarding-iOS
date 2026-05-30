@@ -46,6 +46,7 @@ struct WidgetStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("widget.answerTitle"))
+                .applyRippleEffect()
         }
         .secondaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }

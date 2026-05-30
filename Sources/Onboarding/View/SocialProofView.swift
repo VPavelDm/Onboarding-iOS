@@ -151,6 +151,7 @@ struct SocialProofView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("socialProof.answerTitle"))
+                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }

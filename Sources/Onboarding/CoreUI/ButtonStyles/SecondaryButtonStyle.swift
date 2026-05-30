@@ -9,7 +9,7 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func secondaryButtonStyleCompat(colorPalette: ColorPalette) -> some View {
+    public func secondaryButtonStyleCompat(colorPalette: ColorPalette) -> some View {
         #if os(Android)
         secondaryButtonChrome(buttonStyle(.plain), colorPalette: colorPalette, isPressed: false, isEnabled: true, maxWidth: .infinity)
         #else

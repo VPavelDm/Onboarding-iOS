@@ -1,5 +1,5 @@
 {
-  "originHash" : "7ea276c65b3fe220fce0072cce76b51886fb83a19c5b038bbde2aa25a4e8f957",
+  "originHash" : "1c7a79b1b05865db6da06d1a16c4453d93018f9e8141c5934b3c0e115db20ed2",
   "pins" : [
     {
       "identity" : "adaptysdk-ios",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "f45961f97bbae6fff6e2e64546fea0189425ad92",
         "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "opencombine",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/OpenSwiftUIProject/OpenCombine.git",
+      "state" : {
+        "revision" : "63aef318cb3a853bcb8d774cce15f4dcb1ccdfe4",
+        "version" : "0.15.1"
       }
     },
     {
