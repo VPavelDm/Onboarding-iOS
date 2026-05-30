@@ -154,7 +154,6 @@ struct FloatingWordsStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("floatingWords.answerTitle"))
-                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }

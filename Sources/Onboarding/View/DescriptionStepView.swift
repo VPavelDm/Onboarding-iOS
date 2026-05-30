@@ -75,7 +75,6 @@ struct DescriptionStepView: View {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(step.answer.title)
-                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }

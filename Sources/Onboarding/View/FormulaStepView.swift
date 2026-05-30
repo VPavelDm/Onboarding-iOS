@@ -143,7 +143,6 @@ struct FormulaStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("formula.answerTitle"))
-                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(showCTA ? 1 : 0)

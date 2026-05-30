@@ -72,7 +72,6 @@ struct MilestoneTimelineStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("milestoneTimeline.answerTitle"))
-                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(showCTA ? 1 : 0)

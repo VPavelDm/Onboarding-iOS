@@ -71,7 +71,6 @@ struct ProgressStepView: View {
                     .tint(viewModel.colorPalette.primaryButtonForegroundColor)
                     .opacity(isButtonLoading ? 1 : 0)
             }
-            .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .padding(.horizontal, UIConstants.hScreenPadding)

@@ -85,13 +85,17 @@ struct OneAnswerView: View {
             }
         } label: {
             Text(answer.title)
-                .applyRippleEffect(alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .applyRippleEffect()
         } progress: {
             ProgressView()
                 .frame(maxWidth: .infinity)
                 .tint(viewModel.colorPalette.primaryButtonForegroundColor)
         }
-        .answerButtonStyleCompat(colorPalette: viewModel.colorPalette, isSelected: selectedAnswer == answer)
+        .answerButtonStyleCompat(
+            colorPalette: viewModel.colorPalette,
+            isSelected: selectedAnswer == answer
+        )
     }
 
     private var nextButton: some View {
@@ -103,7 +107,6 @@ struct OneAnswerView: View {
             }
         } label: {
             Text(step.buttonTitle)
-                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .disabled(selectedAnswer == nil && step.skip == nil)

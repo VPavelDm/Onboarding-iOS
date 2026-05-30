@@ -77,7 +77,8 @@ struct MultipleAnswerView: View {
             answer.wrappedValue.isChose.toggle()
         } label: {
             Text(answer.wrappedValue.value.title)
-                .applyRippleEffect(alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .applyRippleEffect()
         }
         .multipleAnswerButtonStyleCompat(colorPalette: viewModel.colorPalette, isSelected: answer.isChose.wrappedValue)
     }
@@ -87,7 +88,6 @@ struct MultipleAnswerView: View {
             await viewModel.onAnswer(answers: answers.filter(\.isChose).map(\.value))
         } label: {
             Text(step.buttonTitle)
-                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(answers.isDisabled(step: step) ? 0 : 1)

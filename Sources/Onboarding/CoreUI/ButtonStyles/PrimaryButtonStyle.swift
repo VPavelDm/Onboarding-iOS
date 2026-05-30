@@ -21,6 +21,7 @@ extension View {
 @ViewBuilder
 private func primaryButtonChrome<V: View>(_ view: V, colorPalette: ColorPalette, isPressed: Bool, isEnabled: Bool, maxWidth: CGFloat) -> some View {
     view
+        .applyRippleEffect()
         .foregroundStyle(colorPalette.primaryButtonForegroundColor)
         .font(.system(size: 16, weight: .semibold))
         .frame(maxWidth: maxWidth)

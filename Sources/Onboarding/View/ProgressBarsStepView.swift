@@ -110,7 +110,6 @@ struct ProgressBarsStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("progressBars.answerTitle"))
-                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(isComplete ? 1 : 0)
