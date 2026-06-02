@@ -88,6 +88,7 @@ struct MultipleAnswerView: View {
             await viewModel.onAnswer(answers: answers.filter(\.isChose).map(\.value))
         } label: {
             Text(step.buttonTitle)
+                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .opacity(answers.isDisabled(step: step) ? 0 : 1)

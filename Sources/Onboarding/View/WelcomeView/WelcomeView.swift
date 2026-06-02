@@ -31,6 +31,7 @@ struct WelcomeView: View {
             await viewModel.onAnswer(answers: [step.firstAnswer])
         } label: {
             Text(step.firstAnswer.title)
+                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }

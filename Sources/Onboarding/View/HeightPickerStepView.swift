@@ -146,6 +146,7 @@ struct HeightPickerStepView: View {
             await onContinue()
         } label: {
             Text(step.answer.title)
+                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
     }

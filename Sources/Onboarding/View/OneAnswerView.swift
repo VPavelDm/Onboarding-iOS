@@ -107,6 +107,7 @@ struct OneAnswerView: View {
             }
         } label: {
             Text(step.buttonTitle)
+                .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .disabled(selectedAnswer == nil && step.skip == nil)
