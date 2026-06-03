@@ -41,7 +41,7 @@ struct OneAnswerView: View {
         .bottomBar {
             if !shouldAutoNavigate {
                 paddedNextButton
-                    .revealBottomButton(isNextButtonVisible)
+                    .revealBottomBarButton(isNextButtonVisible)
             }
         }
     }

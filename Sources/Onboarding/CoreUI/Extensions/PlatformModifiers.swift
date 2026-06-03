@@ -70,10 +70,10 @@ extension View {
         #endif
     }
 
-    /// Standard reveal for a bottom action button. The button stays mounted and reveals via
-    /// properties (Skip does not animate conditional insertion `if visible { button }`, but
-    /// `opacity`/`offset` are properties, which do animate).
-    /// - Android: pure opacity fade.
+    /// Reveal for a bottom action button in a Spacer-balanced layout (the button is inline at the
+    /// bottom of the content, e.g. ComparisonCards). Stays mounted and reveals via properties —
+    /// it keeps its height when hidden, which the surrounding Spacers absorb without reflow.
+    /// - Android: opacity fade.
     /// - iOS: opacity fade + slight slide-up.
     @ViewBuilder
     public func revealBottomButton(_ isVisible: Bool, animation: Animation = .easeOut(duration: 0.4)) -> some View {
@@ -86,6 +86,31 @@ extension View {
         self
             .opacity(isVisible ? 1 : 0)
             .offset(y: isVisible ? 0 : 16)
+            .allowsHitTesting(isVisible)
+            .animation(animation, value: isVisible)
+        #endif
+    }
+
+    /// Reveal for a bottom action button pinned in a `.bottomBar` over a scroll view (e.g.
+    /// OneAnswer, Exercises). Same fade as `revealBottomButton`, but collapses to zero height when
+    /// hidden so it reserves no space at the bottom of the scroll / safe-area inset.
+    /// - Android: opacity fade.
+    /// - iOS: opacity fade + slight slide-up.
+    @ViewBuilder
+    public func revealBottomBarButton(_ isVisible: Bool, animation: Animation = .easeOut(duration: 0.4)) -> some View {
+        #if os(Android)
+        self
+            .opacity(isVisible ? 1 : 0)
+            .frame(height: isVisible ? nil : 0)
+            .clipped()
+            .allowsHitTesting(isVisible)
+            .animation(animation, value: isVisible)
+        #else
+        self
+            .opacity(isVisible ? 1 : 0)
+            .offset(y: isVisible ? 0 : 16)
+            .frame(height: isVisible ? nil : 0)
+            .clipped()
             .allowsHitTesting(isVisible)
             .animation(animation, value: isVisible)
         #endif

@@ -91,7 +91,7 @@ struct MultipleAnswerView: View {
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
-        .revealBottomButton(!answers.isDisabled(step: step))
+        .revealBottomBarButton(!answers.isDisabled(step: step))
     }
 
 }
