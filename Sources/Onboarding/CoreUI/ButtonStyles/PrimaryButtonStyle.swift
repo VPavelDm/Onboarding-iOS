@@ -12,7 +12,6 @@ extension View {
     public func primaryButtonStyleCompat(colorPalette: ColorPalette) -> some View {
         #if os(Android)
         primaryButtonChrome(buttonStyle(.plain), colorPalette: colorPalette, isPressed: false, isEnabled: true, maxWidth: .infinity)
-            .applyRippleEffect()
         #else
         buttonStyle(PrimaryButtonStyle(colorPalette: colorPalette))
         #endif

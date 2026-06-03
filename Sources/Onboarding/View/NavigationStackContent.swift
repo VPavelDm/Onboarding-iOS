@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
-    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
-    
     var step: OnboardingStep?
     var customStepView: (CustomStepParams) -> CustomStepView
 
@@ -79,7 +77,7 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
             case .comparisonCards(let step):
                 ComparisonCardsStepView(step: step)
             case .unknown, .none:
-                EmptyView()
+                Color.clear
             }
         }
     }
