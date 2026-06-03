@@ -113,9 +113,7 @@ struct ProgressBarsStepView: View {
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
-        .opacity(isComplete ? 1 : 0)
-        .offset(y: isComplete ? 0 : 20)
-        .animation(.easeOut(duration: 0.4), value: isComplete)
+        .revealBottomButton(isComplete)
     }
 
     private func localized(_ key: String) -> String {

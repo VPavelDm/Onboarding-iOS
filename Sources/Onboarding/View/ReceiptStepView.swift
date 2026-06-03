@@ -130,8 +130,7 @@ struct ReceiptStepView: View {
             continueButton
             disclaimer
         }
-        .opacity(showCTA ? 1 : 0)
-        .offset(y: showCTA ? 0 : 16)
+        .revealBottomButton(showCTA)
     }
 
     private var continueButton: some View {
@@ -187,9 +186,7 @@ struct ReceiptStepView: View {
             showStamp = true
         }
         try? await Task.sleep(for: .milliseconds(250))
-        withAnimation(.easeOut(duration: 0.4)) {
-            showCTA = true
-        }
+        showCTA = true
     }
 }
 

@@ -32,8 +32,7 @@ struct SocialProofView: View {
             Spacer()
             nextButton
                 .padding(.horizontal, UIConstants.hScreenPadding)
-                .opacity(showButton ? 1 : 0)
-                .offset(y: showButton ? 0 : 20)
+                .revealBottomButton(showButton)
         }
         .padding(.vertical, UIConstants.vScreenPadding)
         .task {
@@ -190,9 +189,7 @@ struct SocialProofView: View {
         }
 
         try? await Task.sleep(for: .milliseconds(200))
-        withAnimation(.easeOut(duration: 0.4)) {
-            showButton = true
-        }
+        showButton = true
     }
 }
 

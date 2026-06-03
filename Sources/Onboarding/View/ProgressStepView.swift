@@ -77,8 +77,7 @@ struct ProgressStepView: View {
         .padding(.horizontal, UIConstants.hScreenPadding)
         .padding(.vertical, UIConstants.vScreenPadding)
         .disabled(progress != 100)
-        .opacity(progress == 100 ? 1 : 0)
-        .animation(.easeInOut, value: progress == 100)
+        .revealBottomButton(progress == 100)
     }
 }
 

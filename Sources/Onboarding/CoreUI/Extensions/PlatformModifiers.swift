@@ -70,6 +70,27 @@ extension View {
         #endif
     }
 
+    /// Standard reveal for a bottom action button. The button stays mounted and reveals via
+    /// properties (Skip does not animate conditional insertion `if visible { button }`, but
+    /// `opacity`/`offset` are properties, which do animate).
+    /// - Android: pure opacity fade.
+    /// - iOS: opacity fade + slight slide-up.
+    @ViewBuilder
+    public func revealBottomButton(_ isVisible: Bool, animation: Animation = .easeOut(duration: 0.4)) -> some View {
+        #if os(Android)
+        self
+            .opacity(isVisible ? 1 : 0)
+            .allowsHitTesting(isVisible)
+            .animation(animation, value: isVisible)
+        #else
+        self
+            .opacity(isVisible ? 1 : 0)
+            .offset(y: isVisible ? 0 : 16)
+            .allowsHitTesting(isVisible)
+            .animation(animation, value: isVisible)
+        #endif
+    }
+
     @ViewBuilder
     public func bottomBar<Bar: View>(@ViewBuilder _ bar: () -> Bar) -> some View {
         #if os(Android)

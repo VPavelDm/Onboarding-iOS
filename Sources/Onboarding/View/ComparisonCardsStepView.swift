@@ -22,9 +22,7 @@ struct ComparisonCardsStepView: View {
         .task {
             appeared = true
             try? await Task.sleep(for: .seconds(ctaAppearDelay))
-            withAnimation(.easeOut(duration: 0.4)) {
-                showCTA = true
-            }
+            showCTA = true
         }
     }
 
@@ -93,8 +91,7 @@ struct ComparisonCardsStepView: View {
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
-        .opacity(showCTA ? 1 : 0)
-        .offset(y: showCTA ? 0 : 16)
+        .revealBottomButton(showCTA)
     }
 
     private func localized(_ key: String) -> String {

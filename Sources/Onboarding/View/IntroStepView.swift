@@ -48,7 +48,7 @@ struct IntroStepView: View {
             Spacer(minLength: 24)
 
             nextButton
-                .opacity(showButton ? 1 : 0)
+                .revealBottomButton(showButton)
         }
         .padding(.vertical, UIConstants.vScreenPadding)
         .padding(.horizontal, UIConstants.hScreenPadding)
@@ -156,7 +156,7 @@ struct IntroStepView: View {
         withAnimation(.easeOut(duration: 0.4)) { showBody = true }
         try? await Task.sleep(for: .milliseconds(220))
 
-        withAnimation(.easeInOut(duration: 0.4)) { showButton = true }
+        showButton = true
     }
 }
 

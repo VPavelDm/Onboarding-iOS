@@ -69,8 +69,7 @@ struct FeatureShowcaseStepView: View {
         nextButton
             .padding(.horizontal, UIConstants.hScreenPadding)
             .padding(.bottom, UIConstants.vScreenPadding)
-            .opacity(showButton ? 1 : 0)
-            .offset(y: showButton ? 0 : 16)
+            .revealBottomButton(showButton)
     }
 
     // MARK: - Image
@@ -143,9 +142,7 @@ struct FeatureShowcaseStepView: View {
         }
 
         try? await Task.sleep(for: .milliseconds(150))
-        withAnimation(.easeOut(duration: 0.4)) {
-            showButton = true
-        }
+        showButton = true
     }
 }
 

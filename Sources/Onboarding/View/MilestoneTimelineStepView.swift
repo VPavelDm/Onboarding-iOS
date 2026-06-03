@@ -23,9 +23,7 @@ struct MilestoneTimelineStepView: View {
             triggered = true
             let lastDelay = step.milestones.map(\.delay).max() ?? 0
             try? await Task.sleep(for: .seconds(lastDelay + 0.4))
-            withAnimation(.easeOut(duration: 0.4)) {
-                showCTA = true
-            }
+            showCTA = true
         }
     }
 
@@ -75,8 +73,7 @@ struct MilestoneTimelineStepView: View {
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
-        .opacity(showCTA ? 1 : 0)
-        .offset(y: showCTA ? 0 : 16)
+        .revealBottomButton(showCTA)
     }
 
     private func localized(_ key: String) -> String {

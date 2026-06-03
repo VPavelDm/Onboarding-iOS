@@ -146,9 +146,7 @@ struct FormulaStepView: View {
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
-        .opacity(showCTA ? 1 : 0)
-        .offset(y: showCTA ? 0 : 16)
-        .animation(.easeOut(duration: 0.4), value: showCTA)
+        .revealBottomButton(showCTA)
     }
 
     private func localized(_ key: String) -> String {

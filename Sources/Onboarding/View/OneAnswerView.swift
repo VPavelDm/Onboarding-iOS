@@ -39,13 +39,21 @@ struct OneAnswerView: View {
         }
         .scrollContentBackground(.hidden)
         .bottomBar {
-            if !shouldAutoNavigate && (selectedAnswer != nil || step.skip != nil) {
-                nextButton
-                    .padding(.horizontal, UIConstants.hScreenPadding)
-                    .padding(.bottom, UIConstants.vScreenPadding)
+            if !shouldAutoNavigate {
+                paddedNextButton
+                    .revealBottomButton(isNextButtonVisible)
             }
         }
-        .animation(.easeInOut, value: selectedAnswer != nil)
+    }
+
+    private var isNextButtonVisible: Bool {
+        selectedAnswer != nil || step.skip != nil
+    }
+
+    private var paddedNextButton: some View {
+        nextButton
+            .padding(.horizontal, UIConstants.hScreenPadding)
+            .padding(.bottom, UIConstants.vScreenPadding)
     }
 
     @ViewBuilder
@@ -111,7 +119,6 @@ struct OneAnswerView: View {
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .disabled(selectedAnswer == nil && step.skip == nil)
-        .animation(.easeInOut, value: selectedAnswer)
     }
 
     private func skipButton(skip: StepAnswer) -> some View {
