@@ -17,8 +17,8 @@ struct MilestoneTimelineStepView: View {
             Spacer()
             continueButton
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 32)
+        .padding(.horizontal, UIConstants.hScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .task {
             triggered = true
             let lastDelay = step.milestones.map(\.delay).max() ?? 0
@@ -28,7 +28,7 @@ struct MilestoneTimelineStepView: View {
     }
 
     private var header: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: UIConstants.headingSpacing) {
             titleView
             subtitleView
         }
@@ -281,28 +281,5 @@ struct MilestoneTimeline: View {
             .fill(viewModel.colorPalette.accentColor)
             .frame(width: 9, height: 9)
     }
-}
-#endif
-
-#if !os(Android)
-#Preview {
-    let sampleStep = MilestoneTimelineStep(
-        milestones: [
-            .init(label: "Day 1",  xRatio: 0.10, delay: 0.3),
-            .init(label: "Day 3",  xRatio: 0.32, delay: 0.6),
-            .init(label: "Day 7",  xRatio: 0.58, delay: 1.0),
-            .init(label: "Day 30", xRatio: 0.90, delay: 1.7)
-        ],
-        nextStepID: nil
-    )
-    let viewModel = OnboardingViewModel(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
-        colorPalette: .testData
-    )
-    return MilestoneTimelineStepView(step: sampleStep)
-        .environment(viewModel)
-        .background(MeshGradientBackground())
-        .preferredColorScheme(.dark)
 }
 #endif

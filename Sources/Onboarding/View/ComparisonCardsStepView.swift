@@ -17,8 +17,8 @@ struct ComparisonCardsStepView: View {
             Spacer()
             continueButton
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 32)
+        .padding(.horizontal, UIConstants.hScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .task {
             appeared = true
             try? await Task.sleep(for: .seconds(ctaAppearDelay))
@@ -26,15 +26,15 @@ struct ComparisonCardsStepView: View {
         }
     }
 
-    /// Matches `ComparisonWordCard`'s fade timing — 0.4 start + 0.3 per-position stagger + 0.7 fade duration.
+    /// Waits for `ComparisonWordCard`'s staggered fade to finish before revealing the CTA.
     private var ctaAppearDelay: Double {
         let fadingCount = max(step.items.count - 1, 0)
-        let lastStaggerDelay = Double(max(fadingCount - 1, 0)) * 0.3
-        return 0.4 + lastStaggerDelay + 0.7
+        let lastStaggerDelay = Double(max(fadingCount - 1, 0)) * ComparisonCardsAnimationConstants.perItemStagger
+        return ComparisonCardsAnimationConstants.startDelay + lastStaggerDelay + ComparisonCardsAnimationConstants.fadeDuration
     }
 
     private var header: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: UIConstants.headingSpacing) {
             titleView
             subtitleView
         }
@@ -66,14 +66,12 @@ struct ComparisonCardsStepView: View {
                 items: step.items,
                 highlightedIndex: nil
             )
-            .frame(maxWidth: .infinity)
             arrowImage
             ComparisonWordCard(
                 label: localized("comparisonCards.rightLabel"),
                 items: step.items,
                 highlightedIndex: appeared ? step.highlightedIndex : nil
             )
-            .frame(maxWidth: .infinity)
         }
     }
 
@@ -141,7 +139,7 @@ struct ComparisonCardsStepView: View {
                     .opacity(opacity(at: index))
                     .blur(radius: blur(at: index))
                     .animation(
-                        .easeOut(duration: 0.7).delay(delay(at: index)),
+                        .easeOut(duration: ComparisonCardsAnimationConstants.fadeDuration).delay(delay(at: index)),
                         value: highlightedIndex
                     )
             }
@@ -150,42 +148,25 @@ struct ComparisonCardsStepView: View {
 
     private func opacity(at index: Int) -> Double {
         guard let highlightedIndex else { return 1 }
-        return index == highlightedIndex ? 1 : 0.18
+        return index == highlightedIndex ? 1 : ComparisonCardsAnimationConstants.dimmedOpacity
     }
 
     private func blur(at index: Int) -> CGFloat {
         guard let highlightedIndex else { return 0 }
-        return index == highlightedIndex ? 0 : 1.2
+        return index == highlightedIndex ? 0 : ComparisonCardsAnimationConstants.dimmedBlur
     }
 
     private func delay(at index: Int) -> Double {
         guard let highlightedIndex, index != highlightedIndex else { return 0 }
         let positionInFadeOrder = index < highlightedIndex ? index : index - 1
-        return 0.4 + Double(positionInFadeOrder) * 0.3
+        return ComparisonCardsAnimationConstants.startDelay + Double(positionInFadeOrder) * ComparisonCardsAnimationConstants.perItemStagger
     }
 }
 
-#if !os(Android)
-#Preview {
-    let sampleStep = ComparisonCardsStep(
-        items: [
-            "die Erfahrung",
-            "entscheiden",
-            "trotzdem",
-            "die Gewohnheit",
-            "verbessern"
-        ],
-        highlightedIndex: 2,
-        nextStepID: nil
-    )
-    let viewModel = OnboardingViewModel(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
-        colorPalette: .testData
-    )
-    return ComparisonCardsStepView(step: sampleStep)
-        .environment(viewModel)
-        .background(MeshGradientBackground())
-        .preferredColorScheme(.dark)
+private enum ComparisonCardsAnimationConstants {
+    static let startDelay: Double = 0.4
+    static let perItemStagger: Double = 0.3
+    static let fadeDuration: Double = 0.7
+    static let dimmedOpacity: Double = 0.18
+    static let dimmedBlur: CGFloat = 1.2
 }
-#endif

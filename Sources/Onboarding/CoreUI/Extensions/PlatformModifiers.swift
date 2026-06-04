@@ -92,10 +92,11 @@ extension View {
     }
 
     /// Reveal for a bottom action button pinned in a `.bottomBar` over a scroll view (e.g.
-    /// OneAnswer, Exercises). Same fade as `revealBottomButton`, but collapses to zero height when
-    /// hidden so it reserves no space at the bottom of the scroll / safe-area inset.
-    /// - Android: opacity fade.
-    /// - iOS: opacity fade + slight slide-up.
+    /// OneAnswer, Exercises). Fades the button in/out so it reserves no space at the bottom when hidden.
+    /// - Android: opacity fade + collapses to zero height (the bottomBar is a plain VStack, so the
+    ///   button must reserve no space itself).
+    /// - iOS: opacity fade + slight slide-up; `safeAreaInset` manages the reserved space, so no
+    ///   height collapse is needed.
     @ViewBuilder
     public func revealBottomBarButton(_ isVisible: Bool, animation: Animation = .easeOut(duration: 0.4)) -> some View {
         #if os(Android)
@@ -109,8 +110,6 @@ extension View {
         self
             .opacity(isVisible ? 1 : 0)
             .offset(y: isVisible ? 0 : 16)
-            .frame(height: isVisible ? nil : 0)
-            .clipped()
             .allowsHitTesting(isVisible)
             .animation(animation, value: isVisible)
         #endif
