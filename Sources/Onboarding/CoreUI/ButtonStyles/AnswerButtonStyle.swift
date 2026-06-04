@@ -11,7 +11,13 @@ extension View {
     @ViewBuilder
     func answerButtonStyleCompat(colorPalette: ColorPalette, isSelected: Bool) -> some View {
         #if os(Android)
-        answerButtonChrome(buttonStyle(.plain), colorPalette: colorPalette, isSelected: isSelected, isPressed: false, isEnabled: true)
+        answerButtonChrome(
+            buttonStyle(.plain),
+            colorPalette: colorPalette,
+            isSelected: isSelected,
+            isPressed: false,
+            isEnabled: true
+        )
         #else
         buttonStyle(AnswerButtonStyle(isSelected: isSelected))
         #endif
@@ -19,7 +25,13 @@ extension View {
 }
 
 @ViewBuilder
-private func answerButtonChrome<V: View>(_ view: V, colorPalette: ColorPalette, isSelected: Bool, isPressed: Bool, isEnabled: Bool) -> some View {
+private func answerButtonChrome<V: View>(
+    _ view: V,
+    colorPalette: ColorPalette,
+    isSelected: Bool,
+    isPressed: Bool,
+    isEnabled: Bool
+) -> some View {
     view
         .foregroundStyle(colorPalette.secondaryButtonForegroundColor)
         .font(.system(size: 16, weight: .semibold))
@@ -44,7 +56,13 @@ struct AnswerButtonStyle: ButtonStyle {
     var isSelected: Bool
 
     func makeBody(configuration: Configuration) -> some View {
-        answerButtonChrome(configuration.label, colorPalette: viewModel.colorPalette, isSelected: isSelected, isPressed: configuration.isPressed, isEnabled: isEnabled)
+        answerButtonChrome(
+            configuration.label,
+            colorPalette: viewModel.colorPalette,
+            isSelected: isSelected,
+            isPressed: configuration.isPressed,
+            isEnabled: isEnabled
+        )
     }
 }
 #endif

@@ -12,7 +12,6 @@ struct OneAnswerView: View {
     @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     @State var selectedAnswer: StepAnswer?
-    @State var isButtonVisible: Bool = false
 
     var step: OneAnswerStep
 
@@ -20,10 +19,13 @@ struct OneAnswerView: View {
         step.autoNavigateOnSingleAnswer
     }
 
+    private var isNextButtonVisible: Bool {
+        selectedAnswer != nil || step.skip != nil
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: UIConstants.contentSpacing) {
-                imageView
                 VStack(spacing: UIConstants.headingSpacing) {
                     titleView
                     descriptionView
@@ -40,28 +42,9 @@ struct OneAnswerView: View {
         .scrollContentBackground(.hidden)
         .bottomBar {
             if !shouldAutoNavigate {
-                paddedNextButton
+                nextButton
                     .revealBottomBarButton(isNextButtonVisible)
             }
-        }
-    }
-
-    private var isNextButtonVisible: Bool {
-        selectedAnswer != nil || step.skip != nil
-    }
-
-    private var paddedNextButton: some View {
-        nextButton
-            .padding(.horizontal, UIConstants.hScreenPadding)
-            .padding(.bottom, UIConstants.vScreenPadding)
-    }
-
-    @ViewBuilder
-    private var imageView: some View {
-        if let image = step.image {
-            OnboardingImage(image: image, bundle: viewModel.configuration.bundle)
-                .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .frame(maxWidth: .infinity)
         }
     }
 
@@ -119,16 +102,8 @@ struct OneAnswerView: View {
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .disabled(selectedAnswer == nil && step.skip == nil)
-    }
-
-    private func skipButton(skip: StepAnswer) -> some View {
-        AsyncButton {
-            await viewModel.onAnswer(answers: [skip])
-        } label: {
-            Text(skip.title)
-                .applyRippleEffect()
-        }
-        .secondaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .padding(.horizontal, UIConstants.hScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
     }
 }
 

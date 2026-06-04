@@ -11,7 +11,13 @@ extension View {
     @ViewBuilder
     public func primaryButtonStyleCompat(colorPalette: ColorPalette) -> some View {
         #if os(Android)
-        primaryButtonChrome(buttonStyle(.plain), colorPalette: colorPalette, isPressed: false, isEnabled: true, maxWidth: .infinity)
+        primaryButtonChrome(
+            buttonStyle(.plain),
+            colorPalette: colorPalette,
+            isPressed: false,
+            isEnabled: true,
+            maxWidth: .infinity
+        )
         #else
         buttonStyle(PrimaryButtonStyle(colorPalette: colorPalette))
         #endif
@@ -19,7 +25,13 @@ extension View {
 }
 
 @ViewBuilder
-private func primaryButtonChrome<V: View>(_ view: V, colorPalette: ColorPalette, isPressed: Bool, isEnabled: Bool, maxWidth: CGFloat) -> some View {
+private func primaryButtonChrome<V: View>(
+    _ view: V,
+    colorPalette: ColorPalette,
+    isPressed: Bool,
+    isEnabled: Bool,
+    maxWidth: CGFloat
+) -> some View {
     view
         .foregroundStyle(colorPalette.primaryButtonForegroundColor)
         .font(.system(size: 16, weight: .semibold))
@@ -42,7 +54,13 @@ public struct PrimaryButtonStyle: ButtonStyle {
     }
 
     public func makeBody(configuration: Configuration) -> some View {
-        primaryButtonChrome(configuration.label, colorPalette: colorPalette, isPressed: configuration.isPressed, isEnabled: isEnabled, maxWidth: 500)
+        primaryButtonChrome(
+            configuration.label,
+            colorPalette: colorPalette,
+            isPressed: configuration.isPressed,
+            isEnabled: isEnabled,
+            maxWidth: 500
+        )
     }
 }
 

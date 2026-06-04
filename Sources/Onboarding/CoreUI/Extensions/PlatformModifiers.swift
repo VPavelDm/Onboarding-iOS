@@ -144,8 +144,11 @@ extension View {
         #else
         self.transition(
             .asymmetric(
-                insertion: .opacity.animation(.easeInOut.delay(0.35)),
-                removal: .offset(y: 20).combined(with: .opacity).animation(.default)
+                insertion: .opacity
+                    .animation(.easeInOut.delay(0.35)),
+                removal: .offset(y: 20)
+                    .combined(with: .opacity)
+                    .animation(.default)
             )
         )
         #endif
