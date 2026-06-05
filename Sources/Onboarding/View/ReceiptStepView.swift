@@ -18,8 +18,8 @@ struct ReceiptStepView: View {
             Spacer()
             ctaSection
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 32)
+        .padding(.horizontal, UIConstants.hScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .task {
             await animateIn()
         }
@@ -126,7 +126,7 @@ struct ReceiptStepView: View {
     }
 
     private var ctaSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: UIConstants.buttonsSpacing) {
             continueButton
             disclaimer
         }
@@ -189,27 +189,3 @@ struct ReceiptStepView: View {
         showCTA = true
     }
 }
-
-#if !os(Android)
-#Preview {
-    let sampleStep = ReceiptStep(
-        items: [
-            "Premium voices",
-            "Unlimited exercises",
-            "Focus mode",
-            "Listen mode",
-            "Stats & streaks"
-        ],
-        nextStepID: nil
-    )
-    let viewModel = OnboardingViewModel(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
-        colorPalette: .testData
-    )
-    return ReceiptStepView(step: sampleStep)
-        .environment(viewModel)
-        .background(MeshGradientBackground())
-        .preferredColorScheme(.dark)
-}
-#endif

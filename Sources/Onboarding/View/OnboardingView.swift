@@ -36,7 +36,7 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
             .progressView(isVisible: viewModel.currentStep == nil) {
                 contentLoadingView
             }
-            .animation(.easeInOut, value: viewModel.currentStep)
+            .onboardingStepAnimation(value: viewModel.currentStep)
             .onFirstAppear {
                 do {
                     try await viewModel.loadSteps()

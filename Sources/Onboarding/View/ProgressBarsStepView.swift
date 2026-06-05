@@ -21,11 +21,11 @@ struct ProgressBarsStepView: View {
             Spacer()
             credibilityBlock
                 .frame(maxWidth: .infinity)
-                .padding(.bottom, 32)
+                .padding(.bottom, UIConstants.vScreenPadding)
             continueButton
-                .padding(.bottom, 32)
+                .padding(.bottom, UIConstants.vScreenPadding)
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, UIConstants.hScreenPadding)
         .task {
             stepProgress = Array(repeating: 0, count: step.stepLabels.count)
             await runProgress()
@@ -87,10 +87,20 @@ struct ProgressBarsStepView: View {
         }
     }
 
+    @ViewBuilder
     private func laurel(_ direction: LaurelDirection) -> some View {
+        #if os(Android)
+        Image("laurel", bundle: .module)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 61, height: 80)
+            .foregroundStyle(viewModel.colorPalette.accentColor)
+            .scaleEffect(x: direction == .leading ? 1 : -1, y: 1)
+        #else
         Image(systemName: direction == .leading ? "laurel.leading" : "laurel.trailing")
             .font(.system(size: 80))
             .foregroundStyle(viewModel.colorPalette.accentColor)
+        #endif
     }
 
     private var creditText: some View {
@@ -144,26 +154,3 @@ struct ProgressBarsStepView: View {
         case leading, trailing
     }
 }
-
-#if !os(Android)
-#Preview {
-    let sampleStep = ProgressBarsStep(
-        stepLabels: [
-            "Mapping your level and goals",
-            "Picking words from your topics",
-            "Tuning exercises to your style",
-            "Locking in your daily reminder"
-        ],
-        nextStepID: nil
-    )
-    let viewModel = OnboardingViewModel(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
-        colorPalette: .testData
-    )
-    return ProgressBarsStepView(step: sampleStep)
-        .environment(viewModel)
-        .background(MeshGradientBackground())
-        .preferredColorScheme(.dark)
-}
-#endif

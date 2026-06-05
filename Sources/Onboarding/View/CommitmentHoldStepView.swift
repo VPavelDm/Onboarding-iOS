@@ -17,13 +17,13 @@ struct CommitmentHoldStepView: View {
             holdButton
             holdHint
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 32)
+        .padding(.horizontal, UIConstants.hScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .sensoryFeedback(feedbackType: .success, trigger: hapticTrigger)
     }
 
     private var header: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: UIConstants.headingSpacing) {
             titleView
             subtitleView
         }
@@ -173,8 +173,8 @@ struct CommitmentHoldStepView: View {
         .scaleEffect(isPressing && !isCommitted ? 0.94 : 1.0)
         .animation(.snappy, value: isPressing)
         .contentShapeCompat(Circle())
-        .onLongPressGesture(
-            minimumDuration: holdDuration,
+        .holdToCommit(
+            duration: holdDuration,
             perform: onCommit,
             onPressingChanged: handlePressingChanged
         )
@@ -246,21 +246,3 @@ struct CommitmentHoldStepView: View {
         }
     }
 }
-
-#if !os(Android)
-#Preview {
-    let sampleStep = CommitmentHoldStep(
-        commitmentNumber: "10",
-        nextStepID: nil
-    )
-    let viewModel = OnboardingViewModel(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
-        colorPalette: .testData
-    )
-    return CommitmentHoldStepView(step: sampleStep)
-        .environment(viewModel)
-        .background(MeshGradientBackground())
-        .preferredColorScheme(.dark)
-}
-#endif

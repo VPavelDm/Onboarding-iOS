@@ -21,15 +21,15 @@ struct FormulaStepView: View {
             Spacer()
             continueButton
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 32)
+        .padding(.horizontal, UIConstants.hScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .task {
             await animateIn()
         }
     }
 
     private var header: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: UIConstants.headingSpacing) {
             titleView
             subtitleView
         }
@@ -178,28 +178,3 @@ struct FormulaStepView: View {
         showCTA = true
     }
 }
-
-#if !os(Android)
-#Preview {
-    let sampleStep = FormulaStep(
-        operandLeftNumber: "10",
-        operandRightNumber: "365",
-        resultNumber: "3,650",
-        detailRows: [
-            .init(label: "Built on", value: "Travel · Food · Tech · Career"),
-            .init(label: "Enabled",  value: "Daily · Listen · Focus"),
-            .init(label: "Target",   value: "B1 in 90 days")
-        ],
-        nextStepID: nil
-    )
-    let viewModel = OnboardingViewModel(
-        configuration: .testData(),
-        delegate: MockOnboardingDelegate(onAnswerCallback: {}),
-        colorPalette: .testData
-    )
-    return FormulaStepView(step: sampleStep)
-        .environment(viewModel)
-        .background(MeshGradientBackground())
-        .preferredColorScheme(.dark)
-}
-#endif

@@ -13,7 +13,6 @@ struct SocialProofView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            imageView
             VStack(spacing: 32) {
                 headerSection
                     .opacity(showContent ? 1 : 0)
@@ -40,15 +39,6 @@ struct SocialProofView: View {
         }
     }
 
-    // MARK: - Image
-
-    private var imageView: some View {
-        OnboardingImage(image: step.image, bundle: viewModel.configuration.bundle)
-            .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-            .aspectRatio(contentMode: step.image.contentMode)
-            .frame(maxWidth: .infinity)
-    }
-
     // MARK: - Header Section
 
     private var headerSection: some View {
@@ -58,21 +48,13 @@ struct SocialProofView: View {
                 .fontWeight(.semibold)
                 .textCase(.uppercase)
                 .tracking(1.2)
-                .apply { view in
-                    if #available(iOS 16.1, *) {
-                        view.fontDesign(.rounded)
-                    }
-                }
+                .fontDesign(.rounded)
                 .foregroundStyle(viewModel.colorPalette.accentColor)
 
             Text(localized("socialProof.welcomeSubheadline"))
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .apply { view in
-                    if #available(iOS 16.1, *) {
-                        view.fontDesign(.rounded)
-                    }
-                }
+                .fontDesign(.rounded)
                 .foregroundStyle(viewModel.colorPalette.textColor)
         }
         .multilineTextAlignment(.center)
@@ -90,11 +72,7 @@ struct SocialProofView: View {
                     .fontWeight(.medium)
                     .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                     .multilineTextAlignment(.center)
-                    .apply { view in
-                        if #available(iOS 16.1, *) {
-                            view.fontDesign(.rounded)
-                        }
-                    }
+                    .fontDesign(.rounded)
             }
             laurelView
                 .scaleEffect(x: -1, y: 1)
@@ -121,7 +99,7 @@ struct SocialProofView: View {
         Image("laurel", bundle: .module)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(height: 52)
+            .frame(width: 40, height: 52)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
     }
 
@@ -132,11 +110,7 @@ struct SocialProofView: View {
             .font(.callout)
             .fontWeight(.regular)
             .italic()
-            .apply { view in
-                if #available(iOS 16.1, *) {
-                    view.fontDesign(.serif)
-                }
-            }
+            .fontDesign(.serif)
             .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.9))
             .multilineTextAlignment(.center)
             .lineSpacing(6)
@@ -192,9 +166,3 @@ struct SocialProofView: View {
         showButton = true
     }
 }
-
-#if !os(Android)
-#Preview {
-    MockOnboardingView()
-}
-#endif
