@@ -118,7 +118,11 @@ struct MilestoneTimeline: View {
         for index in milestones.indices {
             let prior = index == 0 ? 0 : milestones[index - 1].delay
             try? await Task.sleep(for: .seconds(max(0, milestones[index].delay - prior)))
-            withAnimation(.easeOut(duration: 0.35)) {
+
+            let slot = index < milestones.count - 1
+                ? milestones[index + 1].delay - milestones[index].delay
+                : 0.5
+            withAnimation(.easeOut(duration: min(0.5, max(0.3, slot)))) {
                 revealed = index + 1
             }
         }
@@ -141,8 +145,10 @@ struct MilestoneTimeline: View {
     private func segmentView(index: Int, width: CGFloat, y: CGFloat) -> some View {
         let from = milestones[index]
         let to = milestones[index + 1]
+
         let segWidth = (to.xRatio - from.xRatio) * width
         let segCenterX = (from.xRatio + to.xRatio) / 2 * width
+
         return Rectangle()
             .fill(viewModel.colorPalette.accentColor.opacity(0.75))
             .frame(width: segWidth, height: 1.5)
@@ -236,10 +242,13 @@ struct MilestoneTimeline: View {
     private func segmentView(index: Int, width: CGFloat, y: CGFloat) -> some View {
         let from = milestones[index]
         let to = milestones[index + 1]
+
         let segWidth = (to.xRatio - from.xRatio) * width
         let segCenterX = (from.xRatio + to.xRatio) / 2 * width
+
         let drawStart = from.delay + 0.05
         let drawDuration = max(0.15, to.delay - drawStart - 0.02)
+
         return MilestoneSegmentShape(trimTo: triggered ? 1 : 0)
             .stroke(
                 viewModel.colorPalette.accentColor.opacity(0.75),
