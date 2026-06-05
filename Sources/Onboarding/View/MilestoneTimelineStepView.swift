@@ -20,6 +20,7 @@ struct MilestoneTimelineStepView: View {
         .padding(.horizontal, UIConstants.hScreenPadding)
         .padding(.bottom, UIConstants.vScreenPadding)
         .task {
+            try? await Task.sleep(for: .seconds(0.35))
             triggered = true
             let lastDelay = step.milestones.map(\.delay).max() ?? 0
             try? await Task.sleep(for: .seconds(lastDelay + 0.4))
@@ -115,6 +116,7 @@ struct MilestoneTimeline: View {
     }
 
     private func revealSequence() async {
+        try? await Task.sleep(for: .seconds(0.35))
         for index in milestones.indices {
             let prior = index == 0 ? 0 : milestones[index - 1].delay
             try? await Task.sleep(for: .seconds(max(0, milestones[index].delay - prior)))
