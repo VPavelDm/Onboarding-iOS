@@ -152,4 +152,46 @@ extension View {
         )
         #endif
     }
+
+    /// One item of a staggered "appear one by one" reveal. Pair with `staggeredReveal` on the
+    /// container, which drives `revealed`.
+    public func staggeredAppear(visible: Bool) -> some View {
+        self
+            .opacity(visible ? 1 : 0)
+            .scaleEffect(visible ? 1 : 0.96)
+            .offset(y: visible ? 0 : 8)
+    }
+
+    /// Drives the `revealed` counter for `staggeredAppear`, advancing it one step every
+    /// `stagger` seconds.
+    public func staggeredReveal(count: Int, revealed: Binding<Int>, stagger: Double = 0.06) -> some View {
+        self.task {
+            for index in 0..<count {
+                withAnimation(.easeOut(duration: 0.3)) {
+                    revealed.wrappedValue = index + 1
+                }
+                try? await Task.sleep(for: .seconds(stagger))
+            }
+        }
+    }
+
+    /// `staggeredAppear` on Android only — iOS shows the item immediately.
+    @ViewBuilder
+    public func androidStaggeredAppear(visible: Bool) -> some View {
+        #if os(Android)
+        staggeredAppear(visible: visible)
+        #else
+        self
+        #endif
+    }
+
+    /// `staggeredReveal` on Android only — no-op on iOS.
+    @ViewBuilder
+    public func androidStaggeredReveal(count: Int, revealed: Binding<Int>, stagger: Double = 0.06) -> some View {
+        #if os(Android)
+        staggeredReveal(count: count, revealed: revealed, stagger: stagger)
+        #else
+        self
+        #endif
+    }
 }

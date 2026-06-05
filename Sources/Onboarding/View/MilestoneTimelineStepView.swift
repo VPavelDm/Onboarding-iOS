@@ -20,7 +20,9 @@ struct MilestoneTimelineStepView: View {
         .padding(.horizontal, UIConstants.hScreenPadding)
         .padding(.bottom, UIConstants.vScreenPadding)
         .task {
+#if !os(Android)
             try? await Task.sleep(for: .seconds(0.35))
+#endif
             triggered = true
             let lastDelay = step.milestones.map(\.delay).max() ?? 0
             try? await Task.sleep(for: .seconds(lastDelay + 0.4))

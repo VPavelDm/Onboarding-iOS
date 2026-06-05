@@ -66,12 +66,14 @@ struct ComparisonCardsStepView: View {
                 items: step.items,
                 highlightedIndex: nil
             )
+            .frame(maxWidth: .infinity)
             arrowImage
             ComparisonWordCard(
                 label: localized("comparisonCards.rightLabel"),
                 items: step.items,
                 highlightedIndex: appeared ? step.highlightedIndex : nil
             )
+            .frame(maxWidth: .infinity)
         }
     }
 

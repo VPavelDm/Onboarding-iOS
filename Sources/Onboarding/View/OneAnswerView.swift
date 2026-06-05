@@ -12,6 +12,7 @@ struct OneAnswerView: View {
     @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     @State var selectedAnswer: StepAnswer?
+    @State var revealedButtons = 0
 
     var step: OneAnswerStep
 
@@ -33,8 +34,10 @@ struct OneAnswerView: View {
                 VStack(spacing: UIConstants.buttonsSpacing) {
                     ForEach(step.answers.indices, id: \.self) { index in
                         buttonView(answer: step.answers[index])
+                            .androidStaggeredAppear(visible: revealedButtons > index)
                     }
                 }
+                .androidStaggeredReveal(count: step.answers.count, revealed: $revealedButtons)
             }
             .padding(.vertical, UIConstants.vScreenPadding)
             .padding(.horizontal, UIConstants.hScreenPadding)
