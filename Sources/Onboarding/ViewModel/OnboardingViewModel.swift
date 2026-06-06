@@ -6,12 +6,6 @@
 //
 
 import SwiftUI
-#if canImport(Combine)
-import Combine
-#else
-import OpenCombine
-import OpenCombineFoundation
-#endif
 
 @MainActor
 @Observable
@@ -20,9 +14,6 @@ final class OnboardingViewModel {
     // MARK: - Properties
 
     private let service: OnboardingService
-    private let progressSubject = PassthroughSubject<Void, Never>()
-    private let progressButtonSubject = PassthroughSubject<Void, Never>()
-    private var cancellations = Set<AnyCancellable>()
 
     // MARK: - Outputs
 
@@ -34,12 +25,6 @@ final class OnboardingViewModel {
     let configuration: OnboardingConfiguration
     let colorPalette: any ColorPalette
     let localizer: Localizer
-
-    var finishProgress: AnyPublisher<Void, Never> {
-        Publishers.CombineLatest(progressSubject, progressButtonSubject)
-            .map { _ in Void() }
-            .eraseToAnyPublisher()
-    }
 
     // MARK: - Inits
 
@@ -76,20 +61,6 @@ final class OnboardingViewModel {
         )
 
         await onStepCompletion(answer: answer, nextStepID: answers.last?.nextStepID)
-    }
-
-    func onProgressButton() {
-        progressButtonSubject.send(Void())
-    }
-
-    func processAnswers(step: ProgressStep) async {
-        finishProgress
-            .asyncSink { [weak self] _ in
-                await self?.onAnswer(answers: [step.answer])
-            }
-            .store(in: &cancellations)
-        
-        progressSubject.send(Void())
     }
 
     func format(string: String) -> String {

@@ -6,20 +6,19 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct ProgressStepView: View {
     @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     @State var progress: CGFloat = 0
-    @State var isButtonLoading: Bool = false
-    @State var finishedProcessing: Bool = false
 
     var step: ProgressStep
 
     var body: some View {
         ScrollView {
             VStack(spacing: 64) {
-                ProgressCircleView(duration: step.duration, progress: $progress, finished: finishedProcessing)
+                ProgressCircleView(duration: step.duration, progress: $progress)
                 VStack(spacing: 2 * UIConstants.contentSpacing) {
                     VStack(spacing: UIConstants.headingSpacing) {
                         titleView
@@ -34,10 +33,6 @@ struct ProgressStepView: View {
         .scrollIndicators(.hidden)
         .bottomBar {
             nextButton
-        }
-        .task {
-            await viewModel.processAnswers(step: step)
-            finishedProcessing = true
         }
     }
 
@@ -60,18 +55,14 @@ struct ProgressStepView: View {
     }
 
     private var nextButton: some View {
-        Button {
-            isButtonLoading = true
-            viewModel.onProgressButton()
+        AsyncButton {
+            await viewModel.onAnswer(answers: [step.answer])
         } label: {
-            ZStack {
-                Text(step.answer.title)
-                    .opacity(isButtonLoading ? 0 : 1)
-                ProgressView()
-                    .tint(viewModel.colorPalette.primaryButtonForegroundColor)
-                    .opacity(isButtonLoading ? 1 : 0)
-            }
-            .applyRippleEffect()
+            Text(step.answer.title)
+                .applyRippleEffect()
+        } progress: {
+            ProgressView()
+                .tint(viewModel.colorPalette.primaryButtonForegroundColor)
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
         .padding(.horizontal, UIConstants.hScreenPadding)

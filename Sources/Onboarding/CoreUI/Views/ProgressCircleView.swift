@@ -15,7 +15,6 @@ struct ProgressCircleView: View {
 
     let duration: TimeInterval
     @Binding var progress: CGFloat
-    var finished: Bool
 
     var body: some View {
         progressView
@@ -23,16 +22,9 @@ struct ProgressCircleView: View {
             .task {
                 while !Task.isCancelled {
                     try? await Task.sleep(for: .seconds(1))
-                    if progress < 93 {
-                        progress = min(progress + 100 / duration, 100)
-                    } else if finished {
-                        progress = 100
-                        circleProgress = progress / 100
-                        break
-                    } else {
-                        progress = 93
-                    }
+                    progress = min(progress + 100 / duration, 100)
                     circleProgress = progress / 100
+                    if progress >= 100 { break }
                 }
             }
     }
