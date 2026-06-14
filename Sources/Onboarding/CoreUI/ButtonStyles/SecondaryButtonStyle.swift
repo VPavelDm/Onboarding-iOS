@@ -13,7 +13,7 @@ extension View {
         #if os(Android)
         secondaryButtonChrome(buttonStyle(.plain), colorPalette: colorPalette, isPressed: false, isEnabled: true, maxWidth: .infinity)
         #else
-        buttonStyle(SecondaryButtonStyle())
+        buttonStyle(SecondaryButtonStyle(colorPalette: colorPalette))
         #endif
     }
 }
@@ -37,11 +37,16 @@ private func secondaryButtonChrome<V: View>(_ view: V, colorPalette: ColorPalett
 
 #if !os(Android)
 struct SecondaryButtonStyle: ButtonStyle {
-    @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
     @Environment(\.isEnabled) var isEnabled
 
+    private let colorPalette: ColorPalette
+
+    init(colorPalette: ColorPalette) {
+        self.colorPalette = colorPalette
+    }
+
     func makeBody(configuration: Configuration) -> some View {
-        secondaryButtonChrome(configuration.label, colorPalette: viewModel.colorPalette, isPressed: configuration.isPressed, isEnabled: isEnabled, maxWidth: 500)
+        secondaryButtonChrome(configuration.label, colorPalette: colorPalette, isPressed: configuration.isPressed, isEnabled: isEnabled, maxWidth: 500)
     }
 }
 #endif
