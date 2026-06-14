@@ -2,10 +2,12 @@
 
 A drop-in SwiftUI onboarding library for iOS. Describe your onboarding flow in **JSON**, point the library at it, and implement a small `OnboardingDelegate` to receive answers. Ships with 17 built-in step types (welcome, single/multi-select, pickers, progress, social proof, discount wheel, feature showcase, and more), full theming, branching, localization, and custom step support.
 
-- **Platforms:** iOS 16+
+- **Platforms:** iOS 17+, Android (via Skip Fuse)
 - **Swift:** 5.10+
 - **UI:** SwiftUI
 - **Integration model:** JSON-driven flow + Swift delegate callbacks
+
+> Upgrading from 2.0? See [MIGRATION.md](MIGRATION.md).
 
 ---
 
