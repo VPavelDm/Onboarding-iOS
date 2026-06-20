@@ -49,7 +49,7 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
     }
 
     private func messageView(_ message: String) -> some View {
-        Text(message)
+        Text(attributedMessage(message))
             .foregroundStyle(onboarding.colorPalette.textColor)
             .font(.title)
             .apply { view in
@@ -60,6 +60,17 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
             .transition(.opacity)
+    }
+
+    private func attributedMessage(_ message: String) -> AttributedString {
+        let options = AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
+        guard var attributed = try? AttributedString(markdown: message, options: options) else {
+            return AttributedString(message)
+        }
+        for run in attributed.runs where run.inlinePresentationIntent?.contains(.stronglyEmphasized) == true {
+            attributed[run.range].foregroundColor = onboarding.colorPalette.accentColor
+        }
+        return attributed
     }
 
     func displayNextText() {
