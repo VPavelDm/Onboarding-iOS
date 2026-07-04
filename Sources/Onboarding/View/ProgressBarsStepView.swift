@@ -18,12 +18,12 @@ struct ProgressBarsStepView: View {
                 .padding(.top, 60)
                 .padding(.bottom, 48)
             stepsList
+            Spacer()
             credibilityBlock
                 .frame(maxWidth: .infinity)
-                .padding(.top, 48)
+                .padding(.bottom, 32)
                 .opacity(isComplete ? 1 : 0)
                 .animation(.easeIn(duration: 0.4), value: isComplete)
-            Spacer()
             continueButton
                 .padding(.bottom, UIConstants.vScreenPadding)
         }
