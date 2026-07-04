@@ -41,7 +41,7 @@ struct HeightPickerStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.localize(step.title))
             .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
@@ -52,7 +52,7 @@ struct HeightPickerStepView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -61,12 +61,12 @@ struct HeightPickerStepView: View {
 
     private var unitSelector: some View {
         HStack(spacing: 8) {
-            unitButton(title: step.metricUnit, isSelected: isMetric) {
+            unitButton(title: viewModel.localize(step.metricUnit), isSelected: isMetric) {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isMetric = true
                 }
             }
-            unitButton(title: step.imperialUnit, isSelected: !isMetric) {
+            unitButton(title: viewModel.localize(step.imperialUnit), isSelected: !isMetric) {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isMetric = false
                 }
@@ -102,7 +102,7 @@ struct HeightPickerStepView: View {
     private var metricPicker: some View {
         Picker("Height", selection: $centimeters) {
             ForEach(Array(100...250), id: \.self) { cm in
-                Text("\(cm) \(step.metricUnit)")
+                Text("\(cm) \(viewModel.localize(step.metricUnit))")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(cm)
             }
@@ -145,7 +145,7 @@ struct HeightPickerStepView: View {
         AsyncButton {
             await onContinue()
         } label: {
-            Text(step.answer.title)
+            Text(viewModel.localize(step.answer.title))
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)

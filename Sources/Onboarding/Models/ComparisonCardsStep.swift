@@ -8,9 +8,9 @@ struct ComparisonCardsStep: Sendable, Equatable, Hashable {
 
 extension ComparisonCardsStep {
 
-    init(response: OnboardingStepResponse.ComparisonCardsStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.ComparisonCardsStep) {
         self.init(
-            items: response.items.map { $0.localized(using: localizer) },
+            items: response.items.map { $0 },
             highlightedIndex: response.highlightedIndex,
             nextStepID: response.nextStepID
         )

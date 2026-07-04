@@ -14,7 +14,7 @@ struct SocialProofStep: Sendable, Hashable {
 
 extension SocialProofStep {
 
-    init(response: OnboardingStepResponse.SocialProofStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.SocialProofStep) {
         self.init(
             image: ImageMeta(response: response.image) ?? ImageMeta(imageType: .named(""), aspectRatioType: "fit"),
             nextStepID: response.nextStepID

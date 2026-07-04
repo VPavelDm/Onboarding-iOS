@@ -116,7 +116,7 @@ struct DiscountWheelStepView: View {
     }
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func initiateSuccessAlert() {

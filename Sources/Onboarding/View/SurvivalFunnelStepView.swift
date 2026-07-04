@@ -97,7 +97,7 @@ struct SurvivalFunnelStepView: View {
             Text("\(stage.count)")
                 .font(.system(.title2, design: .rounded).weight(.bold))
                 .foregroundStyle(isLast ? viewModel.colorPalette.primaryButtonForegroundColor : viewModel.colorPalette.textColor)
-            Text(stage.label)
+            Text(viewModel.localize(stage.label))
                 .font(.caption.weight(.medium))
                 .foregroundStyle(
                     isLast
@@ -125,7 +125,7 @@ struct SurvivalFunnelStepView: View {
         HStack(spacing: 6) {
             Image(systemName: "arrow.turn.down.right")
                 .font(.caption2.weight(.semibold))
-            Text(label)
+            Text(viewModel.localize(label))
                 .font(.caption.italic())
         }
         .foregroundStyle(viewModel.colorPalette.secondaryTextColor.opacity(0.7))
@@ -174,7 +174,7 @@ struct SurvivalFunnelStepView: View {
     }
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func makeAnswer() -> StepAnswer {

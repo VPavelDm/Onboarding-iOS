@@ -72,7 +72,7 @@ struct EnterValueStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.localize(step.title))
             .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
@@ -83,7 +83,7 @@ struct EnterValueStepView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -91,7 +91,7 @@ struct EnterValueStepView: View {
     }
 
     private var valueInputView: some View {
-        TextField(step.placeholder, text: $value)
+        TextField(viewModel.localize(step.placeholder), text: $value)
             .focused($isFocused)
             .nameTextFieldStyleCompat(colorPalette: viewModel.colorPalette)
             .textContentType(textContentType)
@@ -121,7 +121,7 @@ struct EnterValueStepView: View {
     }
 
     private var continueToolbarButton: some View {
-        Button(step.primaryAnswer.title) {
+        Button(viewModel.localize(step.primaryAnswer.title)) {
             Task { await onContinue() }
         }
         .fontWeight(.semibold)

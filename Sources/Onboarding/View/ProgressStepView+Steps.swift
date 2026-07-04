@@ -42,7 +42,7 @@ extension ProgressStepView {
     }
 
     private func stepView(at index: Int) -> some View {
-        Text(step.steps[index])
+        Text(viewModel.localize(step.steps[index]))
             .font(.system(size: 16))
             .foregroundStyle(stepCompleted(at: index) ? viewModel.colorPalette.textColor : viewModel.colorPalette.secondaryTextColor)
             .frame(maxWidth: .infinity, alignment: .leading)

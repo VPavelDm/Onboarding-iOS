@@ -37,7 +37,7 @@ struct ProgressStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.localize(step.title))
             .font(.title)
             .fontWeight(.bold)
             .multilineTextAlignment(.center)
@@ -47,7 +47,7 @@ struct ProgressStepView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .multilineTextAlignment(.center)
@@ -58,7 +58,7 @@ struct ProgressStepView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
-            Text(step.answer.title)
+            Text(viewModel.localize(step.answer.title))
                 .applyRippleEffect()
         } progress: {
             ProgressView()

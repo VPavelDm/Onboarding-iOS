@@ -18,12 +18,12 @@ struct DescriptionStep: Sendable, Equatable, Hashable {
 
 extension DescriptionStep {
 
-    init(response: OnboardingStepResponse.DescriptionStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.DescriptionStep) {
         self.init(
             image: response.image.flatMap(ImageMeta.init),
-            title: response.title.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            title: response.title,
+            description: response.description,
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

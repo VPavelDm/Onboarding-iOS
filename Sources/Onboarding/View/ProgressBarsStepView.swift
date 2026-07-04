@@ -50,7 +50,7 @@ struct ProgressBarsStepView: View {
 
     private func stepRow(index: Int) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(step.stepLabels[index])
+            Text(localized(step.stepLabels[index]))
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(
                     progress(at: index) > 0
@@ -127,7 +127,7 @@ struct ProgressBarsStepView: View {
     }
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func makeAnswer() -> StepAnswer {

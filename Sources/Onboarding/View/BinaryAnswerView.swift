@@ -30,7 +30,7 @@ struct BinaryAnswerView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.localize(step.title))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -40,7 +40,7 @@ struct BinaryAnswerView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .multilineTextAlignment(.center)
@@ -56,7 +56,7 @@ struct BinaryAnswerView: View {
                     Text(icon)
                         .font(.system(size: 32))
                 }
-                Text(step.firstAnswer.title)
+                Text(viewModel.localize(step.firstAnswer.title))
             }
             .applyRippleEffect()
         }
@@ -72,7 +72,7 @@ struct BinaryAnswerView: View {
                     Text(icon)
                         .font(.system(size: 32))
                 }
-                Text(step.secondAnswer.title)
+                Text(viewModel.localize(step.secondAnswer.title))
             }
             .applyRippleEffect()
         }

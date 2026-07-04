@@ -40,7 +40,7 @@ struct WeightPickerStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.localize(step.title))
             .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
@@ -51,7 +51,7 @@ struct WeightPickerStepView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -60,12 +60,12 @@ struct WeightPickerStepView: View {
 
     private var unitSelector: some View {
         HStack(spacing: 8) {
-            unitButton(title: step.metricUnit, isSelected: isMetric) {
+            unitButton(title: viewModel.localize(step.metricUnit), isSelected: isMetric) {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isMetric = true
                 }
             }
-            unitButton(title: step.imperialUnit, isSelected: !isMetric) {
+            unitButton(title: viewModel.localize(step.imperialUnit), isSelected: !isMetric) {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isMetric = false
                 }
@@ -101,7 +101,7 @@ struct WeightPickerStepView: View {
     private var metricPicker: some View {
         Picker("Weight", selection: $kilograms) {
             ForEach(Array(30...250), id: \.self) { kg in
-                Text("\(kg) \(step.metricUnit)")
+                Text("\(kg) \(viewModel.localize(step.metricUnit))")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(kg)
             }
@@ -115,7 +115,7 @@ struct WeightPickerStepView: View {
     private var imperialPicker: some View {
         Picker("Weight", selection: $pounds) {
             ForEach(Array(66...550), id: \.self) { lb in
-                Text("\(lb) \(step.imperialUnit)")
+                Text("\(lb) \(viewModel.localize(step.imperialUnit))")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(lb)
             }
@@ -130,7 +130,7 @@ struct WeightPickerStepView: View {
         AsyncButton {
             await onContinue()
         } label: {
-            Text(step.answer.title)
+            Text(viewModel.localize(step.answer.title))
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)

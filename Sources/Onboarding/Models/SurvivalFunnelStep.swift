@@ -20,9 +20,9 @@ struct SurvivalFunnelStep: Sendable, Equatable, Hashable {
 
 extension SurvivalFunnelStep {
 
-    init(response: OnboardingStepResponse.SurvivalFunnelStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.SurvivalFunnelStep) {
         self.init(
-            stages: response.stages.map { Stage(response: $0, localizer: localizer) },
+            stages: response.stages.map { Stage(response: $0) },
             nextStepID: response.nextStepID
         )
     }
@@ -30,11 +30,11 @@ extension SurvivalFunnelStep {
 
 extension SurvivalFunnelStep.Stage {
 
-    init(response: OnboardingStepResponse.SurvivalFunnelStep.Stage, localizer: Localizer) {
+    init(response: OnboardingStepResponse.SurvivalFunnelStep.Stage) {
         self.init(
-            label: response.label.localized(using: localizer),
+            label: response.label,
             count: response.count,
-            dropoffLabel: response.dropoffLabel?.localized(using: localizer)
+            dropoffLabel: response.dropoffLabel
         )
     }
 }

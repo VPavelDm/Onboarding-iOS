@@ -13,11 +13,11 @@ struct MilestoneTimelineStep: Sendable, Equatable, Hashable {
 
 extension MilestoneTimelineStep {
 
-    init(response: OnboardingStepResponse.MilestoneTimelineStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.MilestoneTimelineStep) {
         self.init(
             milestones: response.milestones.map {
                 Milestone(
-                    label: $0.label.localized(using: localizer),
+                    label: $0.label,
                     xRatio: $0.xRatio,
                     delay: $0.delay
                 )

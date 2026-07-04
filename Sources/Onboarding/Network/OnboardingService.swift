@@ -26,10 +26,11 @@ final class OnboardingService {
 
     // MARK: - Intents
 
+    /// Decodes the steps as raw keys. Localisation happens later, in the step
+    /// views, via the delegate — so the flow stays language-agnostic here.
     func fetchSteps() async throws -> [OnboardingStep] {
         let (data, _) = try await session.data(from: configuration.url)
-        let steps = try JSONDecoder().decode([OnboardingStepResponse].self, from: data)
-        let localizer = Localizer(bundle: configuration.bundle, tableName: configuration.tableName)
-        return steps.compactMap { OnboardingStep(response: $0, localizer: localizer) }
+        let responses = try JSONDecoder().decode([OnboardingStepResponse].self, from: data)
+        return responses.compactMap(OnboardingStep.init(response:))
     }
 }

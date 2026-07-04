@@ -19,13 +19,13 @@ struct HeightPickerStep: Sendable, Equatable, Hashable {
 
 extension HeightPickerStep {
 
-    init(response: OnboardingStepResponse.HeightPickerStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.HeightPickerStep) {
         self.init(
-            title: response.title.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
-            metricUnit: response.metricUnit.localized(using: localizer),
-            imperialUnit: response.imperialUnit.localized(using: localizer),
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            title: response.title,
+            description: response.description,
+            metricUnit: response.metricUnit,
+            imperialUnit: response.imperialUnit,
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

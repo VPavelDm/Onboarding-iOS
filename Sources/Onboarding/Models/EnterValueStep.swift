@@ -21,15 +21,15 @@ struct EnterValueStep: Sendable, Hashable {
 
 extension EnterValueStep {
 
-    init(response: OnboardingStepResponse.EnterValueStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.EnterValueStep) {
         self.init(
             image: response.image.flatMap(ImageMeta.init),
-            title: response.title.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
-            placeholder: response.placeholder.localized(using: localizer),
+            title: response.title,
+            description: response.description,
+            placeholder: response.placeholder,
             valueType: response.valueType,
-            primaryAnswer: StepAnswer(response: response.primaryAnswer, localizer: localizer),
-            skipAnswer: response.skipAnswer.map { StepAnswer(response: $0, localizer: localizer) }
+            primaryAnswer: StepAnswer(response: response.primaryAnswer),
+            skipAnswer: response.skipAnswer.map { StepAnswer(response: $0) }
         )
     }
 }

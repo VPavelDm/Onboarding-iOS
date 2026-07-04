@@ -76,7 +76,7 @@ struct FloatingWordsStepView: View {
         ZStack {
             ForEach(Array(step.floatingWords.enumerated()), id: \.offset) { index, word in
                 let placement = placements[index % placements.count]
-                Text(word)
+                Text(viewModel.localize(word))
                     .font(.system(size: placement.size, design: .serif).italic().weight(.medium))
                     .foregroundStyle(
                         Color(red: 0.96, green: 0.93, blue: 0.85)
@@ -94,11 +94,11 @@ struct FloatingWordsStepView: View {
 
     private var centralCard: some View {
         VStack(spacing: 6) {
-            Text(step.centralWord)
+            Text(viewModel.localize(step.centralWord))
                 .font(.system(.largeTitle, design: .rounded).weight(.bold))
                 .foregroundStyle(Color(red: 1.0, green: 0.88, blue: 0.20))
             if let translation = step.centralTranslation {
-                Text(translation)
+                Text(viewModel.localize(translation))
                     .font(.subheadline.italic())
                     .foregroundStyle(Color.white.opacity(0.78))
             }
@@ -160,7 +160,7 @@ struct FloatingWordsStepView: View {
     }
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func makeAnswer() -> StepAnswer {

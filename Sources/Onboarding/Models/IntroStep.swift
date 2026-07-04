@@ -17,14 +17,14 @@ struct IntroStep: Sendable, Equatable, Hashable {
 
 extension IntroStep {
 
-    init(response: OnboardingStepResponse.IntroStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.IntroStep) {
         self.init(
             image: ImageMeta(response: response.image) ?? ImageMeta(imageType: .named(""), aspectRatioType: "fit"),
-            title: response.title.localized(using: localizer),
-            subtitle: response.subtitle?.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
+            title: response.title,
+            subtitle: response.subtitle,
+            description: response.description,
             accentColor: response.accentColor.map { Color(hex: $0) },
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

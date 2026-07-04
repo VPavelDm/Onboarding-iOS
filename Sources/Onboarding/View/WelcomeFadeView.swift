@@ -38,7 +38,7 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
             ForEach(step.messages.indices, id: \.self) { index in
                 VStack {
                     if activeElementIndex == index {
-                        messageView(step.messages[index])
+                        messageView(onboarding.localize(step.messages[index]))
                     }
                 }
                 .blur(radius: activeElementIndex == index ? 0 : 10)

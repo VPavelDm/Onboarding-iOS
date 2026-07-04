@@ -95,7 +95,7 @@ struct ComparisonCardsStepView: View {
     }
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func makeAnswer() -> StepAnswer {
@@ -135,7 +135,7 @@ struct ComparisonCardsStepView: View {
     private var itemsList: some View {
         VStack(alignment: .leading, spacing: 6) {
             ForEach(Array(items.enumerated()), id: \.offset) { index, item in
-                Text(item)
+                Text(viewModel.localize(item))
                     .font(.subheadline)
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .opacity(opacity(at: index))

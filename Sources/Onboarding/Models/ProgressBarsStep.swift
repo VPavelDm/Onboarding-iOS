@@ -7,9 +7,9 @@ struct ProgressBarsStep: Sendable, Equatable, Hashable {
 
 extension ProgressBarsStep {
 
-    init(response: OnboardingStepResponse.ProgressBarsStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.ProgressBarsStep) {
         self.init(
-            stepLabels: response.stepLabels.map { $0.localized(using: localizer) },
+            stepLabels: response.stepLabels.map { $0 },
             nextStepID: response.nextStepID
         )
     }

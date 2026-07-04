@@ -9,6 +9,7 @@ import SwiftUI
 import CoreUI
 
 public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
+    @Environment(\.locale) var ambientLocale
     @State var viewModel: OnboardingViewModel
 
     @State var showError: Bool = false
@@ -31,6 +32,14 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
 
     public var body: some View {
         NavigationStackContent(step: viewModel.currentStep, customStepView: customStepView)
+            // Drive the custom-step locale from the flow, not the ambient
+            // environment. `displayLocale` only changes alongside the step, and
+            // OnboardingView never reads the host's model, so picking a language
+            // localises the *next* step. Applied *inside* `.id` so the locale is
+            // baked into each step's identity: the outgoing step keeps its own
+            // language while it transitions out instead of being re-localised in
+            // place by a shared parent environment.
+            .environment(\.locale, viewModel.displayLocale ?? ambientLocale)
             .id(viewModel.currentStep)
             .onboardingStepTransition()
             .progressView(isVisible: viewModel.currentStep == nil) {

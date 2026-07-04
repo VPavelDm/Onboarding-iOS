@@ -64,7 +64,7 @@ struct CommitmentHoldStepView: View {
     }
 
     private var holdHint: some View {
-        Text(viewModel.localizer.localize("commitmentHold.hint"))
+        Text(viewModel.localize("commitmentHold.hint"))
             .font(.callout)
             .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.65))
             .opacity(isCommitted ? 0 : 1)
@@ -72,7 +72,7 @@ struct CommitmentHoldStepView: View {
     }
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func makeAnswer() -> StepAnswer {
@@ -225,7 +225,7 @@ struct CommitmentHoldStepView: View {
                 .foregroundStyle(viewModel.colorPalette.primaryButtonForegroundColor)
                 .transition(.scale.combined(with: .opacity))
         } else {
-            Text(viewModel.localizer.localize("commitmentHold.hold"))
+            Text(viewModel.localize("commitmentHold.hold"))
                 .font(.subheadline.weight(.heavy))
                 .tracking(2.5)
                 .foregroundStyle(viewModel.colorPalette.textColor)

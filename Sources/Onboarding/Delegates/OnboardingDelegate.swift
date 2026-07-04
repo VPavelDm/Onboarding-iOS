@@ -13,6 +13,12 @@ public protocol OnboardingDelegate {
     func onAnswer(userAnswer: UserAnswer, allAnswers: [UserAnswer]) async
     func routing(forStepID stepID: StepID) async -> StepRouting
     func subscriptionInfo() -> SubscriptionInfo?
+
+    /// Language code (e.g. `"ru"`) custom step views should render in, or `nil`
+    /// to follow the ambient environment locale. The flow re-reads this only
+    /// when advancing, so a language the user picks mid-flow applies to the next
+    /// step instead of redrawing the current one.
+    func preferredLanguageCode() -> String?
 }
 
 /// How the onboarding flow controller should handle entering a step.
@@ -38,4 +44,6 @@ public extension OnboardingDelegate {
     func routing(forStepID stepID: StepID) async -> StepRouting { .show }
 
     func subscriptionInfo() -> SubscriptionInfo? { nil }
+
+    func preferredLanguageCode() -> String? { nil }
 }

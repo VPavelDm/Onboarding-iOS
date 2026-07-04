@@ -31,7 +31,7 @@ struct AgePickerStepView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.localize(step.title))
             .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
@@ -42,7 +42,7 @@ struct AgePickerStepView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -52,7 +52,7 @@ struct AgePickerStepView: View {
     private var agePicker: some View {
         Picker("Age", selection: $age) {
             ForEach(Array(4...100), id: \.self) { year in
-                Text("\(year) \(step.unit)")
+                Text("\(year) \(viewModel.localize(step.unit))")
                     .foregroundStyle(viewModel.colorPalette.textColor)
                     .tag(year)
             }
@@ -65,7 +65,7 @@ struct AgePickerStepView: View {
         AsyncButton {
             await onContinue()
         } label: {
-            Text(step.answer.title)
+            Text(viewModel.localize(step.answer.title))
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)

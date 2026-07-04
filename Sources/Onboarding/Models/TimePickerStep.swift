@@ -16,10 +16,10 @@ struct TimePickerStep: Sendable, Equatable, Hashable {
 
 extension TimePickerStep {
 
-    init(response: OnboardingStepResponse.TimePickerStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.TimePickerStep) {
         self.init(
-            title: response.title.localized(using: localizer),
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            title: response.title,
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

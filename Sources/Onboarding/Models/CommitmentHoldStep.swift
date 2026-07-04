@@ -7,7 +7,7 @@ struct CommitmentHoldStep: Sendable, Equatable, Hashable {
 
 extension CommitmentHoldStep {
 
-    init(response: OnboardingStepResponse.CommitmentHoldStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.CommitmentHoldStep) {
         self.init(
             commitmentNumber: response.commitmentNumber,
             nextStepID: response.nextStepID

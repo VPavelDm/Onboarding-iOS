@@ -53,7 +53,7 @@ struct MultipleAnswerView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.localize(step.title))
             .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
@@ -64,7 +64,7 @@ struct MultipleAnswerView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -76,7 +76,7 @@ struct MultipleAnswerView: View {
             viewModel.playToggleFeedback()
             answer.wrappedValue.isChose.toggle()
         } label: {
-            Text(answer.wrappedValue.value.title)
+            Text(viewModel.localize(answer.wrappedValue.value.title))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .applyRippleEffect()
         }
@@ -87,7 +87,7 @@ struct MultipleAnswerView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: answers.filter(\.isChose).map(\.value))
         } label: {
-            Text(step.buttonTitle)
+            Text(viewModel.localize(step.buttonTitle))
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)

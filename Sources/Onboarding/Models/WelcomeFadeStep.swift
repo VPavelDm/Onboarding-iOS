@@ -16,9 +16,9 @@ struct WelcomeFadeStep: Sendable, Equatable, Hashable {
 
 extension WelcomeFadeStep {
 
-    init(response: OnboardingStepResponse.WelcomeFadeStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.WelcomeFadeStep) {
         self.init(
-            messages: response.messages.map { $0.localized(using: localizer) },
+            messages: response.messages.map { $0 },
             delay: response.delay
         )
     }

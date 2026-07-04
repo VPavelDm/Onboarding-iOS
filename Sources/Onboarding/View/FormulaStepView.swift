@@ -121,7 +121,7 @@ struct FormulaStepView: View {
 
     private func detailRowView(_ row: FormulaStep.DetailRow) -> some View {
         HStack(spacing: 12) {
-            Text(row.label)
+            Text(viewModel.localize(row.label))
                 .font(.caption.weight(.medium))
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.5))
                 .frame(width: 70, alignment: .leading)
@@ -150,7 +150,7 @@ struct FormulaStepView: View {
     }
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func makeAnswer() -> StepAnswer {

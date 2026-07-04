@@ -9,7 +9,7 @@ struct WidgetStep: Sendable, Equatable, Hashable {
 
 extension WidgetStep {
 
-    init(response: OnboardingStepResponse.WidgetStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.WidgetStep) {
         var image: ImageMeta?
         if let imageResponse = response.image {
             image = ImageMeta(response: imageResponse)

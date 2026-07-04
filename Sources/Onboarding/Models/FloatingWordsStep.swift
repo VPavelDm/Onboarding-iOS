@@ -16,7 +16,7 @@ struct FloatingWordsStep: Sendable, Equatable, Hashable {
 
 extension FloatingWordsStep {
 
-    init(response: OnboardingStepResponse.FloatingWordsStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.FloatingWordsStep) {
         self.init(
             centralWord: response.centralWord,
             centralTranslation: response.centralTranslation,

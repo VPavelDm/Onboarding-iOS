@@ -20,7 +20,7 @@ struct DiscountWheelLaunchButton: View {
     @Binding var pressingProgress: Double
 
     var body: some View {
-        Text(viewModel.localizer.localize("discountWheel.spinButtonTitle"))
+        Text(viewModel.localize("discountWheel.spinButtonTitle"))
             .foregroundStyle(.white)
             .font(.system(size: 16, weight: .semibold))
             .padding()

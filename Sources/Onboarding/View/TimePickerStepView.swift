@@ -15,11 +15,17 @@ struct TimePickerStepView: View {
     var step: TimePickerStep
 
     var body: some View {
-        WheelTimePicker(step: step) { time in
+        WheelTimePicker(step: localizedStep) { time in
             var answer = step.answer
             answer.payload = .string(time)
             await viewModel.onAnswer(answers: [answer])
         }
+    }
+
+    private var localizedStep: TimePickerStep {
+        var answer = step.answer
+        answer.title = viewModel.localize(step.answer.title)
+        return TimePickerStep(title: viewModel.localize(step.title), answer: answer)
     }
 }
 

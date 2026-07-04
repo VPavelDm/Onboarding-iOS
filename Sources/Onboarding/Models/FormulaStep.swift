@@ -15,15 +15,15 @@ struct FormulaStep: Sendable, Equatable, Hashable {
 
 extension FormulaStep {
 
-    init(response: OnboardingStepResponse.FormulaStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.FormulaStep) {
         self.init(
             operandLeftNumber: response.operandLeftNumber,
             operandRightNumber: response.operandRightNumber,
             resultNumber: response.resultNumber,
             detailRows: response.detailRows.map {
                 DetailRow(
-                    label: $0.label.localized(using: localizer),
-                    value: $0.value.localized(using: localizer)
+                    label: $0.label,
+                    value: $0.value
                 )
             },
             nextStepID: response.nextStepID

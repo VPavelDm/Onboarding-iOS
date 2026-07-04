@@ -19,13 +19,13 @@ struct ProgressStep: Sendable, Equatable, Hashable {
 
 extension ProgressStep {
 
-    init(response: OnboardingStepResponse.ProgressStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.ProgressStep) {
         self.init(
-            title: response.title.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
+            title: response.title,
+            description: response.description,
             duration: response.duration,
-            steps: response.steps.map { $0.localized(using: localizer) },
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            steps: response.steps.map { $0 },
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

@@ -7,9 +7,9 @@ struct ReceiptStep: Sendable, Equatable, Hashable {
 
 extension ReceiptStep {
 
-    init(response: OnboardingStepResponse.ReceiptStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.ReceiptStep) {
         self.init(
-            items: response.items.map { $0.localized(using: localizer) },
+            items: response.items.map { $0 },
             nextStepID: response.nextStepID
         )
     }

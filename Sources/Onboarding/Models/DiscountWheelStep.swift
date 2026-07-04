@@ -15,7 +15,7 @@ struct DiscountWheelStep: Sendable, Equatable, Hashable {
 
 extension DiscountWheelStep {
 
-    init(response: OnboardingStepResponse.DiscountWheelStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.DiscountWheelStep) {
         self.init(nextStepID: response.nextStepID)
     }
 }

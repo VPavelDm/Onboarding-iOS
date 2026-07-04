@@ -132,7 +132,7 @@ struct SocialProofView: View {
     // MARK: - Helpers
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func makeAnswer() -> StepAnswer {

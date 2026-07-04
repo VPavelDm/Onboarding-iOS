@@ -30,7 +30,7 @@ struct WelcomeView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: [step.firstAnswer])
         } label: {
-            Text(step.firstAnswer.title)
+            Text(viewModel.localize(step.firstAnswer.title))
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
@@ -40,7 +40,7 @@ struct WelcomeView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: [answer])
         } label: {
-            Text(answer.title)
+            Text(viewModel.localize(answer.title))
                 .applyRippleEffect()
         }
         .secondaryButtonStyleCompat(colorPalette: viewModel.colorPalette)

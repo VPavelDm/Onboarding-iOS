@@ -41,9 +41,9 @@ struct StepAnswer: Sendable, Equatable, Hashable {
 
 extension StepAnswer {
 
-    init(response: OnboardingStepResponse.StepAnswer, localizer: Localizer) {
+    init(response: OnboardingStepResponse.StepAnswer) {
         self.init(
-            title: response.title.localized(using: localizer),
+            title: response.title,
             icon: response.icon,
             nextStepID: response.nextStepID,
             payload: response.payload.map(Payload.init(response:))

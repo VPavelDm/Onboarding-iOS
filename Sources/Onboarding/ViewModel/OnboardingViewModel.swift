@@ -21,10 +21,15 @@ final class OnboardingViewModel {
     var currentStep: OnboardingStep?
     var userAnswers: [UserAnswer] = []
 
+    /// Locale custom step views render in. Updated only alongside `currentStep`
+    /// (see `show(_:)`), never reactively from the host's model, so a language
+    /// the user picks mid-flow applies to the *next* step — the outgoing screen
+    /// keeps its language until it's replaced (no in-place re-localise / flash).
+    private(set) var displayLocale: Locale?
+
     let delegate: OnboardingDelegate
     let configuration: OnboardingConfiguration
     let colorPalette: any ColorPalette
-    let localizer: Localizer
 
     // MARK: - Inits
 
@@ -33,22 +38,25 @@ final class OnboardingViewModel {
         self.delegate = delegate
         self.service = OnboardingService(configuration: configuration)
         self.colorPalette = colorPalette
-        self.localizer = Localizer(bundle: configuration.bundle, tableName: configuration.tableName)
     }
 
     // MARK: - Intents
 
     func loadSteps() async throws {
-        var loaded = try await service.fetchSteps()
+        steps = try await service.fetchSteps()
             .filter(\.isNotUnknown)
-        for index in loaded.indices {
-            if case .custom(var params) = loaded[index].type {
-                params.callback = onStepCompletion(answer:nextStepID:)
-                loaded[index].type = .custom(params)
-            }
-        }
-        steps = loaded
+            .map { attaching($0) ?? $0 }
         await advance(to: steps.first?.id)
+    }
+
+    /// Attach the completion callback to a custom step so it can advance.
+    private func attaching(_ step: OnboardingStep?) -> OnboardingStep? {
+        guard var step else { return nil }
+        if case .custom(var params) = step.type {
+            params.callback = onStepCompletion(answer:nextStepID:)
+            step.type = .custom(params)
+        }
+        return step
     }
 
     func onAnswer(answers: [StepAnswer]) async {
@@ -65,6 +73,13 @@ final class OnboardingViewModel {
 
     func format(string: String) -> String {
         delegate.format(string: string)
+    }
+
+    /// Localise a raw key from a step (or a fixed built-in key) for display.
+    /// Called by step views at render time, so copy always reflects the app's
+    /// current language.
+    func localize(_ key: String) -> String {
+        delegate.format(string: key)
     }
 
     // MARK: - Utils
@@ -103,17 +118,25 @@ final class OnboardingViewModel {
                     params.callback = onStepCompletion(answer:nextStepID:)
                     step.type = .custom(params)
                 }
-                currentStep = step
+                show(step)
                 return
             case .skip(let branch):
                 guard case .custom(let params) = step.type else {
                     // Only custom steps carry the branch/next metadata needed
                     // to resolve a skip target from here. Fall back to showing.
-                    currentStep = step
+                    show(step)
                     return
                 }
                 targetID = branch.flatMap { params.branches[$0] } ?? params.nextStepID
             }
         }
+    }
+
+    /// Present a step and sample the host's preferred locale in the same
+    /// synchronous transaction, so the locale change lands with the step change
+    /// rather than one render early on the outgoing step.
+    private func show(_ step: OnboardingStep) {
+        currentStep = step
+        displayLocale = delegate.preferredLanguageCode().map(Locale.init(identifier:))
     }
 }

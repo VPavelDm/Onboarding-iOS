@@ -80,7 +80,7 @@ struct MilestoneTimelineStepView: View {
     }
 
     private func localized(_ key: String) -> String {
-        viewModel.localizer.localize(key)
+        viewModel.localize(key)
     }
 
     private func makeAnswer() -> StepAnswer {
@@ -167,7 +167,7 @@ struct MilestoneTimeline: View {
                 .position(x: cx, y: lineY - 26)
             dot
                 .position(x: cx, y: lineY)
-            Text(milestone.label)
+            Text(viewModel.localize(milestone.label))
                 .font(.caption2)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .position(x: cx, y: lineY + 22)
@@ -270,7 +270,7 @@ struct MilestoneTimeline: View {
                 .position(x: cx, y: lineY - 26)
             dot
                 .position(x: cx, y: lineY)
-            Text(milestone.label)
+            Text(viewModel.localize(milestone.label))
                 .font(.caption2)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .position(x: cx, y: lineY + 22)

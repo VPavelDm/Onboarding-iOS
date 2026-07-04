@@ -53,7 +53,7 @@ struct DescriptionStepView: View {
     }
 
     private var titleView: some View {
-        Text(viewModel.delegate.format(string: step.title))
+        Text(viewModel.localize(step.title))
             .font(.title)
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
@@ -63,7 +63,7 @@ struct DescriptionStepView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -74,7 +74,7 @@ struct DescriptionStepView: View {
         AsyncButton {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
-            Text(step.answer.title)
+            Text(viewModel.localize(step.answer.title))
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)

@@ -52,7 +52,7 @@ struct OneAnswerView: View {
     }
 
     private var titleView: some View {
-        Text(step.title)
+        Text(viewModel.localize(step.title))
             .multilineTextAlignment(.center)
             .font(.title)
             .fontWeight(.bold)
@@ -63,7 +63,7 @@ struct OneAnswerView: View {
     @ViewBuilder
     private var descriptionView: some View {
         if let description = step.description {
-            Text(description)
+            Text(viewModel.localize(description))
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
@@ -78,7 +78,7 @@ struct OneAnswerView: View {
                 selectedAnswer = answer
             }
         } label: {
-            Text(answer.title)
+            Text(viewModel.localize(answer.title))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .applyRippleEffect()
         } progress: {
@@ -100,7 +100,7 @@ struct OneAnswerView: View {
                 await viewModel.onAnswer(answers: [skip])
             }
         } label: {
-            Text(step.buttonTitle)
+            Text(viewModel.localize(step.buttonTitle))
                 .applyRippleEffect()
         }
         .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)

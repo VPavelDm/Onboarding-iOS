@@ -21,14 +21,14 @@ struct OneAnswerStep: Sendable, Equatable, Hashable {
 
 extension OneAnswerStep {
 
-    init(response: OnboardingStepResponse.OneAnswerStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.OneAnswerStep) {
         self.init(
-            title: response.title.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
+            title: response.title,
+            description: response.description,
             image: response.image.flatMap(ImageMeta.init),
-            buttonTitle: response.buttonTitle.localized(using: localizer),
-            skip: response.skip.map { StepAnswer(response: $0, localizer: localizer) },
-            answers: response.answers.map { StepAnswer(response: $0, localizer: localizer) },
+            buttonTitle: response.buttonTitle,
+            skip: response.skip.map { StepAnswer(response: $0) },
+            answers: response.answers.map { StepAnswer(response: $0) },
             autoNavigateOnSingleAnswer: response.autoNavigateOnSingleAnswer ?? false
         )
     }

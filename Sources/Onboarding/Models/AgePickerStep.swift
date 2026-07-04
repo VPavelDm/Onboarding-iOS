@@ -18,12 +18,12 @@ struct AgePickerStep: Sendable, Equatable, Hashable {
 
 extension AgePickerStep {
 
-    init(response: OnboardingStepResponse.AgePickerStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.AgePickerStep) {
         self.init(
-            title: response.title.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
-            unit: response.unit.localized(using: localizer),
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            title: response.title,
+            description: response.description,
+            unit: response.unit,
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

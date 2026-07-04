@@ -18,12 +18,12 @@ struct BinaryAnswerStep: Sendable, Equatable, Hashable {
 
 extension BinaryAnswerStep {
 
-    init(response: OnboardingStepResponse.BinaryAnswer, localizer: Localizer) {
+    init(response: OnboardingStepResponse.BinaryAnswer) {
         self.init(
-            title: response.title.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
-            firstAnswer: StepAnswer(response: response.firstAnswer, localizer: localizer),
-            secondAnswer: StepAnswer(response: response.secondAnswer, localizer: localizer)
+            title: response.title,
+            description: response.description,
+            firstAnswer: StepAnswer(response: response.firstAnswer),
+            secondAnswer: StepAnswer(response: response.secondAnswer)
         )
     }
 }

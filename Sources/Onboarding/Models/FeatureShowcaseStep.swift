@@ -19,13 +19,13 @@ struct FeatureShowcaseStep: Sendable, Equatable, Hashable {
 
 extension FeatureShowcaseStep {
 
-    init(response: OnboardingStepResponse.FeatureShowcaseStep, localizer: Localizer) {
+    init(response: OnboardingStepResponse.FeatureShowcaseStep) {
         self.init(
             image: ImageMeta(response: response.image) ?? ImageMeta(imageType: .named(""), aspectRatioType: "fill"),
-            title: response.title.localized(using: localizer),
-            description: response.description?.localized(using: localizer),
+            title: response.title,
+            description: response.description,
             backgroundColor: Color(hex: response.backgroundColor),
-            answer: StepAnswer(response: response.answer, localizer: localizer)
+            answer: StepAnswer(response: response.answer)
         )
     }
 }

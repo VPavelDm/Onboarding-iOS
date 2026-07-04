@@ -1,3 +1,62 @@
+# Migrating from 2.1 to 2.2
+
+**2.2 moves localization out of the library and into the host app.** The flow is now
+language-agnostic: JSON strings are treated as **raw keys**, and each step view asks the host
+to resolve them at render time through `OnboardingDelegate.format(string:)`. This lets the app
+change language mid-flow — the next screen renders in the new language with no restart — and
+keeps the library from bundling any `NSLocalizedString`/bundle logic of its own.
+
+## ⚠️ Verify your onboarding copy after upgrading
+
+Because resolution now runs through your `format(string:)`, **test every step type in every
+language you ship.** If `format` doesn't resolve a key, that string renders as the **raw key**.
+Walk the whole flow per language and confirm all titles, descriptions, answer titles, button
+titles, units, and list labels are translated.
+
+## What changed
+
+- Before: the library localized copy **at parse time** via an internal `Localizer`
+  (`NSLocalizedString` against `configuration.bundle` / `tableName`). Language was fixed once,
+  at load.
+- Now: models store **raw keys**; step views localize **at render** via the delegate. Language
+  can change between steps.
+
+## Action required
+
+1. **Implement `format(string:)` to localize.** It already existed for placeholder substitution;
+   now it must also translate the key. To reproduce the old behavior:
+
+   ```swift
+   func format(string key: String) -> String {
+       let localized = NSLocalizedString(key, bundle: myBundle, value: key, comment: "")
+       return localized // + any {placeholder} substitution you already do
+   }
+   ```
+
+   `configuration.bundle` / `tableName` are no longer used by the library for localization — do
+   your own lookup here.
+
+2. **To render in a language other than the device's,** have `format` resolve into that language
+   (it's the single localization seam for built-in steps). For your own **custom** step views,
+   implement the optional `preferredLanguageCode()` — `OnboardingView` applies it as the subtree's
+   environment locale, so `Text`/`LocalizedStringKey` in custom steps resolve into that language:
+
+   ```swift
+   func preferredLanguageCode() -> String? { chosenLanguageCode } // e.g. "ru"
+   ```
+
+   A language chosen mid-flow takes effect on the **next** step, not the current one: `OnboardingView`
+   re-reads `preferredLanguageCode()` only when the step changes, so the outgoing screen keeps the old
+   language until it's replaced (no flash). Built-in steps re-resolve through `format`; custom steps
+   through this locale. Return `nil` (the default) to follow the ambient environment locale.
+
+## Notes
+
+- The internal `Localizer` type was removed (it was not public API).
+- No changes to `OnboardingView`, `ColorPalette`, routing, or custom-step wiring.
+
+---
+
 # Migrating from 2.0 to 2.1
 
 **2.1 adds Android support** to the onboarding library via [Skip Fuse](https://skip.tools).

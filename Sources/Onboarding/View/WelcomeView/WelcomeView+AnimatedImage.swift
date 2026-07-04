@@ -10,6 +10,7 @@ import SwiftUI
 extension WelcomeView {
 
     struct AnimatedImageView: View {
+        @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
         let step: WelcomeStep
 
@@ -45,7 +46,7 @@ extension WelcomeView {
         }
 
         private var titleView: some View {
-            Text(step.title)
+            Text(viewModel.localize(step.title))
                 .font(.title)
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
@@ -53,7 +54,7 @@ extension WelcomeView {
         }
 
         private var descriptionView: some View {
-            Text(step.description)
+            Text(viewModel.localize(step.description))
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
