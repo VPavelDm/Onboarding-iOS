@@ -55,6 +55,12 @@ titles, units, and list labels are translated.
 - The internal `Localizer` type was removed (it was not public API).
 - No changes to `OnboardingView`, `ColorPalette`, routing, or custom-step wiring.
 
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "2.2.0")
+```
+
 ---
 
 # Migrating from 2.0 to 2.1
