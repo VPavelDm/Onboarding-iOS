@@ -65,13 +65,20 @@ end
 
 platform :ios do
   desc "Push metadata-only update to App Store Connect (no binary, no screenshots)"
-  lane :push_metadata do
+  desc ""
+  desc "Optional:"
+  desc "  app_version  Ensure the ASC draft version exists with this string (deliver creates"
+  desc "               or renames the editable version). Version-level metadata (What's New)"
+  desc "               needs a draft to land on; pass this when the audit shows 'EDIT: none'."
+  desc "               Only safe while no submission is in review."
+  lane :push_metadata do |options|
     deliver(
       api_key_path: API_KEY_PATH,
+      app_version: options[:app_version],
       force: true,
       skip_binary_upload: true,
       skip_screenshots: true,
-      skip_app_version_update: true,
+      skip_app_version_update: options[:app_version].nil?,
       precheck_include_in_app_purchases: false
     )
   end

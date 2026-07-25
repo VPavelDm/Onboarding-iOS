@@ -155,9 +155,12 @@ verify, skipping everything else.
    fast path this is: What's New text + promo text + any version rename.
 2. On their explicit yes: `bundle exec fastlane push_metadata` (or plain `deliver` with
    `skip_binary_upload skip_screenshots skip_app_version_update force` if the lane is
-   absent). Uploads fill ASC *drafts*; nothing is submitted for review. deliver runs
-   precheck automatically as part of the push — a green push already covers broken
-   URLs / placeholder text; do NOT run a separate precheck.
+   absent). Version-level fields (What's New) need an editable draft version to land
+   on — when the audit showed `EDIT: none`, pass `app_version:<project_version>` so
+   deliver creates the draft (only safe with no submission in review). Uploads fill
+   ASC *drafts*; nothing is submitted for review. deliver runs precheck automatically
+   as part of the push — a green push already covers broken URLs / placeholder text;
+   do NOT run a separate precheck.
 3. Verify: `scripts/diff_metadata.sh <scratch>` again → must print `CLEAN`. Report
    "verified in ASC" only after that.
 

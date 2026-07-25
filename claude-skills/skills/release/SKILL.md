@@ -54,7 +54,11 @@ get one consolidated preflight report, not a drip.
    - `EDIT:` version ≠ project version → the lane won't find the build later; queue a
      rename via `bundle exec ruby <asr>/scripts/rename_edit_version.rb <project_version>`
      (run it in step 3, after the user has seen the plan).
-   - `EDIT: none` → deliver will create the version during the metadata push; fine.
+   - `EDIT: none` (normal right after the previous version went live — ASC never
+     auto-creates the next draft) → run the metadata push in step 2 as
+     `bundle exec fastlane push_metadata app_version:<project_version>`; deliver
+     creates the draft and the What's New lands on it. Safe here because this
+     preflight already guarantees no submission is in review.
    - Tag `v<project_version>` already exists (`git tag -l`) on a different commit →
      surface it; the lane force-moves tags, which is only right if that's intended.
 
