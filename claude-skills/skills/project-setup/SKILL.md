@@ -94,12 +94,15 @@ crypto).
 
 ## Step 4 — Xcode Cloud (human step, be specific)
 
-`submit_release` assumes Xcode Cloud builds on release pushes. In Xcode: Report
-navigator → Cloud → create a workflow with a **branch condition for `release/*`**
-(and/or the `v*` tag), archive action, TestFlight/App Store distribution. Without it
-the lane waits forever at "Waiting for Xcode Cloud". A second workflow watching `main`
-is optional; the lane bumps main *after* submitting precisely so a main-watching
-workflow doesn't cancel the release build.
+`submit_release` triggers builds by pushing the `v<version>` tag. In Xcode: Report
+navigator → Cloud → create a workflow with a **Tag Changes start condition, pattern
+`v` (prefix match)**, an archive action, and TestFlight/App Store distribution. The
+lane verifies a matching enabled start condition via the ASC API before pushing and
+fails fast if none exists (the alternative it also accepts: a branch condition
+matching `release/*`). A workflow watching `main` is optional — it gives per-merge
+TestFlight builds at the cost of building every push; if you add one, note the lane
+bumps main *after* submitting precisely so a main-watching workflow with auto-cancel
+doesn't kill the release build.
 
 ## Step 5 — Hand off
 

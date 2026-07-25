@@ -23,6 +23,46 @@ def shared_xcodeproj_path
   File.expand_path(candidates.first)
 end
 
+# Returns true when an enabled Xcode Cloud workflow will actually start a build
+# for the given tag (or release branch). Spaceship has no CI models, so this
+# talks to the ASC API directly with the same token. Returns nil when the check
+# itself fails (network, permissions) — callers should warn, not abort, on nil:
+# a broken check must not block a release that would have worked.
+def xcode_cloud_builds_release?(app_id, release_tag, release_branch)
+  require "net/http"
+  require "json"
+
+  token = Spaceship::ConnectAPI.token.text
+  get = lambda do |path|
+    uri = URI("https://api.appstoreconnect.apple.com/v1/#{path}")
+    req = Net::HTTP::Get.new(uri)
+    req["Authorization"] = "Bearer #{token}"
+    res = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(req) }
+    JSON.parse(res.body)
+  end
+
+  matches_pattern = lambda do |condition, value|
+    source = condition&.dig("source")
+    return false unless source
+    return true if source["isAllMatch"]
+    (source["patterns"] || []).any? do |pat|
+      pat["isPrefix"] ? value.start_with?(pat["pattern"]) : value == pat["pattern"]
+    end
+  end
+
+  products = get.call("ciProducts?filter[app]=#{app_id}")["data"] || []
+  workflows = products.flat_map { |p| get.call("ciProducts/#{p['id']}/workflows")["data"] || [] }
+  workflows.any? do |w|
+    attrs = w["attributes"] || {}
+    next false unless attrs["isEnabled"]
+    matches_pattern.call(attrs["tagStartCondition"], release_tag) ||
+      matches_pattern.call(attrs["branchStartCondition"], release_branch)
+  end
+rescue StandardError => e
+  UI.important("Could not verify Xcode Cloud start conditions (#{e.message}) — continuing without the check.")
+  nil
+end
+
 platform :ios do
   desc "Push metadata-only update to App Store Connect (no binary, no screenshots)"
   lane :push_metadata do
@@ -36,7 +76,7 @@ platform :ios do
     )
   end
 
-  desc "Create release/v<version> branch and v<version> tag, push them (triggering Xcode Cloud to build), wait for the new build to finish processing on ASC, submit it for review, then bump main for the next cycle. Re-running from an existing release/v<version> branch cancels the pending review submission, pushes new fix commits (triggering a new Xcode Cloud build), waits, and resubmits — without re-creating the branch or bumping the version."
+  desc "Create release/v<version> branch and v<version> tag and push them — the tag push triggers Xcode Cloud (v-prefix tag start condition, verified before pushing). Waits for the new build to finish processing on ASC, submits it for review, then bumps main for the next cycle. Re-running from an existing release/v<version> branch cancels the pending review submission, pushes fix commits and force-moves the tag (triggering a new build), waits, and resubmits — without re-creating the branch or bumping the version."
   desc ""
   desc "Optional:"
   desc "  xcodeproj  Path to .xcodeproj (default: auto-detected in parent dir)"
@@ -81,6 +121,16 @@ platform :ios do
       end
     end
 
+    # Fail fast if no Xcode Cloud workflow will react to what we're about to push —
+    # otherwise the wait loop below polls forever for a build that never starts.
+    if xcode_cloud_builds_release?(app.id, release_tag, release_branch) == false
+      UI.user_error!(<<~MSG)
+        No enabled Xcode Cloud workflow triggers on tag '#{release_tag}' or branch '#{release_branch}'.
+        Add a start condition in Xcode (Workflow → Edit → Start Conditions → Tag Changes → pattern 'v', prefix match),
+        or PATCH ciWorkflows via the ASC API, then re-run.
+      MSG
+    end
+
     # Snapshot the current newest build before triggering Xcode Cloud, so the wait
     # loop can tell the new build apart from any pre-existing ones for this version.
     existing = app.get_builds(
@@ -96,9 +146,11 @@ platform :ios do
     add_git_tag(tag: release_tag, force: true)
     sh("git", "branch", "-f", release_branch) unless resubmit
 
-    # Push branch + tag — this is what triggers Xcode Cloud to build.
-    # Plain branch push (no --force) so we fail loudly if the remote already
-    # has commits we don't, instead of clobbering someone else's work.
+    # The TAG push is what triggers Xcode Cloud (workflows use a 'v' prefix tag
+    # start condition — verified above). The branch is bookkeeping: it carries fix
+    # commits on resubmission and feeds the backport PR. Plain branch push
+    # (no --force) so we fail loudly if the remote already has commits we don't;
+    # the tag push is forced because resubmission moves the same tag to the fix commit.
     sh("git", "push", "origin", release_branch)
     sh("git", "push", "--force", "origin", release_tag)
 
