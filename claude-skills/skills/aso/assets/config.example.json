@@ -1,0 +1,20 @@
+{
+  "_comment": "Copy to <app-repo>/aso/config.json. providers.analytics: posthog|amplitude|none; providers.monetization: revenuecat|adapty|none. asc=false means ASC API setup was declined — don't re-offer.",
+  "app_id": "6467501401",
+  "bundle_id": "com.Example",
+  "brand": "MyApp",
+  "storefronts": ["us", "de", "gb"],
+  "target_keywords": [
+    "primary keyword",
+    "secondary keyword",
+    "wedge keyword"
+  ],
+  "competitors": ["1234567890", "2345678901"],
+  "providers": {
+    "analytics": "posthog",
+    "monetization": "revenuecat",
+    "gsc": true,
+    "astro": false
+  },
+  "asc": true
+}

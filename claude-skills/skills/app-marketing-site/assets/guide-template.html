@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!-- Guide page skeleton. Formula: answer the search query with real substance FIRST
+     (tables, rules, numbers), then the product as the way to apply it (article-cta),
+     then a practical closer. 600-900 words of real content. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{KEYWORD_TITLE ≤60 chars}}</title>
+<meta name="description" content="{{META_DESCRIPTION_140_160}}">
+<link rel="canonical" href="{{BASE_URL}}/guides/{{slug}}.html">
+<link rel="icon" type="image/png" href="../assets/favicon-64.png">
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{OG_DESCRIPTION}}">
+<meta property="og:image" content="{{BASE_URL}}/assets/screenshot-{{N}}-800.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{TITLE}}",
+  "description": "{{DESCRIPTION}}",
+  "image": "{{BASE_URL}}/assets/screenshot-{{N}}-800.png",
+  "author": { "@type": "Organization", "name": "{{BRAND}}" },
+  "publisher": { "@type": "Organization", "name": "{{BRAND}}" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{BASE_URL}}/" },
+    { "@type": "ListItem", "position": 2, "name": "Guides", "item": "{{BASE_URL}}/#guides" },
+    { "@type": "ListItem", "position": 3, "name": "{{SHORT_NAME}}" }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <img src="../assets/app-icon-360.png" alt="{{BRAND}} app icon" width="36" height="36">
+      {{BRAND}}
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="../index.html#guides">Guides</a>
+      <a href="../index.html#faq">FAQ</a>
+      <a class="btn btn-primary" href="{{STORE_URL}}">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<article class="article">
+  <header>
+    <p class="breadcrumbs"><a href="../index.html">Home</a> › <a href="../index.html#guides">Guides</a> › {{SHORT_NAME}}</p>
+    <h1>{{H1 = the question/keyword, near the front}}</h1>
+    <p class="section-sub">{{ONE_SENTENCE_PROMISE}}</p>
+  </header>
+
+  <h2>{{QUESTION_FORM_H2}}</h2>
+  <p>{{THE SUBSTANCE — 60-70% of the page. Include at least one real table or
+      structured list. Must stand alone for a reader who never installs anything.}}</p>
+
+  <div class="table-scroll">
+  <table>
+    <tr><th>{{COL}}</th><th>{{COL}}</th></tr>
+    <tr><td>{{DATA}}</td><td>{{DATA}}</td></tr>
+  </table>
+  </div>
+
+  <div class="article-cta">
+    <h3>{{FEATURE_HEADLINE — the natural next step, not an interruption}}</h3>
+    <p>{{How the app applies the answer daily; name real features.}}</p>
+    <img class="shot-inline" src="../assets/screenshot-{{N}}-800.png" loading="lazy"
+         width="368" height="800" alt="{{DESCRIPTIVE_ALT}}">
+    <a class="btn btn-primary" href="{{STORE_URL}}">{{CTA_LABEL}} — free</a>
+  </div>
+
+  <h2>{{PRACTICAL_CLOSER: drill / self-test / plan / common mistakes}}</h2>
+  <p>{{...}}</p>
+</article>
+
+<aside class="related">
+  <h2>Keep reading</h2>
+  <ul>
+    <li><a href="{{sibling-slug}}.html">{{SIBLING_TITLE}}</a></li>
+    <!-- 2-3 links, same category preferred -->
+  </ul>
+</aside>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>© {{YEAR}} {{OWNER}} · <a href="../index.html">{{BRAND}}</a> · <a href="{{STORE_URL}}">{{BRAND}} on the App Store</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

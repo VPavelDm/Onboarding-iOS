@@ -1,0 +1,10 @@
+{
+  "_comment": "Copy to <site>/site.config.json. publish_next.py READS: base_url, hosting, s3_bucket, cloudfront_distribution_id; brand/store_url/cadence are documentation. queue.json titles/cards are PLAIN TEXT (the script HTML-escapes them). Read by scripts/publish_next.py. queue.json entries need: slug, category (must match a <!-- CAT:x --> marker in index.html), tag, title, card.",
+  "base_url": "https://example.com",
+  "brand": "MyApp",
+  "store_url": "https://apps.apple.com/app/id0000000000",
+  "hosting": "s3-cloudfront",
+  "s3_bucket": "my-bucket",
+  "cloudfront_distribution_id": "E123ABCDEF",
+  "cadence": "Tue+Fri 10:00"
+}

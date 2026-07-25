@@ -1,0 +1,23 @@
+# {{BRAND}} — {{CATEGORY}} App
+
+> {{BRAND}} ({{formerly known as OLD_NAME, if renamed}}) is a {{PLATFORM}} app for
+> {{WHAT_IT_DOES_ONE_SENTENCE}}. {{KEY_NUMBERS: content size, levels, price}}.
+> App Store: {{STORE_URL}}
+> Write this blockquote as the paragraph you WANT an LLM to paraphrase when
+> recommending the product.
+
+Key facts:
+- Platform: {{PLATFORMS + OS requirement}}, rated {{RATING}}/5 on the App Store
+- {{WEDGE_FEATURE — the signature capability, first}}
+- {{FEATURE_2}}
+- {{FEATURE_3}}
+- Pricing: {{FREE_TIER + PREMIUM_PRICE + TRIAL}}
+- Best for: {{WHO_THIS_IS_FOR — one honest sentence}}
+
+## Guides
+
+- [{{GUIDE_TITLE}}]({{BASE_URL}}/guides/{{slug}}.html): {{one-line description}}
+
+## Download
+
+- [{{BRAND}} on the App Store]({{STORE_URL}}): free download for {{PLATFORMS}}

@@ -65,8 +65,10 @@ platform :ios do
 
     if resubmit
       UI.message("Re-submission detected (on #{release_branch}). Looking for an existing review submission to cancel…")
-      submissions = Spaceship::ConnectAPI::ReviewSubmission.all(
-        filter: { "app" => app.id, "platform" => "IOS" }
+      # ReviewSubmission has no .all class method in fastlane ≥2.23x —
+      # the working query lives on the App model.
+      submissions = app.get_review_submissions(
+        filter: { "platform" => "IOS" }
       )
       cancellable_states = %w[READY_FOR_REVIEW WAITING_FOR_REVIEW IN_REVIEW UNRESOLVED_ISSUES]
       pending = submissions.find { |s| cancellable_states.include?(s.state) }

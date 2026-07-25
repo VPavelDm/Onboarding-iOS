@@ -1,0 +1,30 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "greeting_name" : {
+      "comment" : "A natural local first name for the demo greeting. Transcreate, don't translate (Anna→Анна→さくら→민준→أحمد).",
+      "localizations" : {
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Анна" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "さくら" } }
+      }
+    },
+    "hero_message" : {
+      "comment" : "The single hero line on the payoff screen. Short, warm, idiomatic per locale.",
+      "localizations" : {
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Ты справишься. Я в тебя верю." } }
+      }
+    },
+    "item_1" : {
+      "comment" : "Demo list title seeded so the home shows a full (not empty) state. Keep short — fits at .xLarge.",
+      "localizations" : {
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "На моё 30-летие 🎂" } }
+      }
+    },
+    "item_2" : { "localizations" : {} },
+    "item_3" : { "localizations" : {} },
+    "item_4" : { "localizations" : {} },
+    "item_5" : { "localizations" : {} },
+    "item_6" : { "localizations" : {} }
+  },
+  "version" : "1.0"
+}

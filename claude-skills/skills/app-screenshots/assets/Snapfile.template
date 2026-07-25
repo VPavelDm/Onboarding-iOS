@@ -1,0 +1,31 @@
+# fastlane snapshot config. Fill {{...}} from screenshots/config.json.
+# Docs: https://docs.fastlane.tools/actions/snapshot/
+
+devices([
+  "iPhone 17 Pro"          # add iPad Pro 13" etc. for a universal app
+])
+
+# App STORE storefront codes (differ from the app's .xcstrings codes):
+#   zh-Hans↔zh-CN, zh-Hant↔zh-TW, pt-PT↔pt, es covers es+es-MX, en-US↔en.
+# Only list a language once its demo content exists in Screenshots.xcstrings.
+languages([
+  "en-US"
+  # "ar", "de", "es", "fr", "it", "ja", "ko", "nl", "pt-BR", "pt-PT",
+  # "ru", "tr", "zh-Hans", "zh-Hant"
+])
+
+scheme("{{APP}}UITests")
+
+# Only the screenshot test (not other tests in the scheme).
+only_testing(["{{APP}}UITests/ScreenshotUITests"])
+
+# RAW device screens go here. Keep this SEPARATE from ./fastlane/screenshots, which
+# `deliver` uploads and where finished AppScreens exports live — mixing them clobbers assets.
+output_directory("./fastlane/screenshots-raw")
+
+# Clean 9:41 status bar: full signal, full white (non-charging) battery.
+override_status_bar(true)
+override_status_bar_arguments("--time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState discharging --batteryLevel 100")
+
+concurrent_simulators(false)      # deterministic ordering
+clear_previous_screenshots(false) # true to wipe each run

@@ -1,0 +1,30 @@
+//  ScreenshotRootView.swift
+//  {{APP}}
+//
+//  The ONLY view gated by the screenshot flag. Routes to a standalone reproduction
+//  screen. Set screenshot-only global modifiers here (appearance, Dynamic Type).
+
+import SwiftUI
+
+struct ScreenshotRootView: View {
+    var body: some View {
+        screen
+            // Pin appearance so system-styled subviews match the rest, regardless of the
+            // simulator setting. Use the app's real look (light apps: .light).
+            .preferredColorScheme({{PREFERRED_SCHEME}})   // e.g. .light or .dark
+            // App text reads small inside a device frame at store-thumbnail scale; bump
+            // Dynamic Type so every semantic-font element is legible. Screenshots only.
+            .dynamicTypeSize(.xLarge)
+    }
+
+    @ViewBuilder
+    private var screen: some View {
+        switch ScreenshotMode.screen {
+        case .home:    ScreenshotHomeView()
+        case .compose: ScreenshotComposeView()
+        case .seal:    ScreenshotSealView()
+        case .detail:  ScreenshotDetailView()
+        case .success: ScreenshotSuccessView()
+        }
+    }
+}

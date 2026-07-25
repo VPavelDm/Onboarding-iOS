@@ -1,0 +1,36 @@
+{
+  "highlightColor": "#ffd42eff",
+  "keepEnglishBasePrefixes": ["<span"],
+  "captions": {
+    "<b>Know exactly what to say</b>": {
+      "translations": {
+        "de": "Wisse genau, was du sagst",
+        "es": "Sabe exactamente qué decir",
+        "ru": "Знай, что именно сказать",
+        "ja": "何と言えばいいかがわかる"
+      },
+      "highlight": {
+        "en-US": "what to say",
+        "de": "was du sagst",
+        "es": "qué decir",
+        "ru": "что именно сказать",
+        "ja": "何と言えばいいか"
+      }
+    },
+    "<b>Build real English phrases</b>": {
+      "translations": {
+        "de": "Bilde echte englische Sätze",
+        "es": "Construye frases reales en inglés",
+        "ru": "Составляй настоящие фразы на английском",
+        "ja": "本物の英語フレーズを組み立てる"
+      },
+      "highlight": {
+        "en-US": "real",
+        "de": "echte",
+        "es": "reales",
+        "ru": "настоящие",
+        "ja": "本物"
+      }
+    }
+  }
+}

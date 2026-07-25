@@ -1,0 +1,32 @@
+{
+  "appName": "MyApp",
+  "projectPath": "MyApp.xcodeproj",
+  "scheme": "MyApp",
+  "uiTestScheme": "MyAppUITests",
+  "uiTestTarget": "MyAppUITests",
+
+  "devices": ["iPhone 17 Pro"],
+
+  "// locales": "App Store storefront codes. See references/pipeline-setup.md for the mapping to app codes.",
+  "locales": [
+    "en-US", "ar", "de", "es", "fr", "it", "ja", "ko",
+    "nl", "pt-BR", "pt-PT", "ru", "tr", "zh-Hans", "zh-Hant"
+  ],
+  "// localeMap": "Optional: store code -> app .xcstrings/.lproj code, only where they differ.",
+  "localeMap": {
+    "zh-Hans": "zh-CN",
+    "zh-Hant": "zh-TW",
+    "pt-PT": "pt",
+    "en-US": "en"
+  },
+
+  "// screens": "Ordered list; each needs a Screen case, a reproduction view, and a UITest capture line.",
+  "screens": ["home", "compose", "seal", "detail", "success"],
+
+  "// captions": "This skill outputs raw device screens. Marketing captions/backgrounds/frames are added downstream in AppScreens — see the app-screenshots-captions skill.",
+
+  "statusBarTime": "9:41",
+  "// outputDir": "RAW screens. Keep separate from fastlane/screenshots (deliver's upload dir + finished AppScreens exports) so nothing gets clobbered.",
+  "outputDir": "fastlane/screenshots-raw",
+  "preferredColorScheme": "light"
+}

@@ -1,0 +1,57 @@
+//  ScreenshotMode.swift
+//  {{APP}}
+//
+//  Screenshot-only launch mode. Additive & flag-gated — the production launch path
+//  never reaches this. See claude-skills/app-screenshots.
+
+import Foundation
+
+/// Drives the fastlane snapshot UI test: the app skips onboarding/network and renders a
+/// chosen reproduction screen with deterministic, localized demo content, so App Store
+/// screenshots render identically per locale.
+enum ScreenshotMode {
+
+    /// Which reproduction screen this launch should show. Add a case per shot, then a
+    /// branch in `ScreenshotRootView` and a `capture(screen:named:)` in the UI test.
+    enum Screen: String {
+        case home
+        case compose
+        case seal
+        case detail
+        case success
+    }
+
+    /// `true` when launched by fastlane (`-FASTLANE_SNAPSHOT YES`) or manually
+    /// (`-ui_screenshots 1`). Nothing else in the app should read this.
+    static var isEnabled: Bool {
+        UserDefaults.standard.bool(forKey: "FASTLANE_SNAPSHOT")
+            || UserDefaults.standard.bool(forKey: "ui_screenshots")
+    }
+
+    /// The screen to render (`-screenshot_screen <name>`), defaulting to the first.
+    static var screen: Screen {
+        Screen(rawValue: UserDefaults.standard.string(forKey: "screenshot_screen") ?? "")
+            ?? .home
+    }
+
+    // MARK: - Localized demo content (table "Screenshots")
+    // Each accessor resolves in the language fastlane launches the app in, so every
+    // storefront captures its own native demo copy. Keep these SHORT — screenshot type
+    // is enlarged and overflows real-length content. Generate translations natively
+    // (transcreation), not literally. See references/demo-content.md.
+
+    /// Natural local name used in greetings ("Anna" → "Анна" → "さくら").
+    static var greetingName: String {
+        String(localized: "greeting_name", table: "Screenshots")
+    }
+
+    /// The single hero line shown on the payoff screen.
+    static var heroMessage: String {
+        String(localized: "hero_message", table: "Screenshots")
+    }
+
+    /// Titles seeded into the "full" home state so it never shows the empty state.
+    static var demoItemTitles: [String] {
+        (1...6).map { String(localized: "item_\($0)", table: "Screenshots") }
+    }
+}

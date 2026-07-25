@@ -1,0 +1,8 @@
+{
+  "name": "claude-skills",
+  "description": "Personal skill collection — project bootstrap (fastlane + release rails), app marketing (App Store screenshots, screenshot captions, marketing site, ASO + keyword research, App Store release metadata, end-to-end release), and iOS architecture conventions (view, viewmodel, service, repository, feature-module).",
+  "version": "0.5.0",
+  "author": {
+    "name": "Pavel Vaitsikhouski"
+  }
+}

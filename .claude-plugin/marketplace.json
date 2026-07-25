@@ -1,0 +1,16 @@
+{
+  "name": "claude-skills",
+  "owner": {
+    "name": "Pavel Vaitsikhouski"
+  },
+  "metadata": {
+    "description": "Personal collection of skills: project bootstrap (fastlane + release rails), app marketing (App Store screenshots, captions, marketing site, ASO, App Store release metadata, end-to-end release) and iOS architecture conventions (view, viewmodel, service, repository, feature-module)."
+  },
+  "plugins": [
+    {
+      "name": "claude-skills",
+      "source": "./claude-skills",
+      "description": "All personal skills in one plugin — project-setup: fastlane + release rails bootstrap; app marketing: App Store screenshots, screenshot captions, marketing site, ASO + keyword research, App Store release metadata, end-to-end release; iOS architecture conventions: view, viewmodel, service, repository, feature-module."
+    }
+  ]
+}

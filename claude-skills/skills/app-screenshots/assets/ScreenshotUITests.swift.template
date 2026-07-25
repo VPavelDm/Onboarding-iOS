@@ -1,0 +1,43 @@
+//  ScreenshotUITests.swift
+//  {{APP}}UITests
+//
+//  Captures one screenshot per (screen × language). The test taps NOTHING — it relaunches
+//  the app on each screen via `-screenshot_screen`, because localized label taps break in
+//  non-English locales. Requires fastlane's SnapshotHelper.swift in this target
+//  (`bundle exec fastlane snapshot init`).
+
+import XCTest
+
+final class ScreenshotUITests: XCTestCase {
+
+    private let app = XCUIApplication()
+    /// Args injected by setupSnapshot (FASTLANE_SNAPSHOT + language/locale).
+    private var baseArguments: [String] = []
+
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+    }
+
+    @MainActor
+    func testScreenshots() throws {
+        // Animated UIs (auras, progress rings) never quiesce — don't wait on animations.
+        setupSnapshot(app, waitForAnimations: false)
+        baseArguments = app.launchArguments
+
+        capture(screen: "home",    named: "01_Home")
+        capture(screen: "compose", named: "02_Compose")
+        capture(screen: "seal",    named: "03_Seal")
+        capture(screen: "detail",  named: "04_Detail")
+        capture(screen: "success", named: "05_Success")
+    }
+
+    /// Relaunch on the requested screen and capture. The app selects the screen from the
+    /// launch arg, so we wait only on first content — no localized taps.
+    @MainActor
+    private func capture(screen: String, named name: String) {
+        app.launchArguments = baseArguments + ["-ui_screenshots", "1", "-screenshot_screen", screen]
+        app.launch()
+        _ = app.staticTexts.firstMatch.waitForExistence(timeout: 10)
+        snapshot(name)
+    }
+}

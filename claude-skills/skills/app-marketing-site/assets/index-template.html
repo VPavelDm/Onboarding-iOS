@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!-- Landing page skeleton. {{TOKENS}} are slots; every piece of copy should be written
+     fresh for the app (benefit-led, keyword-aware) — this file fixes STRUCTURE, not words.
+     Keep the CAT markers: the publish script inserts new guide cards at them. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{PRIMARY_KEYWORD_TITLE}} | {{BRAND}}</title>
+<meta name="description" content="{{META_DESCRIPTION_140_160_CHARS}}">
+<link rel="canonical" href="{{BASE_URL}}/">
+<link rel="icon" type="image/png" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/app-icon-360.png">
+<link rel="stylesheet" href="styles.css">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{BRAND}} — {{TAGLINE}}">
+<meta property="og:description" content="{{OG_DESCRIPTION}}">
+<meta property="og:url" content="{{BASE_URL}}/">
+<meta property="og:image" content="{{BASE_URL}}/assets/app-icon.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{BRAND}}",
+  "alternateName": "{{OLD_OR_STORE_NAME_IF_DIFFERENT}}",
+  "operatingSystem": "{{OS_REQUIREMENT}}",
+  "applicationCategory": "{{SCHEMA_CATEGORY e.g. EducationalApplication}}",
+  "description": "{{ONE_PARAGRAPH_FACTUAL}}",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "{{RATING}}", "reviewCount": "{{COUNT}}" },
+  "_comment_remove_me": "OMIT aggregateRating entirely if the app has no/near-zero ratings",
+  "downloadUrl": "{{STORE_URL}}",
+  "image": "{{BASE_URL}}/assets/app-icon.png"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "{{FAQ_QUESTION}}",
+      "acceptedAnswer": { "@type": "Answer", "text": "{{SELF_CONTAINED_PLAINTEXT_ANSWER}}" } }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img src="assets/app-icon-360.png" alt="{{BRAND}} app icon" width="36" height="36">
+      {{BRAND}}
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#screenshots">Screenshots</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#guides">Guides</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-primary" href="{{STORE_URL}}">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="download">
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">{{CATEGORY}} &middot; {{PLATFORMS}}</p>
+      <h1>{{BENEFIT_HEADLINE with <span class="accent">accent phrase</span>}}</h1>
+      <p class="lead">{{SUBHEAD: concrete features + numbers, 2-3 sentences}}</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="{{STORE_URL}}">
+          Download on the App&nbsp;Store
+          <small>Free · {{PLATFORMS}}</small>
+        </a>
+        <a class="btn btn-dark" href="#how-it-works">See how it works</a>
+      </div>
+      <!-- No/low ratings? Drop the stars span; use content stats only. -->
+      <p class="hero-proof">
+        <span><span class="stars" aria-hidden="true">★★★★★</span> <strong>{{RATING}}</strong> on the App Store</span>
+        <span><strong>{{CONTENT_STAT}}</strong></span>
+        <span><strong>{{TRIAL_OR_FREE_STAT}}</strong></span>
+      </p>
+    </div>
+    <div class="stage">
+      <div class="phone">
+        <!-- RAW app screenshot (fastlane), not a store-marketing shot with baked frames/text -->
+        <img src="assets/app/{{HERO_SHOT}}.png" alt="{{DESCRIPTIVE_ALT}}"
+             width="603" height="1311" fetchpriority="high">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO: a real, working micro-interaction from the app (quiz / picker / phrase
+     choice). This is the conversion centerpiece — see the inline script pattern at the
+     bottom of a deployed site (faulingo.com) for the JS shape. -->
+<section id="demo">
+  <div class="wrap">
+    <div class="demo-card rv">
+      <div class="demo-side">
+        <p class="section-kicker">Try it right here</p>
+        <h2>{{DEMO_H2}}</h2>
+        <p>{{WHY_THIS_DEMO}}</p>
+      </div>
+      <div class="quiz">
+        <p class="prompt">{{DEMO_PROMPT}}</p>
+        <p class="q" id="q-word">{{FIRST_ITEM}}</p>
+        <div class="quiz-opts" id="q-opts"></div>
+        <p class="verdict" id="q-verdict">{{IDLE_VERDICT}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how-it-works">
+  <div class="wrap">
+    <p class="section-kicker">How it works</p>
+    <h2>{{H2}}</h2>
+    <p class="section-sub">{{WHY_THIS_METHOD_WORKS}}</p>
+    <div class="steps">
+      <div class="step"><h3>{{SETUP_STEP}}</h3><p>{{REAL_FEATURES}}</p></div>
+      <div class="step"><h3>{{DAILY_ACTION_STEP}}</h3><p>{{REAL_FEATURES}}</p></div>
+      <div class="step"><h3>{{RESULT_STEP}}</h3><p>{{REAL_FEATURES}}</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="section-kicker">Why {{BRAND}}</p>
+    <h2>{{FEATURES_H2_WITH_KEYWORD}}</h2>
+    <div class="bento">
+      <!-- big tile (span 2x2): wedge feature + a raw mini screenshot angled in.
+           One stat tile (giant number). One real-review quote tile (wide).
+           2-3 plain tiles. Add class "rv" for scroll-reveal. -->
+      <div class="tile big rv">
+        <img class="mini-shot" src="assets/app/{{SHOT}}-640.png" loading="lazy" width="138" height="300" alt="{{ALT}}">
+        <div><h3>{{WEDGE_FEATURE}}</h3><p>{{BENEFIT}}</p></div>
+      </div>
+      <div class="tile rv"><span class="stat">{{NUMBER}}<small>{{STAT_LABEL}}</small></span></div>
+      <div class="tile wide rv"><blockquote>{{REAL_REVIEW_QUOTE}}</blockquote><cite>&mdash; {{SOURCE}}</cite></div>
+      <div class="tile rv"><h3>{{FEATURE}}</h3><p>{{BENEFIT}}</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="guides">
+  <div class="wrap">
+    <p class="section-kicker">Guides</p>
+    <h2>{{GUIDES_H2}}</h2>
+    <p class="section-sub">{{ONE_LINER}}</p>
+
+    <!-- one .guide-group per category; keep the CAT marker inside each grid -->
+    <div class="guide-group">
+    <h3 class="guide-cat">{{CATEGORY_NAME}}</h3>
+    <div class="guide-grid">
+      <a class="guide-card" href="guides/{{slug}}.html">
+        <span class="tag">{{TAG}}</span>
+        <h3>{{GUIDE_TITLE}}</h3>
+        <p>{{TWO_LINE_DESCRIPTION}}</p>
+        <span class="more">Read the guide →</span>
+      </a>
+      <!-- CAT:{{category_key}} -->
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <p class="section-kicker">FAQ</p>
+    <h2>Frequently asked questions</h2>
+    <!-- one per guide + product questions (pricing etc.); mirror all into FAQPage JSON-LD -->
+    <details>
+      <summary>{{QUESTION}}</summary>
+      <p>{{SELF_CONTAINED_ANSWER}} <a href="guides/{{slug}}.html">Learn more →</a></p>
+    </details>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>{{URGENCY_HEADLINE}}</h2>
+      <p>{{ONE_SENTENCE}}</p>
+      <a class="btn btn-primary" href="{{STORE_URL}}">
+        Download on the App&nbsp;Store
+        <small>Free · {{PLATFORMS}}{{RATING_STAR_IF_ANY}}</small>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="/">
+        <img src="assets/app-icon-360.png" alt="" width="36" height="36">
+        {{BRAND}}
+      </a>
+      <p>{{BRAND}} — {{TAGLINE}}.<br>© {{YEAR}} {{OWNER}}</p>
+    </div>
+    <nav aria-label="Guides"><h4>Guides</h4>{{GUIDE_LINKS}}</nav>
+    <nav aria-label="App"><h4>App</h4>
+      <a href="{{STORE_URL}}">Download on the App Store</a>
+      <a href="{{TERMS_URL}}">Terms of Use</a>
+      <a href="{{PRIVACY_URL}}">Privacy Policy</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
