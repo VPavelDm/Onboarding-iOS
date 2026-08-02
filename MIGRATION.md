@@ -1,3 +1,37 @@
+# Migrating from 2.2 to 2.3
+
+**No action required.** 2.3 only widens the language coverage of the strings the library
+renders itself — no API, behavior or JSON changes.
+
+## What changed
+
+The chrome the library draws without asking the host — picker and navigation labels
+(`Age`, `Height`, `Weight`, `Feet`, `Inches`, `Choose`, `Next`, `Skip`), the `Paywalls`
+countdown/restore/error copy, the `Profile` rows and `CoreUI`'s `Close` — now ships in
+**18 languages** instead of 4: `ar`, `de`, `es`, `es-MX`, `fr`, `hi`, `it`, `ja`, `ko`,
+`nl`, `pl`, `pt`, `pt-BR`, `ru`, `tr`, `uk`, `zh-Hans`, `zh-Hant`.
+
+Your own step copy is unaffected: since 2.2 those strings resolve through
+`OnboardingDelegate.format(string:)` against your catalog, and this release does not
+touch that path.
+
+## Still on you
+
+- **Step-type default copy** (`commitmentHold.*`, `receipt.*`, `socialProof.*`,
+  `survivalFunnel.*` and the rest) remains English-only. It is placeholder text meant to be
+  overridden per app through your JSON and `format(string:)`.
+- **Percent formatting.** `"%@%%"` and `"%lld %%"` are still literal format strings, so the
+  space before `%` does not follow the locale (`50%` vs `50 %`). Format percentages with a
+  `FormatStyle` on your side until the library does.
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "2.3.0")
+```
+
+---
+
 # Migrating from 2.1 to 2.2
 
 **2.2 moves localization out of the library and into the host app.** The flow is now
