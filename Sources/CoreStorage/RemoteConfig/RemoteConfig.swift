@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol RemoteConfig {
+public protocol RemoteConfig: Sendable {
     func load() async throws
     func config<T>(for key: ConfigKey<T>) -> T?
 }
