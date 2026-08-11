@@ -63,6 +63,93 @@ rescue StandardError => e
   nil
 end
 
+def xcode_cloud_request(method, path, body = nil)
+  require "net/http"
+  require "json"
+
+  token = Spaceship::ConnectAPI.token.text
+  uri = URI("https://api.appstoreconnect.apple.com/v1/#{path}")
+  req = method == :post ? Net::HTTP::Post.new(uri) : Net::HTTP::Get.new(uri)
+  req["Authorization"] = "Bearer #{token}"
+  if body
+    req["Content-Type"] = "application/json"
+    req.body = body.to_json
+  end
+  res = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(req) }
+  JSON.parse(res.body)
+end
+
+# Enabled workflows whose tag or branch start condition matches this release.
+def xcode_cloud_release_workflow_ids(app_id, release_tag, release_branch)
+  matches = lambda do |condition, value|
+    source = condition&.dig("source")
+    return false unless source
+    return true if source["isAllMatch"]
+    (source["patterns"] || []).any? do |pat|
+      pat["isPrefix"] ? value.start_with?(pat["pattern"]) : value == pat["pattern"]
+    end
+  end
+
+  products = xcode_cloud_request(:get, "ciProducts?filter[app]=#{app_id}")["data"] || []
+  workflows = products.flat_map { |p| xcode_cloud_request(:get, "ciProducts/#{p['id']}/workflows")["data"] || [] }
+  workflows.select do |w|
+    attrs = w["attributes"] || {}
+    attrs["isEnabled"] &&
+      (matches.call(attrs["tagStartCondition"], release_tag) ||
+       matches.call(attrs["branchStartCondition"], release_branch))
+  end.map { |w| w["id"] }
+end
+
+def xcode_cloud_latest_run(workflow_id)
+  runs = xcode_cloud_request(:get, "ciWorkflows/#{workflow_id}/buildRuns?limit=1&sort=-number")["data"] || []
+  attrs = runs.first&.dig("attributes") || {}
+  { number: attrs["number"] || 0, progress: attrs["executionProgress"] }
+end
+
+# Confirm Xcode Cloud enqueued a run after the tag push, and start one via the
+# API when it didn't. A tag re-push whose target commit is unchanged (a lane
+# re-run after an interruption) never fires the trigger: autoCancel drops the
+# original event and the re-push looks like no change — the build wait below
+# would then poll for a build that was never started. An in-flight run on a
+# matching workflow counts as triggered (these workflows only fire on release
+# refs), so a lane re-run never starts a duplicate build.
+def xcode_cloud_ensure_run_started(workflow_ids, baseline_run_numbers, release_tag, wait_seconds: 180)
+  deadline = Time.now + wait_seconds
+  loop do
+    triggered = workflow_ids.any? do |id|
+      run = xcode_cloud_latest_run(id)
+      run[:number] > baseline_run_numbers.fetch(id, 0) || %w[PENDING RUNNING].include?(run[:progress])
+    end
+    if triggered
+      UI.success("Xcode Cloud picked up #{release_tag} (run enqueued).")
+      return
+    end
+    break if Time.now > deadline
+    UI.message("No Xcode Cloud run for #{release_tag} yet — checking again in 30s")
+    sleep(30)
+  end
+
+  UI.important("Xcode Cloud never picked up the #{release_tag} push — starting the run via the API.")
+  workflow_id = workflow_ids.first
+  repo_id = xcode_cloud_request(:get, "ciWorkflows/#{workflow_id}/repository").dig("data", "id")
+  refs = xcode_cloud_request(:get, "scmRepositories/#{repo_id}/gitReferences?limit=200")["data"] || []
+  tag_ref = refs.find { |r| r.dig("attributes", "kind") == "TAG" && r.dig("attributes", "name") == release_tag }
+  UI.user_error!("Xcode Cloud hasn't indexed tag #{release_tag} yet — start the build manually in App Store Connect, then re-run.") unless tag_ref
+
+  response = xcode_cloud_request(:post, "ciBuildRuns", {
+    data: {
+      type: "ciBuildRuns",
+      relationships: {
+        workflow: { data: { type: "ciWorkflows", id: workflow_id } },
+        sourceBranchOrTag: { data: { type: "scmGitReferences", id: tag_ref["id"] } }
+      }
+    }
+  })
+  number = response.dig("data", "attributes", "number")
+  UI.user_error!("Could not start the Xcode Cloud run: #{response['errors']&.first&.dig('detail') || response}") unless number
+  UI.success("Started Xcode Cloud run ##{number} on #{release_tag}.")
+end
+
 platform :ios do
   desc "Push metadata-only update to App Store Connect (no binary, no screenshots)"
   desc ""
@@ -150,6 +237,17 @@ platform :ios do
     )
     baseline_build_id = existing.first&.id
 
+    # Snapshot the newest CI run per matching workflow before the push, so we can
+    # tell afterwards whether the tag actually triggered anything.
+    ci_workflow_ids = begin
+      xcode_cloud_release_workflow_ids(app.id, release_tag, release_branch)
+    rescue StandardError
+      []
+    end
+    ci_run_baselines = ci_workflow_ids.to_h do |id|
+      [id, (xcode_cloud_latest_run(id)[:number] rescue 0)]
+    end
+
     add_git_tag(tag: release_tag, force: true)
     sh("git", "branch", "-f", release_branch) unless resubmit
 
@@ -159,7 +257,20 @@ platform :ios do
     # (no --force) so we fail loudly if the remote already has commits we don't;
     # the tag push is forced because resubmission moves the same tag to the fix commit.
     sh("git", "push", "origin", release_branch)
-    sh("git", "push", "--force", "origin", release_tag)
+
+    # Never re-push a tag whose remote target commit is unchanged (a lane re-run
+    # after an interruption): Xcode Cloud auto-cancels the original trigger on
+    # the ref update and treats the same-commit re-push as no change, so no
+    # build would ever start.
+    head_commit = sh("git", "rev-parse", "HEAD").strip
+    remote_tag = sh("git", "ls-remote", "--tags", "origin", release_tag).strip
+    remote_tag_commit = remote_tag.lines.find { |l| l.include?("^{}") }&.split&.first ||
+                        remote_tag.lines.first&.split&.first
+    if remote_tag_commit == head_commit
+      UI.message("Remote tag #{release_tag} already points at HEAD — skipping the tag push.")
+    else
+      sh("git", "push", "--force", "origin", release_tag)
+    end
 
     if resubmit
       # main has already moved on to the next minor — without a PR, fix commits
@@ -190,12 +301,26 @@ platform :ios do
       end
     end
 
+    # Verify the push actually triggered a CI run before settling in to wait.
+    # Best-effort: an API hiccup here must not abort a release that would have
+    # worked — the build wait below is bounded either way.
+    if ci_workflow_ids.any?
+      begin
+        xcode_cloud_ensure_run_started(ci_workflow_ids, ci_run_baselines, release_tag)
+      rescue FastlaneCore::Interface::FastlaneError
+        raise
+      rescue StandardError => e
+        UI.important("Could not verify the Xcode Cloud run started (#{e.message}) — continuing.")
+      end
+    end
+
     # Xcode Cloud builds for this project consistently take 10+ minutes; skip
     # pointless polling during that window.
     UI.message("Sleeping 10 min before polling ASC — Xcode Cloud builds never finish sooner than that.")
     sleep(10 * 60)
 
     UI.message("Waiting for Xcode Cloud to upload a new build of v#{release_version} and ASC to finish processing it…")
+    build_wait_deadline = Time.now + 45 * 60
     loop do
       builds = app.get_builds(
         filter: {
@@ -208,6 +333,9 @@ platform :ios do
       )
       latest = builds.first
       if latest.nil? || latest.id == baseline_build_id
+        if Time.now > build_wait_deadline
+          UI.user_error!("No new v#{release_version} build appeared within 45 min — check the Xcode Cloud run in App Store Connect (it may have failed), then re-run this lane; it picks up where it left off.")
+        end
         UI.message("No new build yet — checking again in 30s")
       else
         state = latest.processing_state

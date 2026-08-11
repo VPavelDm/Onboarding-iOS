@@ -84,10 +84,24 @@ tags v<version>, builds on Xcode Cloud, and submits to App Review with automatic
 release — go?" On yes:
 
 - Apply the queued version rename if any (step 1.4).
-- Run `bundle exec fastlane submit_release` **in the background** (it sleeps 10
-  minutes before even polling; total 15–25 min). Check the output every few minutes.
-- Early sanity check (first ~30s of output): the tag and branch pushes succeeded and
-  the lane reached "Sleeping 10 min before polling ASC". Then leave it alone.
+- Run the lane **detached**, so no tool timeout can kill it mid-flight (total runtime
+  is 15–25 min — a background tool call with a 10-minute cap WILL kill it):
+
+  ```bash
+  nohup bundle exec fastlane submit_release > submit_release.log 2>&1 &
+  ```
+
+  Then follow `submit_release.log` every few minutes.
+- Early sanity check (first ~30s of log): the tag and branch pushes succeeded, the
+  lane confirmed "Xcode Cloud picked up v<version>", and it reached "Sleeping 10 min
+  before polling ASC". Then leave it alone.
+- **Never stop and re-run the lane between the tag push and completion.** A re-run
+  force-recreates the tag on the same commit, which Xcode Cloud treats as no change:
+  the original trigger is auto-cancelled and no build ever starts. Current
+  fastlane-shared self-heals (it skips same-commit tag pushes, verifies a CI run
+  exists, and starts one via `POST /v1/ciBuildRuns` if not) — but if the lane died in
+  that window on an older copy, check `ciBuildRuns` for a run on the tag and start
+  one manually (workflow id + the tag's `scmGitReference` id) before re-running.
 
 ## Step 4 — Report the outcome
 
