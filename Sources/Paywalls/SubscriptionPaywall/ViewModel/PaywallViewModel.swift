@@ -145,6 +145,18 @@ public final class PaywallViewModel {
         }
     }
 
+    /// The corner close button on a dismissible paywall.
+    func userDismissed() {
+        log("paywall_close_button_tapped")
+    }
+
+    /// The named decline on a dismissible paywall — tracked separately from the
+    /// corner dismiss, because "chose the free path" and "bailed out" say very
+    /// different things about whether the pitch landed.
+    func userDeclined() {
+        log("paywall_declined")
+    }
+
     func restorePurchases() async -> Bool {
         log("restore_button_tapped")
         switch await service.restorePurchases() {
@@ -165,6 +177,7 @@ private extension PaywallPlan {
         case .weekly: "weekly"
         case .monthly: "monthly"
         case .yearly: "yearly"
+        case .lifetime: "lifetime"
         }
     }
 }

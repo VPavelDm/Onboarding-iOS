@@ -13,6 +13,7 @@ struct PaywallFooterView: View {
 
     let termsURL: URL?
     let privacyURL: URL?
+    var textColor: Color = .white
     var onRestore: () -> Void
 
     @Environment(\.openURL) private var openURL
@@ -30,7 +31,7 @@ struct PaywallFooterView: View {
             }
         }
         .font(.caption)
-        .foregroundStyle(.white.opacity(0.5))
+        .foregroundStyle(textColor.opacity(0.5))
     }
 
     private func link(_ text: Text, action: @escaping () -> Void) -> some View {
@@ -43,6 +44,6 @@ struct PaywallFooterView: View {
     }
 
     private var separator: some View {
-        Text(verbatim: "·").foregroundStyle(.white.opacity(0.3))
+        Text(verbatim: "·").foregroundStyle(textColor.opacity(0.3))
     }
 }

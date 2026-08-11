@@ -11,14 +11,16 @@ import Foundation
 public struct PaywallPlan: Identifiable, Hashable, Sendable {
 
     /// The billing cadence, used for tile copy, ordering, and per-day normalisation.
+    /// `.lifetime` is a one-time (non-consumable) purchase — no cadence, no trial.
     public enum Period: Hashable, Sendable {
-        case weekly, monthly, yearly
+        case weekly, monthly, yearly, lifetime
 
         var title: String {
             switch self {
             case .weekly: String(localized: "Weekly", bundle: .module)
             case .monthly: String(localized: "Monthly", bundle: .module)
             case .yearly: String(localized: "Yearly", bundle: .module)
+            case .lifetime: String(localized: "Lifetime", bundle: .module)
             }
         }
 
@@ -28,15 +30,18 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
             case .weekly: String(localized: "Billed weekly", bundle: .module)
             case .monthly: String(localized: "Billed monthly", bundle: .module)
             case .yearly: String(localized: "Billed yearly", bundle: .module)
+            case .lifetime: String(localized: "One-time payment", bundle: .module)
             }
         }
 
-        /// Approximate length in days, for savings math.
+        /// Approximate length in days, for savings math. Lifetime has no cadence to
+        /// normalise against — savings badges exclude it.
         var days: Double {
             switch self {
             case .weekly: 7
             case .monthly: 30
             case .yearly: 365
+            case .lifetime: .infinity
             }
         }
 
@@ -46,6 +51,7 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
             case .weekly: 0
             case .monthly: 1
             case .yearly: 2
+            case .lifetime: 3
             }
         }
     }
@@ -56,13 +62,24 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
     public let localizedPrice: String
     /// Length of the introductory free trial in days, or nil if the plan has none.
     public let freeTrialDays: Int?
+    /// The product's store display name (e.g. "Futura Forever"), shown on the
+    /// single-plan price card. Falls back to the period title when nil.
+    public let localizedTitle: String?
 
-    public init(id: String, period: Period, price: Double, localizedPrice: String, freeTrialDays: Int?) {
+    public init(
+        id: String,
+        period: Period,
+        price: Double,
+        localizedPrice: String,
+        freeTrialDays: Int?,
+        localizedTitle: String? = nil
+    ) {
         self.id = id
         self.period = period
         self.price = price
         self.localizedPrice = localizedPrice
         self.freeTrialDays = freeTrialDays
+        self.localizedTitle = localizedTitle
     }
 
     public var hasFreeTrial: Bool { freeTrialDays != nil }

@@ -15,6 +15,7 @@ struct PaywallPlanTile: View {
     let isSelected: Bool
     let savingsBadge: String?
     let selectionNamespace: Namespace.ID
+    var textColor: Color = .white
     let onSelect: () -> Void
 
     private let cornerRadius: CGFloat = 16
@@ -38,7 +39,7 @@ struct PaywallPlanTile: View {
                 .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(Color.black.opacity(0.22)))
                 .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(Color.accentColor.opacity(0.10)))
         }
-        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(Color.white.opacity(0.12), lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(textColor.opacity(0.12), lineWidth: 1))
         .overlay {
             if isSelected {
                 RoundedRectangle(cornerRadius: cornerRadius)
@@ -65,20 +66,20 @@ struct PaywallPlanTile: View {
             .font(.caption.weight(.semibold))
             .textCase(.uppercase)
             .tracking(0.8)
-            .foregroundStyle(.white.opacity(0.7))
+            .foregroundStyle(textColor.opacity(0.7))
     }
 
     private var price: some View {
         Text(plan.localizedPrice)
             .font(.title2.weight(.bold))
             .monospacedDigit()
-            .foregroundStyle(.white)
+            .foregroundStyle(textColor)
             .padding(.top, 2)
     }
 
     private var subtitle: some View {
         Text(plan.period.billedCadence)
             .font(.footnote)
-            .foregroundStyle(.white.opacity(0.55))
+            .foregroundStyle(textColor.opacity(0.55))
     }
 }

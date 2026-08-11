@@ -38,10 +38,13 @@ public struct PaywallOfferings: Hashable, Sendable {
     }
 
     /// A locale-formatted savings badge (e.g. "−30%") for `plan` vs. the priciest-per-day
-    /// plan, or nil if it isn't at least 1% cheaper.
+    /// plan, or nil if it isn't at least 1% cheaper. Lifetime plans have no cadence to
+    /// normalise per day, so they neither earn a badge nor serve as the baseline.
     func savingsBadge(for plan: PaywallPlan) -> String? {
         guard
+            plan.period != .lifetime,
             let baseline = baselinePlan,
+            baseline.period != .lifetime,
             baseline.id != plan.id,
             baseline.pricePerDay > 0,
             plan.pricePerDay < baseline.pricePerDay

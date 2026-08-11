@@ -14,6 +14,9 @@ struct PaywallTimelineView: View {
     let trialDays: Int
     let unlockBody: String
     let trialEndBody: String
+    var textColor: Color = .white
+    /// The step icon glyph color inside the accent circles.
+    var iconColor: Color = .white
 
     private var reminderDay: Int { max(1, trialDays - 2) }
 
@@ -50,11 +53,11 @@ struct PaywallTimelineView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(textColor)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(body)
                     .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.75))
+                    .foregroundStyle(textColor.opacity(0.75))
                     .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.bottom, nextTint == nil ? 0 : 18)
@@ -77,7 +80,7 @@ struct PaywallTimelineView: View {
             Circle().fill(tint).frame(width: 36, height: 36)
             Image(systemName: icon)
                 .font(.system(size: 15, weight: .bold))
-                .foregroundStyle(.white)
+                .foregroundStyle(iconColor)
         }
     }
 

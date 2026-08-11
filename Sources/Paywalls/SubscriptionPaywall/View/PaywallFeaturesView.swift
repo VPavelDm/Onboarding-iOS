@@ -11,6 +11,9 @@ import SwiftUI
 struct PaywallFeaturesView: View {
 
     let features: [PaywallConfiguration.Feature]
+    var textColor: Color = .white
+    /// The checkmark glyph color inside the accent circle.
+    var iconColor: Color = .white
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -27,10 +30,10 @@ struct PaywallFeaturesView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.headline)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(textColor)
                 Text(subtitle)
                     .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.75))
+                    .foregroundStyle(textColor.opacity(0.75))
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 0)
@@ -42,7 +45,7 @@ struct PaywallFeaturesView: View {
             Circle().fill(Color.accentColor).frame(width: 36, height: 36)
             Image(systemName: "checkmark")
                 .font(.system(size: 15, weight: .bold))
-                .foregroundStyle(.white)
+                .foregroundStyle(iconColor)
         }
     }
 }

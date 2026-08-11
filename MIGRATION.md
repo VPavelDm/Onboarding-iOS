@@ -1,3 +1,43 @@
+# Migrating from 2.4 to 2.5
+
+**No action required.** 2.5 only adds new public API to `Paywalls` — existing paywalls
+render and behave exactly as before (white text, hard, two plan tiles).
+
+## What's new: lifetime plans and dismissible paywalls
+
+The subscription paywall can now sell a one-time lifetime unlock (built for Futura)
+and can opt out of being hard:
+
+- `PaywallPlan.Period.lifetime` — one-time (non-consumable) products. The
+  `AdaptyPaywallService` maps any product without a subscription period to it
+  automatically. Lifetime plans never earn or anchor a savings badge, and the
+  "Cancel anytime" footnote disappears for them. `PaywallPlan` also carries an
+  optional `localizedTitle` (the store display name, e.g. "Futura Forever").
+- **Single-plan price card** — when the placement resolves to exactly one plan, the
+  two-tile selector is replaced by a price card: product name, a note line
+  (`priceCardNote`, defaulting to a localized "One payment. No subscription, ever."
+  for lifetime), and the price. Set `expectsSinglePlan` so the loading placeholder
+  is a card too and the layout doesn't jump.
+- `PaywallDismissBehavior` — pass `dismiss:` to `PaywallView` to make the paywall a
+  cart instead of a wall: a corner ✕ fades in after `closeButtonDelay`, and an
+  optional named decline button (`declineTitle`) appears on the same beat.
+  `onDismiss` runs for both; analytics distinguish `paywall_close_button_tapped`
+  from `paywall_declined`.
+- **Palette** — `PaywallConfiguration` gains `subtitle`, `ctaTitle` (the no-trial CTA
+  wording), `textColor` (default `.white`; pass your dark ink for light backdrops),
+  `ctaBackground`/`ctaForeground`, and `cardBackground` (solid price-card fill).
+
+The three new library strings (`Lifetime`, `One-time payment`, `One payment. No
+subscription, ever.`) ship in the same 18 languages as the rest of the chrome.
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "2.5.0")
+```
+
+---
+
 # Migrating from 2.3 to 2.4
 
 **No action required.** 2.4 only adds new public API to `Paywalls` — nothing existing

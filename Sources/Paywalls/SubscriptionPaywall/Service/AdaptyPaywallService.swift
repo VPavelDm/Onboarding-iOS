@@ -53,7 +53,10 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
     }
 
     private func period(of product: AdaptyPaywallProduct) -> PaywallPlan.Period? {
-        switch product.subscriptionPeriod?.unit {
+        // No subscription period means a one-time (non-consumable) product — a
+        // lifetime unlock.
+        guard let unit = product.subscriptionPeriod?.unit else { return .lifetime }
+        return switch unit {
         case .day, .week: .weekly
         case .month: .monthly
         case .year: .yearly
@@ -105,7 +108,8 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
             period: period,
             price: NSDecimalNumber(decimal: product.price).doubleValue,
             localizedPrice: product.localizedPrice ?? "—",
-            freeTrialDays: freeTrialDays(of: product)
+            freeTrialDays: freeTrialDays(of: product),
+            localizedTitle: product.localizedTitle
         )
     }
 
