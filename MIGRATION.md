@@ -1,3 +1,43 @@
+# Migrating from 2.3 to 2.4
+
+**No action required.** 2.4 only adds new public API to `Paywalls` — nothing existing
+changed.
+
+## What's new: a reusable subscription paywall
+
+The hard subscription paywall built for Calories now ships in the `Paywalls` product
+(`Sources/Paywalls/SubscriptionPaywall/`): a trial timeline (or feature list) over a
+two-plan selector with a single CTA, no close button, and `onUnlocked` firing only
+after a purchase or restore succeeds. It handles interrupted purchases (SCA), pending
+Ask-to-Buy approvals, savings badges, and cross-fades plan context without layout
+jumps.
+
+- `PaywallView(viewModel:configuration:onUnlocked:)` — the screen. Draws no
+  background and renders white text; give it a dark backdrop.
+- `PaywallConfiguration` — the app-specific copy, already localized by the host:
+  `features` (sold when the selected plan has no trial), `trialUnlockBody` (first
+  timeline step), optional `title`/`trialEndBody` overrides, `termsURL`/`privacyURL`.
+  Generic chrome (CTA, tiles, alerts, timeline labels) is localized inside the
+  library in the same 18 languages as 2.3.
+- `PaywallViewModel(service:source:track:)` — state + analytics. `track` receives
+  event names (`paywall_shown`, `subscription_started`, …) stamped with `source`.
+- `AdaptyPaywallService(placementID:accessLevelKey:onEntitlementChanged:)` — the
+  Adapty backend. `onEntitlementChanged` runs before any entitled outcome returns, so
+  refresh your subscription cache there. Or implement `PaywallServiceProtocol`
+  yourself for a different store SDK.
+- Hosts should also observe their subscription state while the paywall is visible:
+  an interrupted purchase can complete out of band after `purchase()` reported
+  failure (wire Adapty's `didLoadLatestProfile` to your cache and unlock when it
+  flips — dedupe against `onUnlocked`).
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "2.4.0")
+```
+
+---
+
 # Migrating from 2.2 to 2.3
 
 **No action required.** 2.3 only widens the language coverage of the strings the library
