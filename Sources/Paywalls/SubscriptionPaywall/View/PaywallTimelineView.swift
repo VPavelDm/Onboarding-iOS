@@ -15,10 +15,14 @@ struct PaywallTimelineView: View {
     let unlockBody: String
     let trialEndBody: String
     var textColor: Color = .white
-    /// The step icon glyph color inside the accent circles.
+    /// The step circle fill; defaults to the accent color.
+    var iconBackground: Color?
+    /// The step icon glyph color inside the circles.
     var iconColor: Color = .white
 
     private var reminderDay: Int { max(1, trialDays - 2) }
+
+    private var circleFill: Color { iconBackground ?? .accentColor }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -26,21 +30,21 @@ struct PaywallTimelineView: View {
                 icon: "lock.open.fill",
                 title: String(localized: "Today — full access", bundle: .module),
                 body: unlockBody,
-                tint: .accentColor,
-                nextTint: .accentColor
+                tint: circleFill,
+                nextTint: circleFill
             )
             item(
                 icon: "bell.fill",
                 title: String(localized: "Day \(reminderDay) — reminder", bundle: .module),
                 body: String(localized: "We'll remind you before your trial ends. Cancel anytime.", bundle: .module),
-                tint: .accentColor,
-                nextTint: Color.accentColor.opacity(0.5)
+                tint: circleFill,
+                nextTint: circleFill.opacity(0.5)
             )
             item(
                 icon: "star.fill",
                 title: String(localized: "Day \(trialDays) — trial ends", bundle: .module),
                 body: trialEndBody,
-                tint: Color.accentColor.opacity(0.5),
+                tint: circleFill.opacity(0.5),
                 nextTint: nil
             )
         }

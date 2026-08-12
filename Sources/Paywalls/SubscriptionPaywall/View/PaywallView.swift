@@ -120,6 +120,7 @@ public struct PaywallView: View {
             PaywallFeaturesView(
                 features: configuration.features,
                 textColor: configuration.textColor,
+                iconBackground: configuration.ctaBackground,
                 iconColor: configuration.ctaForeground ?? .white
             )
             .opacity(viewModel.selectedHasTrial ? 0 : 1)
@@ -129,6 +130,7 @@ public struct PaywallView: View {
                     unlockBody: configuration.trialUnlockBody,
                     trialEndBody: configuration.trialEndBody,
                     textColor: configuration.textColor,
+                    iconBackground: configuration.ctaBackground,
                     iconColor: configuration.ctaForeground ?? .white
                 )
                 .opacity(viewModel.selectedHasTrial ? 1 : 0)

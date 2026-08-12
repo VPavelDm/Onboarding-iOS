@@ -12,7 +12,9 @@ struct PaywallFeaturesView: View {
 
     let features: [PaywallConfiguration.Feature]
     var textColor: Color = .white
-    /// The checkmark glyph color inside the accent circle.
+    /// The checkmark circle fill; defaults to the accent color.
+    var iconBackground: Color?
+    /// The checkmark glyph color inside the circle.
     var iconColor: Color = .white
 
     var body: some View {
@@ -42,7 +44,7 @@ struct PaywallFeaturesView: View {
 
     private var checkmark: some View {
         ZStack {
-            Circle().fill(Color.accentColor).frame(width: 36, height: 36)
+            Circle().fill(iconBackground ?? Color.accentColor).frame(width: 36, height: 36)
             Image(systemName: "checkmark")
                 .font(.system(size: 15, weight: .bold))
                 .foregroundStyle(iconColor)
