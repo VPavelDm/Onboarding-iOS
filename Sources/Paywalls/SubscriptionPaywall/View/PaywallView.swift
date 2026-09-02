@@ -227,12 +227,16 @@ public struct PaywallView: View {
     }
 
     /// The host's CTA copy applies to the plain buy state; the retry and trial
-    /// states keep the library's wording.
+    /// states keep the library's wording. The price-bearing variant wins when the
+    /// selection's price is known, so the button names the charge.
     private var ctaTitle: String {
-        if viewModel.hasOfferings, !viewModel.selectedHasTrial, let title = configuration.ctaTitle {
-            return title
+        guard viewModel.hasOfferings, !viewModel.selectedHasTrial else {
+            return viewModel.ctaTitle
         }
-        return viewModel.ctaTitle
+        if let withPrice = configuration.ctaTitleWithPrice, let plan = viewModel.selectedPlan {
+            return withPrice(plan.localizedPrice)
+        }
+        return configuration.ctaTitle ?? viewModel.ctaTitle
     }
 
     private func declineButton(_ title: String) -> some View {
