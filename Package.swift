@@ -37,8 +37,11 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0"),
         .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS.git", from: "3.17.0"),
-        .package(url: "https://source.skip.tools/skip.git", from: "1.9.2"),
-        .package(url: "https://source.skip.tools/skip-fuse-ui.git", from: "1.0.0"),
+        // github.com URLs, not source.skip.tools: the Skip packages moved to
+        // plain GitHub URLs, and mixing the two hosts trips SwiftPM's
+        // "conflicting identity" warnings (a future SwiftPM makes them errors).
+        .package(url: "https://github.com/skiptools/skip.git", from: "1.9.2"),
+        .package(url: "https://github.com/skiptools/skip-fuse-ui.git", from: "1.0.0"),
         .package(url: "https://github.com/OpenSwiftUIProject/OpenCombine.git", from: "0.15.1"),
     ],
     targets: [
