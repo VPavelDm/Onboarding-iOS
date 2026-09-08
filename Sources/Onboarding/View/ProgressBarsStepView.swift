@@ -110,6 +110,10 @@ struct ProgressBarsStepView: View {
             Text(localized("progressBars.creditNumber"))
                 .font(.system(size: 36, weight: .bold, design: .rounded))
                 .foregroundStyle(viewModel.colorPalette.textColor)
+                // The slot was drawn for a short figure ("4.9"), so a phrase in
+                // it wrapped left-aligned between the laurels; the description
+                // below has always been centred.
+                .multilineTextAlignment(.center)
             Text(localized("progressBars.creditDescription"))
                 .font(.callout)
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.7))
