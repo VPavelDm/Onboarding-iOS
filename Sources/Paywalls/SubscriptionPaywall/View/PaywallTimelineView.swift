@@ -19,8 +19,17 @@ struct PaywallTimelineView: View {
     var iconBackground: Color?
     /// The step icon glyph color inside the circles.
     var iconColor: Color = .white
+    /// Host copy for the middle step; nil keeps the library's reminder wording.
+    /// `{day}` is replaced by the step's day number.
+    var midTitle: String?
+    var midBody: String?
+    var midIcon: String?
 
     private var reminderDay: Int { max(1, trialDays - 2) }
+
+    private func withDay(_ text: String) -> String {
+        text.replacingOccurrences(of: "{day}", with: String(reminderDay))
+    }
 
     private var circleFill: Color { iconBackground ?? .accentColor }
 
@@ -34,9 +43,9 @@ struct PaywallTimelineView: View {
                 nextTint: circleFill
             )
             item(
-                icon: "bell.fill",
-                title: String(localized: "Day \(reminderDay) — reminder", bundle: .module),
-                body: String(localized: "We'll remind you before your trial ends. Cancel anytime.", bundle: .module),
+                icon: midIcon ?? "bell.fill",
+                title: midTitle.map(withDay) ?? String(localized: "Day \(reminderDay) — reminder", bundle: .module),
+                body: midBody.map(withDay) ?? String(localized: "We'll remind you before your trial ends. Cancel anytime.", bundle: .module),
                 tint: circleFill,
                 nextTint: circleFill.opacity(0.5)
             )

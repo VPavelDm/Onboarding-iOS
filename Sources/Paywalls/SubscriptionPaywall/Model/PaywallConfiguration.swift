@@ -38,6 +38,14 @@ public struct PaywallConfiguration: Sendable {
     /// Body of the trial timeline's last step ("Day N — trial ends"). Defaults to a
     /// localized "Your subscription begins so your streak keeps going."
     public var trialEndBody: String
+    /// Title, body and SF Symbol of the trial timeline's middle step. Nil keeps the
+    /// library's "Day N — reminder / We'll remind you before your trial ends", which
+    /// only suits a host that actually schedules that reminder; a host that does not
+    /// should say something true here. `{day}` in the title or body is replaced by
+    /// the step's day number.
+    public var trialMidTitle: String?
+    public var trialMidBody: String?
+    public var trialMidIcon: String?
     /// Overrides the CTA title when the selected plan has no trial (e.g. "Unlock
     /// forever"). Trial and retry CTAs keep the library's wording.
     public var ctaTitle: String?
@@ -76,6 +84,9 @@ public struct PaywallConfiguration: Sendable {
         features: [Feature],
         trialUnlockBody: String,
         trialEndBody: String? = nil,
+        trialMidTitle: String? = nil,
+        trialMidBody: String? = nil,
+        trialMidIcon: String? = nil,
         ctaTitle: String? = nil,
         ctaTitleWithPrice: (@Sendable (_ localizedPrice: String) -> String)? = nil,
         priceCardNote: String? = nil,
@@ -93,6 +104,9 @@ public struct PaywallConfiguration: Sendable {
         self.trialUnlockBody = trialUnlockBody
         self.trialEndBody = trialEndBody
             ?? String(localized: "Your subscription begins so your streak keeps going.", bundle: .module)
+        self.trialMidTitle = trialMidTitle
+        self.trialMidBody = trialMidBody
+        self.trialMidIcon = trialMidIcon
         self.ctaTitle = ctaTitle
         self.ctaTitleWithPrice = ctaTitleWithPrice
         self.priceCardNote = priceCardNote

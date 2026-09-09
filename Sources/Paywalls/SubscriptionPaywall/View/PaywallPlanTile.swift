@@ -16,6 +16,12 @@ struct PaywallPlanTile: View {
     let savingsBadge: String?
     let selectionNamespace: Namespace.ID
     var textColor: Color = .white
+    /// The host's accent for the selection ring and the badge; nil falls back to
+    /// `Color.accentColor`, which resolves to the app's asset rather than its
+    /// `.tint`, so a host whose asset is neutral got a grey ring (Lyncil, 2026-09-09).
+    var accent: Color? = nil
+    /// Text colour on the badge when `accent` is light (black on neon, say).
+    var accentForeground: Color = .white
     let onSelect: () -> Void
 
     private let cornerRadius: CGFloat = 16
@@ -39,11 +45,12 @@ struct PaywallPlanTile: View {
                 .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(Color.black.opacity(0.22)))
                 .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(Color.accentColor.opacity(0.10)))
         }
-        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(textColor.opacity(0.12), lineWidth: 1))
+        // 0.12 read as no edge at all on a dark page; the resting tile now has one.
+        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(textColor.opacity(0.28), lineWidth: 1))
         .overlay {
             if isSelected {
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .strokeBorder(Color.accentColor, lineWidth: 2)
+                    .strokeBorder(accent ?? Color.accentColor, lineWidth: 2)
                     .matchedGeometryEffect(id: Self.ringID, in: selectionNamespace)
             }
         }
@@ -51,10 +58,10 @@ struct PaywallPlanTile: View {
             if let savingsBadge {
                 Text(savingsBadge)
                     .font(.caption2.weight(.bold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(accent == nil ? .white : accentForeground)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
-                    .background(Color.accentColor, in: .capsule)
+                    .background(accent ?? Color.accentColor, in: .capsule)
                     .overlay(Capsule().stroke(Color.white.opacity(0.18), lineWidth: 1))
                     .offset(x: -10, y: -10)
             }

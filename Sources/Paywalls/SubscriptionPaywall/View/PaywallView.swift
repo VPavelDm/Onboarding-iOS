@@ -131,7 +131,10 @@ public struct PaywallView: View {
                     trialEndBody: configuration.trialEndBody,
                     textColor: configuration.textColor,
                     iconBackground: configuration.ctaBackground,
-                    iconColor: configuration.ctaForeground ?? .white
+                    iconColor: configuration.ctaForeground ?? .white,
+                    midTitle: configuration.trialMidTitle,
+                    midBody: configuration.trialMidBody,
+                    midIcon: configuration.trialMidIcon
                 )
                 .opacity(viewModel.selectedHasTrial ? 1 : 0)
             }
@@ -183,6 +186,8 @@ public struct PaywallView: View {
                         savingsBadge: viewModel.savingsBadge(for: plan),
                         selectionNamespace: selectionNamespace,
                         textColor: configuration.textColor,
+                        accent: configuration.ctaBackground,
+                        accentForeground: configuration.ctaForeground ?? .white,
                         onSelect: {
                             withAnimation(.snappy(duration: 0.25)) { viewModel.selectPlan(plan) }
                         }
