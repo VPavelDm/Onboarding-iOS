@@ -69,30 +69,44 @@ public struct PaywallView: View {
 
     // MARK: - Subviews
 
+    /// Scrolls only when the content is taller than the screen. The column is
+    /// given the screen's height as a minimum, so on a phone where everything
+    /// fits the spacers still spread it exactly as before and the scroll view
+    /// never moves; on a short phone (iPhone SE with the trial timeline or a
+    /// four-row feature list) the column takes its natural height and scrolls.
+    /// Before this the column was squeezed into the screen: the headline was
+    /// cut to one line, the close button rode into the status bar and the
+    /// footer fell off the bottom (2026-09-09).
     private var content: some View {
-        VStack(spacing: 16) {
-            header.padding(.top, 44)
-            Spacer(minLength: 0)
-            planContext
-            Spacer(minLength: 0)
-            if showsFootnote {
-                footnoteLabel
+        GeometryReader { geo in
+            ScrollView {
+                VStack(spacing: 16) {
+                    header.padding(.top, 44)
+                    Spacer(minLength: 0)
+                    planContext
+                    Spacer(minLength: 0)
+                    if showsFootnote {
+                        footnoteLabel
+                    }
+                    planSelector
+                    ctaButton
+                    if let declineTitle = dismiss?.declineTitle {
+                        declineButton(declineTitle)
+                    }
+                    PaywallFooterView(
+                        termsURL: configuration.termsURL,
+                        privacyURL: configuration.privacyURL,
+                        textColor: configuration.textColor,
+                        onRestore: handleRestore
+                    )
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 32)
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: geo.size.height)
             }
-            planSelector
-            ctaButton
-            if let declineTitle = dismiss?.declineTitle {
-                declineButton(declineTitle)
-            }
-            PaywallFooterView(
-                termsURL: configuration.termsURL,
-                privacyURL: configuration.privacyURL,
-                textColor: configuration.textColor,
-                onRestore: handleRestore
-            )
+            .scrollBounceBehavior(.basedOnSize)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal, 20)
-        .padding(.bottom, 32)
     }
 
     private var header: some View {
