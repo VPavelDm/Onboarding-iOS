@@ -14,6 +14,7 @@ public struct Action: Identifiable {
     var color: Color
     var isPresented: Bool
     var action: () -> AnyView
+    var handler: (() -> Void)?
 
     public init(
         id: UUID = UUID(),
@@ -29,5 +30,24 @@ public struct Action: Identifiable {
         self.color = color
         self.isPresented = isPresented
         self.action = action
+        self.handler = nil
+    }
+
+    /// A row that just does something — a permission request, a jump to
+    /// Settings — with no screen behind it to present.
+    public init(
+        id: UUID = UUID(),
+        image: String,
+        title: String,
+        color: Color,
+        handler: @escaping () -> Void
+    ) {
+        self.id = id
+        self.image = image
+        self.title = title
+        self.color = color
+        self.isPresented = false
+        self.action = { AnyView(EmptyView()) }
+        self.handler = handler
     }
 }
