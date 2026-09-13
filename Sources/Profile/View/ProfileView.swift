@@ -187,7 +187,11 @@ public struct ProfileView<PaywallScreen>: View where PaywallScreen: View {
 
     private func actionButton(_ action: Binding<Action>) -> some View {
         Button {
-            action.wrappedValue.isPresented = true
+            if let handler = action.wrappedValue.handler {
+                handler()
+            } else {
+                action.wrappedValue.isPresented = true
+            }
         } label: {
             HStack(spacing: 12) {
                 imageView(name: action.wrappedValue.image, color: action.wrappedValue.color)
