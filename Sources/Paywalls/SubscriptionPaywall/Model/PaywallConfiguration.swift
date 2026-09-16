@@ -47,15 +47,22 @@ public struct PaywallConfiguration: Sendable {
     public var trialMidBody: String?
     public var trialMidIcon: String?
     /// Overrides the CTA title when the selected plan has no trial (e.g. "Unlock
-    /// forever"). Trial and retry CTAs keep the library's wording.
+    /// forever"). A trial selection takes `ctaTrialTitle` instead; the retry CTA
+    /// keeps the library's wording.
     public var ctaTitle: String?
     /// Like `ctaTitle`, but receives the selected plan's localized price so the
     /// button can name the charge (e.g. "Seal it all in · 22,99 €"). Putting the
     /// price on the CTA makes the tap an informed purchase decision — a CTA that
     /// reads like flow navigation sends users into the payment sheet surprised,
-    /// and they cancel there. Takes precedence over `ctaTitle`; trial and retry
-    /// CTAs keep the library's wording.
+    /// and they cancel there. Takes precedence over `ctaTitle`; a trial selection
+    /// takes `ctaTrialTitle` instead, and the retry CTA keeps the library's.
     public var ctaTitleWithPrice: (@Sendable (_ localizedPrice: String) -> String)?
+    /// Overrides the CTA title when the selected plan HAS a free trial, replacing
+    /// the library's "Try N Days Free". A host that would rather the button name
+    /// the commitment than the sample ("Start my free trial") sets this; nil keeps
+    /// the library's wording. The retry CTA is still the library's — it is about
+    /// the fetch failing, not about what is being bought.
+    public var ctaTrialTitle: String?
     /// The line under the product name on the single-plan price card. Defaults to a
     /// localized "One payment. No subscription, ever." for lifetime plans and the
     /// billing cadence for subscriptions.
@@ -89,6 +96,7 @@ public struct PaywallConfiguration: Sendable {
         trialMidIcon: String? = nil,
         ctaTitle: String? = nil,
         ctaTitleWithPrice: (@Sendable (_ localizedPrice: String) -> String)? = nil,
+        ctaTrialTitle: String? = nil,
         priceCardNote: String? = nil,
         termsURL: URL? = nil,
         privacyURL: URL? = nil,
@@ -109,6 +117,7 @@ public struct PaywallConfiguration: Sendable {
         self.trialMidIcon = trialMidIcon
         self.ctaTitle = ctaTitle
         self.ctaTitleWithPrice = ctaTitleWithPrice
+        self.ctaTrialTitle = ctaTrialTitle
         self.priceCardNote = priceCardNote
         self.termsURL = termsURL
         self.privacyURL = privacyURL

@@ -245,12 +245,15 @@ public struct PaywallView: View {
         .disabled(viewModel.isPurchasing || viewModel.isLoading || viewModel.isPendingApproval)
     }
 
-    /// The host's CTA copy applies to the plain buy state; the retry and trial
-    /// states keep the library's wording. The price-bearing variant wins when the
-    /// selection's price is known, so the button names the charge.
+    /// The host's CTA copy applies to the buy states; the retry state keeps the
+    /// library's wording, because it is about the fetch failing rather than about
+    /// what is being bought. A trial selection takes `ctaTrialTitle`; otherwise the
+    /// price-bearing variant wins when the selection's price is known, so the
+    /// button names the charge.
     private var ctaTitle: String {
-        guard viewModel.hasOfferings, !viewModel.selectedHasTrial else {
-            return viewModel.ctaTitle
+        guard viewModel.hasOfferings else { return viewModel.ctaTitle }
+        if viewModel.selectedHasTrial {
+            return configuration.ctaTrialTitle ?? viewModel.ctaTitle
         }
         if let withPrice = configuration.ctaTitleWithPrice, let plan = viewModel.selectedPlan {
             return withPrice(plan.localizedPrice)
