@@ -78,15 +78,41 @@ struct ReceiptStepView: View {
             .lineLimit(1)
     }
 
+    /// Rows sit on rules of their own, so four lines of the same monospaced
+    /// face read as four items rather than one block (Lyncil, 2026-09-17:
+    /// "it's difficult to differentiate rows"). The rule is a dashed hairline
+    /// set in from the leading edge, not the dotted line that frames the
+    /// block, so an inner rule never reads as an edge.
     private var itemRows: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 0) {
             ForEach(step.items.indices, id: \.self) { index in
                 itemRow(step.items[index])
+                    .padding(.vertical, 8)
                     .opacity(index < visibleItems ? 1 : 0)
+                if index < step.items.count - 1 {
+                    itemRule
+                        .opacity(index < visibleItems ? 1 : 0)
+                }
             }
         }
         .font(.system(.callout, design: .monospaced))
         .foregroundStyle(viewModel.colorPalette.textColor)
+    }
+
+    private var itemRule: some View {
+        DashedRule()
+            .stroke(viewModel.colorPalette.textColor.opacity(0.22), style: StrokeStyle(lineWidth: 1, dash: [7, 5]))
+            .frame(height: 1)
+            .padding(.leading, 14)
+    }
+
+    private struct DashedRule: Shape {
+        func path(in rect: CGRect) -> Path {
+            var path = Path()
+            path.move(to: CGPoint(x: rect.minX, y: rect.midY))
+            path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+            return path
+        }
     }
 
     private func itemRow(_ label: String) -> some View {
