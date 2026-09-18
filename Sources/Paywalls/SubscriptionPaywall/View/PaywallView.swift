@@ -71,27 +71,38 @@ public struct PaywallView: View {
 
     /// Scrolls only when the content is taller than the screen. The column is
     /// given the screen's height as a minimum, so on a phone where everything
-    /// fits the spacers still spread it exactly as before and the scroll view
-    /// never moves; on a short phone (iPhone SE with the trial timeline or a
-    /// four-row feature list) the column takes its natural height and scrolls.
-    /// Before this the column was squeezed into the screen: the headline was
-    /// cut to one line, the close button rode into the status bar and the
-    /// footer fell off the bottom (2026-09-09).
+    /// fits the two spacers centre the pitch between the header and the plans
+    /// and the scroll view never moves; on a short phone (iPhone SE with the
+    /// trial timeline or a four-row feature list) the column takes its natural
+    /// height and scrolls. Before this the column was squeezed into the screen:
+    /// the headline was cut to one line, the close button rode into the status
+    /// bar and the footer fell off the bottom (2026-09-09).
+    ///
+    /// The reassurance line ("Cancel anytime" / "No payment due now") sits
+    /// under the CTA since 2.10: above the tiles it floated alone in the gap
+    /// under the pitch, and it belongs next to the button it reassures about.
     private var content: some View {
         GeometryReader { geo in
             ScrollView {
-                VStack(spacing: 16) {
-                    header.padding(.top, 44)
-                    Spacer(minLength: 0)
+                VStack(spacing: 0) {
+                    // With a mark the header is the tallest block on the page,
+                    // so it starts lower and the mark sits below the status bar
+                    // rather than beside the corner close.
+                    header
+                        .padding(.top, configuration.headerSymbol == nil ? 44 : 56)
+                    Spacer(minLength: 24)
                     planContext
-                    Spacer(minLength: 0)
-                    if showsFootnote {
-                        footnoteLabel
-                    }
+                    Spacer(minLength: 24)
                     planSelector
                     ctaButton
+                        .padding(.top, 16)
                     if let declineTitle = dismiss?.declineTitle {
                         declineButton(declineTitle)
+                            .padding(.top, 12)
+                    }
+                    if showsFootnote {
+                        footnoteLabel
+                            .padding(.top, 14)
                     }
                     PaywallFooterView(
                         termsURL: configuration.termsURL,
@@ -99,9 +110,10 @@ public struct PaywallView: View {
                         textColor: configuration.textColor,
                         onRestore: handleRestore
                     )
+                    .padding(.top, showsFootnote ? 6 : 14)
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 32)
+                .padding(.bottom, 12)
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: geo.size.height)
             }
@@ -110,7 +122,11 @@ public struct PaywallView: View {
     }
 
     private var header: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 0) {
+            if let symbol = configuration.headerSymbol {
+                PaywallMark(systemImage: symbol, tint: accent, size: 96)
+                    .padding(.bottom, 18)
+            }
             Text(configuration.title)
                 .font(.largeTitle.weight(.bold))
                 .foregroundStyle(configuration.textColor)
@@ -123,9 +139,13 @@ public struct PaywallView: View {
                     .font(.subheadline)
                     .foregroundStyle(configuration.textColor.opacity(0.6))
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
             }
         }
     }
+
+    private var accent: Color { configuration.ctaBackground ?? .accentColor }
 
     /// Both variants stay mounted and only cross-fade: the ZStack keeps the taller
     /// view's height, so switching plans never shifts the layout below.
@@ -135,8 +155,9 @@ public struct PaywallView: View {
                 features: configuration.features,
                 alignment: configuration.featureAlignment,
                 textColor: configuration.textColor,
-                iconBackground: configuration.ctaBackground,
-                iconColor: configuration.ctaForeground ?? .white
+                accent: configuration.ctaBackground,
+                accentForeground: configuration.ctaForeground ?? .white,
+                iconStyle: configuration.featureIconStyle
             )
             .opacity(viewModel.selectedHasTrial ? 0 : 1)
             if let days = viewModel.trialDays {
@@ -145,8 +166,9 @@ public struct PaywallView: View {
                     unlockBody: configuration.trialUnlockBody,
                     trialEndBody: configuration.trialEndBody,
                     textColor: configuration.textColor,
-                    iconBackground: configuration.ctaBackground,
-                    iconColor: configuration.ctaForeground ?? .white,
+                    accent: configuration.ctaBackground,
+                    accentForeground: configuration.ctaForeground ?? .white,
+                    iconStyle: configuration.featureIconStyle,
                     midTitle: configuration.trialMidTitle,
                     midBody: configuration.trialMidBody,
                     midIcon: configuration.trialMidIcon
@@ -169,12 +191,12 @@ public struct PaywallView: View {
     private var footnoteLabel: some View {
         ZStack {
             Text("No payment due now", bundle: .module)
-                .font(.title3.weight(.semibold))
-                .foregroundStyle(configuration.textColor)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(configuration.textColor.opacity(0.85))
                 .opacity(viewModel.selectedHasTrial ? 1 : 0)
             Text("Cancel anytime", bundle: .module)
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(configuration.textColor.opacity(0.6))
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(configuration.textColor.opacity(0.55))
                 .opacity(viewModel.selectedHasTrial ? 0 : 1)
         }
     }
@@ -198,7 +220,7 @@ public struct PaywallView: View {
                     PaywallPlanTile(
                         plan: plan,
                         isSelected: viewModel.isSelected(plan),
-                        savingsBadge: viewModel.savingsBadge(for: plan),
+                        savingsPercent: viewModel.savingsPercent(for: plan),
                         selectionNamespace: selectionNamespace,
                         textColor: configuration.textColor,
                         accent: configuration.ctaBackground,
@@ -222,9 +244,9 @@ public struct PaywallView: View {
     }
 
     private var placeholderTile: some View {
-        RoundedRectangle(cornerRadius: 16)
+        RoundedRectangle(cornerRadius: 18, style: .continuous)
             .fill(.ultraThinMaterial)
-            .frame(height: 96)
+            .frame(height: 112)
             .opacity(0.4)
     }
 

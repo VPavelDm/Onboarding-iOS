@@ -54,8 +54,8 @@ public final class PaywallViewModel {
         return String(localized: "Start my free trial", bundle: .module)
     }
 
-    func savingsBadge(for plan: PaywallPlan) -> String? {
-        offerings?.savingsBadge(for: plan)
+    func savingsPercent(for plan: PaywallPlan) -> Int? {
+        offerings?.savingsPercent(for: plan)
     }
 
     func isSelected(_ plan: PaywallPlan) -> Bool { plan.id == selectedPlanID }

@@ -15,13 +15,14 @@ struct PaywallFeaturesView: View {
     /// subtitle wants; `.center` suits single-line rows.
     var alignment: VerticalAlignment = .top
     var textColor: Color = .white
-    /// The checkmark circle fill; defaults to the accent color.
-    var iconBackground: Color?
-    /// The checkmark glyph color inside the circle.
-    var iconColor: Color = .white
+    /// The checkmark disc colour; nil falls back to the accent color.
+    var accent: Color?
+    /// The glyph colour on a `.filled` disc.
+    var accentForeground: Color = .white
+    var iconStyle: PaywallConfiguration.FeatureIconStyle = .filled
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 14) {
             ForEach(features, id: \.self) { feature in
                 featureRow(title: feature.title, subtitle: feature.subtitle)
             }
@@ -33,29 +34,28 @@ struct PaywallFeaturesView: View {
     /// takes a line's height, which pushed the checkmark off the label on a
     /// host whose rows are titles only.
     private func featureRow(title: String, subtitle: String) -> some View {
-        HStack(alignment: alignment, spacing: 14) {
-            checkmark
-            VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: alignment, spacing: 12) {
+            // 28 pt, down from 36: at 36 the four discs outweighed the 17 pt
+            // labels beside them and the list read as a column of buttons.
+            PaywallIconDisc(
+                systemImage: "checkmark",
+                tint: accent ?? Color.accentColor,
+                foreground: accentForeground,
+                style: iconStyle
+            )
+            VStack(alignment: .leading, spacing: 3) {
                 Text(title)
                     .font(.headline)
                     .foregroundStyle(textColor)
+                    .fixedSize(horizontal: false, vertical: true)
                 if !subtitle.isEmpty {
                     Text(subtitle)
                         .font(.subheadline)
-                        .foregroundStyle(textColor.opacity(0.75))
+                        .foregroundStyle(textColor.opacity(0.7))
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
             Spacer(minLength: 0)
-        }
-    }
-
-    private var checkmark: some View {
-        ZStack {
-            Circle().fill(iconBackground ?? Color.accentColor).frame(width: 36, height: 36)
-            Image(systemName: "checkmark")
-                .font(.system(size: 15, weight: .bold))
-                .foregroundStyle(iconColor)
         }
     }
 }

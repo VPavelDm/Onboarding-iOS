@@ -15,15 +15,19 @@ struct PaywallTimelineView: View {
     let unlockBody: String
     let trialEndBody: String
     var textColor: Color = .white
-    /// The step circle fill; defaults to the accent color.
-    var iconBackground: Color?
-    /// The step icon glyph color inside the circles.
-    var iconColor: Color = .white
+    /// The step disc colour; nil falls back to the accent color.
+    var accent: Color?
+    /// The glyph colour on a `.filled` disc.
+    var accentForeground: Color = .white
+    var iconStyle: PaywallConfiguration.FeatureIconStyle = .filled
     /// Host copy for the middle step; nil keeps the library's reminder wording.
     /// `{day}` is replaced by the step's day number.
     var midTitle: String?
     var midBody: String?
     var midIcon: String?
+
+    private let discSize: CGFloat = 28
+    private let railWidth: CGFloat = 3
 
     private var reminderDay: Int { max(1, trialDays - 2) }
 
@@ -31,7 +35,7 @@ struct PaywallTimelineView: View {
         text.replacingOccurrences(of: "{day}", with: String(reminderDay))
     }
 
-    private var circleFill: Color { iconBackground ?? .accentColor }
+    private var tint: Color { accent ?? .accentColor }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -39,21 +43,21 @@ struct PaywallTimelineView: View {
                 icon: "lock.open.fill",
                 title: String(localized: "Today — full access", bundle: .module),
                 body: unlockBody,
-                tint: circleFill,
-                nextTint: circleFill
+                tint: tint,
+                nextTint: tint
             )
             item(
                 icon: midIcon ?? "bell.fill",
                 title: midTitle.map(withDay) ?? String(localized: "Day \(reminderDay) — reminder", bundle: .module),
                 body: midBody.map(withDay) ?? String(localized: "We'll remind you before your trial ends. Cancel anytime.", bundle: .module),
-                tint: circleFill,
-                nextTint: circleFill.opacity(0.5)
+                tint: tint,
+                nextTint: tint.opacity(0.5)
             )
             item(
                 icon: "star.fill",
                 title: String(localized: "Day \(trialDays) — trial ends", bundle: .module),
                 body: trialEndBody,
-                tint: circleFill.opacity(0.5),
+                tint: tint.opacity(0.5),
                 nextTint: nil
             )
         }
@@ -61,45 +65,36 @@ struct PaywallTimelineView: View {
     }
 
     private func item(icon: String, title: String, body: String, tint: Color, nextTint: Color?) -> some View {
-        HStack(alignment: .top, spacing: 14) {
-            iconCircle(icon: icon, tint: tint)
-            VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: .top, spacing: 12) {
+            PaywallIconDisc(systemImage: icon, tint: tint, foreground: accentForeground, style: iconStyle, size: discSize)
+            VStack(alignment: .leading, spacing: 3) {
                 Text(title)
                     .font(.headline)
                     .foregroundStyle(textColor)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(body)
                     .font(.subheadline)
-                    .foregroundStyle(textColor.opacity(0.75))
+                    .foregroundStyle(textColor.opacity(0.7))
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .padding(.bottom, nextTint == nil ? 0 : 18)
+            .padding(.bottom, nextTint == nil ? 0 : 16)
             Spacer(minLength: 0)
         }
         .background(alignment: .topLeading) {
             // The rail is a background filling the row's real height below the
-            // circle, so it reaches the next bubble no matter how the text
-            // wraps — a fixed-height connector fell short on taller rows.
+            // disc, so it reaches the next disc no matter how the text wraps —
+            // a fixed-height connector fell short on taller rows.
             if let nextTint {
                 connector(from: tint, to: nextTint)
-                    .padding(.leading, 15)
-                    .padding(.top, 36)
+                    .padding(.leading, (discSize - railWidth) / 2)
+                    .padding(.top, discSize)
             }
-        }
-    }
-
-    private func iconCircle(icon: String, tint: Color) -> some View {
-        ZStack {
-            Circle().fill(tint).frame(width: 36, height: 36)
-            Image(systemName: icon)
-                .font(.system(size: 15, weight: .bold))
-                .foregroundStyle(iconColor)
         }
     }
 
     private func connector(from: Color, to: Color) -> some View {
         Rectangle()
             .fill(LinearGradient(colors: [from.opacity(0.5), to.opacity(0.5)], startPoint: .top, endPoint: .bottom))
-            .frame(width: 6)
+            .frame(width: railWidth)
     }
 }

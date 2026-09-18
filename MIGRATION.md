@@ -1,3 +1,28 @@
+# Migrating from 2.9 to 2.10
+
+**No action required.** 2.10 refines the subscription paywall's layout and adds two
+optional `PaywallConfiguration` fields; existing configurations render with the
+refined layout and their current colours.
+
+## What changed on `PaywallView`
+
+- **Header mark** — `headerSymbol` (an SF Symbol name) draws the host's premium
+  glyph above the headline in a haloed disc of the CTA colour. Hosts that drew a
+  mark over the paywall from outside (a top safe-area inset pushed the whole
+  column down and left the corner ✕ mid-screen) can drop that and pass the symbol.
+- **Feature icon style** — `featureIconStyle` is `.filled` (today's solid disc) or
+  `.tinted` (a translucent disc with the glyph in the accent, matching the header
+  mark). The discs shrank from 36 to 28 pt in both styles.
+- **Plan tiles** — the selected tile takes a wash of the accent under its ring, a
+  plan with a free trial says "N-day free trial" in place of its billing cadence,
+  and the savings tag reads "Save 87%" on the tile's top edge instead of the
+  locale's "-87 %" in the corner.
+- **Reassurance line** — "Cancel anytime" / "No payment due now" moved from above
+  the plan tiles to under the CTA, next to the footer links.
+- **CTA** — the same 54 pt slab as the onboarding steps' primary button.
+
+Two new library strings (`Save %@`, `%lld-day free trial`) ship in all 18 languages.
+
 # Migrating from 2.4 to 2.5
 
 **No action required.** 2.5 only adds new public API to `Paywalls` — existing paywalls

@@ -25,6 +25,11 @@ public struct PaywallConfiguration: Sendable {
         }
     }
 
+    /// An SF Symbol drawn above the headline as a haloed disc in the CTA colour
+    /// (`"crown.fill"`, say): the one glyph the app already uses for its premium
+    /// tier, so the paywall says the same thing the rest of the app does. Nil
+    /// draws no mark and the headline starts the column, as before 2.10.
+    public var headerSymbol: String?
     /// The headline. Defaults to a localized "Unlock your full plan".
     public var title: String
     /// An optional line under the headline, for copy that ties the features to the
@@ -89,8 +94,20 @@ public struct PaywallConfiguration: Sendable {
     /// title; a host whose rows are a single line each passes `.center` so the
     /// checkmark sits on the middle of the label instead of hanging above it.
     public var featureAlignment: VerticalAlignment
+    /// How the feature checkmarks and the trial timeline's step icons are
+    /// drawn. `.filled` is a solid disc in the CTA colour with the CTA's label
+    /// colour on it; `.tinted` is a translucent disc of that colour with the
+    /// glyph in it, the same treatment as the header mark, for hosts whose
+    /// accent is loud enough that four solid discs compete with the CTA.
+    public var featureIconStyle: FeatureIconStyle
+
+    public enum FeatureIconStyle: Sendable {
+        case filled
+        case tinted
+    }
 
     public init(
+        headerSymbol: String? = nil,
         title: String? = nil,
         subtitle: String? = nil,
         features: [Feature],
@@ -110,8 +127,10 @@ public struct PaywallConfiguration: Sendable {
         ctaForeground: Color? = nil,
         cardBackground: Color? = nil,
         expectsSinglePlan: Bool = false,
-        featureAlignment: VerticalAlignment = .top
+        featureAlignment: VerticalAlignment = .top,
+        featureIconStyle: FeatureIconStyle = .filled
     ) {
+        self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
         self.subtitle = subtitle
         self.features = features
@@ -133,5 +152,6 @@ public struct PaywallConfiguration: Sendable {
         self.cardBackground = cardBackground
         self.expectsSinglePlan = expectsSinglePlan
         self.featureAlignment = featureAlignment
+        self.featureIconStyle = featureIconStyle
     }
 }

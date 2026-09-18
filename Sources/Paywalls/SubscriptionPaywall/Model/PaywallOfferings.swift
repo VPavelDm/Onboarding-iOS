@@ -37,10 +37,12 @@ public struct PaywallOfferings: Hashable, Sendable {
         plans.max { $0.pricePerDay < $1.pricePerDay }
     }
 
-    /// A locale-formatted savings badge (e.g. "−30%") for `plan` vs. the priciest-per-day
-    /// plan, or nil if it isn't at least 1% cheaper. Lifetime plans have no cadence to
-    /// normalise per day, so they neither earn a badge nor serve as the baseline.
-    func savingsBadge(for plan: PaywallPlan) -> String? {
+    /// How much cheaper `plan` is per day than the priciest-per-day plan, rounded
+    /// down (e.g. 87), or nil if it isn't at least 1% cheaper. Lifetime plans have
+    /// no cadence to normalise per day, so they neither earn a figure nor serve as
+    /// the baseline. The tile words it ("Save 87%"); until 2.10 this returned the
+    /// locale's own "-87 %", which read as a price drop rather than a saving.
+    func savingsPercent(for plan: PaywallPlan) -> Int? {
         guard
             plan.period != .lifetime,
             let baseline = baselinePlan,
@@ -52,10 +54,7 @@ public struct PaywallOfferings: Hashable, Sendable {
             return nil
         }
 
-        let discount = 1 - plan.pricePerDay / baseline.pricePerDay
-        guard discount >= 0.01 else { return nil }
-
-        // Negative so the locale renders its own minus and percent symbols.
-        return (-discount).formatted(.percent.rounded(rule: .towardZero).precision(.fractionLength(0)))
+        let percent = Int(((1 - plan.pricePerDay / baseline.pricePerDay) * 100).rounded(.towardZero))
+        return percent >= 1 ? percent : nil
     }
 }

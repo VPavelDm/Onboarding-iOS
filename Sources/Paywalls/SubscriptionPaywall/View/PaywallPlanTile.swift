@@ -7,65 +7,68 @@
 
 import SwiftUI
 
-/// A selectable plan card: cadence title, price, billing subtitle, and an optional
-/// savings badge. The selection ring slides between tiles via matched geometry.
+/// A selectable plan card: cadence title, price, and a note — the trial length
+/// when the plan has one, the billing cadence otherwise — with an optional
+/// savings tag on its top edge. The selection ring slides between tiles via
+/// matched geometry and the selected tile takes a wash of the accent.
 struct PaywallPlanTile: View {
 
     let plan: PaywallPlan
     let isSelected: Bool
-    let savingsBadge: String?
+    /// Whole-number saving against the priciest plan per day, or nil for no tag.
+    let savingsPercent: Int?
     let selectionNamespace: Namespace.ID
     var textColor: Color = .white
-    /// The host's accent for the selection ring and the badge; nil falls back to
+    /// The host's accent for the ring, the wash and the tag; nil falls back to
     /// `Color.accentColor`, which resolves to the app's asset rather than its
     /// `.tint`, so a host whose asset is neutral got a grey ring (Lyncil, 2026-09-09).
     var accent: Color? = nil
-    /// Text colour on the badge when `accent` is light (black on neon, say).
+    /// Text colour on the tag when `accent` is light (black on neon, say).
     var accentForeground: Color = .white
     let onSelect: () -> Void
 
-    private let cornerRadius: CGFloat = 16
+    private let cornerRadius: CGFloat = 18
     private static let ringID = "paywall.selection.ring"
+
+    private var tint: Color { accent ?? .accentColor }
 
     var body: some View {
         Button(action: onSelect) {
-            VStack(spacing: 4) {
+            VStack(spacing: 6) {
                 title
                 price
-                subtitle
+                note
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 24)
+            .padding(.vertical, 20)
+            .padding(.horizontal, 8)
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .background {
-            RoundedRectangle(cornerRadius: cornerRadius)
+            shape
                 .fill(.ultraThinMaterial)
-                .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(Color.black.opacity(0.22)))
-                .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(Color.accentColor.opacity(0.10)))
+                .overlay(shape.fill(Color.black.opacity(0.22)))
+                .overlay(shape.fill(Color.accentColor.opacity(0.10)))
+                // The chosen tile reads in colour, not only by its ring: at a
+                // glance two grey tiles with a 2 pt outline looked alike.
+                .overlay(shape.fill(tint.opacity(isSelected ? 0.10 : 0)))
         }
-        // 0.12 read as no edge at all on a dark page; the resting tile now has one.
-        .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(textColor.opacity(0.28), lineWidth: 1))
+        // 0.12 read as no edge at all on a dark page; the resting tile has one.
+        .overlay(shape.strokeBorder(textColor.opacity(0.2), lineWidth: 1))
         .overlay {
             if isSelected {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .strokeBorder(accent ?? Color.accentColor, lineWidth: 2)
+                shape
+                    .strokeBorder(tint, lineWidth: 2)
                     .matchedGeometryEffect(id: Self.ringID, in: selectionNamespace)
             }
         }
-        .overlay(alignment: .topTrailing) {
-            if let savingsBadge {
-                Text(savingsBadge)
-                    .font(.caption2.weight(.bold))
-                    .foregroundStyle(accent == nil ? .white : accentForeground)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(accent ?? Color.accentColor, in: .capsule)
-                    .overlay(Capsule().stroke(Color.white.opacity(0.18), lineWidth: 1))
-                    .offset(x: -10, y: -10)
-            }
-        }
+        .overlay(alignment: .top) { tag }
+        .animation(.easeOut(duration: 0.2), value: isSelected)
+    }
+
+    private var shape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
     }
 
     private var title: some View {
@@ -73,7 +76,7 @@ struct PaywallPlanTile: View {
             .font(.caption.weight(.semibold))
             .textCase(.uppercase)
             .tracking(0.8)
-            .foregroundStyle(textColor.opacity(0.7))
+            .foregroundStyle(isSelected ? tint : textColor.opacity(0.7))
     }
 
     private var price: some View {
@@ -81,12 +84,39 @@ struct PaywallPlanTile: View {
             .font(.title2.weight(.bold))
             .monospacedDigit()
             .foregroundStyle(textColor)
-            .padding(.top, 2)
     }
 
-    private var subtitle: some View {
-        Text(plan.period.billedCadence)
-            .font(.footnote)
-            .foregroundStyle(textColor.opacity(0.55))
+    /// A trial is the one thing that sets two plans apart beyond the price, so
+    /// the plan that has one says so here instead of only in the CTA. In the
+    /// accent only while selected: lit on the resting tile it outshone the
+    /// chosen one.
+    @ViewBuilder
+    private var note: some View {
+        if let days = plan.freeTrialDays {
+            Text("\(days)-day free trial", bundle: .module)
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(isSelected ? tint : textColor.opacity(0.7))
+        } else {
+            Text(plan.period.billedCadence)
+                .font(.footnote)
+                .foregroundStyle(textColor.opacity(0.55))
+        }
+    }
+
+    /// Rides the tile's top edge, centred, and says "Save 87%" in the locale's
+    /// own percent form: the locale-formatted "-87 %" it replaced read as a
+    /// price drop, not a saving.
+    @ViewBuilder
+    private var tag: some View {
+        if let savingsPercent {
+            let formatted = (Double(savingsPercent) / 100).formatted(.percent.precision(.fractionLength(0)))
+            Text("Save \(formatted)", bundle: .module)
+                .font(.caption2.weight(.bold))
+                .foregroundStyle(accentForeground)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(tint, in: .capsule)
+                .offset(y: -11)
+        }
     }
 }

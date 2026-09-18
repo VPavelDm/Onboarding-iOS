@@ -9,7 +9,9 @@ import SwiftUI
 
 /// The paywall's full-width accent CTA. Named for its role — the module already has
 /// an unrelated internal `PrimaryButtonStyle`. Colors default to the accent fill
-/// with primary label; hosts recolor it through `PaywallConfiguration`.
+/// with primary label; hosts recolor it through `PaywallConfiguration`. Same
+/// 54 pt slab as the onboarding steps' primary button, so a paywall inside a
+/// flow does not shrink its CTA on the one screen that matters.
 struct PaywallCTAButtonStyle: ButtonStyle {
 
     var background: Color?
@@ -17,13 +19,14 @@ struct PaywallCTAButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding(.vertical)
-            .frame(maxWidth: .infinity)
-            .font(.system(size: 16, weight: .semibold))
+            .font(.system(size: 17, weight: .semibold))
             .foregroundStyle(foreground ?? Color.primary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 54)
             .background(background ?? Color.accentColor)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .scaleEffect(configuration.isPressed ? 0.95 : 1)
-            .opacity(configuration.isPressed ? 0.8 : 1)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .opacity(configuration.isPressed ? 0.85 : 1)
+            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }
