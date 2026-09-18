@@ -11,6 +11,9 @@ import SwiftUI
 struct PaywallFeaturesView: View {
 
     let features: [PaywallConfiguration.Feature]
+    /// `.top` lines the checkmark up with the title, which is what a row with a
+    /// subtitle wants; `.center` suits single-line rows.
+    var alignment: VerticalAlignment = .top
     var textColor: Color = .white
     /// The checkmark circle fill; defaults to the accent color.
     var iconBackground: Color?
@@ -26,17 +29,22 @@ struct PaywallFeaturesView: View {
         .padding(.horizontal, 4)
     }
 
+    /// An empty subtitle is dropped rather than drawn: an empty `Text` still
+    /// takes a line's height, which pushed the checkmark off the label on a
+    /// host whose rows are titles only.
     private func featureRow(title: String, subtitle: String) -> some View {
-        HStack(alignment: .top, spacing: 14) {
+        HStack(alignment: alignment, spacing: 14) {
             checkmark
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.headline)
                     .foregroundStyle(textColor)
-                Text(subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(textColor.opacity(0.75))
-                    .fixedSize(horizontal: false, vertical: true)
+                if !subtitle.isEmpty {
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundStyle(textColor.opacity(0.75))
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
             Spacer(minLength: 0)
         }

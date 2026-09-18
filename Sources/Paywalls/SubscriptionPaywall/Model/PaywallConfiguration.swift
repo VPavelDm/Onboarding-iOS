@@ -84,6 +84,11 @@ public struct PaywallConfiguration: Sendable {
     /// loading placeholder as one price card instead of two tiles, so the layout
     /// doesn't jump when the real offering lands.
     public var expectsSinglePlan: Bool
+    /// Where a feature row's checkmark sits against its text. `.top` is right
+    /// for rows with a subtitle, where the checkmark should line up with the
+    /// title; a host whose rows are a single line each passes `.center` so the
+    /// checkmark sits on the middle of the label instead of hanging above it.
+    public var featureAlignment: VerticalAlignment
 
     public init(
         title: String? = nil,
@@ -104,7 +109,8 @@ public struct PaywallConfiguration: Sendable {
         ctaBackground: Color? = nil,
         ctaForeground: Color? = nil,
         cardBackground: Color? = nil,
-        expectsSinglePlan: Bool = false
+        expectsSinglePlan: Bool = false,
+        featureAlignment: VerticalAlignment = .top
     ) {
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
         self.subtitle = subtitle
@@ -126,5 +132,6 @@ public struct PaywallConfiguration: Sendable {
         self.ctaForeground = ctaForeground
         self.cardBackground = cardBackground
         self.expectsSinglePlan = expectsSinglePlan
+        self.featureAlignment = featureAlignment
     }
 }

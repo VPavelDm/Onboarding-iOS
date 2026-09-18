@@ -133,6 +133,7 @@ public struct PaywallView: View {
         ZStack {
             PaywallFeaturesView(
                 features: configuration.features,
+                alignment: configuration.featureAlignment,
                 textColor: configuration.textColor,
                 iconBackground: configuration.ctaBackground,
                 iconColor: configuration.ctaForeground ?? .white
