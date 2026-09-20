@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  
@@ -147,4 +146,3 @@ private extension CGFloat {
 #Preview {
     DiscountWheelStepView(step: .testData())
 }
-#endif

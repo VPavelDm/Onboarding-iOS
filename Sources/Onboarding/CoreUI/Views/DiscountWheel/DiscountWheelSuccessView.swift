@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -81,4 +80,3 @@ struct DiscountWheelSuccessView: View {
             DiscountWheelSuccessView(isPresented: .constant(true), nextStepID: nil)
         }
 }
-#endif

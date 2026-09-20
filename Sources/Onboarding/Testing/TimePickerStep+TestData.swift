@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  
@@ -17,4 +16,3 @@ extension TimePickerStep {
         )
     }
 }
-#endif

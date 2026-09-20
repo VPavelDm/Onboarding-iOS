@@ -31,9 +31,8 @@ struct WelcomeView: View {
             await viewModel.onAnswer(answers: [step.firstAnswer])
         } label: {
             Text(viewModel.localize(step.firstAnswer.title))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 
     private func alreadyHaveAccountButton(answer: StepAnswer) -> some View {
@@ -41,8 +40,7 @@ struct WelcomeView: View {
             await viewModel.onAnswer(answers: [answer])
         } label: {
             Text(viewModel.localize(answer.title))
-                .applyRippleEffect()
         }
-        .secondaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .secondaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 }

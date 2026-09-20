@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  
@@ -61,4 +60,3 @@ struct DiscountWheelPointer: Shape {
         .fill(Color.red)
         .padding()
 }
-#endif

@@ -62,8 +62,6 @@ public struct OnboardingView<CustomStepView>: View where CustomStepView: View {
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

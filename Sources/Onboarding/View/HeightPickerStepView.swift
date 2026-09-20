@@ -107,7 +107,7 @@ struct HeightPickerStepView: View {
                     .tag(cm)
             }
         }
-        .wheelPickerStyleCompat()
+        .pickerStyle(.wheel)
         .onChange(of: centimeters) { newValue in
             updateImperialFromMetric(cm: newValue)
         }
@@ -122,7 +122,7 @@ struct HeightPickerStepView: View {
                         .tag(ft)
                 }
             }
-            .wheelPickerStyleCompat()
+            .pickerStyle(.wheel)
 
             Picker("Inches", selection: $inches) {
                 ForEach(Array(0...11), id: \.self) { inch in
@@ -131,7 +131,7 @@ struct HeightPickerStepView: View {
                         .tag(inch)
                 }
             }
-            .wheelPickerStyleCompat()
+            .pickerStyle(.wheel)
         }
         .onChange(of: feet) { _ in
             updateMetricFromImperial()
@@ -146,9 +146,8 @@ struct HeightPickerStepView: View {
             await onContinue()
         } label: {
             Text(viewModel.localize(step.answer.title))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 
     private func onContinue() async {
@@ -171,8 +170,6 @@ struct HeightPickerStepView: View {
 
 // MARK: - Preview
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

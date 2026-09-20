@@ -35,7 +35,7 @@ struct FeatureShowcaseStepView: View {
                 .opacity(showBottomSection ? 1 : 0)
             Spacer(minLength: 0)
         }
-        .layoutPriorityCompat(65)
+        .layoutPriority(65)
     }
 
     // MARK: - Bottom Section
@@ -90,7 +90,7 @@ struct FeatureShowcaseStepView: View {
             .fontWeight(.bold)
             .foregroundStyle(viewModel.colorPalette.textColor)
             .multilineTextAlignment(.center)
-            .fixedSizeCompat(horizontal: false, vertical: true)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     // MARK: - Description
@@ -102,7 +102,7 @@ struct FeatureShowcaseStepView: View {
                 .multilineTextAlignment(.center)
                 .font(.body)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
-                .fixedSizeCompat(horizontal: false, vertical: true)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -113,9 +113,8 @@ struct FeatureShowcaseStepView: View {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(viewModel.localize(step.answer.title))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 
     // MARK: - Animation
@@ -146,11 +145,9 @@ struct FeatureShowcaseStepView: View {
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
         .background(
             LinearGradient(colors: [.red, .orange], startPoint: .bottom, endPoint: .top)
         )
 }
-#endif

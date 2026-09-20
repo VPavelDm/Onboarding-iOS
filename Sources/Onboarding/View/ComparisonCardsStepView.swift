@@ -88,9 +88,8 @@ struct ComparisonCardsStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("comparisonCards.answerTitle"))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
         .revealBottomButton(showCTA)
     }
 

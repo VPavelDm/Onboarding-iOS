@@ -34,10 +34,8 @@ struct OneAnswerView: View {
                 VStack(spacing: UIConstants.buttonsSpacing) {
                     ForEach(step.answers.indices, id: \.self) { index in
                         buttonView(answer: step.answers[index])
-                            .androidStaggeredAppear(visible: revealedButtons > index)
                     }
                 }
-                .androidStaggeredReveal(count: step.answers.count, revealed: $revealedButtons)
             }
             .padding(.vertical, UIConstants.vScreenPadding)
             .padding(.horizontal, UIConstants.hScreenPadding)
@@ -46,7 +44,7 @@ struct OneAnswerView: View {
         .bottomBar {
             if !shouldAutoNavigate {
                 nextButton
-                    .revealBottomBarButton(isNextButtonVisible)
+                    .revealBottomButton(isNextButtonVisible)
             }
         }
     }
@@ -80,13 +78,12 @@ struct OneAnswerView: View {
         } label: {
             Text(viewModel.localize(answer.title))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .applyRippleEffect()
         } progress: {
             ProgressView()
                 .frame(maxWidth: .infinity)
                 .tint(viewModel.colorPalette.primaryButtonForegroundColor)
         }
-        .answerButtonStyleCompat(
+        .answerButtonStyle(
             colorPalette: viewModel.colorPalette,
             isSelected: selectedAnswer == answer
         )
@@ -101,17 +98,14 @@ struct OneAnswerView: View {
             }
         } label: {
             Text(viewModel.localize(step.buttonTitle))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
         .disabled(selectedAnswer == nil && step.skip == nil)
         .padding(.horizontal, UIConstants.hScreenPadding)
         .padding(.bottom, UIConstants.vScreenPadding)
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

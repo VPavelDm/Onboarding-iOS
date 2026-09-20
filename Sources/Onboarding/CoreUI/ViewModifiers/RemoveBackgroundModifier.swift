@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -26,4 +25,3 @@ extension View {
         modifier(RemoveBackgroundModifier())
     }
 }
-#endif

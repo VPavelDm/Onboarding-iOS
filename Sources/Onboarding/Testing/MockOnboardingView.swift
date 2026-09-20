@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  
@@ -40,4 +39,3 @@ struct MockOnboardingView: View {
 #Preview {
     MockOnboardingView()
 }
-#endif

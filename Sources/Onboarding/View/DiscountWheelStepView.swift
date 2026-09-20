@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //
@@ -181,4 +180,3 @@ extension CGFloat {
     DiscountWheelStepView(step: .testData())
         .preferredColorScheme(.dark)
 }
-#endif

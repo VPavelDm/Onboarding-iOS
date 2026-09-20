@@ -9,13 +9,10 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    public func secondaryButtonStyleCompat(colorPalette: ColorPalette) -> some View {
-        #if os(Android)
-        secondaryButtonChrome(buttonStyle(.plain), colorPalette: colorPalette, isPressed: false, isEnabled: true, maxWidth: .infinity)
-        #else
+    public func secondaryButtonStyle(colorPalette: ColorPalette) -> some View {
         buttonStyle(SecondaryButtonStyle(colorPalette: colorPalette))
-        #endif
     }
+
 }
 
 @ViewBuilder
@@ -35,18 +32,16 @@ private func secondaryButtonChrome<V: View>(_ view: V, colorPalette: ColorPalett
         .scaleEffect(x: isPressed ? 0.95 : 1, y: isPressed ? 0.95 : 1)
 }
 
-#if !os(Android)
-struct SecondaryButtonStyle: ButtonStyle {
+public struct SecondaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) var isEnabled
 
     private let colorPalette: ColorPalette
 
-    init(colorPalette: ColorPalette) {
+    public init(colorPalette: ColorPalette) {
         self.colorPalette = colorPalette
     }
 
-    func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(configuration: Configuration) -> some View {
         secondaryButtonChrome(configuration.label, colorPalette: colorPalette, isPressed: configuration.isPressed, isEnabled: isEnabled, maxWidth: 500)
     }
 }
-#endif

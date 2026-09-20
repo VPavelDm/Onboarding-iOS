@@ -85,8 +85,7 @@ struct SurvivalFunnelStepView: View {
                 }
             }
         }
-        // A bare GeometryReader collapses to zero under `.aspectRatio(.fit)` in Skip/Compose,
-        // leaving the bars width-0; a concrete height gives it a real size to read.
+        // A concrete height, so the GeometryReader inside has a real size to measure the bars against.
         .frame(height: 380)
     }
 
@@ -168,9 +167,8 @@ struct SurvivalFunnelStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("survivalFunnel.answerTitle"))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 
     private func localized(_ key: String) -> String {
@@ -187,8 +185,6 @@ struct SurvivalFunnelStepView: View {
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

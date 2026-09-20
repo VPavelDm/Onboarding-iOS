@@ -44,20 +44,10 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 SurvivalFunnelStepView(step: step)
             case .floatingWords(let step):
                 FloatingWordsStepView(step: step)
-            // Excluded from Android (Skip): wheel pickers (.wheel unavailable + custom drawing),
-            // discount wheel (Confetti + SIMD), and MeshGradient-based steps.
             case .timePicker(let step):
-                #if os(Android)
-                EmptyView()
-                #else
                 TimePickerStepView(step: step)
-                #endif
             case .discountWheel(let step):
-                #if os(Android)
-                EmptyView()
-                #else
                 DiscountWheelStepView(step: step)
-                #endif
             case .heightPicker(let step):
                 HeightPickerStepView(step: step)
             case .weightPicker(let step):

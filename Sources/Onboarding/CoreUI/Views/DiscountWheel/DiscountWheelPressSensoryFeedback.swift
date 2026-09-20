@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  onboarding-ios
@@ -33,4 +32,3 @@ extension View {
 #Preview {
     DiscountWheelStepView(step: .testData())
 }
-#endif

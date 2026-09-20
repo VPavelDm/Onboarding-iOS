@@ -8,13 +8,7 @@ public struct AdaptiveDivider: View {
     }
 
     public var body: some View {
-        #if os(Android)
-        Rectangle()
-            .fill(color)
-            .frame(height: 1)
-        #else
         Divider()
             .overlay(color)
-        #endif
     }
 }

@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  
@@ -99,4 +98,3 @@ extension Color {
 #Preview {
     WheelTimePicker(step: .testData(), completion: { _ in })
 }
-#endif

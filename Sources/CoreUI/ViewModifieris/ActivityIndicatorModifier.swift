@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-#if !os(Android)
 struct ProgressViewModifier<ProgressContent>: ViewModifier where ProgressContent: View {
     var isVisible: Bool
     var progressContent: () -> ProgressContent
@@ -23,16 +22,11 @@ struct ProgressViewModifier<ProgressContent>: ViewModifier where ProgressContent
         .animation(.easeInOut, value: isVisible)
     }
 }
-#endif
 
 public extension View {
 
     @ViewBuilder
     func progressView<ProgressContent>(isVisible: Bool, progressContent: @escaping () -> ProgressContent) -> some View where ProgressContent: View {
-        #if os(Android)
-        self
-        #else
         modifier(ProgressViewModifier(isVisible: isVisible, progressContent: progressContent))
-        #endif
     }
 }

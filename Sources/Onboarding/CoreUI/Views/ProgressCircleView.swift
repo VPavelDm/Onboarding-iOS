@@ -18,7 +18,6 @@ struct ProgressCircleView: View {
 
     var body: some View {
         progressView
-            // `.task`-based tick instead of a Combine `Timer`/`onReceive` (unavailable in Skip).
             .task {
                 while !Task.isCancelled {
                     try? await Task.sleep(for: .seconds(1))
@@ -56,16 +55,14 @@ struct ProgressCircleView: View {
 
     private var progressText: some View {
         Text("\(Int(progress)) %")
-            .monospacedDigitCompat()
+            .monospacedDigit()
             .foregroundStyle(viewModel.colorPalette.textColor)
             .font(.system(size: 32, weight: .bold))
-            .numericContentTransitionCompat()
+            .contentTransition(.numericText())
             .animation(.linear, value: progress)
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

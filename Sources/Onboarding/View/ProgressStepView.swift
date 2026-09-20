@@ -59,21 +59,18 @@ struct ProgressStepView: View {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(viewModel.localize(step.answer.title))
-                .applyRippleEffect()
         } progress: {
             ProgressView()
                 .tint(viewModel.colorPalette.primaryButtonForegroundColor)
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
         .padding(.horizontal, UIConstants.hScreenPadding)
         .padding(.vertical, UIConstants.vScreenPadding)
         .disabled(progress != 100)
-        .revealBottomBarButton(progress == 100)
+        .revealBottomButton(progress == 100)
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

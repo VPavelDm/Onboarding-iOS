@@ -130,7 +130,7 @@ struct CommitmentHoldStepView: View {
     private var numberText: some View {
         Text(number)
             .font(.system(size: 56, weight: .bold, design: .rounded))
-            .monospacedDigitCompat()
+            .monospacedDigit()
             .foregroundStyle(viewModel.colorPalette.accentColor)
     }
 
@@ -172,7 +172,7 @@ struct CommitmentHoldStepView: View {
         }
         .scaleEffect(isPressing && !isCommitted ? 0.94 : 1.0)
         .animation(.snappy, value: isPressing)
-        .contentShapeCompat(Circle())
+        .contentShape(Circle())
         .holdToCommit(
             duration: holdDuration,
             perform: onCommit,

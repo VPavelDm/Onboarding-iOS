@@ -94,15 +94,15 @@ final class OnboardingViewModel {
         await advance(to: nextStepID)
     }
 
-    /// Medium haptic on step completion. No-op where UIKit is unavailable (e.g. Android).
+    /// Medium haptic on step completion.
     private func playSelectionFeedback() {
         #if canImport(UIKit)
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         #endif
     }
 
-    /// Light haptic for in-step interactions (e.g. toggling a multi-select option).
-    /// Reusable from any step view. No-op where UIKit is unavailable (e.g. Android).
+    /// Light haptic for in-step interactions (e.g. toggling a multi-select option), callable from
+    /// any step view.
     func playToggleFeedback() {
         #if canImport(UIKit)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()

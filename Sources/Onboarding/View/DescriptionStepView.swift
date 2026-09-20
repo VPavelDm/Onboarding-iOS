@@ -75,14 +75,11 @@ struct DescriptionStepView: View {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(viewModel.localize(step.answer.title))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

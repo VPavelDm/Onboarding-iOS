@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// Must stay internal (not private/@nobridge) — Skip drops unbridged modifiers, so `.onFirstAppear` wouldn't fire on Android.
 struct OnFirstAppearModifier: ViewModifier {
     @State var isLoaded: Bool = false
 

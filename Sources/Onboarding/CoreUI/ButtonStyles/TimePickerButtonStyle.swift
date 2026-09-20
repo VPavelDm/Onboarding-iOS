@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  TimePickerButtonStyle.swift
 //  onboarding-ios
@@ -29,4 +28,3 @@ struct TimePickerButtonStyle: ButtonStyle {
 #Preview {
     WheelTimePicker(step: .testData(), completion: { _ in })
 }
-#endif

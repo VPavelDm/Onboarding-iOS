@@ -95,7 +95,7 @@ struct IntroStepView: View {
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.6))
-                .fixedSizeCompat(horizontal: false, vertical: true)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -121,9 +121,8 @@ struct IntroStepView: View {
             await viewModel.onAnswer(answers: [step.answer])
         } label: {
             Text(viewModel.localize(step.answer.title))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 
     // MARK: - Background
@@ -160,10 +159,8 @@ struct IntroStepView: View {
     }
 }
 
-#if !os(Android)
 #Preview {
     NavigationStack {
         MockOnboardingView()
     }
 }
-#endif

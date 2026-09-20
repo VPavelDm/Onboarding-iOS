@@ -95,7 +95,7 @@ struct FormulaStepView: View {
             Text(number)
                 .font(.system(size: accent ? 42 : 60, weight: .bold, design: .rounded))
                 .foregroundStyle(accent ? viewModel.colorPalette.accentColor : viewModel.colorPalette.textColor)
-                .monospacedDigitCompat()
+                .monospacedDigit()
             Text(label)
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.7))
@@ -143,9 +143,8 @@ struct FormulaStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("formula.answerTitle"))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
         .revealBottomButton(showCTA)
     }
 

@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  
@@ -32,4 +31,3 @@ struct TimePickerStepView: View {
 #Preview {
     TimePickerStepView(step: .testData())
 }
-#endif

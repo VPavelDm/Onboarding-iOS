@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  MeshGradientBackground.swift
 //  onboarding-ios
@@ -47,4 +46,3 @@ struct MeshGradientBackground: View {
         }
     }
 }
-#endif

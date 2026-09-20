@@ -91,18 +91,9 @@ struct ProgressBarsStepView: View {
 
     @ViewBuilder
     private func laurel(_ direction: LaurelDirection) -> some View {
-        #if os(Android)
-        Image("laurel", bundle: .module)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 61, height: 80)
-            .foregroundStyle(viewModel.colorPalette.accentColor)
-            .scaleEffect(x: direction == .leading ? 1 : -1, y: 1)
-        #else
         Image(systemName: direction == .leading ? "laurel.leading" : "laurel.trailing")
             .font(.system(size: 80))
             .foregroundStyle(viewModel.colorPalette.accentColor)
-        #endif
     }
 
     private var creditText: some View {
@@ -126,9 +117,8 @@ struct ProgressBarsStepView: View {
             await viewModel.onAnswer(answers: [makeAnswer()])
         } label: {
             Text(localized("progressBars.answerTitle"))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
         .revealBottomButton(isComplete)
     }
 

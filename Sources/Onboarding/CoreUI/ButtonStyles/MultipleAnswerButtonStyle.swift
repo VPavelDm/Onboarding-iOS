@@ -9,12 +9,8 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func multipleAnswerButtonStyleCompat(colorPalette: ColorPalette, isSelected: Bool) -> some View {
-        #if os(Android)
-        multipleAnswerButtonChrome(buttonStyle(.plain), colorPalette: colorPalette, isSelected: isSelected, isPressed: false, isEnabled: true)
-        #else
+    func multipleAnswerButtonStyle(colorPalette: ColorPalette, isSelected: Bool) -> some View {
         buttonStyle(MultipleAnswerButtonStyle(isSelected: isSelected))
-        #endif
     }
 }
 
@@ -36,7 +32,6 @@ private func multipleAnswerButtonChrome<V: View>(_ view: V, colorPalette: ColorP
         .opacity(isEnabled ? 1.0 : 0.65)
 }
 
-#if !os(Android)
 struct MultipleAnswerButtonStyle: ButtonStyle {
     @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
     @Environment(\.isEnabled) var isEnabled
@@ -47,4 +42,3 @@ struct MultipleAnswerButtonStyle: ButtonStyle {
         multipleAnswerButtonChrome(configuration.label, colorPalette: viewModel.colorPalette, isSelected: isSelected, isPressed: configuration.isPressed, isEnabled: isEnabled)
     }
 }
-#endif

@@ -1,4 +1,3 @@
-#if !os(Android)
 import Foundation
 
 extension WidgetStep {
@@ -9,4 +8,3 @@ extension WidgetStep {
         )
     }
 }
-#endif

@@ -10,10 +10,6 @@ public struct AdaptiveSymbol: View {
     }
 
     public var body: some View {
-        #if os(Android)
-        Text(verbatim: emoji)
-        #else
         Image(systemName: systemName)
-        #endif
     }
 }

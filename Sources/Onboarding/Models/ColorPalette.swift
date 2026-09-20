@@ -48,8 +48,6 @@ struct TestColorPalette: ColorPalette {
     var ratingStarColor: Color = Color(red: 0.82, green: 0.65, blue: 0.2)
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

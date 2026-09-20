@@ -53,8 +53,6 @@ extension ProgressStepView {
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

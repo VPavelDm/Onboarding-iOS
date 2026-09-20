@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-#if !os(Android)
 @available(iOS 17.0, *)
 struct PopupModifier<Item, PopupContent>: ViewModifier where Item: Identifiable & Hashable, PopupContent: View {
     @Binding var item: Item?
@@ -76,4 +75,3 @@ public extension View {
         modifier(PopupBoolModifier(isPresented: isPresented, popupContent: content))
     }
 }
-#endif

@@ -53,7 +53,7 @@ struct EnterValueStepView: View {
         .bottomBar {
             Color.clear.frame(height: 50)
         }
-        .scrollDismissesKeyboardCompat()
+        .scrollDismissesKeyboard(.interactively)
         .task {
             try? await Task.sleep(for: .seconds(1))
             isFocused = true
@@ -67,7 +67,7 @@ struct EnterValueStepView: View {
                 .aspectRatio(contentMode: image.contentMode)
                 .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 .frame(maxWidth: .infinity)
-                .fixedSizeCompat(horizontal: false, vertical: true)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -93,7 +93,7 @@ struct EnterValueStepView: View {
     private var valueInputView: some View {
         TextField(viewModel.localize(step.placeholder), text: $value)
             .focused($isFocused)
-            .nameTextFieldStyleCompat(colorPalette: viewModel.colorPalette)
+            .nameTextFieldStyle(colorPalette: viewModel.colorPalette)
             .textContentType(textContentType)
             .keyboardType(keyboardType)
             .submitLabel(.next)
@@ -143,12 +143,8 @@ struct EnterValueStepView: View {
 
 extension View {
     @ViewBuilder
-    func nameTextFieldStyleCompat(colorPalette: any ColorPalette) -> some View {
-        #if os(Android)
-        nameTextFieldChrome(self, colorPalette: colorPalette)
-        #else
+    func nameTextFieldStyle(colorPalette: any ColorPalette) -> some View {
         textFieldStyle(NameTextFieldStyle(colorPalette: colorPalette))
-        #endif
     }
 }
 
@@ -165,7 +161,6 @@ private func nameTextFieldChrome<V: View>(_ view: V, colorPalette: any ColorPale
         .clipShape(RoundedRectangle(cornerRadius: 16))
 }
 
-#if !os(Android)
 private struct NameTextFieldStyle: TextFieldStyle {
     var colorPalette: any ColorPalette
 
@@ -173,10 +168,7 @@ private struct NameTextFieldStyle: TextFieldStyle {
         nameTextFieldChrome(configuration, colorPalette: colorPalette)
     }
 }
-#endif
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

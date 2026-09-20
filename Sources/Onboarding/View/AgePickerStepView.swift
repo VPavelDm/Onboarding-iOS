@@ -57,7 +57,7 @@ struct AgePickerStepView: View {
                     .tag(year)
             }
         }
-        .wheelPickerStyleCompat()
+        .pickerStyle(.wheel)
         .frame(height: 200)
     }
 
@@ -66,9 +66,8 @@ struct AgePickerStepView: View {
             await onContinue()
         } label: {
             Text(viewModel.localize(step.answer.title))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 
     private func onContinue() async {
@@ -80,8 +79,6 @@ struct AgePickerStepView: View {
 
 // MARK: - Preview
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

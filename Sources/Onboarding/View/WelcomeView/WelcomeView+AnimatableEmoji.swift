@@ -65,9 +65,7 @@ extension WelcomeView {
     }
 }
 
-#if !os(Android)
 #Preview {
     WelcomeView(step: .testData())
         .preferredColorScheme(.dark)
 }
-#endif

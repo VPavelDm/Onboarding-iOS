@@ -106,7 +106,7 @@ struct WeightPickerStepView: View {
                     .tag(kg)
             }
         }
-        .wheelPickerStyleCompat()
+        .pickerStyle(.wheel)
         .onChange(of: kilograms) { newValue in
             updateImperialFromMetric(kg: newValue)
         }
@@ -120,7 +120,7 @@ struct WeightPickerStepView: View {
                     .tag(lb)
             }
         }
-        .wheelPickerStyleCompat()
+        .pickerStyle(.wheel)
         .onChange(of: pounds) { _ in
             updateMetricFromImperial()
         }
@@ -131,9 +131,8 @@ struct WeightPickerStepView: View {
             await onContinue()
         } label: {
             Text(viewModel.localize(step.answer.title))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
     }
 
     private func onContinue() async {
@@ -153,8 +152,6 @@ struct WeightPickerStepView: View {
 
 // MARK: - Preview
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

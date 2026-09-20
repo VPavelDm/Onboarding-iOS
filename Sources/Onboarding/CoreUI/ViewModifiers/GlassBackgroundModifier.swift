@@ -5,16 +5,6 @@ struct GlassBackgroundModifier: ViewModifier {
     var cornerRadius: CGFloat
 
     func body(content: Content) -> some View {
-        #if os(Android)
-        // `glassEffect` is unavailable in Skip; use a translucent fill + stroke instead.
-        content
-            .background(Color.white.opacity(0.08))
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(.white.opacity(0.2), lineWidth: 1)
-            }
-        #else
         if #available(iOS 26.0, *) {
             content
                 .glassEffect(in: .rect(cornerRadius: cornerRadius))
@@ -27,7 +17,6 @@ struct GlassBackgroundModifier: ViewModifier {
                         .stroke(.white.opacity(0.2), lineWidth: 1)
                 }
         }
-        #endif
     }
 }
 

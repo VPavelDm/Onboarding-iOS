@@ -78,9 +78,8 @@ struct MultipleAnswerView: View {
         } label: {
             Text(viewModel.localize(answer.wrappedValue.value.title))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .applyRippleEffect()
         }
-        .multipleAnswerButtonStyleCompat(colorPalette: viewModel.colorPalette, isSelected: answer.isChose.wrappedValue)
+        .multipleAnswerButtonStyle(colorPalette: viewModel.colorPalette, isSelected: answer.isChose.wrappedValue)
     }
 
     private var nextButton: some View {
@@ -88,10 +87,9 @@ struct MultipleAnswerView: View {
             await viewModel.onAnswer(answers: answers.filter(\.isChose).map(\.value))
         } label: {
             Text(viewModel.localize(step.buttonTitle))
-                .applyRippleEffect()
         }
-        .primaryButtonStyleCompat(colorPalette: viewModel.colorPalette)
-        .revealBottomBarButton(!answers.isDisabled(step: step))
+        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .revealBottomButton(!answers.isDisabled(step: step))
     }
 
 }
@@ -109,8 +107,6 @@ private extension Array where Element == BoxModel {
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

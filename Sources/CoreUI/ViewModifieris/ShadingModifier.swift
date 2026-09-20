@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-#if !os(Android)
 @available(iOS 17.0, *)
 struct ShadingModifier<Item, ShadingContent>: ViewModifier where Item: Identifiable & Hashable, ShadingContent: View {
 
@@ -77,4 +76,3 @@ public extension View {
         modifier(ShadingModifier(item: item, content: content))
     }
 }
-#endif

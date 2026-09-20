@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-#if !os(Android)
 public struct CloseButton: View {
     var action: () -> Void
 
@@ -30,4 +29,3 @@ public struct CloseButton: View {
         }
     }
 }
-#endif

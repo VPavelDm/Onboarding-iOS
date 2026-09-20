@@ -9,12 +9,8 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func binaryAnswerButtonStyleCompat() -> some View {
-        #if os(Android)
-        binaryAnswerButtonChrome(buttonStyle(.plain), isPressed: false)
-        #else
+    func binaryAnswerButtonStyle() -> some View {
         buttonStyle(BinaryAnswerButtonStyle())
-        #endif
     }
 }
 
@@ -30,7 +26,6 @@ private func binaryAnswerButtonChrome<V: View>(_ view: V, isPressed: Bool) -> so
         .scaleEffect(x: isPressed ? 0.95 : 1, y: isPressed ? 0.95 : 1)
 }
 
-#if !os(Android)
 struct BinaryAnswerButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         binaryAnswerButtonChrome(configuration.label, isPressed: configuration.isPressed)
@@ -40,4 +35,3 @@ struct BinaryAnswerButtonStyle: ButtonStyle {
 #Preview {
     BinaryAnswerView(step: .testData())
 }
-#endif

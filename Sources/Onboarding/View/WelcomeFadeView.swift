@@ -63,16 +63,9 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
     }
 
     private func messageText(_ message: String) -> Text {
-        #if os(Android)
-        // AttributedString markdown and Text concatenation are unavailable on Skip —
-        // strip the ** markers; the accent tint on bold runs is iOS-only.
-        return Text(verbatim: message.replacingOccurrences(of: "**", with: ""))
-        #else
         return Text(attributedMessage(message))
-        #endif
     }
 
-    #if !os(Android)
     private func attributedMessage(_ message: String) -> AttributedString {
         let options = AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
         guard var attributed = try? AttributedString(markdown: message, options: options) else {
@@ -83,7 +76,6 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
         }
         return attributed
     }
-    #endif
 
     func displayNextText() {
         guard activeElementIndex.map({ $0 < step.messages.count }) ?? true else { return }
@@ -96,8 +88,6 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
     }
 }
 
-#if !os(Android)
 #Preview {
     MockOnboardingView()
 }
-#endif

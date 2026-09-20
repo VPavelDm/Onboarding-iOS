@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  
@@ -22,4 +21,3 @@ extension DescriptionStep {
         )
     }
 }
-#endif

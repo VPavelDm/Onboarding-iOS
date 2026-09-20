@@ -1,4 +1,3 @@
-#if !os(Android)
 //
 //  File.swift
 //  
@@ -39,4 +38,3 @@ extension View {
 #Preview {
     DiscountWheelStepView(step: .testData())
 }
-#endif

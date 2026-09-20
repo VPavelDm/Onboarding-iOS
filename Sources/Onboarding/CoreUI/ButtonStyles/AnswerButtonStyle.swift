@@ -9,18 +9,8 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func answerButtonStyleCompat(colorPalette: ColorPalette, isSelected: Bool) -> some View {
-        #if os(Android)
-        answerButtonChrome(
-            buttonStyle(.plain),
-            colorPalette: colorPalette,
-            isSelected: isSelected,
-            isPressed: false,
-            isEnabled: true
-        )
-        #else
+    func answerButtonStyle(colorPalette: ColorPalette, isSelected: Bool) -> some View {
         buttonStyle(AnswerButtonStyle(isSelected: isSelected))
-        #endif
     }
 }
 
@@ -48,7 +38,6 @@ private func answerButtonChrome<V: View>(
         .opacity(isEnabled ? 1.0 : 0.65)
 }
 
-#if !os(Android)
 struct AnswerButtonStyle: ButtonStyle {
     @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
     @Environment(\.isEnabled) var isEnabled
@@ -65,4 +54,3 @@ struct AnswerButtonStyle: ButtonStyle {
         )
     }
 }
-#endif

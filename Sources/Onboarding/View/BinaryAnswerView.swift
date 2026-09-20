@@ -58,9 +58,8 @@ struct BinaryAnswerView: View {
                 }
                 Text(viewModel.localize(step.firstAnswer.title))
             }
-            .applyRippleEffect()
         }
-        .binaryAnswerButtonStyleCompat()
+        .binaryAnswerButtonStyle()
     }
 
     private var secondAnswerButton: some View {
@@ -74,8 +73,7 @@ struct BinaryAnswerView: View {
                 }
                 Text(viewModel.localize(step.secondAnswer.title))
             }
-            .applyRippleEffect()
         }
-        .binaryAnswerButtonStyleCompat()
+        .binaryAnswerButtonStyle()
     }
 }
