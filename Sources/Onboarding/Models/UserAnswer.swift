@@ -11,6 +11,11 @@ public struct UserAnswer: Sendable, Equatable, Hashable {
     public var onboardingStepID: StepID
     public var payloads: [Payload]
 
+    public init(onboardingStepID: StepID, payloads: [Payload]) {
+        self.onboardingStepID = onboardingStepID
+        self.payloads = payloads
+    }
+
     public enum Payload: Sendable, Equatable, Hashable {
         case string(String)
         case json(Data)
