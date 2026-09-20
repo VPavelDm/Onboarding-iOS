@@ -1,18 +1,19 @@
 ---
 name: service
-description: 'Use when creating or modifying a Service — the layer between ViewModels and Repositories. Services own everything around the data: retry mechanism, error handling and mapping, and parsing DTOs into UI models; they orchestrate one or more Repositories. Triggers on any edit to *Service.swift, *ServiceProtocol.swift, or Fake*Service.swift files. Not needed for trivial edits (typos, renames, constants).'
+description: 'Use when creating or modifying a Service — the layer between ViewModels and Repositories. Services own everything around the data: retry mechanism, error handling and mapping, and parsing DTOs into domain models, and screen logic (paging, queues, validation); they orchestrate one or more Repositories. Triggers on any edit to *Service.swift, *ServiceProtocol.swift, or Fake*Service.swift files. Not needed for trivial edits (typos, renames, constants).'
 ---
 
 # Services
 
 Services sit between ViewModels and Repositories. Repositories fetch raw data as DTOs (see the `repository` skill); Services do **everything else**:
 
-- **Map DTOs into UI models** — the types the ViewModel and View actually use
+- **Map DTOs into domain models** — typed Swift values with no display concerns; the ViewModel derives UI models from them (see below)
 - **Retry mechanism** — decide what's retryable and how often
 - **Error handling** — translate transport/decoding errors into errors the UI can present
 - **Orchestrate** — combine multiple repositories when a feature needs more than one data source
+- **Own screen logic** — a paging cursor, an exercise queue, answer validation, progress maths: anything worth a unit test without a View lives here (or in a plain type the Service owns), not in the ViewModel
 
-ViewModels inject Services, never Repositories directly.
+ViewModels inject Services, never Repositories directly. A ViewModel is glue between UI events and Service calls; keeping the logic below it is what lets a second UI (e.g. Compose over the same Swift Services) reuse it.
 
 ## Pattern
 
@@ -83,9 +84,10 @@ func withRetry<T>(
 
 `isTransient` covers timeouts, connectivity loss, and 5xx — never 4xx, decoding errors, or cancellation.
 
-### UI models & error mapping
+### Domain models, UI models & error mapping
 
-- UI models (`Letter`, not `LetterDTO`) live in the feature's `Model/` folder: proper Swift types (`Date` not ISO strings, enums not raw strings), plus whatever the View needs. Map in an `init(dto:)`.
+- Domain models (`Letter`, not `LetterDTO`) live in the feature's `Model/` folder: proper Swift types (`Date` not ISO strings, enums not raw strings), `Sendable` and `Codable`, with **no display concerns** — no `LocalizedStringKey`, `Color`, `Font`, `Image`, no pre-formatted display strings. Map in an `init(dto:)`. Services return domain models, never DTOs and never UI models.
+- UI models — row shapes, display names, localized keys, colours — live beside the View, and the ViewModel maps domain → UI. When a project ships a second UI (Compose over shared Swift), each UI keeps its own UI models; the domain models are the shared contract.
 - Errors surface as one feature error type the UI can switch over (e.g. `.offline`, `.serverDown`, `.unknown`) — ViewModels never inspect `URLError` codes or HTTP statuses themselves.
 
 ## Fake (for every Service protocol)

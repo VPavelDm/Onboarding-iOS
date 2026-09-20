@@ -13,9 +13,9 @@ Features are **folders, not packages**. The app is one monolith package/target; 
 <Feature>/
 ├── View/          # SwiftUI views
 ├── ViewModel/     # orchestration + UI state (see `viewmodel` skill)
-├── Service/       # retries, error mapping, DTO → UI models (see `service` skill)
+├── Service/       # retries, error mapping, DTO → domain models, screen logic (see `service` skill)
 ├── Repository/    # one per data source; request → DTO (see `repository` skill) — DTOs live here
-├── Model/         # UI/domain models the Views and ViewModels use
+├── Model/         # domain models the ViewModels work with; UI models sit next to the Views
 └── Testing/       # Fake* implementations, reusable by tests of other features
 ```
 

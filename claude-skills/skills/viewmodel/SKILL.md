@@ -5,7 +5,7 @@ description: Use when creating or modifying any ViewModel — the @Observable pa
 
 # ViewModels
 
-ViewModels orchestrate Services and hold UI state. Business logic belongs in domain Models; data access belongs in Repositories behind Services (see the `service` and `repository` skills). ViewModels inject Services only — never Repositories directly.
+ViewModels orchestrate Services and hold UI state. Business logic belongs in domain Models and Services — screen logic such as paging, queues and validation goes in the Service, not here; data access belongs in Repositories behind Services (see the `service` and `repository` skills). ViewModels inject Services only — never Repositories directly.
 
 ## Template (new ViewModels)
 
@@ -44,7 +44,7 @@ Rules the template encodes:
 - `@MainActor @Observable final class`. No `@Published`, no `ObservableObject` in new code.
 - State exposed as `private(set) var` unless the View must write it (e.g. text input).
 - Dependencies injected via init with default parameters: `service: SomeServiceProtocol = SomeService()`. Tests override the defaults with Fakes.
-- ViewModels depend on Services only. Retries, error mapping, and DTO → UI-model parsing already happened in the Service — the ViewModel just presents the outcome; it never inspects `URLError` codes or HTTP statuses.
+- ViewModels depend on Services only. Retries, error mapping, and DTO → domain-model parsing already happened in the Service; the ViewModel maps domain models to whatever UI models the View needs and presents the outcome. It never inspects `URLError` codes or HTTP statuses.
 - Never nest ViewModels — nested observation chains break SwiftUI updates and leak memory. One ViewModel per View, owned directly.
 
 ## View ownership
