@@ -39,6 +39,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case milestoneTimeline(MilestoneTimelineStep)
         case comparisonCards(ComparisonCardsStep)
         case cardGrid(CardGridStep)
+        case chipSelect(ChipSelectStep)
         case unknown
     }
 }
@@ -96,6 +97,7 @@ extension OnboardingStep {
         case .milestoneTimeline(let payload): .milestoneTimeline(MilestoneTimelineStep(response: payload))
         case .comparisonCards(let payload): .comparisonCards(ComparisonCardsStep(response: payload))
         case .cardGrid(let payload): .cardGrid(CardGridStep(response: payload))
+        case .chipSelect(let payload): .chipSelect(ChipSelectStep(response: payload))
         default: .unknown
         }
 

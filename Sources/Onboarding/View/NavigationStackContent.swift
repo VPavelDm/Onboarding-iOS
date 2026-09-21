@@ -68,6 +68,8 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 ComparisonCardsStepView(step: step)
             case .cardGrid(let step):
                 CardGridStepView(step: step)
+            case .chipSelect(let step):
+                ChipSelectStepView(step: step)
             case .unknown, .none:
                 Color.clear
             }
