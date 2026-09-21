@@ -63,8 +63,9 @@ All repositories share one thin helper so JSON configuration lives in one place 
 
 ```kotlin
 class EdgeFunctions(
-    private val supabase: SupabaseClient,
-    private val json: Json,
+    // `@PublishedApi internal`, not `private`: the public inline functions below must reach them.
+    @PublishedApi internal val supabase: SupabaseClient,
+    @PublishedApi internal val json: Json,
 ) {
     /** GET-like: no params, decoded body. */
     suspend inline fun <reified R> fetch(name: String): R =

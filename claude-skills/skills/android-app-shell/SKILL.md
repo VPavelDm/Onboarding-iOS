@@ -29,7 +29,9 @@ Libraries to add (stable as of 2026-09-21; bump to the latest stable when you sc
 
 Not used: Hilt/Dagger/Koin (manual container below), Room (no local database — the client is thin by design), Retrofit (supabase-kt owns HTTP), MockK (hand-written fakes).
 
-`minSdk` 28, `compileSdk`/`targetSdk` = the template's latest stable. `applicationId` `com.pretzly`.
+`minSdk` 28, `compileSdk`/`targetSdk` 37 (Compose 1.12 in BOM 2026.09 refuses anything lower). `applicationId` `com.pretzly`.
+
+Verified 2026-09-21 on Pretzly: AGP 9.4.1 + these plugin versions resolve KGP to 2.4.20 (`buildEnvironment` prints `2.2.10 -> 2.4.20`), builds with JDK 17 and Gradle 9.6.0.
 
 ## Dependency injection: one manual container
 
