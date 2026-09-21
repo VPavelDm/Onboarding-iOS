@@ -13,7 +13,7 @@ Services sit between ViewModels and Repositories. Repositories fetch raw data as
 - **Orchestrate** — combine multiple repositories when a feature needs more than one data source
 - **Own screen logic** — a paging cursor, an exercise queue, answer validation, progress maths: anything worth a unit test without a View lives here (or in a plain type the Service owns), not in the ViewModel
 
-ViewModels inject Services, never Repositories directly. A ViewModel is glue between UI events and Service calls; keeping the logic below it is what lets a second UI (e.g. Compose over the same Swift Services) reuse it.
+ViewModels inject Services, never Repositories directly. A ViewModel is glue between UI events and Service calls; anything worth a unit test without a View belongs below it.
 
 ## Pattern
 
@@ -87,7 +87,7 @@ func withRetry<T>(
 ### Domain models, UI models & error mapping
 
 - Domain models (`Letter`, not `LetterDTO`) live in the feature's `Model/` folder: proper Swift types (`Date` not ISO strings, enums not raw strings), `Sendable` and `Codable`, with **no display concerns** — no `LocalizedStringKey`, `Color`, `Font`, `Image`, no pre-formatted display strings. Map in an `init(dto:)`. Services return domain models, never DTOs and never UI models.
-- UI models — row shapes, display names, localized keys, colours — live beside the View, and the ViewModel maps domain → UI. When a project ships a second UI (Compose over shared Swift), each UI keeps its own UI models; the domain models are the shared contract.
+- UI models — row shapes, display names, localized keys, colours — live beside the View, and the ViewModel maps domain → UI. Domain models never carry a display concern, so a View can change how something looks without touching the Service.
 - Errors surface as one feature error type the UI can switch over (e.g. `.offline`, `.serverDown`, `.unknown`) — ViewModels never inspect `URLError` codes or HTTP statuses themselves.
 
 ## Fake (for every Service protocol)
