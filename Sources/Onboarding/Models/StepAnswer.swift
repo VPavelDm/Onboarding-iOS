@@ -12,6 +12,8 @@ struct StepAnswer: Sendable, Equatable, Hashable {
     var icon: String?
     var nextStepID: StepID?
     var payload: Payload?
+    /// Drawn in place of `icon` when a step shows one; `icon` is the emoji fallback.
+    var image: ImageMeta?
 
     enum Payload: Sendable, Equatable, Hashable {
         case string(String)
@@ -46,7 +48,8 @@ extension StepAnswer {
             title: response.title,
             icon: response.icon,
             nextStepID: response.nextStepID,
-            payload: response.payload.map(Payload.init(response:))
+            payload: response.payload.map(Payload.init(response:)),
+            image: response.image.flatMap(ImageMeta.init)
         )
     }
 }

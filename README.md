@@ -318,6 +318,36 @@ Single-select from a list. Submit button at the bottom.
 }
 ```
 
+### `cardGrid`
+
+Single-select from a grid of cards, each showing an emoji or an image above its title. Cards appear
+one after another, and the submit button only once something is picked.
+
+```jsonc
+{
+  "id": "native_language",
+  "type": "cardGrid",
+  "payload": {
+    "title": "What's your native language?",
+    "description": "We'll use it to translate every new word.", // optional
+    "buttonTitle": "Select",
+    "columns": 2,                                   // optional, defaults to 2
+    "cards": [
+      { "title": "English", "icon": "🇬🇧", "payload": { "type": "string", "value": "en-US" } },
+      { "title": "Deutsch", "image": { "type": "system", "value": "flag", "aspectRatioType": "fit" },
+        "payload": { "type": "string", "value": "de-DE" } }
+    ],
+    "autoNavigate": false,                          // optional — tap a card to submit, no button
+    "nextStepID": "language_level"                  // optional, used by cards that name no next step
+  }
+}
+```
+
+With `autoNavigate`, tapping a card submits it immediately and the submit button is not shown;
+`buttonTitle` is then unused. A card draws its `image` when it has one, and its `icon` otherwise. `image` takes the same shape as
+elsewhere in this file (`named`, `system` or `remote`) and is available on every answer, not just
+these cards.
+
 ### `binaryAnswer`
 
 Two explicit buttons (e.g. Yes/No).

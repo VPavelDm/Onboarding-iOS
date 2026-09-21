@@ -66,6 +66,8 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 MilestoneTimelineStepView(step: step)
             case .comparisonCards(let step):
                 ComparisonCardsStepView(step: step)
+            case .cardGrid(let step):
+                CardGridStepView(step: step)
             case .unknown, .none:
                 Color.clear
             }

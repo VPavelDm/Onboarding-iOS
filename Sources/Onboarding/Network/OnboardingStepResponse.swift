@@ -98,6 +98,9 @@ struct OnboardingStepResponse: Decodable {
         case "milestoneTimeline":
             let payload = try container.decode(MilestoneTimelineStep.self, forKey: .payload)
             self.type = .milestoneTimeline(payload)
+        case "cardGrid":
+            let payload = try container.decode(CardGridStep.self, forKey: .payload)
+            self.type = .cardGrid(payload)
         case "comparisonCards":
             let payload = try container.decode(ComparisonCardsStep.self, forKey: .payload)
             self.type = .comparisonCards(payload)
@@ -133,6 +136,7 @@ struct OnboardingStepResponse: Decodable {
         case progressBars(ProgressBarsStep)
         case milestoneTimeline(MilestoneTimelineStep)
         case comparisonCards(ComparisonCardsStep)
+        case cardGrid(CardGridStep)
         case unknown
     }
 
@@ -234,6 +238,16 @@ struct OnboardingStepResponse: Decodable {
             let xRatio: Double
             let delay: Double
         }
+    }
+
+    struct CardGridStep: Decodable {
+        let title: String
+        let description: String?
+        let buttonTitle: String
+        let columns: Int?
+        let cards: [StepAnswer]
+        let autoNavigate: Bool?
+        let nextStepID: StepID?
     }
 
     struct ComparisonCardsStep: Decodable {
@@ -344,6 +358,7 @@ struct OnboardingStepResponse: Decodable {
         let icon: String?
         let nextStepID: StepID?
         let payload: Payload?
+        let image: ImageResponse?
 
         enum Payload: Decodable {
             case string(String)
