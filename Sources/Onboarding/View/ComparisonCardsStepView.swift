@@ -78,7 +78,7 @@ struct ComparisonCardsStepView: View {
     }
 
     private var arrowImage: some View {
-        AdaptiveSymbol(systemName: "arrow.right", emoji: "→")
+        Image(systemName: "arrow.right")
             .font(.headline)
             .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
     }

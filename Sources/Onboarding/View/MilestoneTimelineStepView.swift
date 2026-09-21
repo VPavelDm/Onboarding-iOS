@@ -106,7 +106,7 @@ private struct MilestoneSegmentShape: Shape {
     }
 }
 
-struct MilestoneTimeline: View {
+private struct MilestoneTimeline: View {
     @Environment(OnboardingViewModel.self) var viewModel: OnboardingViewModel
 
     let milestones: [MilestoneTimelineStep.Milestone]
@@ -119,8 +119,8 @@ struct MilestoneTimeline: View {
             ZStack(alignment: .topLeading) {
                 axisLine(width: proxy.size.width, y: lineY)
                 segments(width: proxy.size.width, y: lineY)
-                ForEach(Array(milestones.enumerated()), id: \.element.label) { index, milestone in
-                    marker(milestone: milestone, index: index, width: proxy.size.width, lineY: lineY)
+                ForEach(milestones, id: \.label) { milestone in
+                    marker(milestone: milestone, width: proxy.size.width, lineY: lineY)
                 }
             }
         }
@@ -160,7 +160,7 @@ struct MilestoneTimeline: View {
             .animation(.easeInOut(duration: drawDuration).delay(drawStart), value: triggered)
     }
 
-    private func marker(milestone: MilestoneTimelineStep.Milestone, index: Int, width: CGFloat, lineY: CGFloat) -> some View {
+    private func marker(milestone: MilestoneTimelineStep.Milestone, width: CGFloat, lineY: CGFloat) -> some View {
         let cx = milestone.xRatio * width
         return ZStack {
             floatingChip
