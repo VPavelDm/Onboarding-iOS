@@ -72,7 +72,7 @@ struct MilestoneTimelineStepView: View {
         } label: {
             Text(localized("milestoneTimeline.answerTitle"))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .revealBottomButton(showCTA)
     }
 

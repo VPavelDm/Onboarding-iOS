@@ -144,7 +144,7 @@ struct FormulaStepView: View {
         } label: {
             Text(localized("formula.answerTitle"))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .revealBottomButton(showCTA)
     }
 

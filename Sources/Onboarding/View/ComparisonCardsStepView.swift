@@ -89,7 +89,7 @@ struct ComparisonCardsStepView: View {
         } label: {
             Text(localized("comparisonCards.answerTitle"))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .revealBottomButton(showCTA)
     }
 

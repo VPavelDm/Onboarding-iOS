@@ -118,7 +118,7 @@ struct ProgressBarsStepView: View {
         } label: {
             Text(localized("progressBars.answerTitle"))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .revealBottomButton(isComplete)
     }
 

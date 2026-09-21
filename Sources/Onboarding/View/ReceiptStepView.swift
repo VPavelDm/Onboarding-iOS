@@ -165,7 +165,7 @@ struct ReceiptStepView: View {
         } label: {
             Text(localized("receipt.answerTitle"))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     @ViewBuilder

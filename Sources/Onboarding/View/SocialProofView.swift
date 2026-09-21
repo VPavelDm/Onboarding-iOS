@@ -125,7 +125,7 @@ struct SocialProofView: View {
         } label: {
             Text(localized("socialProof.answerTitle"))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     // MARK: - Helpers

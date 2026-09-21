@@ -32,7 +32,7 @@ struct WelcomeView: View {
         } label: {
             Text(viewModel.localize(step.firstAnswer.title))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     private func alreadyHaveAccountButton(answer: StepAnswer) -> some View {

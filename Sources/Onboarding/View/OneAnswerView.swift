@@ -96,7 +96,7 @@ struct OneAnswerView: View {
         } label: {
             Text(viewModel.localize(step.buttonTitle))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .disabled(selectedAnswer == nil && step.skip == nil)
         .padding(.horizontal, UIConstants.hScreenPadding)
         .padding(.bottom, UIConstants.vScreenPadding)

@@ -114,7 +114,7 @@ struct FeatureShowcaseStepView: View {
         } label: {
             Text(viewModel.localize(step.answer.title))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     // MARK: - Animation

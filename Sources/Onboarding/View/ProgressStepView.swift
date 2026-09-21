@@ -63,7 +63,7 @@ struct ProgressStepView: View {
             ProgressView()
                 .tint(viewModel.colorPalette.primaryButtonForegroundColor)
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .padding(.horizontal, UIConstants.hScreenPadding)
         .padding(.vertical, UIConstants.vScreenPadding)
         .disabled(progress != 100)

@@ -132,7 +132,7 @@ struct WeightPickerStepView: View {
         } label: {
             Text(viewModel.localize(step.answer.title))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     private func onContinue() async {

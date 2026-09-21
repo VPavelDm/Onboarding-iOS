@@ -168,7 +168,7 @@ struct SurvivalFunnelStepView: View {
         } label: {
             Text(localized("survivalFunnel.answerTitle"))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     private func localized(_ key: String) -> String {

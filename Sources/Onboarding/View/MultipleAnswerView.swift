@@ -88,7 +88,7 @@ struct MultipleAnswerView: View {
         } label: {
             Text(viewModel.localize(step.buttonTitle))
         }
-        .primaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(PrimaryButtonStyle(colorPalette: viewModel.colorPalette))
         .revealBottomButton(!answers.isDisabled(step: step))
     }
 
