@@ -83,10 +83,7 @@ struct OneAnswerView: View {
                 .frame(maxWidth: .infinity)
                 .tint(viewModel.colorPalette.primaryButtonForegroundColor)
         }
-        .answerButtonStyle(
-            colorPalette: viewModel.colorPalette,
-            isSelected: selectedAnswer == answer
-        )
+        .buttonStyle(AnswerButtonStyle(isSelected: selectedAnswer == answer))
     }
 
     private var nextButton: some View {
