@@ -8,29 +8,48 @@
 import SwiftUI
 import CoreUI
 
-struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
+struct WelcomeFadeView: View {
     @Environment(OnboardingViewModel.self) var onboarding: OnboardingViewModel
 
     @State var activeElementIndex: Int?
 
     var step: WelcomeFadeStep
-    var customStepView: (CustomStepParams) -> CustomStepView
+
+    /// How long each message holds the screen before the next one replaces it.
+    private static let messageDuration: Duration = .seconds(3)
 
     var body: some View {
-        VStack {
-            if activeElementIndex.map({ $0 < step.messages.count }) ?? true {
-                contentView
-            } else if onboarding.steps.count > 1 {
-                NavigationStackContent(
-                    step: onboarding.steps[1],
-                    customStepView: customStepView
-                )
+        contentView
+            .task {
+                do {
+                    try await Task.sleep(for: .seconds(step.delay))
+                    for index in step.messages.indices {
+                        withAnimation(.default) { activeElementIndex = index }
+                        try await Task.sleep(for: Self.messageDuration)
+                    }
+                } catch {
+                    // Cancelled because the view went away — leave the flow where it is.
+                    return
+                }
+                await onboarding.onAnswer(answers: [
+                    StepAnswer(title: "", icon: nil, nextStepID: resolvedNextStepID, payload: nil)
+                ])
             }
+    }
+
+    /// The step may name its successor; otherwise the flow continues with whatever follows it in
+    /// the steps file.
+    private var resolvedNextStepID: StepID? {
+        if let declared = step.nextStepID {
+            return declared
         }
-        .task {
-            try? await Task.sleep(for: .seconds(step.delay))
-            displayNextText()
+        guard let currentID = onboarding.currentStep?.id,
+              let index = onboarding.steps.firstIndex(where: { $0.id == currentID }),
+              onboarding.steps.indices.contains(index + 1)
+        else {
+            return nil
         }
+        return onboarding.steps[index + 1].id
     }
 
     private var contentView: some View {
@@ -75,16 +94,6 @@ struct WelcomeFadeView<CustomStepView>: View where CustomStepView: View {
             attributed[run.range].foregroundColor = onboarding.colorPalette.accentColor
         }
         return attributed
-    }
-
-    func displayNextText() {
-        guard activeElementIndex.map({ $0 < step.messages.count }) ?? true else { return }
-        withAnimation(.default) {
-            activeElementIndex = activeElementIndex.map { $0 + 1 } ?? 0
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            displayNextText()
-        }
     }
 }
 

@@ -29,7 +29,7 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
             case .custom(let stepParams):
                 customStepView(stepParams)
             case .welcomeFade(let step):
-                WelcomeFadeView(step: step, customStepView: customStepView)
+                WelcomeFadeView(step: step)
             case .progress(let step):
                 ProgressStepView(step: step)
             case .widget(let step):
