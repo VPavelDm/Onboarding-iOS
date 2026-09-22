@@ -8,6 +8,7 @@
 import Foundation
 import Adapty
 import AdaptyUI
+import Paywalls
 
 enum AdaptyPaywallConfiguration {
     case paywallConfiguration(AdaptyUI.PaywallConfiguration)

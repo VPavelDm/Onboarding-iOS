@@ -28,6 +28,12 @@ let package = Package(
             name: "Paywalls",
             targets: ["Paywalls"]),
         .library(
+            name: "PaywallsAdapty",
+            targets: ["PaywallsAdapty"]),
+        .library(
+            name: "PaywallsRC",
+            targets: ["PaywallsRC"]),
+        .library(
             name: "Profile",
             targets: ["Profile"]),
         .library(
@@ -37,6 +43,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0"),
         .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS.git", from: "3.17.0"),
+        .package(url: "https://github.com/RevenueCat/purchases-ios.git", from: "5.0.0"),
     ],
     targets: [
         .target(
@@ -72,8 +79,23 @@ let package = Package(
         .target(
             name: "Paywalls",
             dependencies: [
+                "CoreUI",
+                "CoreAnalytics"
+            ]
+        ),
+        .target(
+            name: "PaywallsRC",
+            dependencies: [
+                .product(name: "RevenueCat", package: "purchases-ios"),
+                "Paywalls"
+            ]
+        ),
+        .target(
+            name: "PaywallsAdapty",
+            dependencies: [
                 .product(name: "Adapty", package: "AdaptySDK-iOS"),
                 .product(name: "AdaptyUI", package: "AdaptySDK-iOS"),
+                "Paywalls",
                 "CoreUI",
                 "CoreAnalytics"
             ]

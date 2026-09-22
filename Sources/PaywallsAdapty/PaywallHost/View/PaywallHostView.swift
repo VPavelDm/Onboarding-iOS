@@ -8,6 +8,7 @@
 import SwiftUI
 import Adapty
 import AdaptyUI
+import Paywalls
 
 public struct PaywallHostView: View {
 

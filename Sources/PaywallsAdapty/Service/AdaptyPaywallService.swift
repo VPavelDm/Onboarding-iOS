@@ -7,6 +7,7 @@
 
 import Foundation
 import Adapty
+import Paywalls
 
 /// Backs the subscription paywall with Adapty: fetches the placement's products, maps
 /// them to plans, and runs purchase/restore. `onEntitlementChanged` runs before any
