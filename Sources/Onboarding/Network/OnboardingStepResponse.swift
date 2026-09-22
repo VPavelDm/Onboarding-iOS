@@ -101,6 +101,9 @@ struct OnboardingStepResponse: Decodable {
         case "notifications":
             let payload = try container.decode(NotificationsStep.self, forKey: .payload)
             self.type = .notifications(payload)
+        case "numberStepper":
+            let payload = try container.decode(NumberStepperStep.self, forKey: .payload)
+            self.type = .numberStepper(payload)
         case "chipSelect":
             let payload = try container.decode(ChipSelectStep.self, forKey: .payload)
             self.type = .chipSelect(payload)
@@ -145,6 +148,7 @@ struct OnboardingStepResponse: Decodable {
         case cardGrid(CardGridStep)
         case chipSelect(ChipSelectStep)
         case notifications(NotificationsStep)
+        case numberStepper(NumberStepperStep)
         case unknown
     }
 
@@ -318,6 +322,23 @@ struct OnboardingStepResponse: Decodable {
         struct Banner: Decodable {
             let title: String
             let body: String
+        }
+    }
+
+    struct NumberStepperStep: Decodable {
+        let title: String
+        let description: String?
+        let options: [Int]
+        let defaultOption: Int?
+        let tiles: [Tile]
+        let answer: StepAnswer
+
+        struct Tile: Decodable {
+            let label: String
+            /// The option multiplied by this, for a tile that sums the choice up over a period.
+            let multiplyBy: Int?
+            /// This divided by the option, for a tile that says how long the choice takes.
+            let divideInto: Int?
         }
     }
 

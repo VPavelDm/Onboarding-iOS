@@ -70,6 +70,8 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 CardGridStepView(step: step)
             case .notifications(let step):
                 NotificationsStepView(step: step)
+            case .numberStepper(let step):
+                NumberStepperStepView(step: step)
             case .chipSelect(let step):
                 ChipSelectStepView(step: step)
             case .unknown, .none:
