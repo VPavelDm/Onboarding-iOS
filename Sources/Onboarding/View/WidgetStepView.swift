@@ -47,7 +47,7 @@ struct WidgetStepView: View {
         } label: {
             Text(localized("widget.answerTitle"))
         }
-        .secondaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(SecondaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 
     private func localized(_ key: String) -> String {

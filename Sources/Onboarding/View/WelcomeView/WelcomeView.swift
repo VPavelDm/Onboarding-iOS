@@ -41,6 +41,6 @@ struct WelcomeView: View {
         } label: {
             Text(viewModel.localize(answer.title))
         }
-        .secondaryButtonStyle(colorPalette: viewModel.colorPalette)
+        .buttonStyle(SecondaryButtonStyle(colorPalette: viewModel.colorPalette))
     }
 }
