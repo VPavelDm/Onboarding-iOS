@@ -95,7 +95,9 @@ struct NotificationsStepView: View {
                 Text(localized(banner.body))
                     .font(.system(size: 14))
                     .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.75))
-                    .lineLimit(2)
+                    // One line, so a long message cannot make one banner taller than the rest and
+                    // leave the fanned-out stack uneven.
+                    .lineLimit(1)
             }
         }
         .opacity(showsContent ? 1 : 0)
