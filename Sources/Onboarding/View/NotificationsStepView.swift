@@ -78,21 +78,24 @@ struct NotificationsStepView: View {
         HStack(alignment: .top, spacing: 12) {
             bellIcon
             VStack(alignment: .leading, spacing: 2) {
+                // Three tiers, as a real banner has them: who sent it and when, then what it
+                // says, then the detail. The sender sits with the timestamp rather than with the
+                // message, which is what stops it reading as a second title.
                 HStack {
                     Text(verbatim: step.appName)
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(viewModel.colorPalette.textColor)
+                        .font(.system(size: 12))
+                        .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                     Spacer(minLength: 8)
                     Text(localized(.nowKey))
                         .font(.system(size: 12))
                         .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
                 }
                 Text(localized(banner.title))
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(viewModel.colorPalette.textColor)
                 Text(localized(banner.body))
-                    .font(.system(size: 12))
-                    .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                    .font(.system(size: 14))
+                    .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.75))
                     .lineLimit(2)
             }
         }
