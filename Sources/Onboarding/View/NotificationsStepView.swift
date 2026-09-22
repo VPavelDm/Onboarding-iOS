@@ -18,24 +18,23 @@ struct NotificationsStepView: View {
         VStack(spacing: 0) {
             headerSection
                 .opacity(showsHeader ? 1 : 0)
-                .padding(.horizontal)
-            Spacer(minLength: .stackTopGap)
+            // The stack is the only thing between the copy and the buttons, so it takes the
+            // middle of what they leave rather than sitting a third of the way down it.
+            Spacer(minLength: .stackGap)
             bannerStack
-                .padding(.horizontal)
-            Spacer()
-            Spacer()
+            Spacer(minLength: .stackGap)
             buttons
                 .opacity(showsButton ? 1 : 0)
-                .padding(.horizontal)
         }
-        .padding(.vertical)
+        .padding(.horizontal, UIConstants.hScreenPadding)
+        .padding(.bottom, UIConstants.vScreenPadding)
         .task { await reveal() }
     }
 
     // MARK: - Header
 
     private var headerSection: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: UIConstants.headingSpacing) {
             Text(localized(step.title))
                 .font(.title)
                 .fontWeight(.bold)
@@ -155,7 +154,7 @@ struct NotificationsStepView: View {
     // MARK: - Buttons
 
     private var buttons: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: UIConstants.buttonsSpacing) {
             AsyncButton {
                 await viewModel.onAnswer(answers: [allowAnswer])
             } label: {
@@ -203,10 +202,11 @@ private extension CGFloat {
 
     /// What the stack reserves for the banner on top, so the layout does not move when the rest
     /// fan out from under it.
-    static let bannerHeight: CGFloat = 92
+    static let bannerHeight: CGFloat = 84
 
-    /// Leaves the stack near the top of the screen, where a notification would arrive.
-    static let stackTopGap: CGFloat = 40
+    /// Keeps the stack clear of the copy above it and the buttons below, however little room a
+    /// small screen leaves.
+    static let stackGap: CGFloat = 32
 
     /// How far a banner sits below the one on top of it, stacked and fanned out.
     static let collapsedSpacing: CGFloat = 10
