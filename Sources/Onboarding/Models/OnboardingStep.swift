@@ -42,6 +42,7 @@ struct OnboardingStep: Sendable, Equatable, Hashable {
         case chipSelect(ChipSelectStep)
         case notifications(NotificationsStep)
         case numberStepper(NumberStepperStep)
+        case reviews(ReviewsStep)
         case unknown
     }
 }
@@ -102,6 +103,7 @@ extension OnboardingStep {
         case .chipSelect(let payload): .chipSelect(ChipSelectStep(response: payload))
         case .notifications(let payload): .notifications(NotificationsStep(response: payload))
         case .numberStepper(let payload): .numberStepper(NumberStepperStep(response: payload))
+        case .reviews(let payload): .reviews(ReviewsStep(response: payload))
         default: .unknown
         }
 

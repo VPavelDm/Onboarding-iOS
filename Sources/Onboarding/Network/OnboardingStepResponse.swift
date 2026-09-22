@@ -101,6 +101,9 @@ struct OnboardingStepResponse: Decodable {
         case "notifications":
             let payload = try container.decode(NotificationsStep.self, forKey: .payload)
             self.type = .notifications(payload)
+        case "reviews":
+            let payload = try container.decode(ReviewsStep.self, forKey: .payload)
+            self.type = .reviews(payload)
         case "numberStepper":
             let payload = try container.decode(NumberStepperStep.self, forKey: .payload)
             self.type = .numberStepper(payload)
@@ -149,6 +152,7 @@ struct OnboardingStepResponse: Decodable {
         case chipSelect(ChipSelectStep)
         case notifications(NotificationsStep)
         case numberStepper(NumberStepperStep)
+        case reviews(ReviewsStep)
         case unknown
     }
 
@@ -322,6 +326,21 @@ struct OnboardingStepResponse: Decodable {
         struct Banner: Decodable {
             let title: String
             let body: String
+        }
+    }
+
+    struct ReviewsStep: Decodable {
+        let title: String
+        let rating: String
+        let ratingCaption: String
+        let buttonTitle: String
+        let reviews: [Review]
+        let nextStepID: StepID?
+
+        struct Review: Decodable {
+            let title: String
+            let body: String
+            let author: String
         }
     }
 

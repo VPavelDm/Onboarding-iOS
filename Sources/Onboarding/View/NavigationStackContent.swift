@@ -72,6 +72,8 @@ struct NavigationStackContent<CustomStepView>: View where CustomStepView: View {
                 NotificationsStepView(step: step)
             case .numberStepper(let step):
                 NumberStepperStepView(step: step)
+            case .reviews(let step):
+                ReviewsStepView(step: step)
             case .chipSelect(let step):
                 ChipSelectStepView(step: step)
             case .unknown, .none:
