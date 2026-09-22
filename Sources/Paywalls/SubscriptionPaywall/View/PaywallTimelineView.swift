@@ -29,7 +29,9 @@ struct PaywallTimelineView: View {
     private let discSize: CGFloat = 28
     private let railWidth: CGFloat = 3
 
-    private var reminderDay: Int { max(1, trialDays - 2) }
+    /// The day before the trial ends — when the store sends its own renewal notice, and the last
+    /// day a cancellation still costs nothing.
+    private var reminderDay: Int { max(1, trialDays - 1) }
 
     private func withDay(_ text: String) -> String {
         text.replacingOccurrences(of: "{day}", with: String(reminderDay))
