@@ -667,6 +667,32 @@ customStepView: { params in
 - The queue waits 1.5 s between words and wraps around at the end.
 - Copy is taken as already-localized strings, so the step adds nothing to your string catalog.
 
+### Ready-made custom step: ritual intro
+
+`RitualIntroStepView` introduces the habit tools your app offers as a grid of numbered cards. Each card shows an SF Symbol with a title and subtitle, and turns over to show its detail when tapped. One card is turned over at a time, and the cards appear one after another.
+
+```swift
+case "ritual_intro":
+    RitualIntroStepView(
+        copy: RitualIntroStepCopy(
+            title: String(localized: "Now: how not to quit."),
+            description: String(localized: "You need a way to come back every day."),
+            buttonTitle: String(localized: "Let's set it up")
+        ),
+        tools: [
+            RitualIntroTool(
+                id: "daily",
+                systemImage: "bell.badge.fill",
+                title: String(localized: "Every day"),
+                subtitle: String(localized: "reminders"),
+                detail: String(localized: "Three times a day: morning, midday, evening.")
+            ),
+            // …
+        ],
+        colorPalette: colors,
+        onClose: { await params() }
+    )
+```
 
 ---
 
@@ -892,6 +918,20 @@ public protocol ListenModeSpeaking: AnyObject {
     func stop()
 }
 public struct ListenModeStepCopy: Sendable { /* title, description, buttonTitle, previousWord, nextWord, play, pause */ }
+
+// Ritual intro custom step
+public struct RitualIntroStepView: View {
+    public init(
+        copy: RitualIntroStepCopy,
+        tools: [RitualIntroTool],
+        colorPalette: ColorPalette,
+        onClose: @escaping () async -> Void
+    )
+}
+public struct RitualIntroTool: Identifiable, Hashable, Sendable {
+    public init(id: String, systemImage: String, title: String, subtitle: String, detail: String)
+}
+public struct RitualIntroStepCopy: Sendable { /* title, description, buttonTitle */ }
 
 // Theming
 public protocol ColorPalette {
