@@ -634,6 +634,40 @@ public struct CustomStepParams: Sendable, Hashable {
 
 `params(...)` calls the delegate's `onAnswer` with the supplied payloads and navigates. Always `await` it — it returns after navigation completes.
 
+### Ready-made custom step: listen mode
+
+`ListenModeStepView` is a custom step the library ships: a short queue of words that plays through itself, with a waveform and play, pause, previous and next controls. Your app supplies the words, the voice that reads them, and the copy. The step plays recorded clips itself and holds the audio session while it is on screen.
+
+```swift
+customStepView: { params in
+    switch params.currentStepID {
+    case "listen_mode":
+        ListenModeStepView(
+            copy: ListenModeStepCopy(
+                title: String(localized: "Learn while your hands are busy."),
+                description: String(localized: "Press play and the words come to you."),
+                buttonTitle: String(localized: "Sounds great"),
+                previousWord: String(localized: "Previous word"),
+                nextWord: String(localized: "Next word"),
+                play: String(localized: "Play"),
+                pause: String(localized: "Pause")
+            ),
+            colorPalette: colors,
+            speaker: MySpeaker(),                       // conforms to ListenModeSpeaking
+            fetchSamples: { await wordsSource.samples() },
+            onClose: { await params() }
+        )
+    default:
+        EmptyView()
+    }
+}
+```
+
+- A `ListenModeSample` with a `clip` URL plays that recording. One without a clip is passed to your `ListenModeSpeaking.speak(_:)`, which should return once the phrase has been spoken.
+- The queue waits 1.5 s between words and wraps around at the end.
+- Copy is taken as already-localized strings, so the step adds nothing to your string catalog.
+
+
 ---
 
 ## Branching
@@ -838,6 +872,26 @@ public struct CustomStepParams: Sendable, Hashable {
         payloads: [UserAnswer.Payload] = []
     ) async
 }
+
+// Listen mode custom step
+public struct ListenModeStepView: View {
+    public init(
+        copy: ListenModeStepCopy,
+        colorPalette: ColorPalette,
+        speaker: ListenModeSpeaking,
+        fetchSamples: @escaping @MainActor () async -> [ListenModeSample],
+        onClose: @escaping () async -> Void
+    )
+}
+public struct ListenModeSample: Identifiable, Hashable, Sendable {
+    public init(id: UUID = UUID(), word: String, translation: String, phrase: String, clip: URL? = nil)
+}
+@MainActor
+public protocol ListenModeSpeaking: AnyObject {
+    func speak(_ text: String) async
+    func stop()
+}
+public struct ListenModeStepCopy: Sendable { /* title, description, buttonTitle, previousWord, nextWord, play, pause */ }
 
 // Theming
 public protocol ColorPalette {

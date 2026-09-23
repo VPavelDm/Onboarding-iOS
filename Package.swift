@@ -56,6 +56,10 @@ let package = Package(
                 .process("Resources")
             ]
         ),
+        .testTarget(
+            name: "OnboardingTests",
+            dependencies: ["Onboarding"]
+        ),
         .target(
             name: "CoreAnalytics",
             dependencies: []
