@@ -39,6 +39,16 @@ public struct PaywallConfiguration: Sendable {
         case pricePerWeek
     }
 
+    /// How the chosen plan tile stands out.
+    public enum PlanSelection: Sendable {
+        /// The accent ring with a faint wash, and the cadence title in the accent.
+        case ring
+        /// The ring over a clearly lighter fill, with the cadence title kept in the
+        /// text colour: an accent title on an accent-washed tile loses contrast, so
+        /// the chosen tile read dimmer than its neighbours.
+        case filled
+    }
+
     /// Which tiles carry a "Save N%" tag.
     public enum SavingsTags: Sendable {
         /// Every plan that is cheaper per day than the priciest one.
@@ -118,6 +128,10 @@ public struct PaywallConfiguration: Sendable {
     /// "Popular" tag and the selection ring. Nil uses the accent pair.
     public var savingsTagBackground: Color?
     public var savingsTagForeground: Color?
+    /// The "Popular" tag's fill and text. Nil uses the accent pair.
+    public var popularTagBackground: Color?
+    public var popularTagForeground: Color?
+    public var planSelection: PlanSelection
     /// A fixed gap between the headline and the feature list or timeline. Nil
     /// splits the spare height between that gap and the one above the plans, which
     /// on a tall phone leaves the headline stranded far above what it introduces;
@@ -184,6 +198,9 @@ public struct PaywallConfiguration: Sendable {
         accentForeground: Color? = nil,
         savingsTagBackground: Color? = nil,
         savingsTagForeground: Color? = nil,
+        popularTagBackground: Color? = nil,
+        popularTagForeground: Color? = nil,
+        planSelection: PlanSelection = .ring,
         headerSpacing: CGFloat? = nil,
         cardBackground: Color? = nil,
         expectsSinglePlan: Bool = false,
@@ -218,6 +235,9 @@ public struct PaywallConfiguration: Sendable {
         self.accentForeground = accentForeground
         self.savingsTagBackground = savingsTagBackground
         self.savingsTagForeground = savingsTagForeground
+        self.popularTagBackground = popularTagBackground
+        self.popularTagForeground = popularTagForeground
+        self.planSelection = planSelection
         self.headerSpacing = headerSpacing
         self.cardBackground = cardBackground
         self.expectsSinglePlan = expectsSinglePlan

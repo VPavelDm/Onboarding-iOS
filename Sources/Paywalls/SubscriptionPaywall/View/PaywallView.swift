@@ -270,6 +270,10 @@ public struct PaywallView: View {
                         accentForeground: accentForeground,
                         savingsBackground: configuration.savingsTagBackground,
                         savingsForeground: configuration.savingsTagForeground,
+                        popularBackground: configuration.popularTagBackground,
+                        popularForeground: configuration.popularTagForeground,
+                        selection: configuration.planSelection,
+                        isCompact: viewModel.plans.count >= 3,
                         onSelect: {
                             withAnimation(.snappy(duration: 0.25)) { viewModel.selectPlan(plan) }
                         }
