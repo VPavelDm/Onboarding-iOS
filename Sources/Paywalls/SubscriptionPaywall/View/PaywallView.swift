@@ -239,7 +239,7 @@ public struct PaywallView: View {
         HStack(spacing: 5) {
             Image(systemName: systemImage)
                 .font(.caption.weight(.bold))
-                .foregroundStyle(accent)
+                .foregroundStyle(configuration.storeAssuranceIconColor ?? accent)
             label
         }
     }

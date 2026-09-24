@@ -167,6 +167,8 @@ public struct PaywallConfiguration: Sendable {
     /// Pairs "Cancel anytime" with "Secured by App Store" under the CTA, each with a
     /// small glyph, for a paywall that wants its reassurance to read as a trust line.
     public var showsStoreAssurance: Bool
+    /// The colour of those two glyphs. Nil uses the accent.
+    public var storeAssuranceIconColor: Color?
 
     public enum FeatureIconStyle: Sendable {
         case filled
@@ -209,7 +211,8 @@ public struct PaywallConfiguration: Sendable {
         featuredPeriod: PaywallPlan.Period? = nil,
         planNote: PlanNote = .billedCadence,
         savingsTags: SavingsTags = .everyCheaperPlan,
-        showsStoreAssurance: Bool = false
+        showsStoreAssurance: Bool = false,
+        storeAssuranceIconColor: Color? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -247,5 +250,6 @@ public struct PaywallConfiguration: Sendable {
         self.planNote = planNote
         self.savingsTags = savingsTags
         self.showsStoreAssurance = showsStoreAssurance
+        self.storeAssuranceIconColor = storeAssuranceIconColor
     }
 }

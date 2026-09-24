@@ -18,7 +18,8 @@ paywall can sell three plans; every default keeps today's paywall exactly as it 
   a small saving on a middle tile doesn't compete with the real one.
 - `Feature(icon:)` — an SF Symbol per feature row in place of the checkmark.
 - `titleHighlight` — a word of the headline (typically the app's name) drawn in the accent.
-- `showsStoreAssurance` — "✓ Cancel anytime · Secured by App Store" under the CTA.
+- `showsStoreAssurance` — "✓ Cancel anytime · Secured by App Store" under the CTA, with
+  `storeAssuranceIconColor` for its two glyphs (the accent by default).
 - `accent` / `accentForeground` — the ring, tags, row discs, header mark and title
   highlight used to follow the CTA colours; these decouple them, so a white CTA no longer
   turns the selection ring white. Nil keeps following the CTA.
