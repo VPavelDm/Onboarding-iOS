@@ -31,7 +31,8 @@ struct PaywallMark: View {
 /// A row icon on the feature list and the trial timeline: `.filled` is a solid
 /// disc of the accent with the CTA's label colour on it, `.tinted` the same
 /// translucent treatment as `PaywallMark`, so the mark, the rows and the plan
-/// tiles read as one system and the CTA stays the only solid slab of accent.
+/// tiles read as one system and the CTA stays the only solid slab of accent;
+/// `.glyph` is the symbol alone, sized up to hold the row without a disc.
 struct PaywallIconDisc: View {
     let systemImage: String
     let tint: Color
@@ -48,10 +49,18 @@ struct PaywallIconDisc: View {
                 Circle()
                     .fill(tint.opacity(0.14))
                     .overlay(Circle().strokeBorder(tint.opacity(0.35), lineWidth: 1))
+            case .glyph:
+                EmptyView()
             }
-            Image(systemName: systemImage)
-                .font(.system(size: size * 0.43, weight: .bold))
-                .foregroundStyle(style == .filled ? foreground : tint)
+            if style == .glyph {
+                Image(systemName: systemImage)
+                    .font(.system(size: size * 0.72, weight: .regular))
+                    .foregroundStyle(tint)
+            } else {
+                Image(systemName: systemImage)
+                    .font(.system(size: size * 0.43, weight: .bold))
+                    .foregroundStyle(style == .filled ? foreground : tint)
+            }
         }
         .frame(width: size, height: size)
     }

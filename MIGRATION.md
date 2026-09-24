@@ -1,3 +1,56 @@
+# Migrating from 3.1 to 3.2
+
+**No action required.** 3.2 adds opt-in `PaywallConfiguration` fields so the subscription
+paywall can sell three plans; every default keeps today's paywall exactly as it is.
+
+## What's new on `PaywallView`
+
+- **Three plans** — the selector already drew one tile per plan in the placement; tile
+  prices now shrink rather than wrap, so three fit side by side. Order them in the store
+  placement (e.g. month, week, year to put the featured week in the middle).
+- `featuredPeriod` — the plan of that cadence is selected when the paywall opens (over the
+  trial / longest-cadence default) and tagged **"Popular"**.
+- `planNote: .pricePerWeek` — each tile's note reads "$4.61/week" instead of "Billed
+  monthly". A month counts as 52/12 weeks. Needs `PaywallPlan.priceLocale`, which the
+  Adapty and RevenueCat services now fill from the product; a plan without it (or a
+  lifetime plan) falls back to its billed cadence.
+- `savingsTags: .biggestSavingOnly` — only the plan that saves the most says "Save N%", so
+  a small saving on a middle tile doesn't compete with the real one.
+- `Feature(icon:)` — an SF Symbol per feature row in place of the checkmark.
+- `titleHighlight` — a word of the headline (typically the app's name) drawn in the accent.
+- `showsStoreAssurance` — "✓ Cancel anytime · Secured by App Store" under the CTA, with
+  `storeAssuranceIconColor` for its two glyphs (the accent by default).
+- `accent` / `accentForeground` — the ring, tags, row discs, header mark and title
+  highlight used to follow the CTA colours; these decouple them, so a white CTA no longer
+  turns the selection ring white. Nil keeps following the CTA.
+- `savingsTagBackground` / `savingsTagForeground` — give "Save N%" its own colour, apart
+  from "Popular" and the ring.
+- `featureIconStyle: .glyph` — the row symbol alone, larger, in the accent, with no disc.
+  The trial timeline keeps a (tinted) disc, since its rail needs something to connect.
+- `headerSpacing` — a fixed gap between the headline and the pitch; the spare height moves
+  above the headline and above the plans instead of opening up under the headline.
+- `planSelection: .filled` — the chosen tile takes a clearly lighter fill and keeps its
+  cadence title in the text colour (an accent title on an accent wash lost contrast).
+- `popularTagBackground` / `popularTagForeground` — the "Popular" tag's own colours.
+- With three or more plans the tile price drops a size so it doesn't run edge to edge.
+- `.paywallCTAButtonStyle(_:)` — a view modifier that draws the CTA with the host's own
+  `ButtonStyle` (its design-system button) instead of the library's solid slab.
+
+`PaywallPlan` gains `priceLocale: Locale?` (defaulted, so custom `PaywallServiceProtocol`
+implementations keep compiling). Pass the product's price locale to get per-week prices
+formatted like the price itself.
+
+Three new library strings (`Popular`, `Secured by App Store`, `%@/week`) ship in all 18
+languages.
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "3.2.0")
+```
+
+---
+
 # Migrating from 2.9 to 2.10
 
 **No action required.** 2.10 refines the subscription paywall's layout and adds two

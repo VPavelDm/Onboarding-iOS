@@ -16,8 +16,19 @@ struct PaywallCTAButtonStyle: ButtonStyle {
 
     var background: Color?
     var foreground: Color?
+    /// The host's own style from `paywallCTAButtonStyle(_:)`; wins when set.
+    var custom: PaywallCustomCTAStyle?
 
+    @ViewBuilder
     func makeBody(configuration: Configuration) -> some View {
+        if let custom {
+            custom.makeBody(configuration: configuration)
+        } else {
+            slab(configuration)
+        }
+    }
+
+    private func slab(_ configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 17, weight: .semibold))
             .foregroundStyle(foreground ?? Color.primary)

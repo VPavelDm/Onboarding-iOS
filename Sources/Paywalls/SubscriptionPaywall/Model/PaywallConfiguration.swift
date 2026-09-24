@@ -18,11 +18,44 @@ public struct PaywallConfiguration: Sendable {
     public struct Feature: Hashable, Sendable {
         public let title: String
         public let subtitle: String
+        /// An SF Symbol for the row's disc (`"mic"`, say). Nil draws the checkmark,
+        /// as before 3.2; a list reads best with a symbol on every row or none.
+        public let icon: String?
 
-        public init(title: String, subtitle: String) {
+        public init(title: String, subtitle: String, icon: String? = nil) {
             self.title = title
             self.subtitle = subtitle
+            self.icon = icon
         }
+    }
+
+    /// The line under each tile's price.
+    public enum PlanNote: Sendable {
+        /// "Billed monthly" — the cadence.
+        case billedCadence
+        /// "$4.61/week" — the price normalised to a week, so tiles of different
+        /// cadences compare at a glance. A plan without a currency code or a
+        /// cadence (lifetime) falls back to its billed cadence.
+        case pricePerWeek
+    }
+
+    /// How the chosen plan tile stands out.
+    public enum PlanSelection: Sendable {
+        /// The accent ring with a faint wash, and the cadence title in the accent.
+        case ring
+        /// The ring over a clearly lighter fill, with the cadence title kept in the
+        /// text colour: an accent title on an accent-washed tile loses contrast, so
+        /// the chosen tile read dimmer than its neighbours.
+        case filled
+    }
+
+    /// Which tiles carry a "Save N%" tag.
+    public enum SavingsTags: Sendable {
+        /// Every plan that is cheaper per day than the priciest one.
+        case everyCheaperPlan
+        /// Only the plan that saves the most: with three tiles a small saving on
+        /// the middle one ("Save 6%") competes with the real one.
+        case biggestSavingOnly
     }
 
     /// An SF Symbol drawn above the headline as a haloed disc in the CTA colour
@@ -32,6 +65,9 @@ public struct PaywallConfiguration: Sendable {
     public var headerSymbol: String?
     /// The headline. Defaults to a localized "Unlock your full plan".
     public var title: String
+    /// A word of the headline drawn in the accent — typically the app's name, which
+    /// every translation keeps literally. Nil, or a word the title lacks, tints nothing.
+    public var titleHighlight: String?
     /// An optional line under the headline, for copy that ties the features to the
     /// price (e.g. "All three come with Futura Forever.").
     public var subtitle: String?
@@ -82,6 +118,25 @@ public struct PaywallConfiguration: Sendable {
     /// The CTA's fill and label colors. Default to the accent color and `.primary`.
     public var ctaBackground: Color?
     public var ctaForeground: Color?
+    /// The colour of the selection ring, the tile tags, the feature and timeline
+    /// discs, the header mark and the title highlight, with `accentForeground` for
+    /// text on it. Nil follows the CTA colours, as before 3.2 — set these when the
+    /// CTA is a neutral slab (white on a dark page) that would wash the ring out.
+    public var accent: Color?
+    public var accentForeground: Color?
+    /// The "Save N%" tag's fill and text, so the saving reads apart from the
+    /// "Popular" tag and the selection ring. Nil uses the accent pair.
+    public var savingsTagBackground: Color?
+    public var savingsTagForeground: Color?
+    /// The "Popular" tag's fill and text. Nil uses the accent pair.
+    public var popularTagBackground: Color?
+    public var popularTagForeground: Color?
+    public var planSelection: PlanSelection
+    /// A fixed gap between the headline and the feature list or timeline. Nil
+    /// splits the spare height between that gap and the one above the plans, which
+    /// on a tall phone leaves the headline stranded far above what it introduces;
+    /// set it and the spare height goes above the headline and above the plans.
+    public var headerSpacing: CGFloat?
     /// A solid fill for the single-plan price card (e.g. white on a cream backdrop).
     /// When nil the card gets the same material treatment as the plan tiles.
     public var cardBackground: Color?
@@ -98,17 +153,33 @@ public struct PaywallConfiguration: Sendable {
     /// drawn. `.filled` is a solid disc in the CTA colour with the CTA's label
     /// colour on it; `.tinted` is a translucent disc of that colour with the
     /// glyph in it, the same treatment as the header mark, for hosts whose
-    /// accent is loud enough that four solid discs compete with the CTA.
+    /// accent is loud enough that four solid discs compete with the CTA;
+    /// `.glyph` drops the disc and draws the symbol itself, larger, in the
+    /// accent — for rows whose own symbols carry the meaning. The timeline keeps
+    /// a disc under `.glyph` (`.tinted`): its rail needs something to connect.
     public var featureIconStyle: FeatureIconStyle
+    /// The plan to sell: selected when the paywall opens, over the library's own pick
+    /// (the trial plan, else the longest cadence), and tagged "Popular". Nil keeps the
+    /// library's pick and no such tag.
+    public var featuredPeriod: PaywallPlan.Period?
+    public var planNote: PlanNote
+    public var savingsTags: SavingsTags
+    /// Pairs "Cancel anytime" with "Secured by App Store" under the CTA, each with a
+    /// small glyph, for a paywall that wants its reassurance to read as a trust line.
+    public var showsStoreAssurance: Bool
+    /// The colour of those two glyphs. Nil uses the accent.
+    public var storeAssuranceIconColor: Color?
 
     public enum FeatureIconStyle: Sendable {
         case filled
         case tinted
+        case glyph
     }
 
     public init(
         headerSymbol: String? = nil,
         title: String? = nil,
+        titleHighlight: String? = nil,
         subtitle: String? = nil,
         features: [Feature],
         trialUnlockBody: String,
@@ -125,13 +196,27 @@ public struct PaywallConfiguration: Sendable {
         textColor: Color = .white,
         ctaBackground: Color? = nil,
         ctaForeground: Color? = nil,
+        accent: Color? = nil,
+        accentForeground: Color? = nil,
+        savingsTagBackground: Color? = nil,
+        savingsTagForeground: Color? = nil,
+        popularTagBackground: Color? = nil,
+        popularTagForeground: Color? = nil,
+        planSelection: PlanSelection = .ring,
+        headerSpacing: CGFloat? = nil,
         cardBackground: Color? = nil,
         expectsSinglePlan: Bool = false,
         featureAlignment: VerticalAlignment = .top,
-        featureIconStyle: FeatureIconStyle = .filled
+        featureIconStyle: FeatureIconStyle = .filled,
+        featuredPeriod: PaywallPlan.Period? = nil,
+        planNote: PlanNote = .billedCadence,
+        savingsTags: SavingsTags = .everyCheaperPlan,
+        showsStoreAssurance: Bool = false,
+        storeAssuranceIconColor: Color? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
+        self.titleHighlight = titleHighlight
         self.subtitle = subtitle
         self.features = features
         self.trialUnlockBody = trialUnlockBody
@@ -149,9 +234,22 @@ public struct PaywallConfiguration: Sendable {
         self.textColor = textColor
         self.ctaBackground = ctaBackground
         self.ctaForeground = ctaForeground
+        self.accent = accent
+        self.accentForeground = accentForeground
+        self.savingsTagBackground = savingsTagBackground
+        self.savingsTagForeground = savingsTagForeground
+        self.popularTagBackground = popularTagBackground
+        self.popularTagForeground = popularTagForeground
+        self.planSelection = planSelection
+        self.headerSpacing = headerSpacing
         self.cardBackground = cardBackground
         self.expectsSinglePlan = expectsSinglePlan
         self.featureAlignment = featureAlignment
         self.featureIconStyle = featureIconStyle
+        self.featuredPeriod = featuredPeriod
+        self.planNote = planNote
+        self.savingsTags = savingsTags
+        self.showsStoreAssurance = showsStoreAssurance
+        self.storeAssuranceIconColor = storeAssuranceIconColor
     }
 }

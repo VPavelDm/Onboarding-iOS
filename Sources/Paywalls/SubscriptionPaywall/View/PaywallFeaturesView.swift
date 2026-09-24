@@ -24,7 +24,7 @@ struct PaywallFeaturesView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             ForEach(features, id: \.self) { feature in
-                featureRow(title: feature.title, subtitle: feature.subtitle)
+                featureRow(feature)
             }
         }
         .padding(.horizontal, 4)
@@ -33,23 +33,23 @@ struct PaywallFeaturesView: View {
     /// An empty subtitle is dropped rather than drawn: an empty `Text` still
     /// takes a line's height, which pushed the checkmark off the label on a
     /// host whose rows are titles only.
-    private func featureRow(title: String, subtitle: String) -> some View {
+    private func featureRow(_ feature: PaywallConfiguration.Feature) -> some View {
         HStack(alignment: alignment, spacing: 12) {
             // 28 pt, down from 36: at 36 the four discs outweighed the 17 pt
             // labels beside them and the list read as a column of buttons.
             PaywallIconDisc(
-                systemImage: "checkmark",
+                systemImage: feature.icon ?? "checkmark",
                 tint: accent ?? Color.accentColor,
                 foreground: accentForeground,
                 style: iconStyle
             )
             VStack(alignment: .leading, spacing: 3) {
-                Text(title)
+                Text(feature.title)
                     .font(.headline)
                     .foregroundStyle(textColor)
                     .fixedSize(horizontal: false, vertical: true)
-                if !subtitle.isEmpty {
-                    Text(subtitle)
+                if !feature.subtitle.isEmpty {
+                    Text(feature.subtitle)
                         .font(.subheadline)
                         .foregroundStyle(textColor.opacity(0.7))
                         .fixedSize(horizontal: false, vertical: true)

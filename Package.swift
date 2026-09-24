@@ -87,6 +87,10 @@ let package = Package(
                 "CoreAnalytics"
             ]
         ),
+        .testTarget(
+            name: "PaywallsTests",
+            dependencies: ["Paywalls"]
+        ),
         .target(
             name: "PaywallsRC",
             dependencies: [

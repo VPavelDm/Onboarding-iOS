@@ -8,9 +8,9 @@
 import SwiftUI
 
 /// Owns the paywall state: the offerings, the selected plan, and the purchase/restore
-/// flow. The default selection is the plan that offers a free trial (if any),
-/// otherwise the best-value plan. All store work goes through the injected service;
-/// analytics through the injected `track` closure.
+/// flow. The default selection is the host's featured plan, else the plan that offers
+/// a free trial (if any), else the best-value plan. All store work goes through the
+/// injected service; analytics through the injected `track` closure.
 @MainActor
 @Observable
 public final class PaywallViewModel {
@@ -29,6 +29,10 @@ public final class PaywallViewModel {
     var purchaseError: String?
     var showRestoreFailedAlert = false
     var showPendingApprovalAlert = false
+
+    /// The host's plan choices from `PaywallConfiguration`, handed over by the view.
+    private var featuredPeriod: PaywallPlan.Period?
+    private var savingsTags: PaywallConfiguration.SavingsTags = .everyCheaperPlan
 
     var hasOfferings: Bool { offerings != nil }
     var plans: [PaywallPlan] { offerings?.plans ?? [] }
@@ -54,8 +58,18 @@ public final class PaywallViewModel {
         return String(localized: "Start my free trial", bundle: .module)
     }
 
-    func savingsPercent(for plan: PaywallPlan) -> Int? {
-        offerings?.savingsPercent(for: plan)
+    /// The featured plan says "Popular"; otherwise a plan that saves says by how
+    /// much, unless the host keeps that tag to the biggest saving.
+    func tag(for plan: PaywallPlan) -> PaywallPlanTag? {
+        if plan.period == featuredPeriod { return .popular }
+        guard let offerings, let percent = offerings.savingsPercent(for: plan) else { return nil }
+        if savingsTags == .biggestSavingOnly, !offerings.isBiggestSaving(plan) { return nil }
+        return .savings(percent)
+    }
+
+    func configure(with configuration: PaywallConfiguration) {
+        featuredPeriod = configuration.featuredPeriod
+        savingsTags = configuration.savingsTags
     }
 
     func isSelected(_ plan: PaywallPlan) -> Bool { plan.id == selectedPlanID }
@@ -103,7 +117,7 @@ public final class PaywallViewModel {
 
     private func apply(_ offerings: PaywallOfferings) {
         self.offerings = offerings
-        if selectedPlanID == nil { selectedPlanID = offerings.defaultPlan?.id }
+        if selectedPlanID == nil { selectedPlanID = offerings.defaultPlan(featuring: featuredPeriod)?.id }
     }
 
     func selectPlan(_ plan: PaywallPlan) {
