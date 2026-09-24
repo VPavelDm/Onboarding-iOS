@@ -35,6 +35,7 @@ public struct PaywallView: View {
         dismiss: PaywallDismissBehavior? = nil,
         onUnlocked: @escaping () -> Void
     ) {
+        viewModel.configure(with: configuration)
         _viewModel = State(initialValue: viewModel)
         _showCloseButton = State(initialValue: (dismiss?.closeButtonDelay ?? .zero) <= .zero)
         self.configuration = configuration
@@ -127,7 +128,7 @@ public struct PaywallView: View {
                 PaywallMark(systemImage: symbol, tint: accent, size: 96)
                     .padding(.bottom, 18)
             }
-            Text(configuration.title)
+            Text(title)
                 .font(.largeTitle.weight(.bold))
                 .foregroundStyle(configuration.textColor)
                 .multilineTextAlignment(.center)
@@ -145,7 +146,16 @@ public struct PaywallView: View {
         }
     }
 
-    private var accent: Color { configuration.ctaBackground ?? .accentColor }
+    private var title: AttributedString {
+        var title = AttributedString(configuration.title)
+        if let word = configuration.titleHighlight, let range = title.range(of: word) {
+            title[range].foregroundColor = accent
+        }
+        return title
+    }
+
+    private var accent: Color { configuration.accent ?? configuration.ctaBackground ?? .accentColor }
+    private var accentForeground: Color { configuration.accentForeground ?? configuration.ctaForeground ?? .white }
 
     /// Both variants stay mounted and only cross-fade: the ZStack keeps the taller
     /// view's height, so switching plans never shifts the layout below.
@@ -155,8 +165,8 @@ public struct PaywallView: View {
                 features: configuration.features,
                 alignment: configuration.featureAlignment,
                 textColor: configuration.textColor,
-                accent: configuration.ctaBackground,
-                accentForeground: configuration.ctaForeground ?? .white,
+                accent: accent,
+                accentForeground: accentForeground,
                 iconStyle: configuration.featureIconStyle
             )
             .opacity(viewModel.selectedHasTrial ? 0 : 1)
@@ -166,8 +176,8 @@ public struct PaywallView: View {
                     unlockBody: configuration.trialUnlockBody,
                     trialEndBody: configuration.trialEndBody,
                     textColor: configuration.textColor,
-                    accent: configuration.ctaBackground,
-                    accentForeground: configuration.ctaForeground ?? .white,
+                    accent: accent,
+                    accentForeground: accentForeground,
                     iconStyle: configuration.featureIconStyle,
                     midTitle: configuration.trialMidTitle,
                     midBody: configuration.trialMidBody,
@@ -194,10 +204,35 @@ public struct PaywallView: View {
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(configuration.textColor.opacity(0.85))
                 .opacity(viewModel.selectedHasTrial ? 1 : 0)
+            cancelAnytime
+                .opacity(viewModel.selectedHasTrial ? 0 : 1)
+        }
+    }
+
+    @ViewBuilder
+    private var cancelAnytime: some View {
+        if configuration.showsStoreAssurance {
+            HStack(spacing: 16) {
+                assurance(Text("Cancel anytime", bundle: .module), systemImage: "checkmark")
+                assurance(Text("Secured by App Store", bundle: .module), systemImage: "checkmark.shield")
+            }
+            .font(.footnote.weight(.medium))
+            .foregroundStyle(configuration.textColor.opacity(0.7))
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+        } else {
             Text("Cancel anytime", bundle: .module)
                 .font(.footnote.weight(.medium))
                 .foregroundStyle(configuration.textColor.opacity(0.55))
-                .opacity(viewModel.selectedHasTrial ? 0 : 1)
+        }
+    }
+
+    private func assurance(_ label: Text, systemImage: String) -> some View {
+        HStack(spacing: 5) {
+            Image(systemName: systemImage)
+                .font(.caption.weight(.bold))
+                .foregroundStyle(accent)
+            label
         }
     }
 
@@ -220,11 +255,12 @@ public struct PaywallView: View {
                     PaywallPlanTile(
                         plan: plan,
                         isSelected: viewModel.isSelected(plan),
-                        savingsPercent: viewModel.savingsPercent(for: plan),
+                        tag: viewModel.tag(for: plan),
+                        noteStyle: configuration.planNote,
                         selectionNamespace: selectionNamespace,
                         textColor: configuration.textColor,
-                        accent: configuration.ctaBackground,
-                        accentForeground: configuration.ctaForeground ?? .white,
+                        accent: accent,
+                        accentForeground: accentForeground,
                         onSelect: {
                             withAnimation(.snappy(duration: 0.25)) { viewModel.selectPlan(plan) }
                         }

@@ -45,6 +45,16 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
             }
         }
 
+        /// Length in weeks, for the per-week price; nil for lifetime.
+        var weeks: Double? {
+            switch self {
+            case .weekly: 1
+            case .monthly: 52.0 / 12
+            case .yearly: 52
+            case .lifetime: nil
+            }
+        }
+
         /// Display order (shortest → longest) and "longer = better value" ranking.
         var rank: Int {
             switch self {
@@ -65,6 +75,11 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
     /// The product's store display name (e.g. "Futura Forever"), shown on the
     /// single-plan price card. Falls back to the period title when nil.
     public let localizedTitle: String?
+    /// The storefront locale the store formats this product's price in (currency and
+    /// number style). Needed to phrase a derived price such as the per-week figure the
+    /// way `localizedPrice` reads — the device's own region can differ ("4,99 US$"
+    /// under "$4.99"). Nil hides those figures.
+    public let priceLocale: Locale?
 
     public init(
         id: String,
@@ -72,7 +87,8 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
         price: Double,
         localizedPrice: String,
         freeTrialDays: Int?,
-        localizedTitle: String? = nil
+        localizedTitle: String? = nil,
+        priceLocale: Locale? = nil
     ) {
         self.id = id
         self.period = period
@@ -80,10 +96,20 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
         self.localizedPrice = localizedPrice
         self.freeTrialDays = freeTrialDays
         self.localizedTitle = localizedTitle
+        self.priceLocale = priceLocale
     }
 
     public var hasFreeTrial: Bool { freeTrialDays != nil }
 
     /// Price normalised per day, for comparing plans of different cadences.
     var pricePerDay: Double { price / period.days }
+
+    /// What the plan costs per week, formatted like `localizedPrice` ("$0.96"), or nil
+    /// when there is no storefront locale to format in or no cadence to divide by. A
+    /// month counts as 52/12 weeks, the way stores quote it, rather than the 30 days
+    /// the savings math uses.
+    var localizedPricePerWeek: String? {
+        guard let priceLocale, let currency = priceLocale.currency, let weeks = period.weeks else { return nil }
+        return (price / weeks).formatted(.currency(code: currency.identifier).locale(priceLocale))
+    }
 }

@@ -110,7 +110,8 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
             price: NSDecimalNumber(decimal: product.price).doubleValue,
             localizedPrice: product.localizedPrice ?? "—",
             freeTrialDays: freeTrialDays(of: product),
-            localizedTitle: product.localizedTitle
+            localizedTitle: product.localizedTitle,
+            priceLocale: product.priceLocale
         )
     }
 

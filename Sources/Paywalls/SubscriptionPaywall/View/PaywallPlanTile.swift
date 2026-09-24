@@ -8,15 +8,16 @@
 import SwiftUI
 
 /// A selectable plan card: cadence title, price, and a note — the trial length
-/// when the plan has one, the billing cadence otherwise — with an optional
-/// savings tag on its top edge. The selection ring slides between tiles via
-/// matched geometry and the selected tile takes a wash of the accent.
+/// when the plan has one, otherwise the billing cadence or the per-week price —
+/// with an optional tag ("Popular", "Save 81%") on its top edge. The selection
+/// ring slides between tiles via matched geometry and the selected tile takes a
+/// wash of the accent.
 struct PaywallPlanTile: View {
 
     let plan: PaywallPlan
     let isSelected: Bool
-    /// Whole-number saving against the priciest plan per day, or nil for no tag.
-    let savingsPercent: Int?
+    let tag: PaywallPlanTag?
+    var noteStyle: PaywallConfiguration.PlanNote = .billedCadence
     let selectionNamespace: Namespace.ID
     var textColor: Color = .white
     /// The host's accent for the ring, the wash and the tag; nil falls back to
@@ -63,7 +64,7 @@ struct PaywallPlanTile: View {
                     .matchedGeometryEffect(id: Self.ringID, in: selectionNamespace)
             }
         }
-        .overlay(alignment: .top) { tag }
+        .overlay(alignment: .top) { tagLabel }
         .animation(.easeOut(duration: 0.2), value: isSelected)
     }
 
@@ -79,11 +80,15 @@ struct PaywallPlanTile: View {
             .foregroundStyle(isSelected ? tint : textColor.opacity(0.7))
     }
 
+    /// Shrinks rather than wraps: three tiles leave a long local price ("1.299,00 ₽")
+    /// under 100 pt.
     private var price: some View {
         Text(plan.localizedPrice)
             .font(.title2.weight(.bold))
             .monospacedDigit()
             .foregroundStyle(textColor)
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
     }
 
     /// A trial is the one thing that sets two plans apart beyond the price, so
@@ -96,6 +101,13 @@ struct PaywallPlanTile: View {
             Text("\(days)-day free trial", bundle: .module)
                 .font(.footnote.weight(.medium))
                 .foregroundStyle(isSelected ? tint : textColor.opacity(0.7))
+        } else if noteStyle == .pricePerWeek, let perWeek = plan.localizedPricePerWeek {
+            Text("\(perWeek)/week", bundle: .module)
+                .font(.footnote)
+                .monospacedDigit()
+                .foregroundStyle(textColor.opacity(0.55))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         } else {
             Text(plan.period.billedCadence)
                 .font(.footnote)
@@ -103,20 +115,29 @@ struct PaywallPlanTile: View {
         }
     }
 
-    /// Rides the tile's top edge, centred, and says "Save 87%" in the locale's
-    /// own percent form: the locale-formatted "-87 %" it replaced read as a
-    /// price drop, not a saving.
+    /// Rides the tile's top edge, centred. A saving reads "Save 87%" in the
+    /// locale's own percent form: the locale-formatted "-87 %" it replaced read
+    /// as a price drop, not a saving.
     @ViewBuilder
-    private var tag: some View {
-        if let savingsPercent {
-            let formatted = (Double(savingsPercent) / 100).formatted(.percent.precision(.fractionLength(0)))
-            Text("Save \(formatted)", bundle: .module)
+    private var tagLabel: some View {
+        if let tag {
+            tagText(tag)
                 .font(.caption2.weight(.bold))
                 .foregroundStyle(accentForeground)
+                .lineLimit(1)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
                 .background(tint, in: .capsule)
                 .offset(y: -11)
+        }
+    }
+
+    private func tagText(_ tag: PaywallPlanTag) -> Text {
+        switch tag {
+        case .popular:
+            Text("Popular", bundle: .module)
+        case .savings(let percent):
+            Text("Save \((Double(percent) / 100).formatted(.percent.precision(.fractionLength(0))))", bundle: .module)
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// The plans offered on the paywall (typically two), ordered as configured in the
+/// The plans offered on the paywall (two or three), ordered as configured in the
 /// store placement.
 public struct PaywallOfferings: Hashable, Sendable {
     public let plans: [PaywallPlan]
@@ -31,6 +31,20 @@ public struct PaywallOfferings: Hashable, Sendable {
 
     /// The plan selected by default: the trial plan if any, otherwise the best value.
     var defaultPlan: PaywallPlan? { trialPlan ?? bestValuePlan }
+
+    /// The host's featured plan when the offering has one of that cadence, otherwise
+    /// the library's default.
+    func defaultPlan(featuring period: PaywallPlan.Period?) -> PaywallPlan? {
+        plans.first { $0.period == period } ?? defaultPlan
+    }
+
+    /// Whether `plan` saves the most of all plans — ties go to the first listed.
+    func isBiggestSaving(_ plan: PaywallPlan) -> Bool {
+        let best = plans
+            .compactMap { candidate in savingsPercent(for: candidate).map { (candidate, $0) } }
+            .max { $0.1 < $1.1 }
+        return best?.0.id == plan.id
+    }
 
     /// The priciest-per-day plan, used as the baseline for savings percentages.
     private var baselinePlan: PaywallPlan? {

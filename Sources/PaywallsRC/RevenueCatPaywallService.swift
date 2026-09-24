@@ -67,7 +67,8 @@ public final class RevenueCatPaywallService: PaywallServiceProtocol {
             price: (product.price as NSDecimalNumber).doubleValue,
             localizedPrice: product.localizedPriceString,
             freeTrialDays: freeTrialDays(of: product),
-            localizedTitle: product.localizedTitle
+            localizedTitle: product.localizedTitle,
+            priceLocale: product.priceFormatter?.locale
         )
     }
 
