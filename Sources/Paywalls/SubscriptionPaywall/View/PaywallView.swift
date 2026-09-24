@@ -89,10 +89,17 @@ public struct PaywallView: View {
                     // With a mark the header is the tallest block on the page,
                     // so it starts lower and the mark sits below the status bar
                     // rather than beside the corner close.
-                    header
-                        .padding(.top, configuration.headerSymbol == nil ? 44 : 56)
-                    Spacer(minLength: 24)
-                    planContext
+                    if let gap = configuration.headerSpacing {
+                        Spacer(minLength: configuration.headerSymbol == nil ? 44 : 56)
+                        header
+                        planContext
+                            .padding(.top, gap)
+                    } else {
+                        header
+                            .padding(.top, configuration.headerSymbol == nil ? 44 : 56)
+                        Spacer(minLength: 24)
+                        planContext
+                    }
                     Spacer(minLength: 24)
                     planSelector
                     ctaButton
@@ -261,6 +268,8 @@ public struct PaywallView: View {
                         textColor: configuration.textColor,
                         accent: accent,
                         accentForeground: accentForeground,
+                        savingsBackground: configuration.savingsTagBackground,
+                        savingsForeground: configuration.savingsTagForeground,
                         onSelect: {
                             withAnimation(.snappy(duration: 0.25)) { viewModel.selectPlan(plan) }
                         }

@@ -26,6 +26,9 @@ struct PaywallPlanTile: View {
     var accent: Color? = nil
     /// Text colour on the tag when `accent` is light (black on neon, say).
     var accentForeground: Color = .white
+    /// The saving tag's own fill and text; nil uses the accent pair.
+    var savingsBackground: Color? = nil
+    var savingsForeground: Color? = nil
     let onSelect: () -> Void
 
     private let cornerRadius: CGFloat = 18
@@ -121,13 +124,14 @@ struct PaywallPlanTile: View {
     @ViewBuilder
     private var tagLabel: some View {
         if let tag {
+            let isSaving = if case .savings = tag { true } else { false }
             tagText(tag)
                 .font(.caption2.weight(.bold))
-                .foregroundStyle(accentForeground)
+                .foregroundStyle(isSaving ? savingsForeground ?? accentForeground : accentForeground)
                 .lineLimit(1)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
-                .background(tint, in: .capsule)
+                .background(isSaving ? savingsBackground ?? tint : tint, in: .capsule)
                 .offset(y: -11)
         }
     }

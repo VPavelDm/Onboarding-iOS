@@ -22,6 +22,12 @@ paywall can sell three plans; every default keeps today's paywall exactly as it 
 - `accent` / `accentForeground` — the ring, tags, row discs, header mark and title
   highlight used to follow the CTA colours; these decouple them, so a white CTA no longer
   turns the selection ring white. Nil keeps following the CTA.
+- `savingsTagBackground` / `savingsTagForeground` — give "Save N%" its own colour, apart
+  from "Popular" and the ring.
+- `featureIconStyle: .glyph` — the row symbol alone, larger, in the accent, with no disc.
+  The trial timeline keeps a (tinted) disc, since its rail needs something to connect.
+- `headerSpacing` — a fixed gap between the headline and the pitch; the spare height moves
+  above the headline and above the plans instead of opening up under the headline.
 
 `PaywallPlan` gains `priceLocale: Locale?` (defaulted, so custom `PaywallServiceProtocol`
 implementations keep compiling). Pass the product's price locale to get per-week prices

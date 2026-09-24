@@ -68,7 +68,7 @@ struct PaywallTimelineView: View {
 
     private func item(icon: String, title: String, body: String, tint: Color, nextTint: Color?) -> some View {
         HStack(alignment: .top, spacing: 12) {
-            PaywallIconDisc(systemImage: icon, tint: tint, foreground: accentForeground, style: iconStyle, size: discSize)
+            PaywallIconDisc(systemImage: icon, tint: tint, foreground: accentForeground, style: iconStyle == .glyph ? .tinted : iconStyle, size: discSize)
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
                     .font(.headline)

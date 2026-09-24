@@ -114,6 +114,15 @@ public struct PaywallConfiguration: Sendable {
     /// CTA is a neutral slab (white on a dark page) that would wash the ring out.
     public var accent: Color?
     public var accentForeground: Color?
+    /// The "Save N%" tag's fill and text, so the saving reads apart from the
+    /// "Popular" tag and the selection ring. Nil uses the accent pair.
+    public var savingsTagBackground: Color?
+    public var savingsTagForeground: Color?
+    /// A fixed gap between the headline and the feature list or timeline. Nil
+    /// splits the spare height between that gap and the one above the plans, which
+    /// on a tall phone leaves the headline stranded far above what it introduces;
+    /// set it and the spare height goes above the headline and above the plans.
+    public var headerSpacing: CGFloat?
     /// A solid fill for the single-plan price card (e.g. white on a cream backdrop).
     /// When nil the card gets the same material treatment as the plan tiles.
     public var cardBackground: Color?
@@ -130,7 +139,10 @@ public struct PaywallConfiguration: Sendable {
     /// drawn. `.filled` is a solid disc in the CTA colour with the CTA's label
     /// colour on it; `.tinted` is a translucent disc of that colour with the
     /// glyph in it, the same treatment as the header mark, for hosts whose
-    /// accent is loud enough that four solid discs compete with the CTA.
+    /// accent is loud enough that four solid discs compete with the CTA;
+    /// `.glyph` drops the disc and draws the symbol itself, larger, in the
+    /// accent — for rows whose own symbols carry the meaning. The timeline keeps
+    /// a disc under `.glyph` (`.tinted`): its rail needs something to connect.
     public var featureIconStyle: FeatureIconStyle
     /// The plan to sell: selected when the paywall opens, over the library's own pick
     /// (the trial plan, else the longest cadence), and tagged "Popular". Nil keeps the
@@ -145,6 +157,7 @@ public struct PaywallConfiguration: Sendable {
     public enum FeatureIconStyle: Sendable {
         case filled
         case tinted
+        case glyph
     }
 
     public init(
@@ -169,6 +182,9 @@ public struct PaywallConfiguration: Sendable {
         ctaForeground: Color? = nil,
         accent: Color? = nil,
         accentForeground: Color? = nil,
+        savingsTagBackground: Color? = nil,
+        savingsTagForeground: Color? = nil,
+        headerSpacing: CGFloat? = nil,
         cardBackground: Color? = nil,
         expectsSinglePlan: Bool = false,
         featureAlignment: VerticalAlignment = .top,
@@ -200,6 +216,9 @@ public struct PaywallConfiguration: Sendable {
         self.ctaForeground = ctaForeground
         self.accent = accent
         self.accentForeground = accentForeground
+        self.savingsTagBackground = savingsTagBackground
+        self.savingsTagForeground = savingsTagForeground
+        self.headerSpacing = headerSpacing
         self.cardBackground = cardBackground
         self.expectsSinglePlan = expectsSinglePlan
         self.featureAlignment = featureAlignment
