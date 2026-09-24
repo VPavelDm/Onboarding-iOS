@@ -32,6 +32,8 @@ paywall can sell three plans; every default keeps today's paywall exactly as it 
   cadence title in the text colour (an accent title on an accent wash lost contrast).
 - `popularTagBackground` / `popularTagForeground` — the "Popular" tag's own colours.
 - With three or more plans the tile price drops a size so it doesn't run edge to edge.
+- `.paywallCTAButtonStyle(_:)` — a view modifier that draws the CTA with the host's own
+  `ButtonStyle` (its design-system button) instead of the library's solid slab.
 
 `PaywallPlan` gains `priceLocale: Locale?` (defaulted, so custom `PaywallServiceProtocol`
 implementations keep compiling). Pass the product's price locale to get per-week prices

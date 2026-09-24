@@ -23,6 +23,7 @@ public struct PaywallView: View {
 
     @State private var viewModel: PaywallViewModel
     @State private var showCloseButton: Bool
+    @Environment(\.paywallCTAStyle) private var customCTAStyle
     @Namespace private var selectionNamespace
 
     private let configuration: PaywallConfiguration
@@ -312,7 +313,8 @@ public struct PaywallView: View {
         }
         .buttonStyle(PaywallCTAButtonStyle(
             background: configuration.ctaBackground,
-            foreground: configuration.ctaForeground
+            foreground: configuration.ctaForeground,
+            custom: customCTAStyle
         ))
         .disabled(viewModel.isPurchasing || viewModel.isLoading || viewModel.isPendingApproval)
     }
