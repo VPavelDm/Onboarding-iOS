@@ -35,14 +35,13 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
         let paywall = try await Adapty.getPaywall(placementId: placementID)
         let fetched = try await Adapty.getPaywallProducts(paywall: paywall)
 
-        // The paywall shows at most two plans: take the first two products with a
-        // recognisable cadence, as configured (and ordered) in the placement.
+        // Every product with a recognisable cadence becomes a plan, in the order
+        // configured in the placement; the paywall lays out two or three.
         let plans = fetched
             .compactMap { product -> PaywallPlan? in
                 guard let period = period(of: product) else { return nil }
                 return plan(from: product, period: period)
             }
-            .prefix(2)
 
         guard !plans.isEmpty else { throw PaywallError.missingProducts }
 
@@ -50,7 +49,7 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
             uniqueKeysWithValues: fetched.map { ($0.vendorProductId, $0) }
         )
 
-        return PaywallOfferings(plans: Array(plans))
+        return PaywallOfferings(plans: plans)
     }
 
     private func period(of product: AdaptyPaywallProduct) -> PaywallPlan.Period? {
