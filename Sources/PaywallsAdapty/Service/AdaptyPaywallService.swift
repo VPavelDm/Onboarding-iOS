@@ -20,6 +20,7 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
     private let accessLevelKey: String
     private let onEntitlementChanged: () async -> Void
     private var products: [String: AdaptyPaywallProduct] = [:]
+    private var paywall: AdaptyPaywall?
 
     public init(
         placementID: String,
@@ -45,11 +46,17 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
 
         guard !plans.isEmpty else { throw PaywallError.missingProducts }
 
+        self.paywall = paywall
         products = Dictionary(
             uniqueKeysWithValues: fetched.map { ($0.vendorProductId, $0) }
         )
 
         return PaywallOfferings(plans: plans)
+    }
+
+    public func logPaywallShown() async {
+        guard let paywall else { return }
+        try? await Adapty.logShowPaywall(paywall)
     }
 
     private func period(of product: AdaptyPaywallProduct) -> PaywallPlan.Period? {

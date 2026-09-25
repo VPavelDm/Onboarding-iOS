@@ -13,4 +13,11 @@ public protocol PaywallServiceProtocol {
     func fetchOfferings() async throws -> PaywallOfferings
     func purchase(plan: PaywallPlan) async -> PaywallPurchaseOutcome
     func restorePurchases() async -> PaywallRestoreOutcome
+    /// Reports that the fetched paywall is on screen, for stores that count views
+    /// themselves (Adapty's conversion stats need it for custom paywalls).
+    func logPaywallShown() async
+}
+
+public extension PaywallServiceProtocol {
+    func logPaywallShown() async {}
 }

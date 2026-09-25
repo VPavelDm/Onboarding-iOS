@@ -300,7 +300,20 @@ public struct PaywallView: View {
             .opacity(0.4)
     }
 
+    /// The host's style from `paywallCTAButtonStyle(_:)` wins over the library slab.
+    @ViewBuilder
     private var ctaButton: some View {
+        if let customCTAStyle {
+            customCTAStyle.apply(to: ctaBaseButton)
+        } else {
+            ctaBaseButton.buttonStyle(PaywallCTAButtonStyle(
+                background: configuration.ctaBackground,
+                foreground: configuration.ctaForeground
+            ))
+        }
+    }
+
+    private var ctaBaseButton: some View {
         Button(action: handleCTA) {
             Group {
                 if viewModel.isPurchasing || viewModel.isLoading || viewModel.isPendingApproval {
@@ -311,11 +324,6 @@ public struct PaywallView: View {
                 }
             }
         }
-        .buttonStyle(PaywallCTAButtonStyle(
-            background: configuration.ctaBackground,
-            foreground: configuration.ctaForeground,
-            custom: customCTAStyle
-        ))
         .disabled(viewModel.isPurchasing || viewModel.isLoading || viewModel.isPendingApproval)
     }
 

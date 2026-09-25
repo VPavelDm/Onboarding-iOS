@@ -9,16 +9,18 @@ import SwiftUI
 
 /// A host's own button style for the paywall CTA, type-erased so it can travel
 /// through the environment. Lets the paywall wear the host's design-system CTA
-/// (a frosted slab, say) instead of the library's solid one.
-public struct PaywallCustomCTAStyle: ButtonStyle {
-    private let makeBody: (Configuration) -> AnyView
+/// (a frosted slab, say) instead of the library's solid one. The style is installed
+/// with `buttonStyle(_:)` rather than by calling its `makeBody`, so SwiftUI wires up
+/// its `@Environment` properties (`isEnabled` and the like).
+public struct PaywallCustomCTAStyle {
+    private let install: (AnyView) -> AnyView
 
     public init<Style: ButtonStyle>(_ style: Style) {
-        makeBody = { AnyView(style.makeBody(configuration: $0)) }
+        install = { AnyView($0.buttonStyle(style)) }
     }
 
-    public func makeBody(configuration: Configuration) -> some View {
-        makeBody(configuration)
+    func apply(to button: some View) -> AnyView {
+        install(AnyView(button))
     }
 }
 

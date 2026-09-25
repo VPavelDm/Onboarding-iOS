@@ -113,6 +113,7 @@ public final class PaywallViewModel {
             }
         }
         log("paywall_shown", ["has_trial": selectedHasTrial])
+        await service.logPaywallShown()
     }
 
     private func apply(_ offerings: PaywallOfferings) {
