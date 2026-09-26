@@ -31,12 +31,12 @@ final class PaywallHostViewModel {
     // MARK: - Intents
 
     func fetchPaywallConfiguration() async throws -> AdaptyPaywallConfiguration {
-        let paywall = try await Adapty.getPaywall(placementId: placementID, locale: locale.language.languageCode?.identifier ?? "en")
+        let paywall = try await Adapty.getFlow(placementId: placementID)
         if paywall.hasViewConfiguration {
-            let configuration = try await AdaptyUI.getPaywallConfiguration(forPaywall: paywall)
+            let configuration = try await AdaptyUI.getFlowConfiguration(forFlow: paywall, locale: locale.language.languageCode?.identifier ?? "en")
             return .paywallConfiguration(configuration)
         } else {
-            let products = try await Adapty.getPaywallProducts(paywall: paywall)
+            let products = try await Adapty.getPaywallProducts(flow: paywall)
             return .remoteConfig(products, paywall)
         }
     }

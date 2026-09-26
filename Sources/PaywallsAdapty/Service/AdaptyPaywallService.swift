@@ -20,7 +20,7 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
     private let accessLevelKey: String
     private let onEntitlementChanged: () async -> Void
     private var products: [String: AdaptyPaywallProduct] = [:]
-    private var paywall: AdaptyPaywall?
+    private var paywall: AdaptyFlow?
 
     public init(
         placementID: String,
@@ -33,8 +33,8 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
     }
 
     public func fetchOfferings() async throws -> PaywallOfferings {
-        let paywall = try await Adapty.getPaywall(placementId: placementID)
-        let fetched = try await Adapty.getPaywallProducts(paywall: paywall)
+        let paywall = try await Adapty.getFlow(placementId: placementID)
+        let fetched = try await Adapty.getPaywallProducts(flow: paywall)
 
         // Every product with a recognisable cadence becomes a plan, in the order
         // configured in the placement; the paywall lays out two or three.
@@ -56,7 +56,7 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
 
     public func logPaywallShown() async {
         guard let paywall else { return }
-        try? await Adapty.logShowPaywall(paywall)
+        try? await Adapty.logShowFlow(paywall)
     }
 
     private func period(of product: AdaptyPaywallProduct) -> PaywallPlan.Period? {

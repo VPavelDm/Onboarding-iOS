@@ -42,7 +42,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/simibac/ConfettiSwiftUI", exact: "1.1.0"),
-        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS.git", from: "3.17.0"),
+        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS.git", from: "4.2.0"),
         .package(url: "https://github.com/RevenueCat/purchases-ios.git", from: "5.0.0"),
     ],
     targets: [

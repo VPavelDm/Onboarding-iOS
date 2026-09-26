@@ -13,6 +13,6 @@ struct AdaptyRemoteConfigPaywall: Identifiable {
     var id: String { "AdaptyRemoteConfigPaywall" }
 
     var products: [AdaptyPaywallProduct]
-    var paywall: AdaptyPaywall
+    var paywall: AdaptyFlow
 }
 

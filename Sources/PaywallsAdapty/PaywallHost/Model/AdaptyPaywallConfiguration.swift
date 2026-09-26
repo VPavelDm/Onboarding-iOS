@@ -11,6 +11,6 @@ import AdaptyUI
 import Paywalls
 
 enum AdaptyPaywallConfiguration {
-    case paywallConfiguration(AdaptyUI.PaywallConfiguration)
-    case remoteConfig([AdaptyPaywallProduct], AdaptyPaywall)
+    case paywallConfiguration(AdaptyUI.FlowConfiguration)
+    case remoteConfig([AdaptyPaywallProduct], AdaptyFlow)
 }

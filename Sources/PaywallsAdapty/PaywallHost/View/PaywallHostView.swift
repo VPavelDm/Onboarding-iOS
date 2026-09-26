@@ -19,7 +19,7 @@ public struct PaywallHostView: View {
     @State private var showRating: Bool = false
 
     @State private var showRemoteConfigPaywall: AdaptyRemoteConfigPaywall?
-    @State private var paywallConfiguration: AdaptyUI.PaywallConfiguration?
+    @State private var paywallConfiguration: AdaptyUI.FlowConfiguration?
 
     private let close: () -> Void
 
@@ -31,8 +31,8 @@ public struct PaywallHostView: View {
     public var body: some View {
         VStack {
             if let paywallConfiguration {
-                AdaptyPaywallView(
-                    paywallConfiguration: paywallConfiguration,
+                AdaptyFlowView(
+                    flowConfiguration: paywallConfiguration,
                     didAppear: didAppear,
                     didDisappear: didDisappear,
                     didPerformAction: didPerformAction(action:),
@@ -42,7 +42,7 @@ public struct PaywallHostView: View {
                     didStartRestore: didStartRestore,
                     didFinishRestore: didFinishRestore(profile:),
                     didFailRestore: didFailRestore(error:),
-                    didFailRendering: didFailRendering(error:),
+                    didReceiveError: didReceiveError(error:),
                     didFailLoadingProducts: didFailLoadingProducts(error:),
                     showAlertItem: $alertItem,
                     showAlertBuilder: alert(item:)
@@ -102,7 +102,7 @@ public struct PaywallHostView: View {
     func didStartPurchase(product: AdaptyPaywallProduct) {
         viewModel.delegate?.track(event: "continue_button_tapped", parameters: [
             "placement_id": viewModel.placementID,
-            "product_id": product.sk2Product?.id ?? ""
+            "product_id": product.vendorProductId
         ])
     }
 
@@ -113,7 +113,7 @@ public struct PaywallHostView: View {
                 try await viewModel.delegate?.fetchSubscriptionStatus()
                 viewModel.delegate?.track(event: "subscription_started", parameters: [
                     "placement_id": viewModel.placementID,
-                    "product_id": product.sk2Product?.id ?? ""
+                    "product_id": product.vendorProductId
                 ])
                 showRating = true
                 close()
@@ -166,7 +166,7 @@ public struct PaywallHostView: View {
         alertItem = .restoreError
     }
 
-    func didFailRendering(error: AdaptyUIError) {
+    func didReceiveError(error: AdaptyUIError) {
         viewModel.delegate?.track(event: "paywall_rendering_error", parameters: [
             "placement_id": viewModel.placementID,
             "error": error
