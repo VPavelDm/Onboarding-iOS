@@ -1908,114 +1908,114 @@
         }
       }
     },
-    "Monthly" : {
+    "1 month" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "شهريًا"
+            "value" : "شهر واحد"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monatlich"
+            "value" : "1 Monat"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensual"
+            "value" : "1 mes"
           }
         },
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensual"
+            "value" : "1 mes"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensuel"
+            "value" : "1 mois"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "मासिक"
+            "value" : "1 महीना"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensile"
+            "value" : "1 mese"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "月額"
+            "value" : "1か月"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "월간"
+            "value" : "1개월"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Maandelijks"
+            "value" : "1 maand"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Miesięcznie"
+            "value" : "1 miesiąc"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensal"
+            "value" : "1 mês"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensal"
+            "value" : "1 mês"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Месяц"
+            "value" : "1 месяц"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aylık"
+            "value" : "1 ay"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Щомісяця"
+            "value" : "1 місяць"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "按月"
+            "value" : "1个月"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "每月"
+            "value" : "1個月"
           }
         }
       }
@@ -4710,226 +4710,226 @@
         }
       }
     },
-    "Weekly" : {
+    "1 week" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أسبوعيًا"
+            "value" : "أسبوع واحد"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wöchentlich"
+            "value" : "1 Woche"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Semanal"
+            "value" : "1 semana"
           }
         },
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Semanal"
+            "value" : "1 semana"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hebdomadaire"
+            "value" : "1 semaine"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "साप्ताहिक"
+            "value" : "1 सप्ताह"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Settimanale"
+            "value" : "1 settimana"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "週額"
+            "value" : "1週間"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "주간"
+            "value" : "1주"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wekelijks"
+            "value" : "1 week"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tygodniowo"
+            "value" : "1 tydzień"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Semanal"
+            "value" : "1 semana"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Semanal"
+            "value" : "1 semana"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Неделя"
+            "value" : "1 неделя"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haftalık"
+            "value" : "1 hafta"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Щотижня"
+            "value" : "1 тиждень"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "按周"
+            "value" : "1周"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "每週"
+            "value" : "1週"
           }
         }
       }
     },
-    "Yearly" : {
+    "12 months" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سنويًا"
+            "value" : "12 شهرًا"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jährlich"
+            "value" : "12 Monate"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anual"
+            "value" : "12 meses"
           }
         },
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anual"
+            "value" : "12 meses"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annuel"
+            "value" : "12 mois"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "वार्षिक"
+            "value" : "12 महीने"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annuale"
+            "value" : "12 mesi"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "年額"
+            "value" : "12か月"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "연간"
+            "value" : "12개월"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jaarlijks"
+            "value" : "12 maanden"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rocznie"
+            "value" : "12 miesięcy"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anual"
+            "value" : "12 meses"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anual"
+            "value" : "12 meses"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Год"
+            "value" : "12 месяцев"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yıllık"
+            "value" : "12 ay"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Щороку"
+            "value" : "12 місяців"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "按年"
+            "value" : "12个月"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "每年"
+            "value" : "12個月"
           }
         }
       }

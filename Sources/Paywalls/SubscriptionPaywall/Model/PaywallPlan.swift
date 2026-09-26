@@ -17,9 +17,9 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
 
         var title: String {
             switch self {
-            case .weekly: String(localized: "Weekly", bundle: .module)
-            case .monthly: String(localized: "Monthly", bundle: .module)
-            case .yearly: String(localized: "Yearly", bundle: .module)
+            case .weekly: String(localized: "1 week", bundle: .module)
+            case .monthly: String(localized: "1 month", bundle: .module)
+            case .yearly: String(localized: "12 months", bundle: .module)
             case .lifetime: String(localized: "Lifetime", bundle: .module)
             }
         }
