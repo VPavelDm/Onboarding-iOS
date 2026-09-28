@@ -141,6 +141,11 @@ public struct PaywallView: View {
                 .foregroundStyle(configuration.textColor)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
+                // The column is offered exactly the screen's height; when it
+                // needs a few points more, the headline was the view that gave
+                // them up and dropped to one truncated line ("Откройте свой
+                // пла…"). Fixed vertically, the column grows and scrolls instead.
+                .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity)
 
             if let subtitle = configuration.subtitle {
