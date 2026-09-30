@@ -105,6 +105,16 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
         }
     }
 
+    /// A redeemed offer code reaches the device as a transaction Adapty has not
+    /// necessarily sent yet, so a profile read can still say "not entitled";
+    /// restoring pushes the device's transactions first. With StoreKit 2 that
+    /// raises no sign-in prompt.
+    public func syncEntitlement() async -> Bool {
+        guard let profile = try? await Adapty.restorePurchases() else { return false }
+        await onEntitlementChanged()
+        return profile.accessLevels[accessLevelKey]?.isActive == true
+    }
+
     private func isEntitled() async -> Bool {
         (try? await Adapty.getProfile())?.accessLevels[accessLevelKey]?.isActive == true
     }

@@ -29,6 +29,7 @@ public final class PaywallViewModel {
     var purchaseError: String?
     var showRestoreFailedAlert = false
     var showPendingApprovalAlert = false
+    var showCodeRedemption = false
 
     /// The host's plan choices from `PaywallConfiguration`, handed over by the view.
     private var featuredPeriod: PaywallPlan.Period?
@@ -183,6 +184,25 @@ public final class PaywallViewModel {
             showRestoreFailedAlert = true
             return false
         }
+    }
+
+    func redeemCodeTapped() {
+        log("offer_code_button_tapped")
+        showCodeRedemption = true
+    }
+
+    /// The sheet reports only that it closed, not whether a code went through, so
+    /// the entitlement is read back. A closed sheet with no entitlement stays
+    /// quiet: it is as likely a change of mind as a code still on its way, and a
+    /// late one unlocks through the host's out-of-band path.
+    func codeRedemptionFinished(_ result: Result<Void, any Error>) async -> Bool {
+        if case let .failure(error) = result {
+            log("offer_code_redemption_failed", ["message": "\(error)"])
+            return false
+        }
+        let entitled = await service.syncEntitlement()
+        log("offer_code_sheet_closed", ["entitled": entitled])
+        return entitled
     }
 }
 

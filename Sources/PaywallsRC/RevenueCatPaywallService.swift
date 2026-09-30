@@ -50,6 +50,13 @@ public final class RevenueCatPaywallService: PaywallServiceProtocol {
         }
     }
 
+    /// `syncPurchases`, not `restorePurchases`: it sends the device's
+    /// transactions without the sign-in prompt a restore can raise.
+    public func syncEntitlement() async -> Bool {
+        guard let info = try? await Purchases.shared.syncPurchases() else { return false }
+        return isEntitled(info)
+    }
+
     private func isEntitled(_ info: CustomerInfo) -> Bool {
         info.entitlements[entitlementID]?.isActive == true
     }

@@ -1,3 +1,35 @@
+# Migrating from 4.2 to 4.3
+
+**No action required.** 4.3 adds offer-code redemption to the subscription paywall, off
+by default.
+
+- `PaywallConfiguration.offersCodeRedemption` — adds "Redeem code" to the footer
+  (Restore · Redeem code · Terms · Privacy). It opens Apple's offer-code sheet
+  (`offerCodeRedemption`), so a code from App Store Connect → the plan → Offer Codes can
+  be entered on the paywall rather than only through a redemption link. iOS only.
+- `PaywallServiceProtocol.syncEntitlement()` — re-reads the entitlement after a purchase
+  made outside `purchase(plan:)`, without a sign-in prompt. The paywall calls it when the
+  sheet closes and fires `onUnlocked` if it returns true. Defaulted to `false`, so custom
+  services keep compiling; the Adapty service implements it with a restore (StoreKit 2,
+  no prompt) followed by `onEntitlementChanged`, the RevenueCat one with `syncPurchases`.
+  A code that lands after the sheet closes unlocks through the host's out-of-band path,
+  as an interrupted purchase does.
+- Events: `offer_code_button_tapped`, `offer_code_sheet_closed` (`entitled`),
+  `offer_code_redemption_failed` (`message`).
+
+One new library string, "Redeem code", in every module locale.
+
+The sheet does not appear in the Simulator (it needs an App Store account); try it on a
+device.
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "4.3.0")
+```
+
+---
+
 # Migrating from 4.1 to 4.2
 
 **No action required.** 4.2 adds one opt-in `PaywallConfiguration` field.

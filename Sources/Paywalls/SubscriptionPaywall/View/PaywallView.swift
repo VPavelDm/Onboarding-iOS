@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 /// A subscription (or lifetime) paywall: trial timeline (or feature list) over a plan
 /// selector — or a single price card when the offering resolves to one plan — and a
@@ -67,6 +68,24 @@ public struct PaywallView: View {
             showPendingApprovalAlert: $viewModel.showPendingApprovalAlert,
             purchaseError: $viewModel.purchaseError
         )
+        #if os(iOS)
+        .offerCodeRedemption(isPresented: $viewModel.showCodeRedemption) { result in
+            Task { @MainActor in
+                if await viewModel.codeRedemptionFinished(result) { onUnlocked() }
+            }
+        }
+        #endif
+    }
+
+    /// Nil hides "Redeem code": the host did not ask for it, or the platform has
+    /// no offer-code sheet.
+    private var redeemCodeAction: (() -> Void)? {
+        #if os(iOS)
+        guard configuration.offersCodeRedemption else { return nil }
+        return { viewModel.redeemCodeTapped() }
+        #else
+        return nil
+        #endif
     }
 
     // MARK: - Subviews
@@ -117,7 +136,8 @@ public struct PaywallView: View {
                         termsURL: configuration.termsURL,
                         privacyURL: configuration.privacyURL,
                         textColor: configuration.textColor,
-                        onRestore: handleRestore
+                        onRestore: handleRestore,
+                        onRedeemCode: redeemCodeAction
                     )
                     .padding(.top, showsFootnote ? 6 : 14)
                 }

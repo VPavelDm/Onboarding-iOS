@@ -7,20 +7,27 @@
 
 import SwiftUI
 
-/// Restore · Terms · Privacy, separated by middots. Terms and Privacy only appear
-/// when the host provides their URLs.
+/// Restore · Redeem code · Terms · Privacy, separated by middots. Redeem code
+/// appears only when the host offers it, Terms and Privacy only when it provides
+/// their URLs.
 struct PaywallFooterView: View {
 
     let termsURL: URL?
     let privacyURL: URL?
     var textColor: Color = .white
     var onRestore: () -> Void
+    /// Nil leaves "Redeem code" out.
+    var onRedeemCode: (() -> Void)?
 
     @Environment(\.openURL) private var openURL
 
     var body: some View {
         HStack(spacing: 0) {
             link(Text("Restore", bundle: .module), action: onRestore)
+            if let onRedeemCode {
+                separator
+                link(Text("Redeem code", bundle: .module), action: onRedeemCode)
+            }
             if let termsURL {
                 separator
                 link(Text("Terms", bundle: .module)) { openURL(termsURL) }

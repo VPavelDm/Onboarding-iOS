@@ -175,6 +175,10 @@ public struct PaywallConfiguration: Sendable {
     /// with `showsStoreAssurance`, or while a trial plan is selected ("No
     /// payment due now" shows then).
     public var planFootnote: (@Sendable (PaywallPlan) -> String?)?
+    /// Adds "Redeem code" to the footer, next to Restore: Apple's offer-code sheet,
+    /// so a code a friend sent can be entered on the paywall itself rather than
+    /// only through a redemption link. iOS only; off by default.
+    public var offersCodeRedemption: Bool
 
     public enum FeatureIconStyle: Sendable {
         case filled
@@ -219,7 +223,8 @@ public struct PaywallConfiguration: Sendable {
         savingsTags: SavingsTags = .everyCheaperPlan,
         showsStoreAssurance: Bool = false,
         storeAssuranceIconColor: Color? = nil,
-        planFootnote: (@Sendable (PaywallPlan) -> String?)? = nil
+        planFootnote: (@Sendable (PaywallPlan) -> String?)? = nil,
+        offersCodeRedemption: Bool = false
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -259,5 +264,6 @@ public struct PaywallConfiguration: Sendable {
         self.showsStoreAssurance = showsStoreAssurance
         self.storeAssuranceIconColor = storeAssuranceIconColor
         self.planFootnote = planFootnote
+        self.offersCodeRedemption = offersCodeRedemption
     }
 }
