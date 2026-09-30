@@ -10,6 +10,10 @@ import SwiftUI
 /// Restore · Redeem code · Terms · Privacy, separated by middots. Redeem code
 /// appears only when the host offers it, Terms and Privacy only when it provides
 /// their URLs.
+///
+/// One row where it fits, else the store actions over the legal links. Four
+/// links on one row ran out of room in Russian, French and Hindi, where the
+/// last one broke mid-word ("Конфиденци-альность").
 struct PaywallFooterView: View {
 
     let termsURL: URL?
@@ -22,28 +26,58 @@ struct PaywallFooterView: View {
     @Environment(\.openURL) private var openURL
 
     var body: some View {
-        HStack(spacing: 0) {
-            link(Text("Restore", bundle: .module), action: onRestore)
-            if let onRedeemCode {
-                separator
-                link(Text("Redeem code", bundle: .module), action: onRedeemCode)
-            }
-            if let termsURL {
-                separator
-                link(Text("Terms", bundle: .module)) { openURL(termsURL) }
-            }
-            if let privacyURL {
-                separator
-                link(Text("Privacy", bundle: .module)) { openURL(privacyURL) }
+        ViewThatFits(in: .horizontal) {
+            row(storeLinks + legalLinks)
+            VStack(spacing: 0) {
+                row(storeLinks)
+                row(legalLinks)
             }
         }
         .font(.caption)
         .foregroundStyle(textColor.opacity(0.5))
     }
 
-    private func link(_ text: Text, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            text
+    private struct Link: Identifiable {
+        let id: String
+        let title: Text
+        let action: () -> Void
+    }
+
+    private var storeLinks: [Link] {
+        var links = [Link(id: "restore", title: Text("Restore", bundle: .module), action: onRestore)]
+        if let onRedeemCode {
+            links.append(Link(id: "redeem", title: Text("Redeem code", bundle: .module), action: onRedeemCode))
+        }
+        return links
+    }
+
+    private var legalLinks: [Link] {
+        var links: [Link] = []
+        if let termsURL {
+            links.append(Link(id: "terms", title: Text("Terms", bundle: .module)) { openURL(termsURL) })
+        }
+        if let privacyURL {
+            links.append(Link(id: "privacy", title: Text("Privacy", bundle: .module)) { openURL(privacyURL) })
+        }
+        return links
+    }
+
+    private func row(_ links: [Link]) -> some View {
+        HStack(spacing: 0) {
+            ForEach(links) { item in
+                if item.id != links.first?.id {
+                    separator
+                }
+                link(item)
+            }
+        }
+    }
+
+    private func link(_ item: Link) -> some View {
+        Button(action: item.action) {
+            item.title
+                .lineLimit(1)
+                .fixedSize()
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
         }
