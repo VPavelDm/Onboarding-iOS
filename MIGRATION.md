@@ -1,3 +1,30 @@
+# Migrating from 4.3 to 4.4
+
+**No action required.** One opt-in field, plus two small visual changes.
+
+- `PaywallConfiguration.restorePlacement: .corner` — Restore leaves the footer for a
+  pill in the top-right corner, drawn like the close button a dismissible paywall puts
+  there. Hard paywalls only: with `dismiss:` set the corner is the close button's and
+  Restore stays in the footer. The person who needs Restore is a subscriber on a new
+  phone or a reinstall, for whom it is the only way in. `.footer` (the default) keeps
+  today's layout.
+- **Footer wraps.** One row where it fits, else the store actions (Restore · Redeem
+  code) over the legal links (Terms · Privacy); a link never breaks mid-word. With four
+  links the Russian row broke "Конфиденциальность" on an iPhone 18 Pro.
+- **`planSelection: .filled` keeps the trial note in the text colour.** "3-day free
+  trial" on the chosen tile was drawn in the accent, the same low-contrast pairing
+  `.filled` already avoids for the tile's title. `.ring` is unchanged.
+
+No new library strings.
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "4.4.0")
+```
+
+---
+
 # Migrating from 4.2 to 4.3
 
 **No action required.** 4.3 adds offer-code redemption to the subscription paywall, off

@@ -91,6 +91,7 @@ struct PaywallPlanTile: View {
     }
 
     private var selectedTitleColor: Color { selection == .filled ? textColor : tint }
+    private var selectedNoteColor: Color { selection == .filled ? textColor.opacity(0.85) : tint }
 
     /// Shrinks rather than wraps: three tiles leave a long local price ("1.299,00 ₽")
     /// under 100 pt.
@@ -106,13 +107,14 @@ struct PaywallPlanTile: View {
     /// A trial is the one thing that sets two plans apart beyond the price, so
     /// the plan that has one says so here instead of only in the CTA. In the
     /// accent only while selected: lit on the resting tile it outshone the
-    /// chosen one.
+    /// chosen one. `.filled` keeps it in the text colour, for the same reason
+    /// as the title: accent on an accent wash is too dim to read.
     @ViewBuilder
     private var note: some View {
         if let days = plan.freeTrialDays {
             Text("\(days)-day free trial", bundle: .module)
                 .font(.footnote.weight(.medium))
-                .foregroundStyle(isSelected ? tint : textColor.opacity(0.7))
+                .foregroundStyle(isSelected ? selectedNoteColor : textColor.opacity(0.7))
         } else if noteStyle == .pricePerWeek, let perWeek = plan.localizedPricePerWeek {
             Text("\(perWeek)/week", bundle: .module)
                 .font(.footnote)

@@ -48,6 +48,11 @@ public struct PaywallView: View {
     public var body: some View {
         ZStack(alignment: .topTrailing) {
             content
+            if restoresInCorner {
+                PaywallRestoreButton(textColor: configuration.textColor, action: handleRestore)
+                    .padding(.top, 16)
+                    .padding(.trailing, 20)
+            }
             if dismiss != nil {
                 PaywallCloseButton(textColor: configuration.textColor, action: handleClose)
                     .padding(.top, 16)
@@ -75,6 +80,12 @@ public struct PaywallView: View {
             }
         }
         #endif
+    }
+
+    /// Only a hard paywall moves Restore up: a dismissible one has its close
+    /// button in that corner.
+    private var restoresInCorner: Bool {
+        dismiss == nil && configuration.restorePlacement == .corner
     }
 
     /// Nil hides "Redeem code": the host did not ask for it, or the platform has
@@ -136,7 +147,7 @@ public struct PaywallView: View {
                         termsURL: configuration.termsURL,
                         privacyURL: configuration.privacyURL,
                         textColor: configuration.textColor,
-                        onRestore: handleRestore,
+                        onRestore: restoresInCorner ? nil : handleRestore,
                         onRedeemCode: redeemCodeAction
                     )
                     .padding(.top, showsFootnote ? 6 : 14)

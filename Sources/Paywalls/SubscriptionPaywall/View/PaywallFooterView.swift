@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-/// Restore · Redeem code · Terms · Privacy, separated by middots. Redeem code
-/// appears only when the host offers it, Terms and Privacy only when it provides
-/// their URLs.
+/// Restore · Redeem code · Terms · Privacy, separated by middots. Restore is
+/// left out when the paywall puts it in the corner, Redeem code appears only
+/// when the host offers it, Terms and Privacy only when it provides their URLs.
 ///
 /// One row where it fits, else the store actions over the legal links. Four
 /// links on one row ran out of room in Russian, French and Hindi, where the
@@ -19,7 +19,8 @@ struct PaywallFooterView: View {
     let termsURL: URL?
     let privacyURL: URL?
     var textColor: Color = .white
-    var onRestore: () -> Void
+    /// Nil leaves Restore out (the paywall shows it in the corner instead).
+    var onRestore: (() -> Void)?
     /// Nil leaves "Redeem code" out.
     var onRedeemCode: (() -> Void)?
 
@@ -44,7 +45,10 @@ struct PaywallFooterView: View {
     }
 
     private var storeLinks: [Link] {
-        var links = [Link(id: "restore", title: Text("Restore", bundle: .module), action: onRestore)]
+        var links: [Link] = []
+        if let onRestore {
+            links.append(Link(id: "restore", title: Text("Restore", bundle: .module), action: onRestore))
+        }
         if let onRedeemCode {
             links.append(Link(id: "redeem", title: Text("Redeem code", bundle: .module), action: onRedeemCode))
         }

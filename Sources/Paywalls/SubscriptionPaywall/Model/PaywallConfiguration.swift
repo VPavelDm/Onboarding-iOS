@@ -179,6 +179,20 @@ public struct PaywallConfiguration: Sendable {
     /// so a code a friend sent can be entered on the paywall itself rather than
     /// only through a redemption link. iOS only; off by default.
     public var offersCodeRedemption: Bool
+    /// Where Restore sits. `.footer` (the default) keeps it first in the footer.
+    public var restorePlacement: RestorePlacement
+
+    /// Where the paywall puts Restore.
+    public enum RestorePlacement: Sendable {
+        /// First of the footer links, as before 4.4.
+        case footer
+        /// A pill in the top-right corner, which a hard paywall leaves empty.
+        /// The person who needs Restore is a subscriber on a new phone or a
+        /// reinstall, for whom it is the only way in, and a grey footer link
+        /// is easy to miss. A dismissible paywall keeps it in the footer: the
+        /// corner is the close button's.
+        case corner
+    }
 
     public enum FeatureIconStyle: Sendable {
         case filled
@@ -224,7 +238,8 @@ public struct PaywallConfiguration: Sendable {
         showsStoreAssurance: Bool = false,
         storeAssuranceIconColor: Color? = nil,
         planFootnote: (@Sendable (PaywallPlan) -> String?)? = nil,
-        offersCodeRedemption: Bool = false
+        offersCodeRedemption: Bool = false,
+        restorePlacement: RestorePlacement = .footer
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -265,5 +280,6 @@ public struct PaywallConfiguration: Sendable {
         self.storeAssuranceIconColor = storeAssuranceIconColor
         self.planFootnote = planFootnote
         self.offersCodeRedemption = offersCodeRedemption
+        self.restorePlacement = restorePlacement
     }
 }
