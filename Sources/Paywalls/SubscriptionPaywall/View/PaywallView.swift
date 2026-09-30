@@ -233,6 +233,15 @@ public struct PaywallView: View {
             .foregroundStyle(configuration.textColor.opacity(0.7))
             .lineLimit(1)
             .minimumScaleFactor(0.8)
+        } else if let plan = viewModel.selectedPlan, let lead = configuration.planFootnote?(plan) {
+            // One string, not two Texts: the line has to shrink as a whole.
+            Text(verbatim: "\(lead) · \(String(localized: "Cancel anytime", bundle: .module))")
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(configuration.textColor.opacity(0.55))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .contentTransition(.opacity)
+                .animation(.easeOut(duration: 0.2), value: lead)
         } else {
             Text("Cancel anytime", bundle: .module)
                 .font(.footnote.weight(.medium))

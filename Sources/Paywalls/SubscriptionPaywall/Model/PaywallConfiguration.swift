@@ -169,6 +169,12 @@ public struct PaywallConfiguration: Sendable {
     public var showsStoreAssurance: Bool
     /// The colour of those two glyphs. Nil uses the accent.
     public var storeAssuranceIconColor: Color?
+    /// What the selected plan includes, put ahead of "Cancel anytime" under the
+    /// CTA: "20 songs every week · Cancel anytime". Already localized by the
+    /// host; nil (or a nil return) keeps the plain "Cancel anytime". Not used
+    /// with `showsStoreAssurance`, or while a trial plan is selected ("No
+    /// payment due now" shows then).
+    public var planFootnote: (@Sendable (PaywallPlan) -> String?)?
 
     public enum FeatureIconStyle: Sendable {
         case filled
@@ -212,7 +218,8 @@ public struct PaywallConfiguration: Sendable {
         planNote: PlanNote = .billedCadence,
         savingsTags: SavingsTags = .everyCheaperPlan,
         showsStoreAssurance: Bool = false,
-        storeAssuranceIconColor: Color? = nil
+        storeAssuranceIconColor: Color? = nil,
+        planFootnote: (@Sendable (PaywallPlan) -> String?)? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -251,5 +258,6 @@ public struct PaywallConfiguration: Sendable {
         self.savingsTags = savingsTags
         self.showsStoreAssurance = showsStoreAssurance
         self.storeAssuranceIconColor = storeAssuranceIconColor
+        self.planFootnote = planFootnote
     }
 }

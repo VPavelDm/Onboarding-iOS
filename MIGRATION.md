@@ -1,3 +1,23 @@
+# Migrating from 4.1 to 4.2
+
+**No action required.** 4.2 adds one opt-in `PaywallConfiguration` field.
+
+- `planFootnote` — a closure from the selected `PaywallPlan` to a line put ahead of
+  "Cancel anytime" under the CTA, e.g. "20 songs every week · Cancel anytime", so the
+  reassurance also says what the plan buys. The host localizes the line; a nil closure
+  or a nil return keeps the plain "Cancel anytime". Not used with `showsStoreAssurance`,
+  or while a trial plan is selected ("No payment due now" shows then).
+
+No new library strings.
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "4.2.0")
+```
+
+---
+
 # Migrating from 3.1 to 3.2
 
 **No action required.** 3.2 adds opt-in `PaywallConfiguration` fields so the subscription
