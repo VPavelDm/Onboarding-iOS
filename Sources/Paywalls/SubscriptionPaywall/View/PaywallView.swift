@@ -73,13 +73,6 @@ public struct PaywallView: View {
             showPendingApprovalAlert: $viewModel.showPendingApprovalAlert,
             purchaseError: $viewModel.purchaseError
         )
-        #if os(iOS)
-        .offerCodeRedemption(isPresented: $viewModel.showCodeRedemption) { result in
-            Task { @MainActor in
-                if await viewModel.codeRedemptionFinished(result) { onUnlocked() }
-            }
-        }
-        #endif
     }
 
     /// Only a hard paywall moves Restore up: a dismissible one has its close
@@ -93,7 +86,7 @@ public struct PaywallView: View {
     private var redeemCodeAction: (() -> Void)? {
         #if os(iOS)
         guard configuration.offersCodeRedemption else { return nil }
-        return { viewModel.redeemCodeTapped() }
+        return handleRedeemCode
         #else
         return nil
         #endif
@@ -415,6 +408,36 @@ public struct PaywallView: View {
             if await viewModel.purchase() { onUnlocked() }
         }
     }
+
+    #if os(iOS)
+    /// StoreKit's call, not SwiftUI's `offerCodeRedemption` modifier: in 4.3 the
+    /// modifier set its flag and never showed the sheet or called back, on the
+    /// App Store build as in the Simulator, so the button did nothing. The call
+    /// returns once the sheet is closed.
+    private func handleRedeemCode() {
+        viewModel.redeemCodeTapped()
+        Task {
+            let result: Result<Void, any Error>
+            do {
+                guard let scene = activeWindowScene else { throw CodeRedemptionError.noWindowScene }
+                try await AppStore.presentOfferCodeRedeemSheet(in: scene)
+                result = .success(())
+            } catch {
+                result = .failure(error)
+            }
+            if await viewModel.codeRedemptionFinished(result) { onUnlocked() }
+        }
+    }
+
+    private var activeWindowScene: UIWindowScene? {
+        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        return scenes.first { $0.activationState == .foregroundActive } ?? scenes.first
+    }
+
+    private enum CodeRedemptionError: Error {
+        case noWindowScene
+    }
+    #endif
 
     private func handleRestore() {
         Task {

@@ -1,3 +1,17 @@
+# 4.4.1
+
+**Fix, no action required.** "Redeem code" did nothing in 4.3 and 4.4: SwiftUI's
+`offerCodeRedemption(isPresented:)` modifier set its flag and never showed Apple's
+sheet or called back — on an App Store build as in the Simulator. The button now calls
+StoreKit's `AppStore.presentOfferCodeRedeemSheet(in:)` on the foreground window scene,
+which opens the sheet and returns when it closes; the entitlement read-back after it is
+unchanged. Closing the sheet without a code now logs `offer_code_sheet_cancelled`
+instead of `offer_code_redemption_failed`.
+
+The 4.3 note below is wrong on one point: the sheet does show in the Simulator.
+
+---
+
 # Migrating from 4.3 to 4.4
 
 **No action required.** One opt-in field, plus two small visual changes.

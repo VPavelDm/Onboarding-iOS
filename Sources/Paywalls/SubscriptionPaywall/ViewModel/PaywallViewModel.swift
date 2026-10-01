@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 /// Owns the paywall state: the offerings, the selected plan, and the purchase/restore
 /// flow. The default selection is the host's featured plan, else the plan that offers
@@ -29,7 +30,6 @@ public final class PaywallViewModel {
     var purchaseError: String?
     var showRestoreFailedAlert = false
     var showPendingApprovalAlert = false
-    var showCodeRedemption = false
 
     /// The host's plan choices from `PaywallConfiguration`, handed over by the view.
     private var featuredPeriod: PaywallPlan.Period?
@@ -188,7 +188,6 @@ public final class PaywallViewModel {
 
     func redeemCodeTapped() {
         log("offer_code_button_tapped")
-        showCodeRedemption = true
     }
 
     /// The sheet reports only that it closed, not whether a code went through, so
@@ -197,7 +196,11 @@ public final class PaywallViewModel {
     /// late one unlocks through the host's out-of-band path.
     func codeRedemptionFinished(_ result: Result<Void, any Error>) async -> Bool {
         if case let .failure(error) = result {
-            log("offer_code_redemption_failed", ["message": "\(error)"])
+            if case StoreKitError.userCancelled = error {
+                log("offer_code_sheet_cancelled")
+            } else {
+                log("offer_code_redemption_failed", ["message": "\(error)"])
+            }
             return false
         }
         let entitled = await service.syncEntitlement()
