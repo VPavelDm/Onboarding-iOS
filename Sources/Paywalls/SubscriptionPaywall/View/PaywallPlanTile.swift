@@ -31,6 +31,8 @@ struct PaywallPlanTile: View {
     var savingsForeground: Color? = nil
     var popularBackground: Color? = nil
     var popularForeground: Color? = nil
+    /// The host's word for the featured plan; nil says "Popular".
+    var popularTitle: String? = nil
     var selection: PaywallConfiguration.PlanSelection = .ring
     /// A size down for the price when three tiles share the row.
     var isCompact = false
@@ -158,7 +160,7 @@ struct PaywallPlanTile: View {
     private func tagText(_ tag: PaywallPlanTag) -> Text {
         switch tag {
         case .popular:
-            Text("Popular", bundle: .module)
+            popularTitle.map { Text($0) } ?? Text("Popular", bundle: .module)
         case .savings(let percent):
             Text("Save \((Double(percent) / 100).formatted(.percent.precision(.fractionLength(0))))", bundle: .module)
         }

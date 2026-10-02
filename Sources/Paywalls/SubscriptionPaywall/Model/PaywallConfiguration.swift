@@ -49,6 +49,27 @@ public struct PaywallConfiguration: Sendable {
         case filled
     }
 
+    /// How the plans are laid out when there are two or more.
+    public enum PlanLayout: Sendable {
+        /// Tiles side by side: cadence, price and a note stacked in each.
+        case tiles
+        /// Full-width rows of one height, one under another: the plan's name
+        /// over its whole price on the left, the per-week price (with
+        /// `planNote: .pricePerWeek`) on the right. Easier to compare a weekly
+        /// against a yearly plan, and a long local price never has to shrink
+        /// to fit a third of the width.
+        case rows
+    }
+
+    /// How the corner close is drawn on a dismissible paywall.
+    public enum CloseButtonStyle: Sendable {
+        /// The ✕ on a faint disc with a hairline rim.
+        case disc
+        /// The ✕ alone, a size up so it still reads as a control, for a host
+        /// whose page has no other discs to match it.
+        case glyph
+    }
+
     /// Which tiles carry a "Save N%" tag.
     public enum SavingsTags: Sendable {
         /// Every plan that is cheaper per day than the priciest one.
@@ -56,6 +77,9 @@ public struct PaywallConfiguration: Sendable {
         /// Only the plan that saves the most: with three tiles a small saving on
         /// the middle one ("Save 6%") competes with the real one.
         case biggestSavingOnly
+        /// No saving tags; the featured plan's tag still shows. For a host that
+        /// sells its shortest plan and doesn't want the longer one to outshout it.
+        case hidden
     }
 
     /// An SF Symbol drawn above the headline as a haloed disc in the CTA colour
@@ -131,7 +155,17 @@ public struct PaywallConfiguration: Sendable {
     /// The "Popular" tag's fill and text. Nil uses the accent pair.
     public var popularTagBackground: Color?
     public var popularTagForeground: Color?
+    /// The featured plan's tag, already localized by the host ("Most popular").
+    /// Nil uses the library's "Popular".
+    public var popularTagTitle: String?
     public var planSelection: PlanSelection
+    public var planLayout: PlanLayout
+    /// On `.rows`, strikes through what a plan's length would cost at the
+    /// priciest plan's rate before its own price ("~~$312.34~~ $59.99"): the
+    /// baseline the "Save N%" tag is worked out against. Plans that save
+    /// nothing show their price alone. Off by default.
+    public var showsRegularPrice: Bool
+    public var closeButtonStyle: CloseButtonStyle
     /// A fixed gap between the headline and the feature list or timeline. Nil
     /// splits the spare height between that gap and the one above the plans, which
     /// on a tall phone leaves the headline stranded far above what it introduces;
@@ -226,7 +260,11 @@ public struct PaywallConfiguration: Sendable {
         savingsTagForeground: Color? = nil,
         popularTagBackground: Color? = nil,
         popularTagForeground: Color? = nil,
+        popularTagTitle: String? = nil,
         planSelection: PlanSelection = .ring,
+        planLayout: PlanLayout = .tiles,
+        showsRegularPrice: Bool = false,
+        closeButtonStyle: CloseButtonStyle = .disc,
         headerSpacing: CGFloat? = nil,
         cardBackground: Color? = nil,
         expectsSinglePlan: Bool = false,
@@ -267,7 +305,11 @@ public struct PaywallConfiguration: Sendable {
         self.savingsTagForeground = savingsTagForeground
         self.popularTagBackground = popularTagBackground
         self.popularTagForeground = popularTagForeground
+        self.popularTagTitle = popularTagTitle
         self.planSelection = planSelection
+        self.planLayout = planLayout
+        self.showsRegularPrice = showsRegularPrice
+        self.closeButtonStyle = closeButtonStyle
         self.headerSpacing = headerSpacing
         self.cardBackground = cardBackground
         self.expectsSinglePlan = expectsSinglePlan

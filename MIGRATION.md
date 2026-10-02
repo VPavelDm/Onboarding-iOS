@@ -1,3 +1,37 @@
+# Migrating from 4.4 to 4.5
+
+**No action required.** All opt-in.
+
+- `PaywallConfiguration.planLayout: .rows` — the plans as full-width rows of one height,
+  one under another, instead of tiles side by side: the plan's name ("Yearly Access") over
+  its whole price ("$59.99 · 3-day free trial") on the left, and on the right, with
+  `planNote: .pricePerWeek`, what it comes to per week ("$1.15/week"); otherwise how it
+  is billed. No radio: the chosen row shows by its ring and wash, like a tile. The tag
+  rides the top edge near the trailing corner; selection, accent and tag colours are the
+  tiles'. `.tiles` (the default) keeps today's layout. A single plan still shows the
+  price card.
+- `PaywallConfiguration.showsRegularPrice` — on rows, strikes through what the plan's
+  length would cost at the priciest plan's rate before its own price
+  ("~~$312.34~~ $59.99" for a year against $5.99 a week): the same baseline as the
+  "Save N%" tag, so the two agree. A plan that saves nothing shows its price alone. Off
+  by default.
+- `PaywallConfiguration.popularTagTitle` — the featured plan's tag in the host's words
+  ("Most popular"), already localized. Nil keeps the library's "Popular". Tiles and rows.
+- `SavingsTags.hidden` — no "Save N%" tags; the featured plan's tag still shows.
+- `PaywallConfiguration.closeButtonStyle: .glyph` — the corner close as a bare ✕, a size
+  up, without its disc. `.disc` (the default) keeps today's button.
+
+New library strings, translated into all 18 languages: "Weekly Access", "Monthly
+Access", "Yearly Access", "Lifetime Access".
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "4.5.0")
+```
+
+---
+
 # 4.4.1
 
 **Fix, no action required.** "Redeem code" did nothing in 4.3 and 4.4: SwiftUI's

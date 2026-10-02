@@ -26,6 +26,8 @@ public struct PaywallView: View {
     @State private var showCloseButton: Bool
     @Environment(\.paywallCTAStyle) private var customCTAStyle
     @Namespace private var selectionNamespace
+    /// The tallest plan row, which every row matches.
+    @State private var planRowHeight: CGFloat = 0
 
     private let configuration: PaywallConfiguration
     private let dismiss: PaywallDismissBehavior?
@@ -54,7 +56,7 @@ public struct PaywallView: View {
                     .padding(.trailing, 20)
             }
             if dismiss != nil {
-                PaywallCloseButton(textColor: configuration.textColor, action: handleClose)
+                PaywallCloseButton(textColor: configuration.textColor, style: configuration.closeButtonStyle, action: handleClose)
                     .padding(.top, 16)
                     .padding(.trailing, 20)
                     .opacity(showCloseButton ? 1 : 0)
@@ -289,12 +291,19 @@ public struct PaywallView: View {
         } else if viewModel.plans.isEmpty {
             if configuration.expectsSinglePlan {
                 priceCard(for: nil)
+            } else if configuration.planLayout == .rows {
+                VStack(spacing: Self.rowSpacing) {
+                    placeholderRow
+                    placeholderRow
+                }
             } else {
                 HStack(spacing: 12) {
                     placeholderTile
                     placeholderTile
                 }
             }
+        } else if configuration.planLayout == .rows {
+            planRows
         } else {
             HStack(spacing: 12) {
                 ForEach(viewModel.plans) { plan in
@@ -311,6 +320,7 @@ public struct PaywallView: View {
                         savingsForeground: configuration.savingsTagForeground,
                         popularBackground: configuration.popularTagBackground,
                         popularForeground: configuration.popularTagForeground,
+                        popularTitle: configuration.popularTagTitle,
                         selection: configuration.planSelection,
                         isCompact: viewModel.plans.count >= 3,
                         onSelect: {
@@ -322,6 +332,44 @@ public struct PaywallView: View {
         }
     }
 
+    /// Rows sit closer than tiles; a lower row with a tag on its top edge
+    /// needs the extra room, a bare one doesn't (Pavel, 2026-10-02).
+    private static let rowSpacing: CGFloat = 12
+    private static let taggedRowSpacing: CGFloat = 18
+
+    private var planRowSpacing: CGFloat {
+        viewModel.plans.dropFirst().contains { viewModel.tag(for: $0) != nil } ? Self.taggedRowSpacing : Self.rowSpacing
+    }
+
+    private var planRows: some View {
+        VStack(spacing: planRowSpacing) {
+            ForEach(viewModel.plans) { plan in
+                PaywallPlanRow(
+                    plan: plan,
+                    isSelected: viewModel.isSelected(plan),
+                    tag: viewModel.tag(for: plan),
+                    regularPrice: viewModel.regularPrice(for: plan),
+                    noteStyle: configuration.planNote,
+                    selectionNamespace: selectionNamespace,
+                    textColor: configuration.textColor,
+                    accent: accent,
+                    accentForeground: accentForeground,
+                    savingsBackground: configuration.savingsTagBackground,
+                    savingsForeground: configuration.savingsTagForeground,
+                    popularBackground: configuration.popularTagBackground,
+                    popularForeground: configuration.popularTagForeground,
+                    popularTitle: configuration.popularTagTitle,
+                    selection: configuration.planSelection,
+                    matchedHeight: planRowHeight,
+                    onNaturalHeight: { planRowHeight = max(planRowHeight, $0) },
+                    onSelect: {
+                        withAnimation(.snappy(duration: 0.25)) { viewModel.selectPlan(plan) }
+                    }
+                )
+            }
+        }
+    }
+
     private func priceCard(for plan: PaywallPlan?) -> some View {
         PaywallPriceCard(
             plan: plan,
@@ -329,6 +377,13 @@ public struct PaywallView: View {
             textColor: configuration.textColor,
             background: configuration.cardBackground
         )
+    }
+
+    private var placeholderRow: some View {
+        RoundedRectangle(cornerRadius: 18, style: .continuous)
+            .fill(.ultraThinMaterial)
+            .frame(height: 68)
+            .opacity(0.4)
     }
 
     private var placeholderTile: some View {

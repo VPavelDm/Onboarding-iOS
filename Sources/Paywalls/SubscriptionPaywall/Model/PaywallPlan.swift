@@ -24,6 +24,16 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
             }
         }
 
+        /// The plan's name on a row ("Weekly Access").
+        var accessTitle: String {
+            switch self {
+            case .weekly: String(localized: "Weekly Access", bundle: .module)
+            case .monthly: String(localized: "Monthly Access", bundle: .module)
+            case .yearly: String(localized: "Yearly Access", bundle: .module)
+            case .lifetime: String(localized: "Lifetime Access", bundle: .module)
+            }
+        }
+
         /// How the plan is billed, for the tile subtitle.
         var billedCadence: String {
             switch self {
@@ -109,7 +119,14 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
     /// month counts as 52/12 weeks, the way stores quote it, rather than the 30 days
     /// the savings math uses.
     var localizedPricePerWeek: String? {
-        guard let priceLocale, let currency = priceLocale.currency, let weeks = period.weeks else { return nil }
-        return (price / weeks).formatted(.currency(code: currency.identifier).locale(priceLocale))
+        guard let weeks = period.weeks else { return nil }
+        return localized(price / weeks)
+    }
+
+    /// An amount in this plan's currency, phrased like `localizedPrice`; nil
+    /// without a storefront locale.
+    func localized(_ amount: Double) -> String? {
+        guard let priceLocale, let currency = priceLocale.currency else { return nil }
+        return amount.formatted(.currency(code: currency.identifier).locale(priceLocale))
     }
 }

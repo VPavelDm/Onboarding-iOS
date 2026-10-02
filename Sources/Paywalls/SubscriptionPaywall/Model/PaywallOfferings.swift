@@ -51,6 +51,15 @@ public struct PaywallOfferings: Hashable, Sendable {
         plans.max { $0.pricePerDay < $1.pricePerDay }
     }
 
+    /// What `plan`'s length would cost at the priciest-per-day plan's rate
+    /// (a year on the weekly plan, say), or nil whenever `savingsPercent` is:
+    /// the figure struck through before the price is the one the "Save N%"
+    /// tag is worked out against, so the two always agree.
+    func regularPrice(for plan: PaywallPlan) -> Double? {
+        guard savingsPercent(for: plan) != nil, let baseline = baselinePlan else { return nil }
+        return baseline.pricePerDay * plan.period.days
+    }
+
     /// How much cheaper `plan` is per day than the priciest-per-day plan, rounded
     /// down (e.g. 87), or nil if it isn't at least 1% cheaper. Lifetime plans have
     /// no cadence to normalise per day, so they neither earn a figure nor serve as

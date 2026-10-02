@@ -34,6 +34,7 @@ public final class PaywallViewModel {
     /// The host's plan choices from `PaywallConfiguration`, handed over by the view.
     private var featuredPeriod: PaywallPlan.Period?
     private var savingsTags: PaywallConfiguration.SavingsTags = .everyCheaperPlan
+    private var showsRegularPrice = false
 
     var hasOfferings: Bool { offerings != nil }
     var plans: [PaywallPlan] { offerings?.plans ?? [] }
@@ -64,13 +65,22 @@ public final class PaywallViewModel {
     func tag(for plan: PaywallPlan) -> PaywallPlanTag? {
         if plan.period == featuredPeriod { return .popular }
         guard let offerings, let percent = offerings.savingsPercent(for: plan) else { return nil }
+        if savingsTags == .hidden { return nil }
         if savingsTags == .biggestSavingOnly, !offerings.isBiggestSaving(plan) { return nil }
         return .savings(percent)
+    }
+
+    /// The regular price to strike through before `plan`'s, formatted like
+    /// it, when the host asks for one and the plan saves on it.
+    func regularPrice(for plan: PaywallPlan) -> String? {
+        guard showsRegularPrice, let amount = offerings?.regularPrice(for: plan) else { return nil }
+        return plan.localized(amount)
     }
 
     func configure(with configuration: PaywallConfiguration) {
         featuredPeriod = configuration.featuredPeriod
         savingsTags = configuration.savingsTags
+        showsRegularPrice = configuration.showsRegularPrice
     }
 
     func isSelected(_ plan: PaywallPlan) -> Bool { plan.id == selectedPlanID }
