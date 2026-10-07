@@ -160,11 +160,10 @@ public struct PaywallConfiguration: Sendable {
     public var popularTagTitle: String?
     public var planSelection: PlanSelection
     public var planLayout: PlanLayout
-    /// On `.rows`, strikes through what a plan's length would cost at the
-    /// priciest plan's rate before its own price ("~~$312.34~~ $59.99"): the
-    /// baseline the "Save N%" tag is worked out against. Plans that save
-    /// nothing show their price alone. Off by default.
-    public var showsRegularPrice: Bool
+    /// On `.rows`, the plans of these periods strike through twice their
+    /// price, cents at 99, before it ("~~$119.99~~ $59.99" for `[.yearly]`); the rest show
+    /// their price alone. Empty (the default) strikes through nothing.
+    public var regularPricePeriods: Set<PaywallPlan.Period>
     public var closeButtonStyle: CloseButtonStyle
     /// A fixed gap between the headline and the feature list or timeline. Nil
     /// splits the spare height between that gap and the one above the plans, which
@@ -263,7 +262,7 @@ public struct PaywallConfiguration: Sendable {
         popularTagTitle: String? = nil,
         planSelection: PlanSelection = .ring,
         planLayout: PlanLayout = .tiles,
-        showsRegularPrice: Bool = false,
+        regularPricePeriods: Set<PaywallPlan.Period> = [],
         closeButtonStyle: CloseButtonStyle = .disc,
         headerSpacing: CGFloat? = nil,
         cardBackground: Color? = nil,
@@ -308,7 +307,7 @@ public struct PaywallConfiguration: Sendable {
         self.popularTagTitle = popularTagTitle
         self.planSelection = planSelection
         self.planLayout = planLayout
-        self.showsRegularPrice = showsRegularPrice
+        self.regularPricePeriods = regularPricePeriods
         self.closeButtonStyle = closeButtonStyle
         self.headerSpacing = headerSpacing
         self.cardBackground = cardBackground

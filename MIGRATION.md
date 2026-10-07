@@ -1,3 +1,28 @@
+# Migrating from 4.5 to 4.6
+
+**Action needed only if you set `showsRegularPrice`.** It is replaced by
+`PaywallConfiguration.regularPricePeriods: Set<PaywallPlan.Period>`: the plans of those
+periods strike through twice their own price, cents set to 99, before it
+("~~$119.99~~ $59.99" for a $59.99 year; a currency without cents keeps the plain
+double); every other plan shows its price alone. Empty, the default, strikes
+through nothing. 4.5's figure — the plan's length at the priciest plan's rate
+("~~$312.34~~" for a year against $5.99 a week) — read as an implausible discount.
+
+```swift
+// 4.5
+PaywallConfiguration(…, showsRegularPrice: true, …)
+// 4.6: the yearly plan alone
+PaywallConfiguration(…, regularPricePeriods: [.yearly], …)
+```
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "4.6.0")
+```
+
+---
+
 # Migrating from 4.4 to 4.5
 
 **No action required.** All opt-in.

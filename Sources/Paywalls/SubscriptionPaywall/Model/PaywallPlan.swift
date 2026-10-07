@@ -129,4 +129,18 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
         guard let priceLocale, let currency = priceLocale.currency else { return nil }
         return amount.formatted(.currency(code: currency.identifier).locale(priceLocale))
     }
+
+    /// `amount` with its cents set to 99 (119.98 → 119.99), the way store
+    /// prices end. A currency without cents (yen, won) keeps it as it is:
+    /// formatting would round .99 up to the next whole unit.
+    func endingIn99(_ amount: Double) -> Double {
+        guard let currency = priceLocale?.currency else { return amount }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currency.identifier
+        guard formatter.maximumFractionDigits > 0 else { return amount }
+        // One correctly rounded division lands on the same Double as the
+        // literal (119.99); adding 0.99 can miss it by an ulp.
+        return (amount.rounded(.down) * 100 + 99) / 100
+    }
 }

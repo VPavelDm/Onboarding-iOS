@@ -34,7 +34,7 @@ public final class PaywallViewModel {
     /// The host's plan choices from `PaywallConfiguration`, handed over by the view.
     private var featuredPeriod: PaywallPlan.Period?
     private var savingsTags: PaywallConfiguration.SavingsTags = .everyCheaperPlan
-    private var showsRegularPrice = false
+    private var regularPricePeriods: Set<PaywallPlan.Period> = []
 
     var hasOfferings: Bool { offerings != nil }
     var plans: [PaywallPlan] { offerings?.plans ?? [] }
@@ -70,17 +70,23 @@ public final class PaywallViewModel {
         return .savings(percent)
     }
 
-    /// The regular price to strike through before `plan`'s, formatted like
-    /// it, when the host asks for one and the plan saves on it.
+    /// Twice `plan`'s price with its cents at 99 ($59.99 → $119.99),
+    /// formatted like it, to strike through before it when the host lists the
+    /// plan's period. Until 4.6 it was the plan's length at the priciest
+    /// plan's rate (a year of weekly, ~~$312.34~~), which read as an
+    /// implausible discount (Pavel, 2026-10-07).
     func regularPrice(for plan: PaywallPlan) -> String? {
-        guard showsRegularPrice, let amount = offerings?.regularPrice(for: plan) else { return nil }
-        return plan.localized(amount)
+        guard regularPricePeriods.contains(plan.period) else { return nil }
+        return plan.localized(plan.endingIn99(plan.price * Self.regularPriceMarkup))
     }
+
+    /// How many times its own price a plan's struck-through price is.
+    static let regularPriceMarkup = 2.0
 
     func configure(with configuration: PaywallConfiguration) {
         featuredPeriod = configuration.featuredPeriod
         savingsTags = configuration.savingsTags
-        showsRegularPrice = configuration.showsRegularPrice
+        regularPricePeriods = configuration.regularPricePeriods
     }
 
     func isSelected(_ plan: PaywallPlan) -> Bool { plan.id == selectedPlanID }

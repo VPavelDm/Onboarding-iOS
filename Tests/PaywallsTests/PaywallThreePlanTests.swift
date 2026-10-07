@@ -68,6 +68,45 @@ struct PaywallThreePlanTests {
         #expect(viewModel.tag(for: monthly) == nil)
     }
 
+    @Test func test_regularPrice_whenThePeriodIsListed_thenTwiceThePlansPriceEndingIn99() async {
+        let viewModel = await loadedViewModel(PaywallConfiguration(features: [], trialUnlockBody: "", regularPricePeriods: [.yearly]))
+
+        #expect(viewModel.regularPrice(for: yearly) == 99.99.formatted(.currency(code: "USD").locale(Self.us)))
+    }
+
+    @Test func test_regularPrice_whenThePeriodIsNotListed_thenNil() async {
+        let viewModel = await loadedViewModel(PaywallConfiguration(features: [], trialUnlockBody: "", regularPricePeriods: [.yearly]))
+
+        #expect(viewModel.regularPrice(for: weekly) == nil)
+        #expect(viewModel.regularPrice(for: monthly) == nil)
+    }
+
+    @Test func test_regularPrice_whenSeveralPeriodsAreListed_thenEachOfThem() async {
+        let viewModel = await loadedViewModel(PaywallConfiguration(features: [], trialUnlockBody: "", regularPricePeriods: [.weekly, .monthly]))
+
+        #expect(viewModel.regularPrice(for: weekly) == 9.99.formatted(.currency(code: "USD").locale(Self.us)))
+        #expect(viewModel.regularPrice(for: monthly) == 39.99.formatted(.currency(code: "USD").locale(Self.us)))
+        #expect(viewModel.regularPrice(for: yearly) == nil)
+    }
+
+    @Test func test_endingIn99_thenKeepsTheWholeUnitsAndSetsTheCents() {
+        #expect(yearly.endingIn99(99.98) == 99.99)
+        #expect(yearly.endingIn99(120) == 120.99)
+        #expect(yearly.endingIn99(119.99) == 119.99)
+    }
+
+    @Test func test_endingIn99_whenTheCurrencyHasNoCents_thenUnchanged() {
+        let yen = PaywallPlan(id: "y", period: .yearly, price: 1200, localizedPrice: "¥1,200", freeTrialDays: nil, priceLocale: Locale(identifier: "ja_JP"))
+
+        #expect(yen.endingIn99(2400) == 2400)
+    }
+
+    @Test func test_regularPrice_whenNotAskedFor_thenNil() async {
+        let viewModel = await loadedViewModel(PaywallConfiguration(features: [], trialUnlockBody: ""))
+
+        #expect(viewModel.regularPrice(for: yearly) == nil)
+    }
+
     private func loadedViewModel(_ configuration: PaywallConfiguration) async -> PaywallViewModel {
         let viewModel = PaywallViewModel(service: FakePaywallService(plans: [monthly, weekly, yearly]), source: "test")
         viewModel.configure(with: configuration)
