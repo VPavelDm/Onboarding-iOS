@@ -68,18 +68,48 @@ extension View {
         }
     }
 
-    /// Hold-to-confirm gesture.
+    /// Hold-to-confirm gesture: `perform` runs once the finger has stayed down for `duration`.
     func holdToCommit(duration: Double, perform: @escaping () -> Void, onPressingChanged: @escaping (Bool) -> Void) -> some View {
         modifier(HoldToCommitModifier(duration: duration, perform: perform, onPressingChanged: onPressingChanged))
     }
 }
 
+/// Counts the hold from touch-down to lift-off, wherever the finger drifts meanwhile. A long press
+/// gesture gives up once the finger moves 10 points, which a thumb resting on an iPad easily does,
+/// and then the step can never be completed. VoiceOver users complete it with the default action.
 struct HoldToCommitModifier: ViewModifier {
     let duration: Double
     let perform: () -> Void
     let onPressingChanged: (Bool) -> Void
 
+    @GestureState private var isTouching = false
+    @State private var hold: Task<Void, Never>?
+
     func body(content: Content) -> some View {
-        content.onLongPressGesture(minimumDuration: duration, perform: perform, onPressingChanged: onPressingChanged)
+        content
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .updating($isTouching) { _, isTouching, _ in isTouching = true }
+            )
+            .onChange(of: isTouching) { _, isTouching in
+                isTouching ? begin() : end()
+            }
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { perform() }
+    }
+
+    private func begin() {
+        onPressingChanged(true)
+        hold = Task { @MainActor in
+            try? await Task.sleep(for: .seconds(duration))
+            guard !Task.isCancelled else { return }
+            perform()
+        }
+    }
+
+    private func end() {
+        hold?.cancel()
+        hold = nil
+        onPressingChanged(false)
     }
 }
