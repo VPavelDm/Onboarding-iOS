@@ -16,11 +16,13 @@ struct PaywallMark: View {
     let systemImage: String
     let tint: Color
     var size: CGFloat = 72
+    /// The glyph's own colour; nil uses `tint`.
+    var glyphColor: Color? = nil
 
     var body: some View {
         Image(systemName: systemImage)
             .font(.system(size: size * 0.42, weight: .semibold))
-            .foregroundStyle(tint)
+            .foregroundStyle(glyphColor ?? tint)
             .frame(width: size, height: size)
             .background(Circle().fill(tint.opacity(0.12)))
             .overlay(Circle().strokeBorder(tint.opacity(0.3), lineWidth: 1))

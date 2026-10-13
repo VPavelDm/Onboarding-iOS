@@ -170,6 +170,21 @@ public struct PaywallConfiguration: Sendable {
     /// on a tall phone leaves the headline stranded far above what it introduces;
     /// set it and the spare height goes above the headline and above the plans.
     public var headerSpacing: CGFloat?
+    /// The faint fill under every plan tile, row and the price card, at 10%. Nil uses the
+    /// app's own accent colour (the asset catalogue's), as before 4.7; a host whose paywall
+    /// should stay neutral while that asset is a brand colour passes `.white`.
+    public var planWash: Color?
+    /// The chosen plan's ring and the trial note on it. Nil uses the accent, as before 4.7. The
+    /// wash inside the chosen plan keeps the accent: a saturated colour at low opacity over the
+    /// glass turns muddy.
+    public var selectionColor: Color?
+    /// The header mark's glyph alone (the crown), while its disc, rim and glow keep the accent.
+    /// Nil draws the glyph in the accent too, as before 4.7. A saturated colour on the disc
+    /// itself goes muddy at the disc's low opacity, which is why only the glyph takes it.
+    public var headerSymbolColor: Color?
+    /// The header mark's diameter. Nil draws it at 96 pt, as before 4.7; a smaller mark leaves
+    /// the headline and what follows it higher on the page.
+    public var headerSymbolSize: CGFloat?
     /// A solid fill for the single-plan price card (e.g. white on a cream backdrop).
     /// When nil the card gets the same material treatment as the plan tiles.
     public var cardBackground: Color?
@@ -276,7 +291,11 @@ public struct PaywallConfiguration: Sendable {
         storeAssuranceIconColor: Color? = nil,
         planFootnote: (@Sendable (PaywallPlan) -> String?)? = nil,
         offersCodeRedemption: Bool = false,
-        restorePlacement: RestorePlacement = .footer
+        restorePlacement: RestorePlacement = .footer,
+        planWash: Color? = nil,
+        selectionColor: Color? = nil,
+        headerSymbolColor: Color? = nil,
+        headerSymbolSize: CGFloat? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -322,5 +341,9 @@ public struct PaywallConfiguration: Sendable {
         self.planFootnote = planFootnote
         self.offersCodeRedemption = offersCodeRedemption
         self.restorePlacement = restorePlacement
+        self.planWash = planWash
+        self.selectionColor = selectionColor
+        self.headerSymbolColor = headerSymbolColor
+        self.headerSymbolSize = headerSymbolSize
     }
 }

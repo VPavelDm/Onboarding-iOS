@@ -20,6 +20,8 @@ struct PaywallPriceCard: View {
     let textColor: Color
     /// Solid card fill, or nil for the same material treatment as the plan tiles.
     let background: Color?
+    /// The faint fill under the material card; nil uses the app's accent colour.
+    var wash: Color? = nil
 
     private let cornerRadius: CGFloat = 20
 
@@ -77,7 +79,7 @@ struct PaywallPriceCard: View {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(.ultraThinMaterial)
                 .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(Color.black.opacity(0.22)))
-                .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill(Color.accentColor.opacity(0.10)))
+                .overlay(RoundedRectangle(cornerRadius: cornerRadius).fill((wash ?? .accentColor).opacity(0.10)))
         }
     }
 }

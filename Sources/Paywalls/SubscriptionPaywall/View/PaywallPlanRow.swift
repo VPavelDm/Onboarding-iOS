@@ -25,6 +25,10 @@ struct PaywallPlanRow: View {
     var textColor: Color = .white
     var accent: Color? = nil
     var accentForeground: Color = .white
+    /// The faint fill under the tile; nil uses the app's accent colour.
+    var wash: Color? = nil
+    /// The chosen plan's ring and highlighted text; nil uses the accent.
+    var selectionColor: Color? = nil
     var savingsBackground: Color? = nil
     var savingsForeground: Color? = nil
     var popularBackground: Color? = nil
@@ -44,6 +48,7 @@ struct PaywallPlanRow: View {
     private static let ringID = "paywall.selection.ring"
 
     private var tint: Color { accent ?? .accentColor }
+    private var selected: Color { selectionColor ?? tint }
 
     var body: some View {
         Button(action: onSelect) {
@@ -71,14 +76,14 @@ struct PaywallPlanRow: View {
             shape
                 .fill(.ultraThinMaterial)
                 .overlay(shape.fill(Color.black.opacity(0.22)))
-                .overlay(shape.fill(Color.accentColor.opacity(0.10)))
+                .overlay(shape.fill((wash ?? .accentColor).opacity(0.10)))
                 .overlay(shape.fill(tint.opacity(isSelected ? selectedWash : 0)))
         }
         .overlay(shape.strokeBorder(textColor.opacity(0.2), lineWidth: 1))
         .overlay {
             if isSelected {
                 shape
-                    .strokeBorder(tint, lineWidth: 2)
+                    .strokeBorder(selected, lineWidth: 2)
                     .matchedGeometryEffect(id: Self.ringID, in: selectionNamespace)
             }
         }
@@ -99,31 +104,56 @@ struct PaywallPlanRow: View {
     /// chosen under `.ring`, as on the tile. A weekly plan's price is already
     /// the per-week figure on the right, so it isn't said twice (Pavel,
     /// 2026-10-02); with no trial either, the line goes and the title centres.
+    /// When price and trial don't share one line next to the per-week figure
+    /// (a trial in German, a long local price), the trial takes the line
+    /// below instead of being cut to "3-day free…": the trial's length is
+    /// what Guideline 3.1.2 asks to be plainly shown.
     @ViewBuilder
     private var total: some View {
         let showsPrice = !repeatsComparison || regularPrice != nil
         if showsPrice || plan.freeTrialDays != nil {
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    price(showsPrice)
+                    trialNote(separated: showsPrice)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    price(showsPrice)
+                    trialNote(separated: false)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func price(_ showsPrice: Bool) -> some View {
+        if showsPrice {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
-                if showsPrice {
-                    if let regularPrice {
-                        Text(regularPrice)
-                            .font(.subheadline)
-                            .strikethrough()
-                            .monospacedDigit()
-                            .foregroundStyle(textColor.opacity(0.45))
-                    }
-                    billedAmount(plan.localizedPrice)
+                if let regularPrice {
+                    Text(regularPrice)
+                        .font(.subheadline)
+                        .strikethrough()
+                        .monospacedDigit()
+                        .foregroundStyle(textColor.opacity(0.45))
                 }
-                if let days = plan.freeTrialDays {
-                    if showsPrice {
-                        Text(verbatim: "·")
-                            .font(.subheadline)
-                            .foregroundStyle(textColor.opacity(0.4))
-                    }
-                    Text("\(days)-day free trial", bundle: .module)
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(isSelected && selection == .ring ? tint : textColor.opacity(0.7))
+                billedAmount(plan.localizedPrice)
+            }
+        }
+    }
+
+    /// The trial, after a dot when it follows the price on the same line.
+    @ViewBuilder
+    private func trialNote(separated: Bool) -> some View {
+        if let days = plan.freeTrialDays {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                if separated {
+                    Text(verbatim: "·")
+                        .font(.subheadline)
+                        .foregroundStyle(textColor.opacity(0.4))
                 }
+                Text("\(days)-day free trial", bundle: .module)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(isSelected && selection == .ring ? selected : textColor.opacity(0.7))
             }
         }
     }

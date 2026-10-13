@@ -123,6 +123,17 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
         return localized(price / weeks)
     }
 
+    /// The billed price with its cadence after it ("$29.99/year"): the charge a
+    /// free trial turns into. Nil for a plan with no cadence (lifetime).
+    var localizedPricePerPeriod: String? {
+        switch period {
+        case .weekly: String(localized: "\(localizedPrice)/week", bundle: .module)
+        case .monthly: String(localized: "\(localizedPrice)/month", bundle: .module)
+        case .yearly: String(localized: "\(localizedPrice)/year", bundle: .module)
+        case .lifetime: nil
+        }
+    }
+
     /// An amount in this plan's currency, phrased like `localizedPrice`; nil
     /// without a storefront locale.
     func localized(_ amount: Double) -> String? {

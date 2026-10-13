@@ -26,6 +26,10 @@ struct PaywallPlanTile: View {
     var accent: Color? = nil
     /// Text colour on the tag when `accent` is light (black on neon, say).
     var accentForeground: Color = .white
+    /// The faint fill under the tile; nil uses the app's accent colour.
+    var wash: Color? = nil
+    /// The chosen plan's ring and highlighted text; nil uses the accent.
+    var selectionColor: Color? = nil
     /// The tags' own fills and text; nil uses the accent pair.
     var savingsBackground: Color? = nil
     var savingsForeground: Color? = nil
@@ -42,6 +46,7 @@ struct PaywallPlanTile: View {
     private static let ringID = "paywall.selection.ring"
 
     private var tint: Color { accent ?? .accentColor }
+    private var selected: Color { selectionColor ?? tint }
 
     var body: some View {
         Button(action: onSelect) {
@@ -60,7 +65,7 @@ struct PaywallPlanTile: View {
             shape
                 .fill(.ultraThinMaterial)
                 .overlay(shape.fill(Color.black.opacity(0.22)))
-                .overlay(shape.fill(Color.accentColor.opacity(0.10)))
+                .overlay(shape.fill((wash ?? .accentColor).opacity(0.10)))
                 // The chosen tile reads in colour, not only by its ring: at a
                 // glance two grey tiles with a 2 pt outline looked alike.
                 .overlay(shape.fill(tint.opacity(isSelected ? selectedWash : 0)))
@@ -70,7 +75,7 @@ struct PaywallPlanTile: View {
         .overlay {
             if isSelected {
                 shape
-                    .strokeBorder(tint, lineWidth: 2)
+                    .strokeBorder(selected, lineWidth: 2)
                     .matchedGeometryEffect(id: Self.ringID, in: selectionNamespace)
             }
         }
@@ -92,8 +97,8 @@ struct PaywallPlanTile: View {
             .foregroundStyle(isSelected ? selectedTitleColor : textColor.opacity(0.7))
     }
 
-    private var selectedTitleColor: Color { selection == .filled ? textColor : tint }
-    private var selectedNoteColor: Color { selection == .filled ? textColor.opacity(0.85) : tint }
+    private var selectedTitleColor: Color { selection == .filled ? textColor : selected }
+    private var selectedNoteColor: Color { selection == .filled ? textColor.opacity(0.85) : selected }
 
     /// Shrinks rather than wraps: three tiles leave a long local price ("1.299,00 ₽")
     /// under 100 pt.

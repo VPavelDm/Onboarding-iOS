@@ -64,6 +64,9 @@ public struct PaywallView: View {
                     .animation(.easeIn(duration: 0.3), value: showCloseButton)
             }
         }
+        .sensoryFeedback(.selection, trigger: viewModel.selectedPlanID) { old, new in
+            old != nil && old != new
+        }
         .task { await viewModel.loadOfferings() }
         .task {
             guard let delay = dismiss?.closeButtonDelay, delay > .zero else { return }
@@ -159,7 +162,7 @@ public struct PaywallView: View {
     private var header: some View {
         VStack(spacing: 0) {
             if let symbol = configuration.headerSymbol {
-                PaywallMark(systemImage: symbol, tint: accent, size: 96)
+                PaywallMark(systemImage: symbol, tint: accent, size: configuration.headerSymbolSize ?? 96, glyphColor: configuration.headerSymbolColor)
                     .padding(.bottom, 18)
             }
             Text(title)
@@ -198,8 +201,10 @@ public struct PaywallView: View {
 
     /// Both variants stay mounted and only cross-fade: the ZStack keeps the taller
     /// view's height, so switching plans never shifts the layout below.
+    /// Top-aligned: the feature list is shorter than the timeline it shares this box with, and
+    /// centred it floated away from the headline above it.
     private var planContext: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             PaywallFeaturesView(
                 features: configuration.features,
                 alignment: configuration.featureAlignment,
@@ -239,12 +244,27 @@ public struct PaywallView: View {
     /// cross-fade in a fixed-height ZStack instead of morphing one Text.
     private var footnoteLabel: some View {
         ZStack {
-            Text("No payment due now", bundle: .module)
+            trialFootnote
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(configuration.textColor.opacity(0.85))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
                 .opacity(viewModel.selectedHasTrial ? 1 : 0)
             cancelAnytime
                 .opacity(viewModel.selectedHasTrial ? 0 : 1)
+        }
+    }
+
+    /// "No payment due now · then $29.99/year": what the trial turns into, on the
+    /// line that reassures about the button. Guideline 3.1.2 wants the charge after
+    /// a free trial stated before the purchase, and the row's price alone leaves
+    /// the reader to connect the two.
+    @ViewBuilder
+    private var trialFootnote: some View {
+        if let then = viewModel.selectedPlan?.localizedPricePerPeriod {
+            Text("No payment due now · then \(then)", bundle: .module)
+        } else {
+            Text("No payment due now", bundle: .module)
         }
     }
 
@@ -316,6 +336,8 @@ public struct PaywallView: View {
                         textColor: configuration.textColor,
                         accent: accent,
                         accentForeground: accentForeground,
+                        wash: configuration.planWash,
+                        selectionColor: configuration.selectionColor,
                         savingsBackground: configuration.savingsTagBackground,
                         savingsForeground: configuration.savingsTagForeground,
                         popularBackground: configuration.popularTagBackground,
@@ -354,6 +376,8 @@ public struct PaywallView: View {
                     textColor: configuration.textColor,
                     accent: accent,
                     accentForeground: accentForeground,
+                    wash: configuration.planWash,
+                    selectionColor: configuration.selectionColor,
                     savingsBackground: configuration.savingsTagBackground,
                     savingsForeground: configuration.savingsTagForeground,
                     popularBackground: configuration.popularTagBackground,
@@ -375,7 +399,8 @@ public struct PaywallView: View {
             plan: plan,
             note: configuration.priceCardNote,
             textColor: configuration.textColor,
-            background: configuration.cardBackground
+            background: configuration.cardBackground,
+            wash: configuration.planWash
         )
     }
 

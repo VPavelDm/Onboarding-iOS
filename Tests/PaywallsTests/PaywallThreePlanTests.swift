@@ -39,6 +39,18 @@ struct PaywallThreePlanTests {
         #expect(lifetime.localizedPricePerWeek == nil)
     }
 
+    @Test func test_localizedPricePerPeriod_thenPutsTheCadenceAfterTheBilledPrice() {
+        #expect(yearly.localizedPricePerPeriod == "$49.99/year")
+        #expect(monthly.localizedPricePerPeriod == "$19.99/month")
+        #expect(weekly.localizedPricePerPeriod == "$4.99/week")
+    }
+
+    @Test func test_localizedPricePerPeriod_whenLifetime_thenNil() {
+        let lifetime = PaywallPlan(id: "l", period: .lifetime, price: 99, localizedPrice: "$99", freeTrialDays: nil, priceLocale: Self.us)
+
+        #expect(lifetime.localizedPricePerPeriod == nil)
+    }
+
     @Test func test_loadOfferings_whenAPeriodIsFeatured_thenSelectsItOverTheBestValue() async {
         let viewModel = await loadedViewModel(PaywallConfiguration(features: [], trialUnlockBody: "", featuredPeriod: .weekly))
 
