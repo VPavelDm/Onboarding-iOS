@@ -8,8 +8,11 @@ struct NotificationsStep: Sendable, Equatable, Hashable {
     let buttonTitle: String
     /// Shown under the button when the step lets the user move on without granting anything.
     let skip: StepAnswer?
-    /// The sender the banners are from, as the system would draw it.
+    /// The sender the banners are from; read out as the icon's accessibility label.
     let appName: String
+    /// An image in the host's asset catalogue drawn as the banners' app icon, as the system
+    /// would draw it. Nil draws a bell.
+    let appIcon: String?
     let banners: [Banner]
     let nextStepID: StepID?
 
@@ -30,6 +33,7 @@ extension NotificationsStep {
             buttonTitle: response.buttonTitle,
             skip: response.skip.map { StepAnswer(response: $0) },
             appName: response.appName,
+            appIcon: response.appIcon,
             banners: response.banners.map { Banner(title: $0.title, body: $0.body) },
             nextStepID: response.nextStepID
         )

@@ -1,3 +1,60 @@
+# Migrating from 4.6 to 4.7
+
+**No action required.** Two changes to what a trial plan shows, both on by default:
+
+- Under the CTA, "No payment due now" names the charge the trial turns into:
+  "No payment due now · then $29.99/year". Guideline 3.1.2 asks for the price after
+  a free trial to be stated before the purchase.
+- On a `.rows` plan whose price and trial don't fit on one line next to the per-week
+  figure (a trial in German, a long local price), the trial takes the line below
+  instead of being cut to "3-day free…". Rows still match the tallest one's height.
+
+And one opt-in: `PaywallConfiguration.planWash: Color?`, the 10% fill under every plan
+tile, row and the price card. Nil keeps the app's asset accent colour, as before. A host
+whose asset accent is a loud brand colour but whose paywall should read neutral passes `.white`.
+
+Notifications step, no action needed: the banners are drawn as iOS notifications (system
+material, 24 pt continuous corners, title with the time across from it, no separate app-name
+line). An optional `"appIcon"` in the step's payload names an image in the host's asset
+catalogue to use as the app icon; without it the bell stays.
+
+Progress-bars step, no action needed: the bars are 4 pt (were 8 pt), and the laurel block sits
+right under them rather than at the foot of the screen. `"showsCredit": false` in the step's
+payload drops the laurelled credit line altogether; it shows by default.
+
+Layout, no action needed: the feature list now sits at the top of the box it shares with the
+trial timeline, right under the headline, instead of centred in it.
+
+Haptics, no action needed. Each feel now means one thing: a soft tap (was a medium thud) when a
+step completes; the system selection tick for choosing a tile, chip, stepper value or paywall
+plan; a light tick as each progress bar fills, a hold begins or a receipt line prints; a rigid
+knock as the receipt's stamp lands; success when the plan-building bars finish and when a hold
+commits. A host that wraps `PaywallView` with its own success haptic on unlock keeps it; the
+package adds none there.
+
+Two more opt-ins for hosts whose accent is quieter than their brand colour:
+
+- `ColorPalette.selectionColor: Color?` (protocol default nil). When set, every chosen option
+  in the flow uses it: answer rows, radios, grid tiles, chips, the stepper's position, the
+  weight and height pickers. Nil keeps each control's colour from before.
+- `PaywallConfiguration.selectionColor: Color?`, the chosen plan's ring and trial note.
+  Nil uses the accent. The tags, timeline and header mark keep the accent.
+- `ColorPalette.highlightColor: Color?` (protocol default nil), the milestone timeline's dots
+  and the path between them, the receipt's total and stamp, and the progress step's laurels. Nil uses the accent.
+- `PaywallConfiguration.headerSymbolColor: Color?`, the header mark's glyph alone; its disc,
+  rim and glow keep the accent. Nil uses the accent.
+- `PaywallConfiguration.headerSymbolSize: CGFloat?`, the header mark's diameter. Nil keeps 96 pt.
+- `ColorPalette.progressColor: Color?` (protocol default nil), the progress-bars step and the
+  commitment hold's ring and committed disc. Nil uses the accent.
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "4.7.0")
+```
+
+---
+
 # Migrating from 4.5 to 4.6
 
 **Action needed only if you set `showsRegularPrice`.** It is replaced by

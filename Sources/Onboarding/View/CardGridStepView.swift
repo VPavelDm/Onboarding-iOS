@@ -77,6 +77,7 @@ struct CardGridStepView: View {
                     if step.autoNavigate {
                         await viewModel.onAnswer(answers: [step.answer(for: card)])
                     } else {
+                        if selected != card { viewModel.playToggleFeedback() }
                         selected = card
                     }
                 }

@@ -129,10 +129,11 @@ struct ReceiptStepView: View {
         HStack {
             Text(localized("receipt.total"))
                 .font(.system(.headline, design: .monospaced).weight(.heavy))
+                .foregroundStyle(viewModel.colorPalette.highlightColor ?? viewModel.colorPalette.textColor)
             Spacer()
             Text(localized("receipt.totalValue"))
                 .font(.system(.title3, design: .monospaced).weight(.heavy))
-                .foregroundStyle(viewModel.colorPalette.accentColor)
+                .foregroundStyle(viewModel.colorPalette.highlightTint)
         }
         .foregroundStyle(viewModel.colorPalette.textColor)
     }
@@ -141,12 +142,12 @@ struct ReceiptStepView: View {
         Text(localized("receipt.stamp"))
             .font(.system(.headline, design: .monospaced).weight(.heavy))
             .tracking(2)
-            .foregroundStyle(viewModel.colorPalette.accentColor)
+            .foregroundStyle(viewModel.colorPalette.highlightTint)
             .padding(.horizontal, 14)
             .padding(.vertical, 6)
             .overlay {
                 RoundedRectangle(cornerRadius: 4)
-                    .strokeBorder(viewModel.colorPalette.accentColor, lineWidth: 2)
+                    .strokeBorder(viewModel.colorPalette.highlightTint, lineWidth: 2)
             }
             .rotationEffect(.degrees(-4))
     }
@@ -200,6 +201,7 @@ struct ReceiptStepView: View {
             withAnimation(.easeOut(duration: 0.25)) {
                 visibleItems = index + 1
             }
+            viewModel.playTickFeedback(intensity: 0.35)
             try? await Task.sleep(for: .milliseconds(160))
         }
         try? await Task.sleep(for: .milliseconds(220))
@@ -210,6 +212,8 @@ struct ReceiptStepView: View {
         withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) {
             showStamp = true
         }
+        try? await Task.sleep(for: .milliseconds(120))
+        viewModel.playStampFeedback()
         try? await Task.sleep(for: .milliseconds(250))
         showCTA = true
     }

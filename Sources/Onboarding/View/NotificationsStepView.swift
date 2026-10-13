@@ -70,62 +70,64 @@ struct NotificationsStepView: View {
         }
     }
 
-    /// Only the banner on top of the stack shows its message, as the ones under it do on a lock
-    /// screen. That also keeps the stack's edges clean: a banner with more to say is taller, and
-    /// while it is stacked its text would otherwise appear in the gap under the one above it.
+    /// Laid out as an iOS notification: the app icon, then the title with the time across from
+    /// it and the message under it. iOS drops the app's name when a notification has a title, so
+    /// it does here too. Only the banner on top of the stack shows its message, as the ones
+    /// under it do on a lock screen; that also keeps the stack's edges clean.
     private func bannerView(_ banner: NotificationsStep.Banner, showsContent: Bool) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            bellIcon
-            VStack(alignment: .leading, spacing: 2) {
-                // Three tiers, as a real banner has them: who sent it and when, then what it
-                // says, then the detail. The sender sits with the timestamp rather than with the
-                // message, which is what stops it reading as a second title.
-                HStack {
-                    Text(verbatim: step.appName)
-                        .font(.system(size: 12))
-                        .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+        HStack(alignment: .center, spacing: 12) {
+            appIcon
+            VStack(alignment: .leading, spacing: 1) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text(localized(banner.title))
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(viewModel.colorPalette.textColor)
+                        .lineLimit(1)
                     Spacer(minLength: 8)
                     Text(localized(.nowKey))
-                        .font(.system(size: 12))
-                        .foregroundStyle(viewModel.colorPalette.secondaryTextColor)
+                        .font(.system(size: 13))
+                        .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.5))
                 }
-                Text(localized(banner.title))
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(viewModel.colorPalette.textColor)
                 Text(localized(banner.body))
-                    .font(.system(size: 14))
-                    .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.75))
+                    .font(.system(size: 15))
+                    .foregroundStyle(viewModel.colorPalette.textColor.opacity(0.9))
                     // One line, so a long message cannot make one banner taller than the rest and
                     // leave the fanned-out stack uneven.
                     .lineLimit(1)
             }
         }
         .opacity(showsContent ? 1 : 0)
-        .padding(12)
-        .frame(maxWidth: .infinity, alignment: .topLeading)
-        .background {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.ultraThinMaterial)
-                .overlay {
-                    // A hint of the accent, not a wash of it: the palette's colour sits over a dark
-                    // background here, and at any strength it stops reading as a system banner.
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(viewModel.colorPalette.accentColor.opacity(0.07))
-                }
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(viewModel.colorPalette.accentColor.opacity(0.3), lineWidth: 1)
-                }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 13)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .environment(\.colorScheme, .dark)
+    }
+
+    @ViewBuilder
+    private var appIcon: some View {
+        if let name = step.appIcon {
+            Image(name)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 38, height: 38)
+                .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+                .accessibilityLabel(Text(verbatim: step.appName))
+        } else {
+            bellIcon
         }
     }
 
+    /// With a highlight colour the tile is solid, like an app icon; without one it stays the
+    /// accent's faint glass.
     private var bellIcon: some View {
-        Image(systemName: "bell.badge.fill")
+        let palette = viewModel.colorPalette
+        return Image(systemName: "bell.badge.fill")
             .font(.system(size: 17))
-            .foregroundStyle(viewModel.colorPalette.accentColor)
+            .foregroundStyle(palette.highlightColor == nil ? palette.accentColor : palette.primaryButtonForegroundColor)
             .frame(width: 38, height: 38)
-            .background(viewModel.colorPalette.accentColor.opacity(0.12))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .background(palette.highlightColor ?? palette.accentColor.opacity(0.12))
+            .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
     }
 
     // MARK: - Stack geometry

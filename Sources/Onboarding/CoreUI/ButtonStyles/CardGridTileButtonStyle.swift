@@ -33,14 +33,14 @@ struct CardGridTileButtonStyle: ButtonStyle {
             .overlay {
                 if isSelected {
                     RoundedRectangle(cornerRadius: 20)
-                        .strokeBorder(colorPalette.accentColor, lineWidth: 2)
+                        .strokeBorder(colorPalette.selectionTint, lineWidth: 2)
                 }
             }
             .overlay(alignment: .topTrailing) {
                 if isSelected {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 18))
-                        .foregroundStyle(colorPalette.accentColor)
+                        .foregroundStyle(colorPalette.selectionTint)
                         .padding(8)
                 }
             }

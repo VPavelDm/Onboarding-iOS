@@ -242,6 +242,7 @@ struct OnboardingStepResponse: Decodable {
 
     struct ProgressBarsStep: Decodable {
         let stepLabels: [String]
+        let showsCredit: Bool?
         let nextStepID: StepID?
     }
 
@@ -320,6 +321,7 @@ struct OnboardingStepResponse: Decodable {
         let buttonTitle: String
         let skip: StepAnswer?
         let appName: String
+        let appIcon: String?
         let banners: [Banner]
         let nextStepID: StepID?
 

@@ -26,7 +26,7 @@ private func multipleAnswerButtonChrome<V: View>(_ view: V, colorPalette: ColorP
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay {
             RoundedRectangle(cornerRadius: 16)
-                .stroke(isSelected ? colorPalette.primaryButtonBackground : AnyShapeStyle(colorPalette.secondaryButtonStrokeColor), lineWidth: 2)
+                .stroke(isSelected ? colorPalette.answerSelectionStyle : AnyShapeStyle(colorPalette.secondaryButtonStrokeColor), lineWidth: 2)
         }
         .scaleEffect(x: isPressed ? 0.95 : 1, y: isPressed ? 0.95 : 1)
         .opacity(isEnabled ? 1.0 : 0.65)

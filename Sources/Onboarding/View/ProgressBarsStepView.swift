@@ -18,12 +18,16 @@ struct ProgressBarsStepView: View {
                 .padding(.top, 60)
                 .padding(.bottom, 48)
             stepsList
+            // Right under the bars, as the result of the work above them; at the foot of the
+            // screen it was cut off from them by an empty middle.
+            if step.showsCredit {
+                credibilityBlock
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 56)
+                    .opacity(isComplete ? 1 : 0)
+                    .animation(.easeIn(duration: 0.4), value: isComplete)
+            }
             Spacer()
-            credibilityBlock
-                .frame(maxWidth: .infinity)
-                .padding(.bottom, 32)
-                .opacity(isComplete ? 1 : 0)
-                .animation(.easeIn(duration: 0.4), value: isComplete)
             continueButton
                 .padding(.bottom, UIConstants.vScreenPadding)
         }
@@ -72,13 +76,15 @@ struct ProgressBarsStepView: View {
             ZStack(alignment: .leading) {
                 Capsule()
                     .fill(.clear)
-                    .glassBackground(cornerRadius: 6)
+                    .glassBackground(cornerRadius: 2)
                 Capsule()
-                    .fill(viewModel.colorPalette.accentColor)
+                    .fill(viewModel.colorPalette.progressTint)
                     .frame(width: proxy.size.width * progress)
             }
         }
-        .frame(height: 8)
+        // Four filled bars at 8 pt made the finished step a block of colour; 4 pt keeps the
+        // progress readable at half the weight.
+        .frame(height: 4)
     }
 
     private var credibilityBlock: some View {
@@ -93,7 +99,7 @@ struct ProgressBarsStepView: View {
     private func laurel(_ direction: LaurelDirection) -> some View {
         Image(systemName: direction == .leading ? "laurel.leading" : "laurel.trailing")
             .font(.system(size: 80))
-            .foregroundStyle(viewModel.colorPalette.accentColor)
+            .foregroundStyle(viewModel.colorPalette.highlightTint)
     }
 
     private var creditText: some View {
@@ -141,9 +147,12 @@ struct ProgressBarsStepView: View {
             withAnimation(.linear(duration: stepDuration)) {
                 stepProgress[index] = 1
             }
-            try? await Task.sleep(for: .seconds(stepDuration + stepGap))
+            try? await Task.sleep(for: .seconds(stepDuration))
+            if index < stepProgress.count - 1 { viewModel.playTickFeedback() }
+            try? await Task.sleep(for: .seconds(stepGap))
         }
         isComplete = true
+        viewModel.playSuccessFeedback()
     }
 
     private enum LaurelDirection {

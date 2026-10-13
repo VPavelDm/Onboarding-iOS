@@ -190,7 +190,7 @@ struct CommitmentHoldStepView: View {
         Circle()
             .trim(from: 0, to: progress)
             .stroke(
-                viewModel.colorPalette.accentColor,
+                viewModel.colorPalette.progressTint,
                 style: StrokeStyle(lineWidth: 5, lineCap: .round)
             )
             .rotationEffect(.degrees(-90))
@@ -208,7 +208,7 @@ struct CommitmentHoldStepView: View {
         Circle()
             .fill(
                 isCommitted
-                    ? viewModel.colorPalette.accentColor
+                    ? viewModel.colorPalette.progressTint
                     : viewModel.colorPalette.textColor.opacity(0.10)
             )
             .frame(width: 102, height: 102)
@@ -234,6 +234,7 @@ struct CommitmentHoldStepView: View {
 
     private func handlePressingChanged(_ pressing: Bool) {
         guard !isCommitted else { return }
+        if pressing { viewModel.playTickFeedback() }
         isPressing = pressing
         if pressing {
             withAnimation(.linear(duration: holdDuration)) {

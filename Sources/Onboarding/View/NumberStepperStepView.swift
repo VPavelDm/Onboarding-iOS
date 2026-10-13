@@ -110,7 +110,7 @@ struct NumberStepperStepView: View {
                 Capsule()
                     .fill(
                         index == selectedIndex
-                            ? viewModel.colorPalette.accentColor
+                            ? viewModel.colorPalette.selectionTint
                             : viewModel.colorPalette.textColor.opacity(0.22)
                     )
                     .frame(width: index == selectedIndex ? 26 : 8, height: 6)

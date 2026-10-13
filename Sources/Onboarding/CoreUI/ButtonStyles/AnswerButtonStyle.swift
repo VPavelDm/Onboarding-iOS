@@ -27,7 +27,7 @@ struct AnswerButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(
                         isSelected
-                            ? colorPalette.primaryButtonBackground
+                            ? colorPalette.answerSelectionStyle
                             : AnyShapeStyle(colorPalette.secondaryButtonStrokeColor),
                         lineWidth: 2
                     )

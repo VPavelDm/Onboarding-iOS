@@ -152,7 +152,7 @@ private struct MilestoneTimeline: View {
 
         return MilestoneSegmentShape(trimTo: triggered ? 1 : 0)
             .stroke(
-                viewModel.colorPalette.accentColor.opacity(0.75),
+                viewModel.colorPalette.highlightTint.opacity(0.75),
                 style: StrokeStyle(lineWidth: 1.5, lineCap: .round)
             )
             .frame(width: segWidth, height: 4)
@@ -177,18 +177,26 @@ private struct MilestoneTimeline: View {
     }
 
     @ViewBuilder
+    /// With a highlight colour the word stands bare in it: inside the accent's tinted capsule a
+    /// saturated colour turned muddy and fought the capsule's outline.
     private var floatingChip: some View {
         if !floatingLabel.isEmpty {
-            Text(floatingLabel)
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(viewModel.colorPalette.textColor)
-                .accentChip(color: viewModel.colorPalette.accentColor)
+            if let highlight = viewModel.colorPalette.highlightColor {
+                Text(floatingLabel)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(highlight)
+            } else {
+                Text(floatingLabel)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(viewModel.colorPalette.textColor)
+                    .accentChip(color: viewModel.colorPalette.accentColor)
+            }
         }
     }
 
     private var dot: some View {
         Circle()
-            .fill(viewModel.colorPalette.accentColor)
+            .fill(viewModel.colorPalette.highlightTint)
             .frame(width: 9, height: 9)
     }
 }

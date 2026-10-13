@@ -89,23 +89,50 @@ final class OnboardingViewModel {
         userAnswers.append(answer)
         await delegate.onAnswer(userAnswer: answer, allAnswers: userAnswers)
 
-        playSelectionFeedback()
+        playAdvanceFeedback()
 
         await advance(to: nextStepID)
     }
 
-    /// Medium haptic on step completion.
-    private func playSelectionFeedback() {
+    // MARK: - Haptics
+    //
+    // One meaning per feel, so the flow never says the same thing two ways: a soft tap moves on,
+    // the system selection tick marks a choice, a light tick marks work landing, a rigid knock is
+    // a physical stamp, and success is kept for the moments the user earned.
+
+    /// A soft tap when a step completes. Soft and below full strength: it fires on every screen,
+    /// and a medium thud nineteen times over reads as noise.
+    private func playAdvanceFeedback() {
         #if canImport(UIKit)
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred(intensity: 0.7)
         #endif
     }
 
-    /// Light haptic for in-step interactions (e.g. toggling a multi-select option), callable from
-    /// any step view.
+    /// The system selection tick, for choosing within a step: a tile, a chip, a stepper value.
     func playToggleFeedback() {
         #if canImport(UIKit)
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        UISelectionFeedbackGenerator().selectionChanged()
+        #endif
+    }
+
+    /// A light tick as a piece of work lands: a progress bar filling, a receipt line printing.
+    func playTickFeedback(intensity: CGFloat = 0.6) {
+        #if canImport(UIKit)
+        UIImpactFeedbackGenerator(style: .light).impactOccurred(intensity: intensity)
+        #endif
+    }
+
+    /// A rigid knock for something that lands with weight, such as the receipt's stamp.
+    func playStampFeedback() {
+        #if canImport(UIKit)
+        UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+        #endif
+    }
+
+    /// Success, for what the user earned: a finished plan, a commitment made.
+    func playSuccessFeedback() {
+        #if canImport(UIKit)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
         #endif
     }
 

@@ -23,7 +23,7 @@ struct ChipButtonStyle: ButtonStyle {
                 Capsule()
                     .strokeBorder(
                         isSelected
-                            ? AnyShapeStyle(colorPalette.accentColor)
+                            ? AnyShapeStyle(colorPalette.selectionTint)
                             : AnyShapeStyle(colorPalette.secondaryButtonStrokeColor),
                         lineWidth: isSelected ? 2 : 1
                     )
