@@ -106,6 +106,46 @@ def xcode_cloud_latest_run(workflow_id)
   { number: attrs["number"] || 0, progress: attrs["executionProgress"] }
 end
 
+# Waits for the Test actions of the run built from `commit` and stops the release when any of them
+# failed. Only actions configured with tests count: the TestFlight post-action reports as a TEST
+# action too. A workflow without tests passes straight through. The run is found by its commit, not
+# by being newer than a snapshot, so a lane re-run after an interruption still finds it.
+def xcode_cloud_require_tests_passed(workflow_ids, commit, release_tag, wait_minutes: 40)
+  workflow_ids.each do |workflow_id|
+    actions = xcode_cloud_request(:get, "ciWorkflows/#{workflow_id}").dig("data", "attributes", "actions") || []
+    test_names = actions.select { |a| a["actionType"] == "TEST" && a["testConfiguration"] }.map { |a| a["name"] }
+    next if test_names.empty?
+
+    deadline = Time.now + wait_minutes * 60
+    loop do
+      runs = xcode_cloud_request(:get, "ciWorkflows/#{workflow_id}/buildRuns?limit=5&sort=-number")["data"] || []
+      run = runs.find { |r| r.dig("attributes", "sourceCommit", "commitSha") == commit }
+      tests = if run
+        (xcode_cloud_request(:get, "ciBuildRuns/#{run['id']}/actions")["data"] || [])
+          .select { |a| test_names.include?(a.dig("attributes", "name")) }
+      else
+        []
+      end
+
+      if tests.any? && tests.all? { |a| a.dig("attributes", "executionProgress") == "COMPLETE" }
+        failed = tests.reject { |a| a.dig("attributes", "completionStatus") == "SUCCEEDED" }
+        if failed.any?
+          summary = failed.map { |a| "#{a.dig('attributes', 'name')}: #{a.dig('attributes', 'completionStatus')}" }.join(", ")
+          UI.user_error!("Xcode Cloud tests failed for #{release_tag} (#{summary}). Nothing was submitted — fix the tests, then re-run this lane.")
+        end
+        UI.success("Xcode Cloud tests passed: #{test_names.join(', ')}.")
+        break
+      end
+
+      if Time.now > deadline
+        UI.user_error!("Xcode Cloud tests for #{release_tag} didn't finish within #{wait_minutes} min. Nothing was submitted — check the run in App Store Connect, then re-run this lane.")
+      end
+      UI.message(run ? "Waiting for Xcode Cloud tests (#{test_names.join(', ')}) — checking again in 30s" : "No Xcode Cloud run for #{commit[0, 7]} yet — checking again in 30s")
+      sleep(30)
+    end
+  end
+end
+
 # Confirm Xcode Cloud enqueued a run after the tag push, and start one via the
 # API when it didn't. A tag re-push whose target commit is unchanged (a lane
 # re-run after an interruption) never fires the trigger: autoCancel drops the
@@ -345,7 +385,12 @@ platform :ios do
       end
       sleep(30)
     end
-    UI.success("Build is ready — proceeding to submit.")
+    UI.success("Build is ready.")
+
+    # The build reaches App Store Connect whether or not the tests pass (actions run side by side),
+    # so this is what keeps a failing build from being submitted.
+    xcode_cloud_require_tests_passed(ci_workflow_ids, head_commit, release_tag) if ci_workflow_ids.any?
+    UI.success("Proceeding to submit.")
 
     deliver(
       api_key_path: API_KEY_PATH,
