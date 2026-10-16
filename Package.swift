@@ -98,6 +98,13 @@ let package = Package(
                 "Paywalls"
             ]
         ),
+        .testTarget(
+            name: "PaywallsRCTests",
+            dependencies: [
+                "PaywallsRC",
+                .product(name: "RevenueCat", package: "purchases-ios")
+            ]
+        ),
         .target(
             name: "PaywallsAdapty",
             dependencies: [

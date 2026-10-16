@@ -8,13 +8,18 @@
 import Foundation
 @testable import Paywalls
 
-/// Serves fixed offerings (or fails to) and counts reported views; purchases and
-/// restores are never exercised here.
+/// Serves fixed offerings (or fails to), answers purchases, restores and entitlement reads as
+/// told, and records what it was asked.
 @MainActor
 final class FakePaywallService: PaywallServiceProtocol {
     let offerings: PaywallOfferings
-    let fetchFails: Bool
+    var fetchFails: Bool
+    var purchaseOutcome: PaywallPurchaseOutcome = .cancelled
+    var restoreOutcome: PaywallRestoreOutcome = .notEntitled
+    var isEntitled = false
     private(set) var shownCount = 0
+    private(set) var purchasedPlanIDs: [String] = []
+    private(set) var syncCount = 0
 
     init(plans: [PaywallPlan], fetchFails: Bool = false) {
         offerings = PaywallOfferings(plans: plans)
@@ -26,6 +31,13 @@ final class FakePaywallService: PaywallServiceProtocol {
         return offerings
     }
     func logPaywallShown() async { shownCount += 1 }
-    func purchase(plan: PaywallPlan) async -> PaywallPurchaseOutcome { .cancelled }
-    func restorePurchases() async -> PaywallRestoreOutcome { .notEntitled }
+    func purchase(plan: PaywallPlan) async -> PaywallPurchaseOutcome {
+        purchasedPlanIDs.append(plan.id)
+        return purchaseOutcome
+    }
+    func restorePurchases() async -> PaywallRestoreOutcome { restoreOutcome }
+    func syncEntitlement() async -> Bool {
+        syncCount += 1
+        return isEntitled
+    }
 }

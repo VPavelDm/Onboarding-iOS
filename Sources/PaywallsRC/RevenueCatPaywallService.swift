@@ -61,11 +61,17 @@ public final class RevenueCatPaywallService: PaywallServiceProtocol {
         info.entitlements[entitlementID]?.isActive == true
     }
 
+    /// Keeps the package of every plan it maps, so a purchase can find it again by the plan's id.
+    private func plan(from package: Package) -> PaywallPlan? {
+        guard let plan = Self.plan(from: package) else { return nil }
+        packages[package.identifier] = package
+        return plan
+    }
+
     /// A package whose cadence the paywall has no period for is dropped rather than guessed at:
     /// the tiles are built around comparing prices per day, which needs a cadence.
-    private func plan(from package: Package) -> PaywallPlan? {
+    static func plan(from package: Package) -> PaywallPlan? {
         guard let period = period(of: package) else { return nil }
-        packages[package.identifier] = package
 
         let product = package.storeProduct
         return PaywallPlan(
@@ -79,7 +85,7 @@ public final class RevenueCatPaywallService: PaywallServiceProtocol {
         )
     }
 
-    private func period(of package: Package) -> PaywallPlan.Period? {
+    static func period(of package: Package) -> PaywallPlan.Period? {
         switch package.packageType {
         case .annual: .yearly
         case .monthly: .monthly
@@ -91,7 +97,7 @@ public final class RevenueCatPaywallService: PaywallServiceProtocol {
 
     /// Only a free introductory offer is a trial; a discounted first period is not one, and the
     /// timeline would date it wrongly.
-    private func freeTrialDays(of product: StoreProduct) -> Int? {
+    static func freeTrialDays(of product: StoreProduct) -> Int? {
         guard
             let offer = product.introductoryDiscount,
             offer.paymentMode == .freeTrial
@@ -101,7 +107,7 @@ public final class RevenueCatPaywallService: PaywallServiceProtocol {
         return days(in: offer.subscriptionPeriod)
     }
 
-    private func days(in period: SubscriptionPeriod) -> Int {
+    private static func days(in period: SubscriptionPeriod) -> Int {
         switch period.unit {
         case .day: period.value
         case .week: period.value * 7
