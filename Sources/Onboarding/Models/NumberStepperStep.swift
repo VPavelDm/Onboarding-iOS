@@ -21,13 +21,17 @@ struct NumberStepperStep: Sendable, Equatable, Hashable {
             /// The choice repeated: 10 a day is 300 over 30 days.
             case multiplied(by: Int)
             /// How long the choice takes to reach a target: 1000 words at 10 a day is 100 days.
+            /// Rounded up, because 15 a day reaches 1000 on day 67, not 66.
             case dividedInto(Int)
         }
 
         func value(forOption option: Int) -> Int {
             switch arithmetic {
-            case .multiplied(let factor): option * factor
-            case .dividedInto(let target): target / max(option, 1)
+            case .multiplied(let factor):
+                return option * factor
+            case .dividedInto(let target):
+                let option = max(option, 1)
+                return (target + option - 1) / option
             }
         }
     }
