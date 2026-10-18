@@ -333,22 +333,22 @@ public struct PaywallView: View {
     private var footnoteLabel: some View {
         ZStack {
             trialFootnote
-                .modifier(offerFootnoteStyle)
-                .opacity(viewModel.selectedHasTrial ? 1 : 0)
+                .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor))
+                .opacity(showsTrialFootnote ? 1 : 0)
             introFootnote
-                .modifier(offerFootnoteStyle)
+                .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor))
                 .opacity(showsIntroFootnote ? 1 : 0)
             cancelAnytime
-                .opacity(viewModel.selectedHasTrial || showsIntroFootnote ? 0 : 1)
+                .opacity(showsTrialFootnote || showsIntroFootnote ? 0 : 1)
         }
     }
 
-    private var offerFootnoteStyle: PaywallOfferFootnoteStyle {
-        PaywallOfferFootnoteStyle(emphasized: configuration.emphasizesOfferFootnote, textColor: configuration.textColor)
+    private var showsTrialFootnote: Bool {
+        configuration.showsOfferFootnote && viewModel.selectedHasTrial
     }
 
     private var showsIntroFootnote: Bool {
-        !viewModel.selectedHasTrial && viewModel.selectedIntroOffer != nil
+        configuration.showsOfferFootnote && !viewModel.selectedHasTrial && viewModel.selectedIntroOffer != nil
     }
 
     /// "$2.99 for the first week · then $5.99/week": the paid first period and
@@ -649,16 +649,14 @@ public struct PaywallView: View {
     }
 }
 
-/// The trial or intro-offer line under the CTA: emphasized, or in the
-/// "Cancel anytime" line's own style.
+/// The trial or intro-offer line under the CTA.
 private struct PaywallOfferFootnoteStyle: ViewModifier {
-    let emphasized: Bool
     let textColor: Color
 
     func body(content: Content) -> some View {
         content
-            .font(emphasized ? .subheadline.weight(.semibold) : .footnote.weight(.medium))
-            .foregroundStyle(textColor.opacity(emphasized ? 0.85 : 0.55))
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(textColor.opacity(0.85))
             .lineLimit(1)
             .minimumScaleFactor(0.8)
     }

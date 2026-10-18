@@ -11,8 +11,9 @@
   `PaywallView` itself is unchanged.
 - `PaywallConfiguration.showsTrialTimeline: Bool` (default true). False keeps the feature list
   on screen while a trial plan is selected. The trial is still named on the plan, the CTA and the line under it.
-- `PaywallConfiguration.emphasizesOfferFootnote: Bool` (default true). False sets "No payment
-  due now · then …" and the intro-offer line in the "Cancel anytime" line's quieter style.
+- `PaywallConfiguration.showsOfferFootnote: Bool` (default true). False keeps "Cancel anytime" under
+  the CTA instead of "No payment due now · then …" or the intro-offer line. The plan rows must
+  then say what each plan renews at.
 - `PaywallConfiguration.planRowSpacing: CGFloat?` (default nil, which keeps 12 pt, or 18 pt when
   a lower row carries a tag). A fixed value keeps the rows from moving when the tag lands on another row.
 - `PaywallConfiguration.planText: ((PaywallPlan) -> PlanText?)?` (default nil). On `.rows`,

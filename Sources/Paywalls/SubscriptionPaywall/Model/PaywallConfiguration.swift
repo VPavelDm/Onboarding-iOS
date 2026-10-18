@@ -234,11 +234,12 @@ public struct PaywallConfiguration: Sendable {
     /// on the plan, the CTA and the line under it. True (the default) shows the
     /// timeline, as before 4.9.
     public var showsTrialTimeline: Bool
-    /// True (the default) sets the trial and intro-offer line under the CTA
-    /// ("No payment due now · then $8.99/month") brighter and semibold, as
-    /// before 4.9. False gives it the "Cancel anytime" line's quieter style, so
-    /// the line reads the same whichever plan is selected.
-    public var emphasizesOfferFootnote: Bool
+    /// True (the default) swaps the line under the CTA for "No payment due
+    /// now · then $8.99/month" while a trial plan is selected, or "$2.99 for
+    /// the first week · then $5.99/week" for a paid first period, as before
+    /// 4.9. False keeps the "Cancel anytime" line whichever plan is selected;
+    /// the plan's own row must then say what it renews at.
+    public var showsOfferFootnote: Bool
     /// The gap between `.rows` plans. Nil (the default) widens it from 12 to
     /// 18 pt only when a lower row carries a tag, as before 4.9; a host that
     /// swaps offerings in place (tabs) sets one value so the rows below never
@@ -338,7 +339,7 @@ public struct PaywallConfiguration: Sendable {
         headerSymbolColor: Color? = nil,
         headerSymbolSize: CGFloat? = nil,
         showsTrialTimeline: Bool = true,
-        emphasizesOfferFootnote: Bool = true,
+        showsOfferFootnote: Bool = true,
         planRowSpacing: CGFloat? = nil,
         planText: (@Sendable (PaywallPlan) -> PlanText?)? = nil,
         planDetail: (@Sendable (PaywallPlan) -> String?)? = nil
@@ -392,7 +393,7 @@ public struct PaywallConfiguration: Sendable {
         self.headerSymbolColor = headerSymbolColor
         self.headerSymbolSize = headerSymbolSize
         self.showsTrialTimeline = showsTrialTimeline
-        self.emphasizesOfferFootnote = emphasizesOfferFootnote
+        self.showsOfferFootnote = showsOfferFootnote
         self.planRowSpacing = planRowSpacing
         self.planText = planText
         self.planDetail = planDetail
