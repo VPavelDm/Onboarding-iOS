@@ -1,7 +1,12 @@
 # Migrating from 4.8 to 4.9
 
-**No action required.** Four opt-ins for a host that swaps two paywalls in place (tabs) and
-needs every element to keep its position:
+**No action required.** A new view for paywalls behind tabs, and the options it relies on:
+
+- `PaywallTabsView(pages:selection:dismiss:tabs:onUnlocked:)` shows one `PaywallView` page per
+  tab under the host's tabs view. The header mark, the tabs, the close and the footer links are
+  drawn once and never move. The headline, features, plans, CTA and footnote blur from one tab
+  into the next. A tab's page is built the first time it's selected, so its plans load and
+  `paywall_shown` is sent once per tab the user sees.
 
 - `PaywallView(…, headerAccessory: AnyView?)` puts the host's own view under the headline
   (and subtitle), above the feature list or timeline. Nil, the default, leaves the header as before.

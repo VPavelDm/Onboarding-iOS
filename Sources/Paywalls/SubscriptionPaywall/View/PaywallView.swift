@@ -33,6 +33,20 @@ public struct PaywallView: View {
     private let dismiss: PaywallDismissBehavior?
     private let headerAccessory: AnyView?
     private let onUnlocked: () -> Void
+    private let layer: Layer
+    /// Set by `PaywallTabsView`, which owns the scroll view: the column takes
+    /// this height as its minimum instead of measuring a scroll view of its own.
+    private let embeddedMinHeight: CGFloat?
+
+    /// Which parts of the page this view draws. `PaywallTabsView` stacks one
+    /// `.content` layer per tab under a single `.chrome` layer, so what every tab
+    /// shares (the mark, the host's tabs, the close, the footer links) never
+    /// moves or blurs while the rest is swapped. A hidden part keeps its room.
+    enum Layer {
+        case full
+        case chrome
+        case content
+    }
 
     /// `headerAccessory` goes under the headline (and subtitle), above the
     /// feature list or timeline: a host's own control there, such as tabs
@@ -44,6 +58,26 @@ public struct PaywallView: View {
         headerAccessory: AnyView? = nil,
         onUnlocked: @escaping () -> Void
     ) {
+        self.init(
+            viewModel: viewModel,
+            configuration: configuration,
+            dismiss: dismiss,
+            headerAccessory: headerAccessory,
+            layer: .full,
+            embeddedMinHeight: nil,
+            onUnlocked: onUnlocked
+        )
+    }
+
+    init(
+        viewModel: PaywallViewModel,
+        configuration: PaywallConfiguration,
+        dismiss: PaywallDismissBehavior?,
+        headerAccessory: AnyView?,
+        layer: Layer,
+        embeddedMinHeight: CGFloat?,
+        onUnlocked: @escaping () -> Void
+    ) {
         viewModel.configure(with: configuration)
         _viewModel = State(initialValue: viewModel)
         _showCloseButton = State(initialValue: (dismiss?.closeButtonDelay ?? .zero) <= .zero)
@@ -51,6 +85,8 @@ public struct PaywallView: View {
         self.dismiss = dismiss
         self.headerAccessory = headerAccessory
         self.onUnlocked = onUnlocked
+        self.layer = layer
+        self.embeddedMinHeight = embeddedMinHeight
     }
 
     public var body: some View {
@@ -60,6 +96,7 @@ public struct PaywallView: View {
                 PaywallRestoreButton(textColor: configuration.textColor, action: handleRestore)
                     .padding(.top, 16)
                     .padding(.trailing, 20)
+                    .modifier(part(.chrome))
             }
             if dismiss != nil {
                 PaywallCloseButton(textColor: configuration.textColor, style: configuration.closeButtonStyle, action: handleClose)
@@ -68,21 +105,29 @@ public struct PaywallView: View {
                     .opacity(showCloseButton ? 1 : 0)
                     .allowsHitTesting(showCloseButton)
                     .animation(.easeIn(duration: 0.3), value: showCloseButton)
+                    .modifier(part(.chrome))
             }
         }
         .sensoryFeedback(.selection, trigger: viewModel.selectedPlanID) { old, new in
-            old != nil && old != new
+            // The chrome layer shares a tab's model; that tab's layer gives the tick.
+            layer != .chrome && old != nil && old != new
         }
-        .task { await viewModel.loadOfferings() }
+        .task {
+            // The chrome layer shares a tab's model; that tab's own layer loads it.
+            guard layer != .chrome else { return }
+            await viewModel.loadOfferings()
+        }
         .task {
             guard let delay = dismiss?.closeButtonDelay, delay > .zero else { return }
             try? await Task.sleep(for: delay)
             showCloseButton = true
         }
+        // Restore is on the chrome layer, buying on the content layers: each
+        // presents the alerts of its own actions, so none shows twice.
         .paywallAlerts(
-            showRestoreFailedAlert: $viewModel.showRestoreFailedAlert,
-            showPendingApprovalAlert: $viewModel.showPendingApprovalAlert,
-            purchaseError: $viewModel.purchaseError
+            showRestoreFailedAlert: layer == .content ? .constant(false) : $viewModel.showRestoreFailedAlert,
+            showPendingApprovalAlert: layer == .chrome ? .constant(false) : $viewModel.showPendingApprovalAlert,
+            purchaseError: layer == .chrome ? .constant(nil) : $viewModel.purchaseError
         )
     }
 
@@ -117,58 +162,78 @@ public struct PaywallView: View {
     /// The reassurance line ("Cancel anytime" / "No payment due now") sits
     /// under the CTA since 2.10: above the tiles it floated alone in the gap
     /// under the pitch, and it belongs next to the button it reassures about.
+    @ViewBuilder
     private var content: some View {
-        GeometryReader { geo in
-            ScrollView {
-                VStack(spacing: 0) {
-                    // With a mark the header is the tallest block on the page,
-                    // so it starts lower and the mark sits below the status bar
-                    // rather than beside the corner close.
-                    if let gap = configuration.headerSpacing {
-                        Spacer(minLength: configuration.headerSymbol == nil ? 44 : 56)
-                        header
-                        planContext
-                            .padding(.top, gap)
-                    } else {
-                        header
-                            .padding(.top, configuration.headerSymbol == nil ? 44 : 56)
-                        Spacer(minLength: 24)
-                        planContext
-                    }
-                    Spacer(minLength: 24)
-                    planSelector
-                    ctaButton
-                        .padding(.top, 16)
-                    if let declineTitle = dismiss?.declineTitle {
-                        declineButton(declineTitle)
-                            .padding(.top, 12)
-                    }
-                    if showsFootnote {
-                        footnoteLabel
-                            .padding(.top, 14)
-                    }
-                    PaywallFooterView(
-                        termsURL: configuration.termsURL,
-                        privacyURL: configuration.privacyURL,
-                        textColor: configuration.textColor,
-                        onRestore: restoresInCorner ? nil : handleRestore,
-                        onRedeemCode: redeemCodeAction
-                    )
-                    .padding(.top, showsFootnote ? 6 : 14)
+        if let embeddedMinHeight {
+            column
+                .frame(minHeight: embeddedMinHeight)
+        } else {
+            GeometryReader { geo in
+                ScrollView {
+                    column
+                        .frame(minHeight: geo.size.height)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 12)
-                .frame(maxWidth: .infinity)
-                .frame(minHeight: geo.size.height)
+                .scrollBounceBehavior(.basedOnSize)
             }
-            .scrollBounceBehavior(.basedOnSize)
         }
+    }
+
+    private var column: some View {
+        VStack(spacing: 0) {
+            // With a mark the header is the tallest block on the page,
+            // so it starts lower and the mark sits below the status bar
+            // rather than beside the corner close.
+            if let gap = configuration.headerSpacing {
+                Spacer(minLength: configuration.headerSymbol == nil ? 44 : 56)
+                header
+                planContext
+                    .padding(.top, gap)
+            } else {
+                header
+                    .padding(.top, configuration.headerSymbol == nil ? 44 : 56)
+                Spacer(minLength: 24)
+                planContext
+            }
+            Spacer(minLength: 24)
+            planSelector
+                .modifier(part(.content))
+            ctaButton
+                .modifier(part(.content))
+                .padding(.top, 16)
+            if let declineTitle = dismiss?.declineTitle {
+                declineButton(declineTitle)
+                    .modifier(part(.content))
+                    .padding(.top, 12)
+            }
+            if showsFootnote {
+                footnoteLabel
+                    .modifier(part(.content))
+                    .padding(.top, 14)
+            }
+            PaywallFooterView(
+                termsURL: configuration.termsURL,
+                privacyURL: configuration.privacyURL,
+                textColor: configuration.textColor,
+                onRestore: restoresInCorner ? nil : handleRestore,
+                onRedeemCode: redeemCodeAction
+            )
+            .modifier(part(.chrome))
+            .padding(.top, showsFootnote ? 6 : 14)
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 12)
+        .frame(maxWidth: .infinity)
+    }
+
+    private func part(_ part: Layer) -> PaywallPartVisibility {
+        PaywallPartVisibility(isVisible: layer == .full || layer == part)
     }
 
     private var header: some View {
         VStack(spacing: 0) {
             if let symbol = configuration.headerSymbol {
                 PaywallMark(systemImage: symbol, tint: accent, size: configuration.headerSymbolSize ?? 96, glyphColor: configuration.headerSymbolColor)
+                    .modifier(part(.chrome))
                     .padding(.bottom, 18)
             }
             Text(title)
@@ -182,6 +247,7 @@ public struct PaywallView: View {
                 // пла…"). Fixed vertically, the column grows and scrolls instead.
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity)
+                .modifier(part(.content))
 
             if let subtitle = configuration.subtitle {
                 Text(subtitle)
@@ -189,11 +255,13 @@ public struct PaywallView: View {
                     .foregroundStyle(configuration.textColor.opacity(0.6))
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
+                    .modifier(part(.content))
                     .padding(.top, 10)
             }
 
             if let headerAccessory {
                 headerAccessory
+                    .modifier(part(.chrome))
                     .padding(.top, 20)
             }
         }
@@ -241,6 +309,7 @@ public struct PaywallView: View {
                 .opacity(showsTimeline ? 1 : 0)
             }
         }
+        .modifier(part(.content))
     }
 
     private var showsTimeline: Bool {
@@ -586,5 +655,18 @@ private struct PaywallOfferFootnoteStyle: ViewModifier {
             .foregroundStyle(textColor.opacity(emphasized ? 0.85 : 0.55))
             .lineLimit(1)
             .minimumScaleFactor(0.8)
+    }
+}
+
+/// A part another layer draws: it keeps its room, but shows nothing and takes
+/// no touches, so the layer under or over it gets them.
+private struct PaywallPartVisibility: ViewModifier {
+    let isVisible: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(isVisible ? 1 : 0)
+            .allowsHitTesting(isVisible)
+            .accessibilityHidden(!isVisible)
     }
 }
