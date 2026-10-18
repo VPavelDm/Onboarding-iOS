@@ -256,10 +256,14 @@ public struct PaywallConfiguration: Sendable {
         /// Nil keeps the cadence title ("Monthly Access").
         public var title: String?
         public var subtitle: String?
+        /// Quieter words after the subtitle, past a dot: "Then $5.99 ·
+        /// renews weekly".
+        public var detail: String?
 
-        public init(title: String? = nil, subtitle: String? = nil) {
+        public init(title: String? = nil, subtitle: String? = nil, detail: String? = nil) {
             self.title = title
             self.subtitle = subtitle
+            self.detail = detail
         }
     }
 

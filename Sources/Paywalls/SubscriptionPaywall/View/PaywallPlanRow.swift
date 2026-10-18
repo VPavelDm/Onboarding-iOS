@@ -107,18 +107,18 @@ struct PaywallPlanRow: View {
     /// $5.99/week"). The line may take two lines rather than be cut: it is
     /// where the host says what the plan renews at.
     private func hostText(_ text: PaywallConfiguration.PlanText) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 3) {
             Text(verbatim: text.title ?? plan.period.accessTitle)
-                .font(.headline.weight(.semibold))
-                .foregroundStyle(textColor.opacity(isSelected ? 1 : 0.85))
+                .font(.headline.weight(.bold))
+                .foregroundStyle(textColor)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
             if let subtitle = text.subtitle {
-                // With a paid first period the line names the renewal price,
-                // so it stands a step above the intro price on the right.
-                Text(verbatim: subtitle)
-                    .font(plan.introOffer == nil ? .subheadline : .subheadline.weight(.semibold))
-                    .foregroundStyle(textColor.opacity(plan.introOffer == nil ? (isSelected ? 0.7 : 0.5) : (isSelected ? 0.9 : 0.75)))
+                // The subtitle in full (it names the renewal price, which must
+                // read at least as plainly as an intro price), the detail grey.
+                (Text(verbatim: subtitle).foregroundStyle(textColor)
+                    + Text(verbatim: text.detail.map { " · \($0)" } ?? "").foregroundStyle(textColor.opacity(0.55)))
+                    .font(.subheadline.weight(.semibold))
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
                     .fixedSize(horizontal: false, vertical: true)
@@ -130,15 +130,16 @@ struct PaywallPlanRow: View {
     /// white on the chosen row, a step dimmer on the others. Not in the
     /// selection colour (Pavel, 2026-10-18): the ring already says which.
     /// A paid first period is no louder than the price it renews at: its
-    /// price sits here in grey at the line's size, while the line under the
-    /// title ("Then $5.99/week") is brighter.
+    /// price sits here at the line's size, the size the standard rows give
+    /// their per-week figure, and the line under the title names the renewal.
     @ViewBuilder
     private var hostPrice: some View {
         if let intro = plan.introOffer {
+            // As the per-week figures on the standard rows beside it.
             Text(verbatim: intro.localizedPrice)
                 .font(.subheadline.weight(.semibold))
                 .monospacedDigit()
-                .foregroundStyle(textColor.opacity(0.6))
+                .foregroundStyle(textColor)
                 .lineLimit(1)
         } else {
             Text(plan.localizedPrice)
