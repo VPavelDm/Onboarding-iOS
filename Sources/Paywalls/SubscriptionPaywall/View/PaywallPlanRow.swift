@@ -124,14 +124,14 @@ struct PaywallPlanRow: View {
         }
     }
 
-    /// The billed amount, the row's loudest figure (Guideline 3.1.2): in the
-    /// selection colour on the chosen row, so the eye lands on what the CTA
-    /// will charge.
+    /// The billed amount, the row's loudest figure (Guideline 3.1.2): full
+    /// white on the chosen row, a step dimmer on the others. Not in the
+    /// selection colour (Pavel, 2026-10-18): the ring already says which.
     private var hostPrice: some View {
         Text(plan.introOffer?.localizedPrice ?? plan.localizedPrice)
             .font(.title2.weight(.bold))
             .monospacedDigit()
-            .foregroundStyle(isSelected ? selected : textColor.opacity(0.85))
+            .foregroundStyle(textColor.opacity(isSelected ? 1 : 0.85))
             .lineLimit(1)
             .minimumScaleFactor(0.8)
     }
