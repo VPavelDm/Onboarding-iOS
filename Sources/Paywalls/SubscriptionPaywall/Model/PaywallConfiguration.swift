@@ -238,6 +238,11 @@ public struct PaywallConfiguration: Sendable {
     public var footnote: Footnote
     /// How large a `.rows` plan draws its billed amount ("$8.99").
     public var planPriceStyle: PlanPriceStyle
+    /// Below this height (the paywall's own, safe area excluded) the page goes
+    /// compact: no header mark, a smaller headline, closer feature rows and
+    /// tighter gaps, so the plans and the CTA fit an iPhone SE (647 pt) without
+    /// scrolling. Nil (the default) keeps one layout at every height, as before 4.9.
+    public var compactHeight: CGFloat?
 
     public enum Footnote: Sendable {
         /// "No payment due now · then $8.99/month" while a trial plan is
@@ -365,6 +370,7 @@ public struct PaywallConfiguration: Sendable {
         showsTrialTimeline: Bool = true,
         footnote: Footnote = .offer,
         planPriceStyle: PlanPriceStyle = .prominent,
+        compactHeight: CGFloat? = nil,
         planRowSpacing: CGFloat? = nil,
         planText: (@Sendable (PaywallPlan) -> PlanText?)? = nil,
         planDetail: (@Sendable (PaywallPlan) -> String?)? = nil
@@ -420,6 +426,7 @@ public struct PaywallConfiguration: Sendable {
         self.showsTrialTimeline = showsTrialTimeline
         self.footnote = footnote
         self.planPriceStyle = planPriceStyle
+        self.compactHeight = compactHeight
         self.planRowSpacing = planRowSpacing
         self.planText = planText
         self.planDetail = planDetail

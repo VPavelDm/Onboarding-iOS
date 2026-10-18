@@ -26,6 +26,8 @@ struct PaywallPlanRow: View {
     var detail: String? = nil
     var noteStyle: PaywallConfiguration.PlanNote = .billedCadence
     var priceStyle: PaywallConfiguration.PlanPriceStyle = .prominent
+    /// A short screen: less padding inside the row.
+    var isCompact = false
     let selectionNamespace: Namespace.ID
     var textColor: Color = .white
     var accent: Color? = nil
@@ -76,8 +78,8 @@ struct PaywallPlanRow: View {
                 }
             }
             .padding(.horizontal, 18)
-            .padding(.vertical, 16)
-            .frame(minHeight: 68)
+            .padding(.vertical, isCompact ? 12 : 16)
+            .frame(minHeight: isCompact ? 60 : 68)
             .onGeometryChange(for: CGFloat.self, of: \.size.height) { onNaturalHeight($0) }
             .frame(minHeight: matchedHeight)
             .contentShape(.rect)

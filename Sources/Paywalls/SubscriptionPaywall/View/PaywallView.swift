@@ -169,12 +169,12 @@ public struct PaywallView: View {
     @ViewBuilder
     private var content: some View {
         if let embeddedMinHeight {
-            column
+            column(compact: isCompact(embeddedMinHeight))
                 .frame(minHeight: embeddedMinHeight)
         } else {
             GeometryReader { geo in
                 ScrollView {
-                    column
+                    column(compact: isCompact(geo.size.height))
                         .frame(minHeight: geo.size.height)
                 }
                 .scrollBounceBehavior(.basedOnSize)
@@ -182,28 +182,39 @@ public struct PaywallView: View {
         }
     }
 
-    private var column: some View {
-        VStack(spacing: 0) {
-            // With a mark the header is the tallest block on the page,
-            // so it starts lower and the mark sits below the status bar
-            // rather than beside the corner close.
-            if let gap = configuration.headerSpacing {
-                Spacer(minLength: configuration.headerSymbol == nil ? 44 : 56)
-                header
-                planContext
-                    .padding(.top, gap)
+    /// `configuration.compactHeight`: a screen shorter than it (an iPhone SE)
+    /// gets the compact page.
+    private func isCompact(_ height: CGFloat) -> Bool {
+        configuration.compactHeight.map { height < $0 } ?? false
+    }
+
+    /// `compact` drops the mark and tightens every gap, so the plans and the
+    /// CTA fit an iPhone SE without scrolling.
+    private func column(compact: Bool) -> some View {
+        let gap: CGFloat = compact ? 16 : 24
+        let showsMark = configuration.headerSymbol != nil && !compact
+        // With a mark the header is the tallest block on the page, so it
+        // starts lower and the mark sits below the status bar rather than
+        // beside the corner close.
+        let top: CGFloat = compact ? 24 : (showsMark ? 56 : 44)
+        return VStack(spacing: 0) {
+            if let headerGap = configuration.headerSpacing {
+                Spacer(minLength: top)
+                header(compact: compact)
+                planContext(compact: compact)
+                    .padding(.top, compact ? min(headerGap, gap) : headerGap)
             } else {
-                header
-                    .padding(.top, configuration.headerSymbol == nil ? 44 : 56)
-                Spacer(minLength: 24)
-                planContext
+                header(compact: compact)
+                    .padding(.top, top)
+                Spacer(minLength: gap)
+                planContext(compact: compact)
             }
-            Spacer(minLength: 24)
-            planSelector
+            Spacer(minLength: gap)
+            planSelector(compact: compact)
                 .modifier(part(.content))
             ctaButton
                 .modifier(part(.content))
-                .padding(.top, 16)
+                .padding(.top, compact ? 12 : 16)
             if let declineTitle = dismiss?.declineTitle {
                 declineButton(declineTitle)
                     .modifier(part(.content))
@@ -212,7 +223,7 @@ public struct PaywallView: View {
             if showsFootnote {
                 footnoteLabel
                     .modifier(part(.content))
-                    .padding(.top, 14)
+                    .padding(.top, compact ? 10 : 14)
             }
             PaywallFooterView(
                 termsURL: configuration.termsURL,
@@ -233,15 +244,15 @@ public struct PaywallView: View {
         PaywallPartVisibility(isVisible: layer == .full || layer == part)
     }
 
-    private var header: some View {
+    private func header(compact: Bool) -> some View {
         VStack(spacing: 0) {
-            if let symbol = configuration.headerSymbol {
+            if !compact, let symbol = configuration.headerSymbol {
                 PaywallMark(systemImage: symbol, tint: accent, size: configuration.headerSymbolSize ?? 96, glyphColor: configuration.headerSymbolColor)
                     .modifier(part(.chrome))
                     .padding(.bottom, 18)
             }
             Text(title)
-                .font(.largeTitle.weight(.bold))
+                .font(compact ? .title.weight(.bold) : .largeTitle.weight(.bold))
                 .foregroundStyle(configuration.textColor)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
@@ -266,7 +277,7 @@ public struct PaywallView: View {
             if let headerAccessory {
                 headerAccessory
                     .modifier(part(.chrome))
-                    .padding(.top, 20)
+                    .padding(.top, compact ? 14 : 20)
             }
         }
     }
@@ -286,7 +297,7 @@ public struct PaywallView: View {
     /// view's height, so switching plans never shifts the layout below.
     /// Top-aligned: the feature list is shorter than the timeline it shares this box with, and
     /// centred it floated away from the headline above it.
-    private var planContext: some View {
+    private func planContext(compact: Bool) -> some View {
         ZStack(alignment: .top) {
             PaywallFeaturesView(
                 features: configuration.features,
@@ -294,7 +305,8 @@ public struct PaywallView: View {
                 textColor: configuration.textColor,
                 accent: accent,
                 accentForeground: accentForeground,
-                iconStyle: configuration.featureIconStyle
+                iconStyle: configuration.featureIconStyle,
+                isCompact: compact
             )
             .opacity(showsTimeline ? 0 : 1)
             if configuration.showsTrialTimeline, let days = viewModel.trialDays {
@@ -423,7 +435,7 @@ public struct PaywallView: View {
     }
 
     @ViewBuilder
-    private var planSelector: some View {
+    private func planSelector(compact: Bool) -> some View {
         if let plan = viewModel.plans.first, viewModel.plans.count == 1 {
             priceCard(for: plan)
         } else if viewModel.plans.isEmpty {
@@ -441,7 +453,7 @@ public struct PaywallView: View {
                 }
             }
         } else if configuration.planLayout == .rows {
-            planRows
+            planRows(compact: compact)
         } else {
             HStack(spacing: 12) {
                 ForEach(viewModel.plans) { plan in
@@ -477,13 +489,13 @@ public struct PaywallView: View {
     private static let rowSpacing: CGFloat = 12
     private static let taggedRowSpacing: CGFloat = 18
 
-    private var planRowSpacing: CGFloat {
-        if let spacing = configuration.planRowSpacing { return spacing }
+    private func planRowSpacing(compact: Bool) -> CGFloat {
+        if let spacing = configuration.planRowSpacing { return compact ? min(spacing, 14) : spacing }
         return viewModel.plans.dropFirst().contains { viewModel.tag(for: $0) != nil } ? Self.taggedRowSpacing : Self.rowSpacing
     }
 
-    private var planRows: some View {
-        VStack(spacing: planRowSpacing) {
+    private func planRows(compact: Bool) -> some View {
+        VStack(spacing: planRowSpacing(compact: compact)) {
             ForEach(viewModel.plans) { plan in
                 PaywallPlanRow(
                     plan: plan,
@@ -494,6 +506,7 @@ public struct PaywallView: View {
                     detail: configuration.planDetail?(plan),
                     noteStyle: configuration.planNote,
                     priceStyle: configuration.planPriceStyle,
+                    isCompact: compact,
                     selectionNamespace: selectionNamespace,
                     textColor: configuration.textColor,
                     accent: accent,

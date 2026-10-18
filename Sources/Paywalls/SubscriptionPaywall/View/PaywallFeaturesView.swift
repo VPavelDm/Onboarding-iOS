@@ -20,9 +20,11 @@ struct PaywallFeaturesView: View {
     /// The glyph colour on a `.filled` disc.
     var accentForeground: Color = .white
     var iconStyle: PaywallConfiguration.FeatureIconStyle = .filled
+    /// A short screen: closer rows and a smaller label, so a long title stays on one line.
+    var isCompact = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: isCompact ? 10 : 14) {
             ForEach(features, id: \.self) { feature in
                 featureRow(feature)
             }
@@ -45,7 +47,7 @@ struct PaywallFeaturesView: View {
             )
             VStack(alignment: .leading, spacing: 3) {
                 Text(feature.title)
-                    .font(.headline)
+                    .font(isCompact ? .subheadline.weight(.semibold) : .headline)
                     .foregroundStyle(textColor)
                     .fixedSize(horizontal: false, vertical: true)
                 if !feature.subtitle.isEmpty {

@@ -17,6 +17,8 @@
   the plan rows must say what each plan renews at.
 - `PaywallConfiguration.planPriceStyle: PlanPriceStyle` (default `.prominent`, as before). `.compact`
   draws a row's billed amount at 17 pt bold, a step above the 15 pt figure on its right.
+- `PaywallConfiguration.compactHeight: CGFloat?` (default nil). Below this height the page drops
+  the header mark, uses a smaller headline and tighter gaps, so it fits an iPhone SE without scrolling.
 - `PaywallConfiguration.planRowSpacing: CGFloat?` (default nil, which keeps 12 pt, or 18 pt when
   a lower row carries a tag). A fixed value keeps the rows from moving when the tag lands on another row.
 - `PaywallConfiguration.planText: ((PaywallPlan) -> PlanText?)?` (default nil). On `.rows`,
