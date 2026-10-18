@@ -229,6 +229,21 @@ public struct PaywallConfiguration: Sendable {
     public var offersCodeRedemption: Bool
     /// Where Restore sits. `.footer` (the default) keeps it first in the footer.
     public var restorePlacement: RestorePlacement
+    /// False keeps the feature list on screen while a trial plan is selected,
+    /// instead of swapping it for the trial timeline; the trial is still named
+    /// on the plan, the CTA and the line under it. True (the default) shows the
+    /// timeline, as before 4.9.
+    public var showsTrialTimeline: Bool
+    /// True (the default) sets the trial and intro-offer line under the CTA
+    /// ("No payment due now · then $8.99/month") brighter and semibold, as
+    /// before 4.9. False gives it the "Cancel anytime" line's quieter style, so
+    /// the line reads the same whichever plan is selected.
+    public var emphasizesOfferFootnote: Bool
+    /// The gap between `.rows` plans. Nil (the default) widens it from 12 to
+    /// 18 pt only when a lower row carries a tag, as before 4.9; a host that
+    /// swaps offerings in place (tabs) sets one value so the rows below never
+    /// move when the tag lands on another row.
+    public var planRowSpacing: CGFloat?
 
     /// Where the paywall puts Restore.
     public enum RestorePlacement: Sendable {
@@ -295,7 +310,10 @@ public struct PaywallConfiguration: Sendable {
         planWash: Color? = nil,
         selectionColor: Color? = nil,
         headerSymbolColor: Color? = nil,
-        headerSymbolSize: CGFloat? = nil
+        headerSymbolSize: CGFloat? = nil,
+        showsTrialTimeline: Bool = true,
+        emphasizesOfferFootnote: Bool = true,
+        planRowSpacing: CGFloat? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -345,5 +363,8 @@ public struct PaywallConfiguration: Sendable {
         self.selectionColor = selectionColor
         self.headerSymbolColor = headerSymbolColor
         self.headerSymbolSize = headerSymbolSize
+        self.showsTrialTimeline = showsTrialTimeline
+        self.emphasizesOfferFootnote = emphasizesOfferFootnote
+        self.planRowSpacing = planRowSpacing
     }
 }

@@ -31,12 +31,17 @@ public struct PaywallView: View {
 
     private let configuration: PaywallConfiguration
     private let dismiss: PaywallDismissBehavior?
+    private let headerAccessory: AnyView?
     private let onUnlocked: () -> Void
 
+    /// `headerAccessory` goes under the headline (and subtitle), above the
+    /// feature list or timeline: a host's own control there, such as tabs
+    /// between two paywalls.
     public init(
         viewModel: PaywallViewModel,
         configuration: PaywallConfiguration,
         dismiss: PaywallDismissBehavior? = nil,
+        headerAccessory: AnyView? = nil,
         onUnlocked: @escaping () -> Void
     ) {
         viewModel.configure(with: configuration)
@@ -44,6 +49,7 @@ public struct PaywallView: View {
         _showCloseButton = State(initialValue: (dismiss?.closeButtonDelay ?? .zero) <= .zero)
         self.configuration = configuration
         self.dismiss = dismiss
+        self.headerAccessory = headerAccessory
         self.onUnlocked = onUnlocked
     }
 
@@ -185,6 +191,11 @@ public struct PaywallView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, 10)
             }
+
+            if let headerAccessory {
+                headerAccessory
+                    .padding(.top, 20)
+            }
         }
     }
 
@@ -213,8 +224,8 @@ public struct PaywallView: View {
                 accentForeground: accentForeground,
                 iconStyle: configuration.featureIconStyle
             )
-            .opacity(viewModel.selectedHasTrial ? 0 : 1)
-            if let days = viewModel.trialDays {
+            .opacity(showsTimeline ? 0 : 1)
+            if configuration.showsTrialTimeline, let days = viewModel.trialDays {
                 PaywallTimelineView(
                     trialDays: days,
                     unlockBody: configuration.trialUnlockBody,
@@ -227,9 +238,13 @@ public struct PaywallView: View {
                     midBody: configuration.trialMidBody,
                     midIcon: configuration.trialMidIcon
                 )
-                .opacity(viewModel.selectedHasTrial ? 1 : 0)
+                .opacity(showsTimeline ? 1 : 0)
             }
         }
+    }
+
+    private var showsTimeline: Bool {
+        configuration.showsTrialTimeline && viewModel.selectedHasTrial
     }
 
     /// A lifetime unlock has nothing to cancel and nothing due later — the
@@ -245,20 +260,18 @@ public struct PaywallView: View {
     private var footnoteLabel: some View {
         ZStack {
             trialFootnote
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(configuration.textColor.opacity(0.85))
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                .modifier(offerFootnoteStyle)
                 .opacity(viewModel.selectedHasTrial ? 1 : 0)
             introFootnote
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(configuration.textColor.opacity(0.85))
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                .modifier(offerFootnoteStyle)
                 .opacity(showsIntroFootnote ? 1 : 0)
             cancelAnytime
                 .opacity(viewModel.selectedHasTrial || showsIntroFootnote ? 0 : 1)
         }
+    }
+
+    private var offerFootnoteStyle: PaywallOfferFootnoteStyle {
+        PaywallOfferFootnoteStyle(emphasized: configuration.emphasizesOfferFootnote, textColor: configuration.textColor)
     }
 
     private var showsIntroFootnote: Bool {
@@ -384,7 +397,8 @@ public struct PaywallView: View {
     private static let taggedRowSpacing: CGFloat = 18
 
     private var planRowSpacing: CGFloat {
-        viewModel.plans.dropFirst().contains { viewModel.tag(for: $0) != nil } ? Self.taggedRowSpacing : Self.rowSpacing
+        if let spacing = configuration.planRowSpacing { return spacing }
+        return viewModel.plans.dropFirst().contains { viewModel.tag(for: $0) != nil } ? Self.taggedRowSpacing : Self.rowSpacing
     }
 
     private var planRows: some View {
@@ -557,5 +571,20 @@ public struct PaywallView: View {
     private func handleDecline() {
         viewModel.userDeclined()
         dismiss?.onDismiss()
+    }
+}
+
+/// The trial or intro-offer line under the CTA: emphasized, or in the
+/// "Cancel anytime" line's own style.
+private struct PaywallOfferFootnoteStyle: ViewModifier {
+    let emphasized: Bool
+    let textColor: Color
+
+    func body(content: Content) -> some View {
+        content
+            .font(emphasized ? .subheadline.weight(.semibold) : .footnote.weight(.medium))
+            .foregroundStyle(textColor.opacity(emphasized ? 0.85 : 0.55))
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
     }
 }

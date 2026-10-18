@@ -1,3 +1,17 @@
+# Migrating from 4.8 to 4.9
+
+**No action required.** Four opt-ins for a host that swaps two paywalls in place (tabs) and
+needs every element to keep its position:
+
+- `PaywallView(…, headerAccessory: AnyView?)` puts the host's own view under the headline
+  (and subtitle), above the feature list or timeline. Nil, the default, leaves the header as before.
+- `PaywallConfiguration.showsTrialTimeline: Bool` (default true). False keeps the feature list
+  on screen while a trial plan is selected. The trial is still named on the plan, the CTA and the line under it.
+- `PaywallConfiguration.emphasizesOfferFootnote: Bool` (default true). False sets "No payment
+  due now · then …" and the intro-offer line in the "Cancel anytime" line's quieter style.
+- `PaywallConfiguration.planRowSpacing: CGFloat?` (default nil, which keeps 12 pt, or 18 pt when
+  a lower row carries a tag). A fixed value keeps the rows from moving when the tag lands on another row.
+
 # Migrating from 4.7 to 4.8
 
 **No action required.** Paywalls show a paid introductory price: $2.99 for the first week of a
