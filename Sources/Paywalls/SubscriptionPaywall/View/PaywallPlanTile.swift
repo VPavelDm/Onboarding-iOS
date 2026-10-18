@@ -122,6 +122,12 @@ struct PaywallPlanTile: View {
             Text("\(days)-day free trial", bundle: .module)
                 .font(.footnote.weight(.medium))
                 .foregroundStyle(isSelected ? selectedNoteColor : textColor.opacity(0.7))
+        } else if let intro = plan.introOffer {
+            Text(verbatim: intro.terms)
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(isSelected ? selectedNoteColor : textColor.opacity(0.7))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         } else if noteStyle == .pricePerWeek, let perWeek = plan.localizedPricePerWeek {
             Text("\(perWeek)/week", bundle: .module)
                 .font(.footnote)

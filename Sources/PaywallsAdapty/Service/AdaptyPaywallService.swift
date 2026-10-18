@@ -127,8 +127,32 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
             localizedPrice: product.localizedPrice ?? "—",
             freeTrialDays: freeTrialDays(of: product),
             localizedTitle: product.localizedTitle,
-            priceLocale: product.priceLocale
+            priceLocale: product.priceLocale,
+            introOffer: introOffer(of: product)
         )
+    }
+
+    /// A paid first week, month or year, pay-as-you-go or up front. Adapty
+    /// hands over only an offer this user is eligible for, so the paywall
+    /// never names a price the store won't charge them. Offers of more than
+    /// one period, or in days, aren't shown.
+    private func introOffer(of product: AdaptyPaywallProduct) -> PaywallIntroOffer? {
+        guard
+            let offer = product.subscriptionOffer,
+            offer.offerType == .introductory,
+            offer.paymentMode == .payAsYouGo || offer.paymentMode == .payUpFront,
+            offer.numberOfPeriods == 1,
+            offer.subscriptionPeriod.numberOfUnits == 1,
+            let localizedPrice = offer.localizedPrice
+        else { return nil }
+        let period: PaywallPlan.Period
+        switch offer.subscriptionPeriod.unit {
+        case .week: period = .weekly
+        case .month: period = .monthly
+        case .year: period = .yearly
+        default: return nil
+        }
+        return PaywallIntroOffer(price: NSDecimalNumber(decimal: offer.price).doubleValue, localizedPrice: localizedPrice, period: period)
     }
 
     /// Days of free trial if the product's intro offer is a free-trial offer, else nil.

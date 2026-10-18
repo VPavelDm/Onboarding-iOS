@@ -107,11 +107,13 @@ struct PaywallPlanRow: View {
     /// When price and trial don't share one line next to the per-week figure
     /// (a trial in German, a long local price), the trial takes the line
     /// below instead of being cut to "3-day free…": the trial's length is
-    /// what Guideline 3.1.2 asks to be plainly shown.
+    /// what Guideline 3.1.2 asks to be plainly shown. A paid first period
+    /// ("$2.99 for the first week") takes the trial's place; the regular
+    /// price stays on the right.
     @ViewBuilder
     private var total: some View {
         let showsPrice = !repeatsComparison || regularPrice != nil
-        if showsPrice || plan.freeTrialDays != nil {
+        if showsPrice || offerText != nil {
             ViewThatFits(in: .horizontal) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     price(showsPrice)
@@ -141,21 +143,30 @@ struct PaywallPlanRow: View {
         }
     }
 
-    /// The trial, after a dot when it follows the price on the same line.
+    /// The trial or the paid first period, after a dot when it follows the
+    /// price on the same line.
     @ViewBuilder
     private func trialNote(separated: Bool) -> some View {
-        if let days = plan.freeTrialDays {
+        if let offerText {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 if separated {
                     Text(verbatim: "·")
                         .font(.subheadline)
                         .foregroundStyle(textColor.opacity(0.4))
                 }
-                Text("\(days)-day free trial", bundle: .module)
+                Text(verbatim: offerText)
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(isSelected && selection == .ring ? selected : textColor.opacity(0.7))
             }
         }
+    }
+
+    /// "3-day free trial" or "$2.99 for the first week"; nil for a plan with neither.
+    private var offerText: String? {
+        if let days = plan.freeTrialDays {
+            return String(localized: "\(days)-day free trial", bundle: .module)
+        }
+        return plan.introOffer?.terms
     }
 
     /// What the store charges, the most prominent price on the row: App

@@ -250,8 +250,32 @@ public struct PaywallView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
                 .opacity(viewModel.selectedHasTrial ? 1 : 0)
+            introFootnote
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(configuration.textColor.opacity(0.85))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .opacity(showsIntroFootnote ? 1 : 0)
             cancelAnytime
-                .opacity(viewModel.selectedHasTrial ? 0 : 1)
+                .opacity(viewModel.selectedHasTrial || showsIntroFootnote ? 0 : 1)
+        }
+    }
+
+    private var showsIntroFootnote: Bool {
+        !viewModel.selectedHasTrial && viewModel.selectedIntroOffer != nil
+    }
+
+    /// "$2.99 for the first week · then $5.99/week": the paid first period and
+    /// the price after it, side by side before the purchase (Guideline 3.1.2),
+    /// as the trial's line does. Takes the "Cancel anytime" line's place.
+    @ViewBuilder
+    private var introFootnote: some View {
+        if let intro = viewModel.selectedIntroOffer {
+            if let then = viewModel.selectedPlan?.localizedPricePerPeriod {
+                Text(verbatim: String(localized: "\(intro.terms) · then \(then)", bundle: .module))
+            } else {
+                Text(verbatim: intro.terms)
+            }
         }
     }
 

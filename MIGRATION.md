@@ -1,3 +1,20 @@
+# Migrating from 4.7 to 4.8
+
+**No action required.** Paywalls show a paid introductory price: $2.99 for the first week of a
+$5.99/week plan.
+
+- `PaywallPlan.introOffer: PaywallIntroOffer?` (a new init parameter that defaults to nil) holds
+  the first period's price and length. `AdaptyPaywallService` fills it from the product's
+  introductory offer when the offer is pay-as-you-go or pay-up-front and lasts one week, month or
+  year. Adapty passes only an offer the user is eligible for, so a user who already had one in
+  the subscription group sees the regular price.
+- The plan's row, tile and price card show "$2.99 for the first week" where a trial would show
+  its days. Under the CTA, "$2.99 for the first week · then $5.99/week" replaces "Cancel
+  anytime". Guideline 3.1.2 asks for both prices to be stated before the purchase.
+- `paywall_shown` carries `has_intro_offer` for the selected plan.
+- A free trial is unchanged. `RevenueCatPaywallService` leaves `introOffer` nil, because
+  RevenueCat's introductory discount doesn't say whether the user is eligible.
+
 # Migrating from 4.6 to 4.7
 
 **No action required.** Two changes to what a trial plan shows, both on by default:

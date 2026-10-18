@@ -63,7 +63,8 @@ struct PaywallPriceCard: View {
     }
 
     private func defaultNote(for plan: PaywallPlan) -> String {
-        switch plan.period {
+        if let intro = plan.introOffer { return intro.terms }
+        return switch plan.period {
         case .lifetime: String(localized: "One payment. No subscription, ever.", bundle: .module)
         case .weekly, .monthly, .yearly: plan.period.billedCadence
         }

@@ -47,6 +47,9 @@ public final class PaywallViewModel {
     /// the "no payment" label, and the CTA wording.
     var selectedHasTrial: Bool { selectedPlan?.hasFreeTrial ?? false }
 
+    /// The selected plan's paid first period, when it has one.
+    var selectedIntroOffer: PaywallIntroOffer? { selectedPlan?.introOffer }
+
     /// Trial length of the offering's trial plan (not the selection), so the timeline
     /// can stay mounted and cross-fade in place while the selection changes.
     var trialDays: Int? { plans.first { $0.hasFreeTrial }?.freeTrialDays }
@@ -129,7 +132,7 @@ public final class PaywallViewModel {
                 return
             }
         }
-        log("paywall_shown", ["has_trial": selectedHasTrial])
+        log("paywall_shown", ["has_trial": selectedHasTrial, "has_intro_offer": selectedIntroOffer != nil])
         await service.logPaywallShown()
     }
 

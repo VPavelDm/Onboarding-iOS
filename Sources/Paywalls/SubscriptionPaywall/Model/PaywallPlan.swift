@@ -90,6 +90,9 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
     /// way `localizedPrice` reads — the device's own region can differ ("4,99 US$"
     /// under "$4.99"). Nil hides those figures.
     public let priceLocale: Locale?
+    /// A paid first period before the regular price ($2.99 for the first
+    /// week), for a user the store will offer it to; nil when there is none.
+    public let introOffer: PaywallIntroOffer?
 
     public init(
         id: String,
@@ -98,7 +101,8 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
         localizedPrice: String,
         freeTrialDays: Int?,
         localizedTitle: String? = nil,
-        priceLocale: Locale? = nil
+        priceLocale: Locale? = nil,
+        introOffer: PaywallIntroOffer? = nil
     ) {
         self.id = id
         self.period = period
@@ -107,6 +111,7 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
         self.freeTrialDays = freeTrialDays
         self.localizedTitle = localizedTitle
         self.priceLocale = priceLocale
+        self.introOffer = introOffer
     }
 
     public var hasFreeTrial: Bool { freeTrialDays != nil }
