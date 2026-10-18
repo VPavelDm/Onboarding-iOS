@@ -336,9 +336,14 @@ public struct PaywallView: View {
             trialFootnote
                 .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor, quiet: configuration.footnote == .trial))
                 .opacity(showsTrialFootnote ? 1 : 0)
-            introFootnote
-                .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor, quiet: false))
-                .opacity(showsIntroFootnote ? 1 : 0)
+            // Mounted only where it can show, and never empty while mounted:
+            // a hidden line of another size still sets the stack's height, and
+            // one there for one plan but not the next made the page jump.
+            if configuration.footnote == .offer {
+                introFootnote
+                    .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor, quiet: false))
+                    .opacity(showsIntroFootnote ? 1 : 0)
+            }
             cancelAnytime
                 .opacity(showsTrialFootnote || showsIntroFootnote ? 0 : 1)
         }
@@ -363,6 +368,8 @@ public struct PaywallView: View {
             } else {
                 Text(verbatim: intro.terms)
             }
+        } else {
+            Text(verbatim: " ")
         }
     }
 
