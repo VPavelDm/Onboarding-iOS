@@ -20,6 +20,8 @@ struct PaywallPlanRow: View {
     let tag: PaywallPlanTag?
     /// Struck through before the price; nil shows the price alone.
     var regularPrice: String? = nil
+    /// The host's title and line for this plan; nil draws the standard row.
+    var text: PaywallConfiguration.PlanText? = nil
     var noteStyle: PaywallConfiguration.PlanNote = .billedCadence
     let selectionNamespace: Namespace.ID
     var textColor: Color = .white
@@ -53,16 +55,23 @@ struct PaywallPlanRow: View {
     var body: some View {
         Button(action: onSelect) {
             HStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(plan.period.accessTitle)
-                        .font(.headline.weight(.bold))
-                        .foregroundStyle(textColor)
-                    total
+                if let text {
+                    hostText(text)
+                    Spacer(minLength: 8)
+                    billedAmount(plan.introOffer?.localizedPrice ?? plan.localizedPrice)
+                        .lineLimit(1)
+                } else {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(plan.period.accessTitle)
+                            .font(.headline.weight(.bold))
+                            .foregroundStyle(textColor)
+                        total
+                    }
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    Spacer(minLength: 8)
+                    comparison
                 }
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
-                Spacer(minLength: 8)
-                comparison
             }
             .padding(.horizontal, 18)
             .padding(.vertical, 16)
@@ -94,6 +103,27 @@ struct PaywallPlanRow: View {
     }
 
     private var selectedWash: Double { selection == .filled ? 0.32 : 0.10 }
+
+    /// The host's title over its line ("7-Day Full Access" / "Then
+    /// $5.99/week"). The line may take two lines rather than be cut: it is
+    /// where the host says what the plan renews at.
+    private func hostText(_ text: PaywallConfiguration.PlanText) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(verbatim: text.title ?? plan.period.accessTitle)
+                .font(.headline.weight(.bold))
+                .foregroundStyle(textColor)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+            if let subtitle = text.subtitle {
+                Text(verbatim: subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(textColor.opacity(0.6))
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.9)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)

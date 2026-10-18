@@ -244,6 +244,24 @@ public struct PaywallConfiguration: Sendable {
     /// swaps offerings in place (tabs) sets one value so the rows below never
     /// move when the tag lands on another row.
     public var planRowSpacing: CGFloat?
+    /// A `.rows` plan's own words: a title in place of "Weekly Access" and a
+    /// line under it ("Then $5.99/week"), with the billed amount alone on the
+    /// right (the intro price when the plan has one). Nil, or a nil return,
+    /// keeps the row as before 4.9: the price and trial on the left, the
+    /// `planNote` figure on the right. Already localized by the host.
+    public var planText: (@Sendable (PaywallPlan) -> PlanText?)?
+
+    /// What `planText` puts on a row.
+    public struct PlanText: Sendable {
+        /// Nil keeps the cadence title ("Monthly Access").
+        public var title: String?
+        public var subtitle: String?
+
+        public init(title: String? = nil, subtitle: String? = nil) {
+            self.title = title
+            self.subtitle = subtitle
+        }
+    }
 
     /// Where the paywall puts Restore.
     public enum RestorePlacement: Sendable {
@@ -313,7 +331,8 @@ public struct PaywallConfiguration: Sendable {
         headerSymbolSize: CGFloat? = nil,
         showsTrialTimeline: Bool = true,
         emphasizesOfferFootnote: Bool = true,
-        planRowSpacing: CGFloat? = nil
+        planRowSpacing: CGFloat? = nil,
+        planText: (@Sendable (PaywallPlan) -> PlanText?)? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -366,5 +385,6 @@ public struct PaywallConfiguration: Sendable {
         self.showsTrialTimeline = showsTrialTimeline
         self.emphasizesOfferFootnote = emphasizesOfferFootnote
         self.planRowSpacing = planRowSpacing
+        self.planText = planText
     }
 }

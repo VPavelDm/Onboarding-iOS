@@ -482,6 +482,7 @@ public struct PaywallView: View {
                     isSelected: viewModel.isSelected(plan),
                     tag: viewModel.tag(for: plan),
                     regularPrice: viewModel.regularPrice(for: plan),
+                    text: configuration.planText?(plan),
                     noteStyle: configuration.planNote,
                     selectionNamespace: selectionNamespace,
                     textColor: configuration.textColor,

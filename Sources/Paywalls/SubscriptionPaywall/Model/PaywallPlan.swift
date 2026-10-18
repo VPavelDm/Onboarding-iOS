@@ -130,7 +130,7 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
 
     /// The billed price with its cadence after it ("$29.99/year"): the charge a
     /// free trial turns into. Nil for a plan with no cadence (lifetime).
-    var localizedPricePerPeriod: String? {
+    public var localizedPricePerPeriod: String? {
         switch period {
         case .weekly: String(localized: "\(localizedPrice)/week", bundle: .module)
         case .monthly: String(localized: "\(localizedPrice)/month", bundle: .module)
