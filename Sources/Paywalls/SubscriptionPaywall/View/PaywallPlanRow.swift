@@ -58,8 +58,7 @@ struct PaywallPlanRow: View {
                 if let text {
                     hostText(text)
                     Spacer(minLength: 8)
-                    billedAmount(plan.introOffer?.localizedPrice ?? plan.localizedPrice)
-                        .lineLimit(1)
+                    hostPrice
                 } else {
                     VStack(alignment: .leading, spacing: 3) {
                         Text(plan.period.accessTitle)
@@ -108,21 +107,33 @@ struct PaywallPlanRow: View {
     /// $5.99/week"). The line may take two lines rather than be cut: it is
     /// where the host says what the plan renews at.
     private func hostText(_ text: PaywallConfiguration.PlanText) -> some View {
-        VStack(alignment: .leading, spacing: 3) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(verbatim: text.title ?? plan.period.accessTitle)
-                .font(.headline.weight(.bold))
-                .foregroundStyle(textColor)
+                .font(.headline.weight(.semibold))
+                .foregroundStyle(textColor.opacity(isSelected ? 1 : 0.85))
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
             if let subtitle = text.subtitle {
                 Text(verbatim: subtitle)
                     .font(.subheadline)
-                    .foregroundStyle(textColor.opacity(0.6))
+                    .foregroundStyle(textColor.opacity(isSelected ? 0.7 : 0.5))
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
+    }
+
+    /// The billed amount, the row's loudest figure (Guideline 3.1.2): in the
+    /// selection colour on the chosen row, so the eye lands on what the CTA
+    /// will charge.
+    private var hostPrice: some View {
+        Text(plan.introOffer?.localizedPrice ?? plan.localizedPrice)
+            .font(.title2.weight(.bold))
+            .monospacedDigit()
+            .foregroundStyle(isSelected ? selected : textColor.opacity(0.85))
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
     }
 
     private var shape: RoundedRectangle {
