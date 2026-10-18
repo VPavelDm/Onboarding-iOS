@@ -114,9 +114,11 @@ struct PaywallPlanRow: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
             if let subtitle = text.subtitle {
+                // With a paid first period the line names the renewal price,
+                // so it stands a step above the intro price on the right.
                 Text(verbatim: subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(textColor.opacity(isSelected ? 0.7 : 0.5))
+                    .font(plan.introOffer == nil ? .subheadline : .subheadline.weight(.semibold))
+                    .foregroundStyle(textColor.opacity(plan.introOffer == nil ? (isSelected ? 0.7 : 0.5) : (isSelected ? 0.9 : 0.75)))
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
                     .fixedSize(horizontal: false, vertical: true)
@@ -127,13 +129,25 @@ struct PaywallPlanRow: View {
     /// The billed amount, the row's loudest figure (Guideline 3.1.2): full
     /// white on the chosen row, a step dimmer on the others. Not in the
     /// selection colour (Pavel, 2026-10-18): the ring already says which.
+    /// A paid first period is no louder than the price it renews at: its
+    /// price sits here in grey at the line's size, while the line under the
+    /// title ("Then $5.99/week") is brighter.
+    @ViewBuilder
     private var hostPrice: some View {
-        Text(plan.introOffer?.localizedPrice ?? plan.localizedPrice)
-            .font(.title2.weight(.bold))
-            .monospacedDigit()
-            .foregroundStyle(textColor.opacity(isSelected ? 1 : 0.85))
-            .lineLimit(1)
-            .minimumScaleFactor(0.8)
+        if let intro = plan.introOffer {
+            Text(verbatim: intro.localizedPrice)
+                .font(.subheadline.weight(.semibold))
+                .monospacedDigit()
+                .foregroundStyle(textColor.opacity(0.6))
+                .lineLimit(1)
+        } else {
+            Text(plan.localizedPrice)
+                .font(.title3.weight(.bold))
+                .monospacedDigit()
+                .foregroundStyle(textColor.opacity(isSelected ? 1 : 0.85))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+        }
     }
 
     private var shape: RoundedRectangle {
