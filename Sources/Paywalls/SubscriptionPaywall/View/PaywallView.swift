@@ -323,6 +323,7 @@ public struct PaywallView: View {
     /// A lifetime unlock has nothing to cancel and nothing due later — the
     /// subscription footnote would only sow doubt, so it disappears entirely.
     private var showsFootnote: Bool {
+        if configuration.footnote == .none { return false }
         if viewModel.selectedPlan?.period == .lifetime { return false }
         if viewModel.selectedPlan == nil && configuration.expectsSinglePlan { return false }
         return true
@@ -344,11 +345,11 @@ public struct PaywallView: View {
     }
 
     private var showsTrialFootnote: Bool {
-        configuration.showsOfferFootnote && viewModel.selectedHasTrial
+        configuration.footnote == .offer && viewModel.selectedHasTrial
     }
 
     private var showsIntroFootnote: Bool {
-        configuration.showsOfferFootnote && !viewModel.selectedHasTrial && viewModel.selectedIntroOffer != nil
+        configuration.footnote == .offer && !viewModel.selectedHasTrial && viewModel.selectedIntroOffer != nil
     }
 
     /// "$2.99 for the first week · then $5.99/week": the paid first period and
@@ -485,6 +486,7 @@ public struct PaywallView: View {
                     text: configuration.planText?(plan),
                     detail: configuration.planDetail?(plan),
                     noteStyle: configuration.planNote,
+                    priceStyle: configuration.planPriceStyle,
                     selectionNamespace: selectionNamespace,
                     textColor: configuration.textColor,
                     accent: accent,

@@ -13,7 +13,7 @@ import SwiftUI
 /// plans, CTA and the line under it) blurs from one tab into the next, each
 /// element where the last one was, provided the tabs' pages lay out alike
 /// (`PaywallConfiguration.planRowSpacing`, `showsTrialTimeline`,
-/// `showsOfferFootnote`).
+/// `footnote`).
 ///
 /// One cadence is selected across the tabs: the tab the paywall opens on picks
 /// it (its `featuredPeriod`), and a plan chosen on one tab selects the plan of

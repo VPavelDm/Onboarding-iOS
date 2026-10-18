@@ -25,6 +25,7 @@ struct PaywallPlanRow: View {
     /// Grey words after the price when there is no trial or intro to name.
     var detail: String? = nil
     var noteStyle: PaywallConfiguration.PlanNote = .billedCadence
+    var priceStyle: PaywallConfiguration.PlanPriceStyle = .prominent
     let selectionNamespace: Namespace.ID
     var textColor: Color = .white
     var accent: Color? = nil
@@ -243,7 +244,7 @@ struct PaywallPlanRow: View {
     /// that stands out more than the billed amount (Guideline 3.1.2).
     private func billedAmount(_ text: String) -> some View {
         Text(text)
-            .font(.title3.weight(.bold))
+            .font(priceStyle == .prominent ? .title3.weight(.bold) : .subheadline.weight(.semibold))
             .monospacedDigit()
             .foregroundStyle(textColor)
     }
