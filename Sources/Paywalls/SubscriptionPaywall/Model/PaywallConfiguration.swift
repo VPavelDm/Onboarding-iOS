@@ -250,6 +250,10 @@ public struct PaywallConfiguration: Sendable {
     /// keeps the row as before 4.9: the price and trial on the left, the
     /// `planNote` figure on the right. Already localized by the host.
     public var planText: (@Sendable (PaywallPlan) -> PlanText?)?
+    /// Quiet words after the price on a standard `.rows` plan with no trial or
+    /// intro offer to name there: "$8.99 · renews monthly". Already localized
+    /// by the host; nil (the default) shows the price alone.
+    public var planDetail: (@Sendable (PaywallPlan) -> String?)?
 
     /// What `planText` puts on a row.
     public struct PlanText: Sendable {
@@ -336,7 +340,8 @@ public struct PaywallConfiguration: Sendable {
         showsTrialTimeline: Bool = true,
         emphasizesOfferFootnote: Bool = true,
         planRowSpacing: CGFloat? = nil,
-        planText: (@Sendable (PaywallPlan) -> PlanText?)? = nil
+        planText: (@Sendable (PaywallPlan) -> PlanText?)? = nil,
+        planDetail: (@Sendable (PaywallPlan) -> String?)? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -390,5 +395,6 @@ public struct PaywallConfiguration: Sendable {
         self.emphasizesOfferFootnote = emphasizesOfferFootnote
         self.planRowSpacing = planRowSpacing
         self.planText = planText
+        self.planDetail = planDetail
     }
 }

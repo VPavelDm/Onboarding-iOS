@@ -22,6 +22,8 @@ struct PaywallPlanRow: View {
     var regularPrice: String? = nil
     /// The host's title and line for this plan; nil draws the standard row.
     var text: PaywallConfiguration.PlanText? = nil
+    /// Grey words after the price when there is no trial or intro to name.
+    var detail: String? = nil
     var noteStyle: PaywallConfiguration.PlanNote = .billedCadence
     let selectionNamespace: Namespace.ID
     var textColor: Color = .white
@@ -200,10 +202,21 @@ struct PaywallPlanRow: View {
     }
 
     /// The trial or the paid first period, after a dot when it follows the
-    /// price on the same line.
+    /// price on the same line; with neither, the host's grey detail.
     @ViewBuilder
     private func trialNote(separated: Bool) -> some View {
-        if let offerText {
+        if offerText == nil, let detail {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                if separated {
+                    Text(verbatim: "·")
+                        .font(.subheadline)
+                        .foregroundStyle(textColor.opacity(0.4))
+                }
+                Text(verbatim: detail)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(textColor.opacity(0.55))
+            }
+        } else if let offerText {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 if separated {
                     Text(verbatim: "·")

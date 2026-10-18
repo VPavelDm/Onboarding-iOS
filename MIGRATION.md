@@ -16,9 +16,12 @@
 - `PaywallConfiguration.planRowSpacing: CGFloat?` (default nil, which keeps 12 pt, or 18 pt when
   a lower row carries a tag). A fixed value keeps the rows from moving when the tag lands on another row.
 - `PaywallConfiguration.planText: ((PaywallPlan) -> PlanText?)?` (default nil). On `.rows`,
-  it gives a plan its own title and a line under it ("7-Day Full Access" / "Then $5.99/week"),
-  with the billed amount alone on the right (the intro price, when the plan has one).
+  it gives a plan its own title and a line under it, with an optional grey detail ("Weekly Access" /
+  "Then $5.99 · renews weekly"), and the billed amount alone on the right (the intro price, when
+  the plan has one).
   `PaywallPlan.localizedPricePerPeriod` ("$8.99/month") is public so the host can build that line.
+- `PaywallConfiguration.planDetail: ((PaywallPlan) -> String?)?` (default nil). Quiet words after
+  the price on a standard `.rows` plan that has no trial or intro offer to show: "$8.99 · renews monthly".
 
 # Migrating from 4.7 to 4.8
 

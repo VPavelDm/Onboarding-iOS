@@ -483,6 +483,7 @@ public struct PaywallView: View {
                     tag: viewModel.tag(for: plan),
                     regularPrice: viewModel.regularPrice(for: plan),
                     text: configuration.planText?(plan),
+                    detail: configuration.planDetail?(plan),
                     noteStyle: configuration.planNote,
                     selectionNamespace: selectionNamespace,
                     textColor: configuration.textColor,
