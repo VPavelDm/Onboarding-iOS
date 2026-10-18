@@ -244,6 +244,10 @@ public struct PaywallConfiguration: Sendable {
         /// selected, "$2.99 for the first week · then $5.99/week" for a paid
         /// first period, "Cancel anytime" otherwise, as before 4.9.
         case offer
+        /// "No payment due now · then $8.99/month" while a trial plan is
+        /// selected, "Cancel anytime" otherwise, both in the quiet style. A paid
+        /// first period gets no line of its own: its row must say what it renews at.
+        case trial
         /// "Cancel anytime" whichever plan is selected. The rows must then say
         /// what each plan renews at.
         case cancelAnytime
@@ -255,10 +259,10 @@ public struct PaywallConfiguration: Sendable {
     public enum PlanPriceStyle: Sendable {
         /// Larger and bold, as before 4.9: the row's loudest figure.
         case prominent
-        /// At the size of the figure on the row's right ("$2.07/week"), so a
-        /// row reads as one line of prices. The billed amount stays as plain
-        /// as any calculated price beside it.
-        case inline
+        /// A step above the figure on the row's right: 17 pt bold beside the
+        /// 15 pt per-week price, so the billed amount stays the larger of the
+        /// two (Guideline 3.1.2) without dominating the row.
+        case compact
     }
     /// The gap between `.rows` plans. Nil (the default) widens it from 12 to
     /// 18 pt only when a lower row carries a tag, as before 4.9; a host that

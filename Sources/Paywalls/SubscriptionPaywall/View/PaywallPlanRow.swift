@@ -244,7 +244,7 @@ struct PaywallPlanRow: View {
     /// that stands out more than the billed amount (Guideline 3.1.2).
     private func billedAmount(_ text: String) -> some View {
         Text(text)
-            .font(priceStyle == .prominent ? .title3.weight(.bold) : .subheadline.weight(.semibold))
+            .font(priceStyle == .prominent ? .title3.weight(.bold) : .headline.weight(.bold))
             .monospacedDigit()
             .foregroundStyle(textColor)
     }

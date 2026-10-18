@@ -334,10 +334,10 @@ public struct PaywallView: View {
     private var footnoteLabel: some View {
         ZStack {
             trialFootnote
-                .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor))
+                .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor, quiet: configuration.footnote == .trial))
                 .opacity(showsTrialFootnote ? 1 : 0)
             introFootnote
-                .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor))
+                .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor, quiet: false))
                 .opacity(showsIntroFootnote ? 1 : 0)
             cancelAnytime
                 .opacity(showsTrialFootnote || showsIntroFootnote ? 0 : 1)
@@ -345,7 +345,7 @@ public struct PaywallView: View {
     }
 
     private var showsTrialFootnote: Bool {
-        configuration.footnote == .offer && viewModel.selectedHasTrial
+        (configuration.footnote == .offer || configuration.footnote == .trial) && viewModel.selectedHasTrial
     }
 
     private var showsIntroFootnote: Bool {
@@ -651,14 +651,16 @@ public struct PaywallView: View {
     }
 }
 
-/// The trial or intro-offer line under the CTA.
+/// The trial or intro-offer line under the CTA: emphasized, or `quiet` in
+/// the "Cancel anytime" line's own style.
 private struct PaywallOfferFootnoteStyle: ViewModifier {
     let textColor: Color
+    let quiet: Bool
 
     func body(content: Content) -> some View {
         content
-            .font(.subheadline.weight(.semibold))
-            .foregroundStyle(textColor.opacity(0.85))
+            .font(quiet ? .footnote.weight(.medium) : .subheadline.weight(.semibold))
+            .foregroundStyle(textColor.opacity(quiet ? 0.55 : 0.85))
             .lineLimit(1)
             .minimumScaleFactor(0.8)
     }
