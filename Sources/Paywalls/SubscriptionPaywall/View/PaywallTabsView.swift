@@ -15,6 +15,10 @@ import SwiftUI
 /// (`PaywallConfiguration.planRowSpacing`, `showsTrialTimeline`,
 /// `emphasizesOfferFootnote`).
 ///
+/// One cadence is selected across the tabs: the tab the paywall opens on picks
+/// it (its `featuredPeriod`), and a plan chosen on one tab selects the plan of
+/// the same cadence on the others, where they sell one.
+///
 /// A tab's page is built the first time it is selected, so its plans load and
 /// `paywall_shown` goes out once per tab actually seen. The tabs view is the
 /// host's; it reports a choice by changing `selection`.
@@ -77,6 +81,7 @@ public struct PaywallTabsView: View {
                         headerAccessory: tabs,
                         layer: .chrome,
                         embeddedMinHeight: geo.size.height,
+                        isCurrent: true,
                         onUnlocked: onUnlocked
                     )
                 }
@@ -85,6 +90,24 @@ public struct PaywallTabsView: View {
         }
         .animation(reduceMotion ? .easeInOut(duration: 0.2) : .easeInOut(duration: 0.3), value: selection)
         .onChange(of: selection) { _, new in built.insert(new) }
+        .onChange(of: currentChoice) { old, new in
+            // A switch of tab is not a choice of plan.
+            guard old.tab == new.tab, let period = new.period else { return }
+            for (index, page) in pages.enumerated() where index != new.tab {
+                page.viewModel.follow(period: period)
+            }
+        }
+    }
+
+    private struct Choice: Equatable {
+        let tab: Int
+        let period: PaywallPlan.Period?
+    }
+
+    /// The shown tab's selected cadence; it changes when that tab's plans
+    /// land (the opening pick) or the user picks another plan there.
+    private var currentChoice: Choice {
+        Choice(tab: selection, period: pages[selection].viewModel.selectedPlan?.period)
     }
 
     private func page(_ index: Int, minHeight: CGFloat) -> some View {
@@ -96,6 +119,7 @@ public struct PaywallTabsView: View {
             headerAccessory: tabs,
             layer: .content,
             embeddedMinHeight: minHeight,
+            isCurrent: isSelected,
             onUnlocked: onUnlocked
         )
         .opacity(isSelected ? 1 : 0)

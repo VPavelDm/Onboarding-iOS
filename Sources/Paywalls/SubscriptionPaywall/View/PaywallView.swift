@@ -37,6 +37,7 @@ public struct PaywallView: View {
     /// Set by `PaywallTabsView`, which owns the scroll view: the column takes
     /// this height as its minimum instead of measuring a scroll view of its own.
     private let embeddedMinHeight: CGFloat?
+    private let isCurrent: Bool
 
     /// Which parts of the page this view draws. `PaywallTabsView` stacks one
     /// `.content` layer per tab under a single `.chrome` layer, so what every tab
@@ -48,27 +49,27 @@ public struct PaywallView: View {
         case content
     }
 
-    /// `headerAccessory` goes under the headline (and subtitle), above the
-    /// feature list or timeline: a host's own control there, such as tabs
-    /// between two paywalls.
     public init(
         viewModel: PaywallViewModel,
         configuration: PaywallConfiguration,
         dismiss: PaywallDismissBehavior? = nil,
-        headerAccessory: AnyView? = nil,
         onUnlocked: @escaping () -> Void
     ) {
         self.init(
             viewModel: viewModel,
             configuration: configuration,
             dismiss: dismiss,
-            headerAccessory: headerAccessory,
+            headerAccessory: nil,
             layer: .full,
             embeddedMinHeight: nil,
+            isCurrent: true,
             onUnlocked: onUnlocked
         )
     }
 
+    /// `PaywallTabsView`'s layers. `headerAccessory` (the tabs) goes under the
+    /// headline, above the feature list; `isCurrent` is false for a tab that
+    /// isn't showing, which follows the selection silently.
     init(
         viewModel: PaywallViewModel,
         configuration: PaywallConfiguration,
@@ -76,6 +77,7 @@ public struct PaywallView: View {
         headerAccessory: AnyView?,
         layer: Layer,
         embeddedMinHeight: CGFloat?,
+        isCurrent: Bool,
         onUnlocked: @escaping () -> Void
     ) {
         viewModel.configure(with: configuration)
@@ -87,6 +89,7 @@ public struct PaywallView: View {
         self.onUnlocked = onUnlocked
         self.layer = layer
         self.embeddedMinHeight = embeddedMinHeight
+        self.isCurrent = isCurrent
     }
 
     public var body: some View {
@@ -109,8 +112,9 @@ public struct PaywallView: View {
             }
         }
         .sensoryFeedback(.selection, trigger: viewModel.selectedPlanID) { old, new in
-            // The chrome layer shares a tab's model; that tab's layer gives the tick.
-            layer != .chrome && old != nil && old != new
+            // The chrome layer shares a tab's model; that tab's layer gives the
+            // tick. A hidden tab following the shown one's choice gives none.
+            layer != .chrome && isCurrent && old != nil && old != new
         }
         .task {
             // The chrome layer shares a tab's model; that tab's own layer loads it.

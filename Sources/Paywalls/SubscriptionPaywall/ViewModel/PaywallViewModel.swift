@@ -33,6 +33,9 @@ public final class PaywallViewModel {
 
     /// The host's plan choices from `PaywallConfiguration`, handed over by the view.
     private var featuredPeriod: PaywallPlan.Period?
+    /// Set by `PaywallTabsView`: the cadence chosen on another tab, which this
+    /// one opens on when it sells it, over the featured plan.
+    var preferredPeriod: PaywallPlan.Period?
     private var savingsTags: PaywallConfiguration.SavingsTags = .everyCheaperPlan
     private var regularPricePeriods: Set<PaywallPlan.Period> = []
 
@@ -138,7 +141,18 @@ public final class PaywallViewModel {
 
     private func apply(_ offerings: PaywallOfferings) {
         self.offerings = offerings
-        if selectedPlanID == nil { selectedPlanID = offerings.defaultPlan(featuring: featuredPeriod)?.id }
+        if selectedPlanID == nil {
+            selectedPlanID = offerings.plans.first { $0.period == preferredPeriod }?.id
+                ?? offerings.defaultPlan(featuring: featuredPeriod)?.id
+        }
+    }
+
+    /// Follows a choice made on another tab: selects this tab's plan of that
+    /// cadence, if it has one. Not the user's choice here, so nothing is logged.
+    func follow(period: PaywallPlan.Period) {
+        preferredPeriod = period
+        guard let plan = plans.first(where: { $0.period == period }) else { return }
+        selectedPlanID = plan.id
     }
 
     func selectPlan(_ plan: PaywallPlan) {

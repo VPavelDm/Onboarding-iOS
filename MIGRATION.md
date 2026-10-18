@@ -6,10 +6,9 @@
   tab under the host's tabs view. The header mark, the tabs, the close and the footer links are
   drawn once and never move. The headline, features, plans, CTA and footnote blur from one tab
   into the next. A tab's page is built the first time it's selected, so its plans load and
-  `paywall_shown` is sent once per tab the user sees.
-
-- `PaywallView(…, headerAccessory: AnyView?)` puts the host's own view under the headline
-  (and subtitle), above the feature list or timeline. Nil, the default, leaves the header as before.
+  `paywall_shown` is sent once per tab the user sees. One cadence is selected across tabs: the
+  tab it opens on picks it, and a plan chosen on one tab selects the same cadence on the others.
+  `PaywallView` itself is unchanged.
 - `PaywallConfiguration.showsTrialTimeline: Bool` (default true). False keeps the feature list
   on screen while a trial plan is selected. The trial is still named on the plan, the CTA and the line under it.
 - `PaywallConfiguration.emphasizesOfferFootnote: Bool` (default true). False sets "No payment
