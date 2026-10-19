@@ -4,6 +4,8 @@
 `.rows` plan charges on its right ("$8.99") instead of the per-week figure. Every row, weekly too,
 keeps its price on the line under its name ("$5.99 · renews weekly"). And `PaywallConfiguration.planTitle` names a `.rows`
 plan ("7-Day Full Access" for "Weekly Access"); nil keeps the cadence title.
+`PaywallConfiguration.ctaIntroTitle` is the CTA while a plan with a paid first period is selected;
+nil keeps the usual title.
 
 # Migrating from 4.8 to 4.9
 

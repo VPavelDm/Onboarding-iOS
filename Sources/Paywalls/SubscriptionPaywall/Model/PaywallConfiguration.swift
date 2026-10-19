@@ -293,6 +293,9 @@ public struct PaywallConfiguration: Sendable {
     /// Access"); nil, or a nil return, keeps the cadence title. Already
     /// localized by the host.
     public var planTitle: (@Sendable (PaywallPlan) -> String?)?
+    /// The CTA while a plan with a paid first period is selected (a paid
+    /// trial). Nil keeps the plan's usual title ("Continue").
+    public var ctaIntroTitle: String?
 
     /// What `planText` puts on a row.
     public struct PlanText: Sendable {
@@ -383,7 +386,8 @@ public struct PaywallConfiguration: Sendable {
         planRowSpacing: CGFloat? = nil,
         planText: (@Sendable (PaywallPlan) -> PlanText?)? = nil,
         planDetail: (@Sendable (PaywallPlan) -> String?)? = nil,
-        planTitle: (@Sendable (PaywallPlan) -> String?)? = nil
+        planTitle: (@Sendable (PaywallPlan) -> String?)? = nil,
+        ctaIntroTitle: String? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -441,5 +445,6 @@ public struct PaywallConfiguration: Sendable {
         self.planText = planText
         self.planDetail = planDetail
         self.planTitle = planTitle
+        self.ctaIntroTitle = ctaIntroTitle
     }
 }

@@ -591,6 +591,9 @@ public struct PaywallView: View {
         if viewModel.selectedHasTrial {
             return configuration.ctaTrialTitle ?? viewModel.ctaTitle
         }
+        if viewModel.selectedIntroOffer != nil, let introTitle = configuration.ctaIntroTitle {
+            return introTitle
+        }
         if let withPrice = configuration.ctaTitleWithPrice, let plan = viewModel.selectedPlan {
             return withPrice(plan.localizedPrice)
         }
