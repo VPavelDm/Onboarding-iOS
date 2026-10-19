@@ -285,8 +285,9 @@ public struct PaywallConfiguration: Sendable {
     /// `planNote` figure on the right. Already localized by the host.
     public var planText: (@Sendable (PaywallPlan) -> PlanText?)?
     /// Quiet words after the price on a standard `.rows` plan with no trial or
-    /// intro offer to name there: "$8.99 · renews monthly". Already localized
-    /// by the host; nil (the default) shows the price alone.
+    /// intro offer to name there: "$8.99 · renews monthly", or alone where the
+    /// row doesn't repeat its price ("renews weekly"). Already localized by
+    /// the host; nil (the default) shows the price alone.
     public var planDetail: (@Sendable (PaywallPlan) -> String?)?
     /// A `.rows` plan's name in place of "Weekly Access" ("7-Day Full
     /// Access"); nil, or a nil return, keeps the cadence title. Already

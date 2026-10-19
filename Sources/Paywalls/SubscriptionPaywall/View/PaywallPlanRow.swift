@@ -178,7 +178,9 @@ struct PaywallPlanRow: View {
     @ViewBuilder
     private var total: some View {
         let showsPrice = !repeatsComparison || regularPrice != nil
-        if showsPrice || offerText != nil {
+        // The detail stands alone where the price isn't repeated ("7-Day
+        // Full Access" / "renews weekly").
+        if showsPrice || offerText != nil || detail != nil {
             ViewThatFits(in: .horizontal) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     price(showsPrice)
