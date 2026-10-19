@@ -288,6 +288,10 @@ public struct PaywallConfiguration: Sendable {
     /// intro offer to name there: "$8.99 · renews monthly". Already localized
     /// by the host; nil (the default) shows the price alone.
     public var planDetail: (@Sendable (PaywallPlan) -> String?)?
+    /// A `.rows` plan's name in place of "Weekly Access" ("7-Day Full
+    /// Access"); nil, or a nil return, keeps the cadence title. Already
+    /// localized by the host.
+    public var planTitle: (@Sendable (PaywallPlan) -> String?)?
 
     /// What `planText` puts on a row.
     public struct PlanText: Sendable {
@@ -377,7 +381,8 @@ public struct PaywallConfiguration: Sendable {
         compactHeight: CGFloat? = nil,
         planRowSpacing: CGFloat? = nil,
         planText: (@Sendable (PaywallPlan) -> PlanText?)? = nil,
-        planDetail: (@Sendable (PaywallPlan) -> String?)? = nil
+        planDetail: (@Sendable (PaywallPlan) -> String?)? = nil,
+        planTitle: (@Sendable (PaywallPlan) -> String?)? = nil
     ) {
         self.headerSymbol = headerSymbol
         self.title = title ?? String(localized: "Unlock your full plan", bundle: .module)
@@ -434,5 +439,6 @@ public struct PaywallConfiguration: Sendable {
         self.planRowSpacing = planRowSpacing
         self.planText = planText
         self.planDetail = planDetail
+        self.planTitle = planTitle
     }
 }

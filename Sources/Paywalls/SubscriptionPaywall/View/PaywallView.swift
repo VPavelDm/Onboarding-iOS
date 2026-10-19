@@ -504,6 +504,7 @@ public struct PaywallView: View {
                     regularPrice: viewModel.regularPrice(for: plan),
                     text: configuration.planText?(plan),
                     detail: configuration.planDetail?(plan),
+                    customTitle: configuration.planTitle?(plan),
                     noteStyle: configuration.planNote,
                     priceStyle: configuration.planPriceStyle,
                     isCompact: compact,

@@ -24,6 +24,8 @@ struct PaywallPlanRow: View {
     var text: PaywallConfiguration.PlanText? = nil
     /// Grey words after the price when there is no trial or intro to name.
     var detail: String? = nil
+    /// The host's name for the plan; nil says "Weekly Access".
+    var customTitle: String? = nil
     var noteStyle: PaywallConfiguration.PlanNote = .billedCadence
     var priceStyle: PaywallConfiguration.PlanPriceStyle = .prominent
     /// A short screen: less padding inside the row.
@@ -66,7 +68,7 @@ struct PaywallPlanRow: View {
                     hostPrice
                 } else {
                     VStack(alignment: .leading, spacing: 3) {
-                        Text(plan.period.accessTitle)
+                        Text(verbatim: rowTitle)
                             .font(.headline.weight(.bold))
                             .foregroundStyle(textColor)
                         total
@@ -106,6 +108,8 @@ struct PaywallPlanRow: View {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
+    private var rowTitle: String { customTitle ?? plan.period.accessTitle }
+
     private var selectedWash: Double { selection == .filled ? 0.32 : 0.10 }
 
     /// The host's title over its line ("7-Day Full Access" / "Then
@@ -113,7 +117,7 @@ struct PaywallPlanRow: View {
     /// where the host says what the plan renews at.
     private func hostText(_ text: PaywallConfiguration.PlanText) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(verbatim: text.title ?? plan.period.accessTitle)
+            Text(verbatim: text.title ?? rowTitle)
                 .font(.headline.weight(.bold))
                 .foregroundStyle(textColor)
                 .lineLimit(1)

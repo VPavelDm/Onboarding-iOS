@@ -2,7 +2,8 @@
 
 **No action required.** One opt-in: `PaywallConfiguration.PlanNote.billedAmount` puts what a
 `.rows` plan charges on its right ("$8.99") instead of the per-week figure. The line under the
-plan's name stays as with `.pricePerWeek`.
+plan's name stays as with `.pricePerWeek`. And `PaywallConfiguration.planTitle` names a `.rows`
+plan ("7-Day Full Access" for "Weekly Access"); nil keeps the cadence title.
 
 # Migrating from 4.8 to 4.9
 
