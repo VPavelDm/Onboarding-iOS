@@ -174,7 +174,7 @@ struct PaywallPlanRow: View {
     @ViewBuilder
     private var total: some View {
         let showsPrice = !repeatsComparison || regularPrice != nil
-        if showsPrice || offerText != nil || detail != nil {
+        if showsPrice || offerText != nil {
             ViewThatFits(in: .horizontal) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     price(showsPrice)
@@ -255,7 +255,7 @@ struct PaywallPlanRow: View {
     private var repeatsComparison: Bool {
         switch noteStyle {
         case .pricePerWeek: plan.period == .weekly && plan.localizedPricePerWeek != nil
-        case .pricePerPeriod: plan.localizedPricePerPeriod != nil
+        case .billedAmount: plan.period == .weekly
         case .billedCadence: false
         }
     }
@@ -266,8 +266,8 @@ struct PaywallPlanRow: View {
     /// comparison (Pavel, 2026-10-02); on that row it is the only price.
     private var comparison: some View {
         Group {
-            if noteStyle == .pricePerPeriod, let perPeriod = plan.localizedPricePerPeriod {
-                Text(verbatim: perPeriod)
+            if noteStyle == .billedAmount {
+                Text(verbatim: plan.localizedPrice)
                     .monospacedDigit()
             } else if noteStyle == .pricePerWeek, let perWeek = plan.localizedPricePerWeek {
                 Text("\(perWeek)/week", bundle: .module)

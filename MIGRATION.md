@@ -1,8 +1,8 @@
 # Migrating from 4.9 to 4.10
 
-**No action required.** One opt-in: `PaywallConfiguration.PlanNote.pricePerPeriod` puts what a
-`.rows` plan charges each period on its right ("$8.99/month") instead of the per-week figure; the
-line under the plan's name then keeps only the trial, intro offer or `planDetail`.
+**No action required.** One opt-in: `PaywallConfiguration.PlanNote.billedAmount` puts what a
+`.rows` plan charges on its right ("$8.99") instead of the per-week figure. The line under the
+plan's name stays as with `.pricePerWeek`.
 
 # Migrating from 4.8 to 4.9
 
