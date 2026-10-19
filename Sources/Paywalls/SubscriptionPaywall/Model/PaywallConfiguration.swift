@@ -37,9 +37,9 @@ public struct PaywallConfiguration: Sendable {
         /// cadences compare at a glance. A plan without a currency code or a
         /// cadence (lifetime) falls back to its billed cadence.
         case pricePerWeek
-        /// "$8.99" — what the plan charges, on a `.rows` plan's right. The
-        /// line under its name is as with `.pricePerWeek`: a weekly plan's
-        /// price isn't said twice. Tiles show the billed cadence instead.
+        /// "$8.99" — what the plan charges, on a `.rows` plan's right. Every
+        /// row, weekly too, keeps its price on the line under its name
+        /// ("$5.99 · renews weekly"). Tiles show the billed cadence instead.
         case billedAmount
     }
 

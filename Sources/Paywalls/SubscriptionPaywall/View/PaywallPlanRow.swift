@@ -261,7 +261,7 @@ struct PaywallPlanRow: View {
     private var repeatsComparison: Bool {
         switch noteStyle {
         case .pricePerWeek: plan.period == .weekly && plan.localizedPricePerWeek != nil
-        case .billedAmount: plan.period == .weekly
+        case .billedAmount: false
         case .billedCadence: false
         }
     }
