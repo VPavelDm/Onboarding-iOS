@@ -121,7 +121,9 @@ public final class PaywallViewModel {
 
     // MARK: - Intents
 
-    func loadOfferings() async {
+    /// `shown`: false for a page built behind another tab, which `markShown`
+    /// reports once it is the one on screen.
+    func loadOfferings(shown: Bool = true) async {
         if offerings == nil {
             isLoading = true
             defer { isLoading = false }
@@ -135,6 +137,28 @@ public final class PaywallViewModel {
                 return
             }
         }
+        if shown || reportShownWhenLoaded {
+            reportShownWhenLoaded = false
+            await reportShown()
+        }
+    }
+
+    /// A page built hidden is now the tab on screen: one `paywall_shown`, at
+    /// once if its plans are known, else when they land.
+    func markShown() async {
+        guard !markedShown else { return }
+        markedShown = true
+        if offerings == nil {
+            reportShownWhenLoaded = true
+        } else {
+            await reportShown()
+        }
+    }
+
+    private var markedShown = false
+    private var reportShownWhenLoaded = false
+
+    private func reportShown() async {
         log("paywall_shown", ["has_trial": selectedHasTrial, "has_intro_offer": selectedIntroOffer != nil])
         await service.logPaywallShown()
     }

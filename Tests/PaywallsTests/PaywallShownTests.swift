@@ -33,6 +33,29 @@ struct PaywallShownTests {
         #expect(service.shownCount == 2)
     }
 
+    @Test func test_loadOfferings_whenBuiltHidden_thenReportsNoViewUntilShown() async {
+        let service = FakePaywallService(plans: [weekly])
+        let viewModel = PaywallViewModel(service: service, source: "test")
+
+        await viewModel.loadOfferings(shown: false)
+        #expect(service.shownCount == 0)
+
+        await viewModel.markShown()
+        await viewModel.markShown()
+        #expect(service.shownCount == 1)
+    }
+
+    @Test func test_markShown_whilePlansLoad_thenReportsOnceTheyLand() async {
+        let service = FakePaywallService(plans: [weekly])
+        let viewModel = PaywallViewModel(service: service, source: "test")
+
+        await viewModel.markShown()
+        #expect(service.shownCount == 0)
+
+        await viewModel.loadOfferings(shown: false)
+        #expect(service.shownCount == 1)
+    }
+
     @Test func test_loadOfferings_whenFetchFails_thenReportsNoView() async {
         let service = FakePaywallService(plans: [weekly], fetchFails: true)
         let viewModel = PaywallViewModel(service: service, source: "test")

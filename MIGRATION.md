@@ -6,6 +6,11 @@
   of the 12 pt `.blurReplace` smear.
 - The footer links (Restore, Redeem code, Terms, Privacy) are 13 pt on targets at least
   36 pt tall, where they were 12 pt with 4 pt of padding.
+- `PaywallTabsView` builds every tab's page up front, hidden, so the first switch is the same
+  crossfade as the rest (4.11.0 still inserted the page on that switch, plans landing over the
+  fade). `paywall_shown` and the store's view count still go out once per tab actually seen:
+  `PaywallViewModel.loadOfferings(shown:)` and `markShown()`, for hosts that embed `PaywallView`
+  themselves.
 
 # Migrating from 4.9 to 4.10
 

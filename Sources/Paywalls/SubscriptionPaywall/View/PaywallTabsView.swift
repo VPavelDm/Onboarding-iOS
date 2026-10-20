@@ -21,9 +21,12 @@ import SwiftUI
 /// it (its `featuredPeriod`), and a plan chosen on one tab selects the plan of
 /// the same cadence on the others, where they sell one.
 ///
-/// A tab's page is built the first time it is selected, so its plans load and
-/// `paywall_shown` goes out once per tab actually seen. The tabs view is the
-/// host's; it reports a choice by changing `selection`.
+/// Every tab's page is built up front, hidden, so a switch is a crossfade
+/// between two laid-out pages: built on first selection (4.10), the first
+/// switch played the page's insertion and its plans landing over the fade
+/// (Pavel, 2026-10-20). `paywall_shown` still goes out once per tab actually
+/// seen (`PaywallView` reports it when the tab becomes current). The tabs
+/// view is the host's; it reports a choice by changing `selection`.
 public struct PaywallTabsView: View {
 
     /// One tab's paywall.
@@ -43,8 +46,6 @@ public struct PaywallTabsView: View {
     private let tabs: AnyView
     private let onUnlocked: () -> Void
 
-    /// The tabs built so far.
-    @State private var built: Set<Int>
     /// The tab whose model the shared layer uses for Restore: the one open first.
     @State private var chromeIndex: Int
 
@@ -63,7 +64,6 @@ public struct PaywallTabsView: View {
         self.dismiss = dismiss
         self.tabs = tabs
         self.onUnlocked = onUnlocked
-        _built = State(initialValue: [selection])
         _chromeIndex = State(initialValue: selection)
     }
 
@@ -72,9 +72,7 @@ public struct PaywallTabsView: View {
             ScrollView {
                 ZStack(alignment: .top) {
                     ForEach(pages.indices, id: \.self) { index in
-                        if built.contains(index) || index == selection {
-                            page(index, minHeight: geo.size.height)
-                        }
+                        page(index, minHeight: geo.size.height)
                     }
                     PaywallView(
                         viewModel: pages[chromeIndex].viewModel,
@@ -91,7 +89,6 @@ public struct PaywallTabsView: View {
             .scrollBounceBehavior(.basedOnSize)
         }
         .animation(.easeInOut(duration: reduceMotion ? 0.2 : 0.25), value: selection)
-        .onChange(of: selection) { _, new in built.insert(new) }
         .onChange(of: currentChoice) { old, new in
             // A switch of tab is not a choice of plan.
             guard old.tab == new.tab, let period = new.period else { return }
@@ -128,6 +125,5 @@ public struct PaywallTabsView: View {
         .blur(radius: isSelected || reduceMotion ? 0 : 3)
         .allowsHitTesting(isSelected)
         .accessibilityHidden(!isSelected)
-        .transition(.opacity)
     }
 }

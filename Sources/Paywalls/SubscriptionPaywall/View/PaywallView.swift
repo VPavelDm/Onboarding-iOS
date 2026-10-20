@@ -117,9 +117,14 @@ public struct PaywallView: View {
             layer != .chrome && isCurrent && old != nil && old != new
         }
         .task {
-            // The chrome layer shares a tab's model; that tab's own layer loads it.
+            // The chrome layer shares a tab's model; that tab's own layer loads
+            // it. A hidden tab loads without counting as shown.
             guard layer != .chrome else { return }
-            await viewModel.loadOfferings()
+            await viewModel.loadOfferings(shown: isCurrent)
+        }
+        .onChange(of: isCurrent) { _, current in
+            guard current, layer != .chrome else { return }
+            Task { await viewModel.markShown() }
         }
         .task {
             guard let delay = dismiss?.closeButtonDelay, delay > .zero else { return }
