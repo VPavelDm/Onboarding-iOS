@@ -14,6 +14,9 @@ import SwiftUI
 /// One row where it fits, else the store actions over the legal links. Four
 /// links on one row ran out of room in Russian, French and Hindi, where the
 /// last one broke mid-word ("Конфиденци-альность").
+///
+/// Each link is a 13 pt label on a target at least 36 pt tall: at 12 pt with
+/// 4 pt above and below they were hard to hit (Pavel, 2026-10-20).
 struct PaywallFooterView: View {
 
     let termsURL: URL?
@@ -34,7 +37,7 @@ struct PaywallFooterView: View {
                 row(legalLinks)
             }
         }
-        .font(.caption)
+        .font(.footnote)
         .foregroundStyle(textColor.opacity(0.5))
     }
 
@@ -82,8 +85,9 @@ struct PaywallFooterView: View {
             item.title
                 .lineLimit(1)
                 .fixedSize()
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 10)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }

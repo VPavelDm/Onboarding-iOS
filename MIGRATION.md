@@ -1,3 +1,12 @@
+# Migrating from 4.10 to 4.11
+
+**No action required.** Two changes to the paywall, both on by default:
+
+- `PaywallTabsView` switches tabs with a plain crossfade and a 3 pt blur (0.25 s) instead
+  of the 12 pt `.blurReplace` smear.
+- The footer links (Restore, Redeem code, Terms, Privacy) are 13 pt on targets at least
+  36 pt tall, where they were 12 pt with 4 pt of padding.
+
 # Migrating from 4.9 to 4.10
 
 **No action required.** One opt-in: `PaywallConfiguration.PlanNote.billedAmount` puts what a

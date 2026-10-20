@@ -10,10 +10,12 @@ import SwiftUI
 /// Two or more paywalls behind the host's own tabs (Songs / Lyrics), swapped in
 /// place. What every tab shares stays put: the header mark, the tabs under the
 /// headline, the close and the footer links. The rest (headline, features,
-/// plans, CTA and the line under it) blurs from one tab into the next, each
+/// plans, CTA and the line under it) fades from one tab into the next, each
 /// element where the last one was, provided the tabs' pages lay out alike
 /// (`PaywallConfiguration.planRowSpacing`, `showsTrialTimeline`,
-/// `footnote`).
+/// `footnote`). A plain crossfade with a touch of blur: the 12 pt blur and
+/// `.blurReplace` it opened with (4.10) smeared the whole page on every
+/// switch (Pavel, 2026-10-20).
 ///
 /// One cadence is selected across the tabs: the tab the paywall opens on picks
 /// it (its `featuredPeriod`), and a plan chosen on one tab selects the plan of
@@ -88,7 +90,7 @@ public struct PaywallTabsView: View {
             }
             .scrollBounceBehavior(.basedOnSize)
         }
-        .animation(reduceMotion ? .easeInOut(duration: 0.2) : .easeInOut(duration: 0.3), value: selection)
+        .animation(.easeInOut(duration: reduceMotion ? 0.2 : 0.25), value: selection)
         .onChange(of: selection) { _, new in built.insert(new) }
         .onChange(of: currentChoice) { old, new in
             // A switch of tab is not a choice of plan.
@@ -123,9 +125,9 @@ public struct PaywallTabsView: View {
             onUnlocked: onUnlocked
         )
         .opacity(isSelected ? 1 : 0)
-        .blur(radius: isSelected || reduceMotion ? 0 : 12)
+        .blur(radius: isSelected || reduceMotion ? 0 : 3)
         .allowsHitTesting(isSelected)
         .accessibilityHidden(!isSelected)
-        .transition(reduceMotion ? .opacity : AnyTransition(.blurReplace))
+        .transition(.opacity)
     }
 }
