@@ -265,14 +265,3 @@ public final class PaywallViewModel {
         return entitled
     }
 }
-
-private extension PaywallPlan {
-    var analyticsName: String {
-        switch period {
-        case .weekly: "weekly"
-        case .monthly: "monthly"
-        case .yearly: "yearly"
-        case .lifetime: "lifetime"
-        }
-    }
-}

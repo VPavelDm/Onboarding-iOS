@@ -577,6 +577,27 @@ See [Custom steps](#custom-steps) below.
 
 ---
 
+## Paywalls: tabs and a special offer
+
+The `Paywalls` library draws a subscription paywall (`PaywallView`) on any store through
+`PaywallServiceProtocol` (`PaywallsAdapty` and `PaywallsRC` provide Adapty and RevenueCat
+services). Since 4.12 it also carries two pieces an app would otherwise glue together itself:
+
+- **A tabbed paywall over one placement.** `PaywallTab` names each tab; `PaywallTabRule` says
+  which tab a plan belongs on (`.byGroupLevel { $0 == 1 ? "pro" : "basic" }` reads the plan's App
+  Store subscription-group level); `PaywallPlacementPlans` fetches the placement once and serves
+  it by tab; `PaywallTabsViewModel` runs the tabs (which opens first, one store view, every event
+  stamped with its tab); `PaywallTabsView(viewModel:)` draws them with a segmented control in the
+  paywall's own colours.
+- **A special offer on a clock.** `OfferClock` keeps the window (an event's survives a relaunch
+  and is offered once per user); `OfferEvent` is a dated offer the host decodes from wherever it
+  keeps them; `OfferConfiguration` is the dress as data (artwork, badge, wording with `{time}`,
+  `{old}`, `{new}`, `{price}`, colours); `OfferViewModel` + `OfferScreen` sell the placement's one
+  plan with the percent off and the price per day worked out by `OfferPitch`.
+
+Nothing in either is about one app: the tab ids, levels, strings, colours and artwork are all
+the host's. The minimal setup for each is in [MIGRATION.md](MIGRATION.md) under 4.12.
+
 ## Custom steps
 
 When a step's `type` is `"custom"`, the library renders your SwiftUI view instead of a built-in component. You opt in via the `customStepView` builder on `OnboardingView`.

@@ -72,6 +72,9 @@ public struct PaywallConfiguration: Sendable {
         /// The ✕ alone, a size up so it still reads as a control, for a host
         /// whose page has no other discs to match it.
         case glyph
+        /// The ✕ in the text colour on a dark translucent disc, a size up, so
+        /// it reads over artwork (the special offer's picture).
+        case scrim
     }
 
     /// Which tiles carry a "Save N%" tag.

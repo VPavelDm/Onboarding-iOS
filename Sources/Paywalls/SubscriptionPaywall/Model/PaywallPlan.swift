@@ -116,6 +116,16 @@ public struct PaywallPlan: Identifiable, Hashable, Sendable {
 
     public var hasFreeTrial: Bool { freeTrialDays != nil }
 
+    /// The cadence as the package names it in analytics ("weekly").
+    var analyticsName: String {
+        switch period {
+        case .weekly: "weekly"
+        case .monthly: "monthly"
+        case .yearly: "yearly"
+        case .lifetime: "lifetime"
+        }
+    }
+
     /// Price normalised per day, for comparing plans of different cadences.
     var pricePerDay: Double { price / period.days }
 

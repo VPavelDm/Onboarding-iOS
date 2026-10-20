@@ -18,6 +18,7 @@ final class FakePaywallService: PaywallServiceProtocol {
     var restoreOutcome: PaywallRestoreOutcome = .notEntitled
     var isEntitled = false
     private(set) var shownCount = 0
+    private(set) var fetchCount = 0
     private(set) var purchasedPlanIDs: [String] = []
     private(set) var syncCount = 0
 
@@ -27,6 +28,7 @@ final class FakePaywallService: PaywallServiceProtocol {
     }
 
     func fetchOfferings() async throws -> PaywallOfferings {
+        fetchCount += 1
         if fetchFails { throw URLError(.notConnectedToInternet) }
         return offerings
     }

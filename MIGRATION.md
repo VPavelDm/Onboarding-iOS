@@ -1,3 +1,127 @@
+# Migrating from 4.11 to 4.12
+
+**No action required.** Two pieces of app glue move into `Paywalls`, both generic: a tabbed
+paywall over one placement, and a special offer on a clock. Nothing changes for a host that
+embeds `PaywallView` or the 4.10 `PaywallTabsView(pages:selection:dismiss:tabs:onUnlocked:)`.
+
+## Tabbed paywall
+
+One placement, its plans sorted onto tabs by a host rule (their level in the App Store
+subscription group, read from StoreKit), one fetch, purchase and restore for all tabs, one view
+reported to the store, and every event stamped with its tab.
+
+```swift
+import Paywalls
+
+let tabs = [
+    PaywallTab(id: "pro", title: "Pro", configuration: proConfiguration),      // your PaywallConfiguration
+    PaywallTab(id: "basic", title: "Basic", configuration: basicConfiguration)
+]
+let placement = PaywallPlacementPlans(
+    service: myService,                                   // your PaywallServiceProtocol for the placement
+    tabIDs: tabs.map(\.id),                               // the first is the fallback tab
+    rule: .byGroupLevel { $0 == 1 ? "pro" : "basic" }    // your levels, your ids
+)
+let viewModel = PaywallTabsViewModel(
+    tabs: tabs,
+    placement: placement,
+    initialTabID: "pro",
+    source: "onboarding",                                 // the `source` on every event
+    closeButtonDelay: .seconds(3),
+    track: { name, parameters in analytics.track(name, parameters) }
+)
+
+PaywallTabsView(viewModel: viewModel, onDismiss: { ... }, onUnlocked: { ... })
+```
+
+- `PaywallTab`: the host's id (what the rule returns and events carry), its title and its
+  `PaywallConfiguration`.
+- `PaywallTabRule`: a closure from plan and group level to a tab id; `.byGroupLevel { level in … }`
+  is the ready-made form. Nil places a plan nowhere, which keeps the placement untabbed:
+  `PaywallTabSplit.split` gives plans by tab only when every plan is placed and they fall on two
+  or more tabs; `soleTab` says which one tab a one-kind placement sells for.
+- `PaywallPlacementPlans`: fetches the placement once, serves `plans(for: tabID)`, hands each
+  tab a `service(for:logsView:)` to build its paywall on, and reports the store view in
+  `logShown()`. `groupLevels` is injectable; the default asks StoreKit.
+- `PaywallTabsViewModel`: which tab opens, one `logShown` per opening, `paywall_tab_selected` on
+  a switch, every tab's events stamped with the tab id under `tabParameter` ("tab" by default),
+  and single-shot `markUnlocked` / `markDismissed`. Its other init takes a `service:` closure
+  and a `logShown:` closure for a host without `PaywallPlacementPlans`.
+- `PaywallTabsView(viewModel:onDismiss:tabs:onUnlocked:)` draws the segmented control from the
+  paywall's colours (`accent` / `ctaBackground` for the chosen segment, `textColor` for the
+  rest); pass `tabs:` to draw your own. It logs the view, keeps the exits single-shot and gives
+  the selection and success haptics, so a host wraps it in nothing but its background.
+
+## Special offer
+
+One discounted plan on a clock: the host's artwork, a badge, the percent off, the price struck
+through against the offer's, the price per day, one CTA. The figures come from the plan
+(`OfferPitch`: the struck-through price is twice the plan's with cents at 99, as
+`regularPricePeriods` does it; the per-day price is rounded up so "less than" stays true).
+
+```swift
+import Paywalls
+
+let clock = OfferClock(ordinaryDuration: .seconds(45 * 60))   // one per app; keep it around
+let events = try OfferEvent.decoder.decode([OfferEvent].self, from: remoteConfigJSON)
+let event = clock.eventToOffer(from: events)                   // nil → the ordinary offer
+
+let configuration = OfferConfiguration(
+    artwork: Image(event?.image ?? "OfferArt"),                // your assets, your names
+    badgeTitle: "SPECIAL OFFER", badgeSymbol: "gift.fill",
+    offTitle: "OFF",
+    endsInTemplate: "Offer ends in {time}",
+    priceLineTemplates: [.yearly: "Just {old} {new} per year", .monthly: "Just {old} {new} per month"],
+    perDayTemplate: "(less than {price} per day)",
+    renewalNote: "Auto-renewable. Cancel anytime",
+    ctaTitle: "Claim offer",
+    termsURL: termsURL, privacyURL: privacyURL,
+    backgroundColor: .black, accent: .yellow, ctaBackground: .yellow, ctaForeground: .black,
+    compactHeight: 700
+)
+let viewModel = OfferViewModel(
+    configuration: configuration,
+    placementID: event?.placementID ?? "discounted",
+    service: myService,                                        // your PaywallServiceProtocol for that placement
+    clock: clock,
+    event: event,
+    track: { name, parameters in analytics.track(name, parameters) }
+)
+
+OfferScreen(viewModel: viewModel, onUnlocked: { ... }, onDismiss: { ... })
+```
+
+- `OfferEvent` (Codable): `id`, `startsAt`, `endsAt` (ISO 8601, with or without fractional
+  seconds), `durationMinutes`, and the host's own `image`, `theme` and `placementID`.
+  `isLive(at:)`; `OfferEvent.next(from:excluding:at:)` is the first live event not yet had.
+- `OfferClock`: the ordinary window of the host's length lives in memory; an event's window
+  is kept in `UserDefaults` (`<keyPrefix>events_used`, `<keyPrefix>event_active`; "offer_" by
+  default) so it survives a relaunch and each event is offered once per user. `defaults`,
+  `keyPrefix` and `now` are injectable. `remainingLabel(at:)` is "9:58";
+  `endsInLabel(at:template:)` fills `{time}`.
+- `OfferConfiguration`: colours (`backgroundColor`, `textColor`, `accent`, `ctaBackground`,
+  `ctaForeground`), `closeButtonStyle` (`.scrim` is new: the ✕ on a dark disc, for a close over
+  artwork), the legal URLs, and the dress as data: `artwork`, `badgeTitle` / `badgeSymbol`,
+  `offTitle`, `endsInTemplate` (`{time}`), `priceLineTemplates` per cadence (`{old}`, `{new}`),
+  `perDayTemplate` (`{price}`), `renewalNote`, `ctaTitle`, and the two alert messages (nil keeps
+  the package's). The CTA also takes `paywallCTAButtonStyle(_:)` from the environment, as
+  `PaywallView` does.
+- `OfferViewModel` sends the events `PaywallViewModel` sends (`paywall_shown` with
+  `countdown_seconds`, `paywall_continue_button_tapped`, `subscription_started` with
+  `product_id`, `paywall_declined`, `paywall_offer_expired`, the restore events), each stamped
+  with `source` (the placement) and, for an event, `event` (its id). `onAppear()` starts the clock
+  and returns false when the placement has no plan, which `OfferScreen` turns into `onDismiss`.
+- `OfferPitch.productID(forCadence:in:)` names the product behind a cadence the package reports,
+  for a host whose own purchase event wants the product id.
+
+## Update your version pin
+
+```swift
+.package(url: "https://github.com/VPavelDm/Onboarding-iOS.git", from: "4.12.0")
+```
+
+---
+
 # Migrating from 4.10 to 4.11
 
 **No action required.** Two changes to the paywall, both on by default:

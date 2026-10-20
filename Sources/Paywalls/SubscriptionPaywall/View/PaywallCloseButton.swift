@@ -32,6 +32,12 @@ struct PaywallCloseButton: View {
                     .foregroundStyle(textColor.opacity(0.5))
                     .frame(width: 30, height: 30)
                     .contentShape(.rect)
+            case .scrim:
+                Image(systemName: "xmark")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(textColor)
+                    .frame(width: 32, height: 32)
+                    .background(Color.black.opacity(0.35), in: .circle)
             }
         }
         .buttonStyle(.plain)
