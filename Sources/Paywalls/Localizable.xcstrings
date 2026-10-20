@@ -2359,6 +2359,7 @@
       }
     },
     "Error 🥲" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3704,6 +3705,7 @@
       }
     },
     "Payment is failed. Try again later!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4826,6 +4828,7 @@
       }
     },
     "Sorry, cannot find purchases to restore." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
