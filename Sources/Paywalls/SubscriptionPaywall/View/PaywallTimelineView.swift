@@ -25,9 +25,13 @@ struct PaywallTimelineView: View {
     var midTitle: String?
     var midBody: String?
     var midIcon: String?
+    var startTitle: String?
+    /// `{day}` is the trial's length.
+    var endTitle: String?
 
-    private let discSize: CGFloat = 28
-    private let railWidth: CGFloat = 3
+    /// `.neutral` draws its discs a size up, as `PaywallIconDisc` does.
+    private var discSize: CGFloat { iconStyle == .neutral ? 36 : 28 }
+    private var railWidth: CGFloat { iconStyle == .neutral ? 2 : 3 }
 
     /// The day before the trial ends — when the store sends its own renewal notice, and the last
     /// day a cancellation still costs nothing.
@@ -37,13 +41,19 @@ struct PaywallTimelineView: View {
         text.replacingOccurrences(of: "{day}", with: String(reminderDay))
     }
 
+    /// The day the trial ends, counted from today: "Oct 24".
+    private var trialEndDate: String {
+        let date = Calendar.current.date(byAdding: .day, value: trialDays, to: .now) ?? .now
+        return date.formatted(.dateTime.month(.abbreviated).day())
+    }
+
     private var tint: Color { accent ?? .accentColor }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             item(
                 icon: "lock.open.fill",
-                title: String(localized: "Today — full access", bundle: .module),
+                title: startTitle ?? String(localized: "Today — full access", bundle: .module),
                 body: unlockBody,
                 tint: tint,
                 nextTint: tint
@@ -57,8 +67,9 @@ struct PaywallTimelineView: View {
             )
             item(
                 icon: "star.fill",
-                title: String(localized: "Day \(trialDays) — trial ends", bundle: .module),
-                body: trialEndBody,
+                title: endTitle.map { $0.replacingOccurrences(of: "{day}", with: String(trialDays)) }
+                    ?? String(localized: "Day \(trialDays) — trial ends", bundle: .module),
+                body: trialEndBody.replacingOccurrences(of: "{date}", with: trialEndDate),
                 tint: tint.opacity(0.5),
                 nextTint: nil
             )
@@ -68,7 +79,7 @@ struct PaywallTimelineView: View {
 
     private func item(icon: String, title: String, body: String, tint: Color, nextTint: Color?) -> some View {
         HStack(alignment: .top, spacing: 12) {
-            PaywallIconDisc(systemImage: icon, tint: tint, foreground: accentForeground, style: iconStyle == .glyph ? .tinted : iconStyle, size: discSize)
+            PaywallIconDisc(systemImage: icon, tint: tint, foreground: accentForeground, style: iconStyle == .glyph ? .tinted : iconStyle, size: discSize, neutralColor: textColor)
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
                     .font(.headline)
@@ -96,7 +107,9 @@ struct PaywallTimelineView: View {
 
     private func connector(from: Color, to: Color) -> some View {
         Rectangle()
-            .fill(LinearGradient(colors: [from.opacity(0.5), to.opacity(0.5)], startPoint: .top, endPoint: .bottom))
+            .fill(iconStyle == .neutral
+                ? AnyShapeStyle(textColor.opacity(0.12))
+                : AnyShapeStyle(LinearGradient(colors: [from.opacity(0.5), to.opacity(0.5)], startPoint: .top, endPoint: .bottom)))
             .frame(width: railWidth)
     }
 }

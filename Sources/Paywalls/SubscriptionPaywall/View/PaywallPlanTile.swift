@@ -37,6 +37,8 @@ struct PaywallPlanTile: View {
     var popularForeground: Color? = nil
     /// The host's word for the featured plan; nil says "Popular".
     var popularTitle: String? = nil
+    /// The host's name for the plan ("Weekly"); nil uses the cadence ("1 week").
+    var customTitle: String? = nil
     var selection: PaywallConfiguration.PlanSelection = .ring
     /// A size down for the price when three tiles share the row.
     var isCompact = false
@@ -90,7 +92,7 @@ struct PaywallPlanTile: View {
     }
 
     private var title: some View {
-        Text(plan.period.title)
+        Text(customTitle ?? plan.period.title)
             .font(.caption.weight(.semibold))
             .textCase(.uppercase)
             .tracking(0.8)
@@ -149,13 +151,21 @@ struct PaywallPlanTile: View {
     private var tagLabel: some View {
         if let tag {
             tagText(tag)
-                .font(.caption2.weight(.bold))
+                .font(.system(size: 10, weight: .heavy, design: .rounded))
+                .textCase(.uppercase)
+                .tracking(0.6)
                 .foregroundStyle(tagColors(tag).foreground)
                 .lineLimit(1)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 5)
+                .minimumScaleFactor(0.8)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
                 .background(tagColors(tag).background, in: .capsule)
-                .offset(y: -11)
+                // A ring of near-black cuts the badge out of the tile's border
+                // instead of sitting on the line (a sentence-case capsule
+                // before 4.13, which read heavy over three tiles).
+                .padding(2)
+                .background(Color.black.opacity(0.55), in: .capsule)
+                .offset(y: -10)
         }
     }
 

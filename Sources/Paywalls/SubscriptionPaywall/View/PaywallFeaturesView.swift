@@ -43,7 +43,8 @@ struct PaywallFeaturesView: View {
                 systemImage: feature.icon ?? "checkmark",
                 tint: accent ?? Color.accentColor,
                 foreground: accentForeground,
-                style: iconStyle
+                style: iconStyle,
+                neutralColor: textColor
             )
             VStack(alignment: .leading, spacing: 3) {
                 Text(feature.title)

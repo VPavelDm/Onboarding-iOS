@@ -101,6 +101,13 @@ public struct PaywallView: View {
                     .padding(.trailing, 20)
                     .modifier(part(.chrome))
             }
+            if let redeemCodeAction {
+                PaywallRestoreButton(title: Text("Redeem code", bundle: .module), textColor: configuration.textColor, action: redeemCodeAction)
+                    .padding(.top, 16)
+                    .padding(.leading, 20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .modifier(part(.chrome))
+            }
             if dismiss != nil {
                 PaywallCloseButton(textColor: configuration.textColor, style: configuration.closeButtonStyle, action: handleClose)
                     .padding(.top, 16)
@@ -235,7 +242,7 @@ public struct PaywallView: View {
                 privacyURL: configuration.privacyURL,
                 textColor: configuration.textColor,
                 onRestore: restoresInCorner ? nil : handleRestore,
-                onRedeemCode: redeemCodeAction
+                onRedeemCode: nil
             )
             .modifier(part(.chrome))
             .padding(.top, showsFootnote ? 6 : 14)
@@ -288,7 +295,8 @@ public struct PaywallView: View {
     }
 
     private var title: AttributedString {
-        var title = AttributedString(configuration.title)
+        let text = viewModel.selectedHasTrial ? (configuration.trialTitle ?? configuration.title) : configuration.title
+        var title = AttributedString(text)
         if let word = configuration.titleHighlight, let range = title.range(of: word) {
             title[range].foregroundColor = accent
         }
@@ -325,7 +333,9 @@ public struct PaywallView: View {
                     iconStyle: configuration.featureIconStyle,
                     midTitle: configuration.trialMidTitle,
                     midBody: configuration.trialMidBody,
-                    midIcon: configuration.trialMidIcon
+                    midIcon: configuration.trialMidIcon,
+                    startTitle: configuration.trialStartTitle,
+                    endTitle: configuration.trialEndTitle
                 )
                 .opacity(showsTimeline ? 1 : 0)
             }
@@ -448,13 +458,15 @@ public struct PaywallView: View {
                 priceCard(for: nil)
             } else if configuration.planLayout == .rows {
                 VStack(spacing: Self.rowSpacing) {
-                    placeholderRow
-                    placeholderRow
+                    ForEach(0..<configuration.expectedPlanCount, id: \.self) { _ in
+                        placeholderRow
+                    }
                 }
             } else {
                 HStack(spacing: 12) {
-                    placeholderTile
-                    placeholderTile
+                    ForEach(0..<configuration.expectedPlanCount, id: \.self) { _ in
+                        placeholderTile
+                    }
                 }
             }
         } else if configuration.planLayout == .rows {
@@ -478,6 +490,7 @@ public struct PaywallView: View {
                         popularBackground: configuration.popularTagBackground,
                         popularForeground: configuration.popularTagForeground,
                         popularTitle: configuration.popularTagTitle,
+                        customTitle: configuration.planTitle?(plan),
                         selection: configuration.planSelection,
                         isCompact: viewModel.plans.count >= 3,
                         onSelect: {

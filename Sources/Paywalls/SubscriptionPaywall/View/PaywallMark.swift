@@ -41,6 +41,10 @@ struct PaywallIconDisc: View {
     let foreground: Color
     let style: PaywallConfiguration.FeatureIconStyle
     var size: CGFloat = 28
+    /// The glyph colour for `.neutral`: the page's text colour.
+    var neutralColor: Color = .white
+
+    private var discSize: CGFloat { style == .neutral ? max(size, 36) : size }
 
     var body: some View {
         ZStack {
@@ -53,17 +57,23 @@ struct PaywallIconDisc: View {
                     .overlay(Circle().strokeBorder(tint.opacity(0.35), lineWidth: 1))
             case .glyph:
                 EmptyView()
+            case .neutral:
+                Circle().fill(neutralColor.opacity(0.08))
             }
             if style == .glyph {
                 Image(systemName: systemImage)
                     .font(.system(size: size * 0.72, weight: .regular))
                     .foregroundStyle(tint)
+            } else if style == .neutral {
+                Image(systemName: systemImage)
+                    .font(.system(size: discSize * 0.46, weight: .semibold))
+                    .foregroundStyle(neutralColor.opacity(0.75))
             } else {
                 Image(systemName: systemImage)
                     .font(.system(size: size * 0.43, weight: .bold))
                     .foregroundStyle(style == .filled ? foreground : tint)
             }
         }
-        .frame(width: size, height: size)
+        .frame(width: discSize, height: discSize)
     }
 }

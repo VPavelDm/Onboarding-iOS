@@ -109,6 +109,8 @@ public struct PaywallConfiguration: Sendable {
     public var trialUnlockBody: String
     /// Body of the trial timeline's last step ("Day N — trial ends"). Defaults to a
     /// localized "Your subscription begins so your streak keeps going."
+    /// `{date}` is replaced by the day the trial ends ("Oct 24"), counted from
+    /// today, in the device's locale.
     public var trialEndBody: String
     /// Title, body and SF Symbol of the trial timeline's middle step. Nil keeps the
     /// library's "Day N — reminder / We'll remind you before your trial ends", which
@@ -118,6 +120,14 @@ public struct PaywallConfiguration: Sendable {
     public var trialMidTitle: String?
     public var trialMidBody: String?
     public var trialMidIcon: String?
+    /// The headline while a trial plan is selected ("Try Calyo for Free");
+    /// nil keeps `title` for every plan.
+    public var trialTitle: String?
+    /// Titles of the timeline's first and last steps; nil keeps the library's
+    /// "Today — full access" and "Day N — trial ends". `{day}` in the last
+    /// one is the trial's length.
+    public var trialStartTitle: String?
+    public var trialEndTitle: String?
     /// Overrides the CTA title when the selected plan has no trial (e.g. "Unlock
     /// forever"). A trial selection takes `ctaTrialTitle` instead; the retry CTA
     /// keeps the library's wording.
@@ -199,6 +209,11 @@ public struct PaywallConfiguration: Sendable {
     /// loading placeholder as one price card instead of two tiles, so the layout
     /// doesn't jump when the real offering lands.
     public var expectsSinglePlan: Bool
+    /// How many plans the placement is expected to return — the number of
+    /// placeholder tiles (or rows) drawn while the offering loads, so a
+    /// three-plan paywall doesn't jump from two empty tiles to three. Ignored
+    /// with `expectsSinglePlan`. Default 2.
+    public var expectedPlanCount: Int
     /// Where a feature row's checkmark sits against its text. `.top` is right
     /// for rows with a subtitle, where the checkmark should line up with the
     /// title; a host whose rows are a single line each passes `.center` so the
@@ -230,7 +245,8 @@ public struct PaywallConfiguration: Sendable {
     /// with `showsStoreAssurance`, or while a trial plan is selected ("No
     /// payment due now" shows then).
     public var planFootnote: (@Sendable (PaywallPlan) -> String?)?
-    /// Adds "Redeem code" to the footer, next to Restore: Apple's offer-code sheet,
+    /// Adds "Redeem code" as a pill in the top-left corner, opposite the close
+    /// (in the footer before 4.13): Apple's offer-code sheet,
     /// so a code a friend sent can be entered on the paywall itself rather than
     /// only through a redemption link. iOS only; off by default.
     public var offersCodeRedemption: Bool
@@ -332,6 +348,11 @@ public struct PaywallConfiguration: Sendable {
         case filled
         case tinted
         case glyph
+        /// The symbol in the text colour on a faint neutral disc, a size up
+        /// (36 pt): the answer rows of an app's own onboarding choice screens,
+        /// so the paywall's rows read as the same family. The trial timeline
+        /// keeps it too, so its icons hold contrast on any accent.
+        case neutral
     }
 
     public init(
@@ -345,6 +366,9 @@ public struct PaywallConfiguration: Sendable {
         trialMidTitle: String? = nil,
         trialMidBody: String? = nil,
         trialMidIcon: String? = nil,
+        trialTitle: String? = nil,
+        trialStartTitle: String? = nil,
+        trialEndTitle: String? = nil,
         ctaTitle: String? = nil,
         ctaTitleWithPrice: (@Sendable (_ localizedPrice: String) -> String)? = nil,
         ctaTrialTitle: String? = nil,
@@ -368,6 +392,7 @@ public struct PaywallConfiguration: Sendable {
         headerSpacing: CGFloat? = nil,
         cardBackground: Color? = nil,
         expectsSinglePlan: Bool = false,
+        expectedPlanCount: Int = 2,
         featureAlignment: VerticalAlignment = .top,
         featureIconStyle: FeatureIconStyle = .filled,
         featuredPeriod: PaywallPlan.Period? = nil,
@@ -403,6 +428,9 @@ public struct PaywallConfiguration: Sendable {
         self.trialMidTitle = trialMidTitle
         self.trialMidBody = trialMidBody
         self.trialMidIcon = trialMidIcon
+        self.trialTitle = trialTitle
+        self.trialStartTitle = trialStartTitle
+        self.trialEndTitle = trialEndTitle
         self.ctaTitle = ctaTitle
         self.ctaTitleWithPrice = ctaTitleWithPrice
         self.ctaTrialTitle = ctaTrialTitle
@@ -426,6 +454,7 @@ public struct PaywallConfiguration: Sendable {
         self.headerSpacing = headerSpacing
         self.cardBackground = cardBackground
         self.expectsSinglePlan = expectsSinglePlan
+        self.expectedPlanCount = max(expectedPlanCount, 2)
         self.featureAlignment = featureAlignment
         self.featureIconStyle = featureIconStyle
         self.featuredPeriod = featuredPeriod

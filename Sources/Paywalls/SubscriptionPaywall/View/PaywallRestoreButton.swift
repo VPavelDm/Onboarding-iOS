@@ -12,12 +12,14 @@ import SwiftUI
 /// either way.
 struct PaywallRestoreButton: View {
 
+    /// The corner pill's words; "Redeem code" reuses the pill in the opposite corner.
+    var title = Text("Restore", bundle: .module)
     let textColor: Color
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Text("Restore", bundle: .module)
+            title
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(textColor.opacity(0.7))
                 .lineLimit(1)

@@ -143,7 +143,9 @@ public final class AdaptyPaywallService: PaywallServiceProtocol {
             offer.paymentMode == .payAsYouGo || offer.paymentMode == .payUpFront,
             offer.numberOfPeriods == 1,
             offer.subscriptionPeriod.numberOfUnits == 1,
-            let localizedPrice = offer.localizedPrice
+            // `as String?`: optional in some Adapty 4.x releases, not in
+            // others (4.3.0); this binds under both.
+            let localizedPrice = offer.localizedPrice as String?
         else { return nil }
         let period: PaywallPlan.Period
         switch offer.subscriptionPeriod.unit {
