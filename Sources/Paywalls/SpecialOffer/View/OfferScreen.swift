@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// The special offer: the host's artwork across the top fading into the
 /// page, a badge, the percent off in display type, a live clock, the price
@@ -24,6 +27,9 @@ public struct OfferScreen: View {
     private let onDismiss: () -> Void
 
     @Environment(\.paywallCTAStyle) private var customCTAStyle
+    /// Haptics: a light tap as a purchase starts (success is played in
+    /// `unlock()`, which the host may answer by removing this view at once).
+    @State private var purchaseTaps = 0
 
     public init(viewModel: OfferViewModel, onUnlocked: @escaping () -> Void = {}, onDismiss: @escaping () -> Void = {}) {
         self.viewModel = viewModel
@@ -49,6 +55,8 @@ public struct OfferScreen: View {
         }
         .background(ground.ignoresSafeArea())
         .overlay(alignment: .topTrailing) { closeButton }
+        .sensoryFeedback(.impact(weight: .light), trigger: purchaseTaps)
+        .sensoryFeedback(.error, trigger: viewModel.alert) { _, new in new != nil }
         .alert(
             Text(verbatim: viewModel.alert.map(viewModel.message(for:)) ?? ""),
             isPresented: Binding(get: { viewModel.alert != nil }, set: { if !$0 { viewModel.alert = nil } }),
@@ -247,7 +255,8 @@ public struct OfferScreen: View {
 
     private var ctaBaseButton: some View {
         Button {
-            Task { if await viewModel.purchase() { onUnlocked() } }
+            purchaseTaps += 1
+            Task { if await viewModel.purchase() { unlock() } }
         } label: {
             ZStack {
                 ProgressView()
@@ -276,7 +285,14 @@ public struct OfferScreen: View {
     }
 
     private func handleRestore() {
-        Task { if await viewModel.restore() { onUnlocked() } }
+        Task { if await viewModel.restore() { unlock() } }
+    }
+
+    private func unlock() {
+        #if canImport(UIKit)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        #endif
+        onUnlocked()
     }
 }
 

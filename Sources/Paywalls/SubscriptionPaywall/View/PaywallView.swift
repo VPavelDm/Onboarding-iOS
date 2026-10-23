@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 import StoreKit
 
 /// A subscription (or lifetime) paywall: trial timeline (or feature list) over a plan
@@ -28,6 +31,9 @@ public struct PaywallView: View {
     @Namespace private var selectionNamespace
     /// The tallest plan row, which every row matches.
     @State private var planRowHeight: CGFloat = 0
+    /// Haptics: a light tap as a purchase starts (success is played in
+    /// `unlock()`, which the host may answer by removing this view at once).
+    @State private var purchaseTaps = 0
 
     private let configuration: PaywallConfiguration
     private let dismiss: PaywallDismissBehavior?
@@ -122,6 +128,15 @@ public struct PaywallView: View {
             // The chrome layer shares a tab's model; that tab's layer gives the
             // tick. A hidden tab following the shown one's choice gives none.
             layer != .chrome && isCurrent && old != nil && old != new
+        }
+        // The purchase's own feel, from the layer that ran it: a light tap as
+        // it starts, the error buzz when it fails (success: `unlock()`).
+        .sensoryFeedback(.impact(weight: .light), trigger: purchaseTaps)
+        .sensoryFeedback(.error, trigger: viewModel.purchaseError) { _, new in
+            layer != .chrome && isCurrent && new != nil
+        }
+        .sensoryFeedback(.error, trigger: viewModel.showRestoreFailedAlert) { _, new in
+            layer != .chrome && isCurrent && new
         }
         .task {
             // The chrome layer shares a tab's model; that tab's own layer loads
@@ -673,7 +688,8 @@ public struct PaywallView: View {
             guard viewModel.hasOfferings else {
                 return await viewModel.loadOfferings()
             }
-            if await viewModel.purchase() { onUnlocked() }
+            purchaseTaps += 1
+            if await viewModel.purchase() { unlock() }
         }
     }
 
@@ -693,7 +709,7 @@ public struct PaywallView: View {
             } catch {
                 result = .failure(error)
             }
-            if await viewModel.codeRedemptionFinished(result) { onUnlocked() }
+            if await viewModel.codeRedemptionFinished(result) { unlock() }
         }
     }
 
@@ -709,8 +725,15 @@ public struct PaywallView: View {
 
     private func handleRestore() {
         Task {
-            if await viewModel.restorePurchases() { onUnlocked() }
+            if await viewModel.restorePurchases() { unlock() }
         }
+    }
+
+    private func unlock() {
+        #if canImport(UIKit)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        #endif
+        onUnlocked()
     }
 
     private func handleClose() {

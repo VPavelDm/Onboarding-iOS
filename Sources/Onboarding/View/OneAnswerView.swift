@@ -73,6 +73,7 @@ struct OneAnswerView: View {
             if shouldAutoNavigate {
                 await viewModel.onAnswer(answers: [answer])
             } else {
+                if selectedAnswer != answer { viewModel.playToggleFeedback() }
                 selectedAnswer = answer
             }
         } label: {

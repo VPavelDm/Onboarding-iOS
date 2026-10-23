@@ -62,11 +62,13 @@ struct HeightPickerStepView: View {
     private var unitSelector: some View {
         HStack(spacing: 8) {
             unitButton(title: viewModel.localize(step.metricUnit), isSelected: isMetric) {
+                if !isMetric { viewModel.playToggleFeedback() }
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isMetric = true
                 }
             }
             unitButton(title: viewModel.localize(step.imperialUnit), isSelected: !isMetric) {
+                if isMetric { viewModel.playToggleFeedback() }
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isMetric = false
                 }
