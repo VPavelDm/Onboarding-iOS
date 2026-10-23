@@ -381,12 +381,15 @@ public struct PaywallView: View {
                 // Without "· then $X": the yearly tile shows the price. Weaker
                 // under App Review 3.1.2 than stating it here (Pavel's call,
                 // 2026-10-23).
-                assurance(Text("No payment due now", bundle: .module), systemImage: "checkmark")
-                    .font(.footnote.weight(.medium))
-                    .foregroundStyle(configuration.textColor.opacity(0.7))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-                    .opacity(showsTrialFootnote ? 1 : 0)
+                HStack(spacing: 16) {
+                    assurance(Text("No payment due now", bundle: .module), systemImage: "checkmark")
+                    assurance(Text("Secured by App Store", bundle: .module), systemImage: "checkmark.shield")
+                }
+                .font(.footnote.weight(.medium))
+                .foregroundStyle(configuration.textColor.opacity(0.7))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .opacity(showsTrialFootnote ? 1 : 0)
             } else {
                 trialFootnote
                     .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor, quiet: configuration.footnote == .trial))
