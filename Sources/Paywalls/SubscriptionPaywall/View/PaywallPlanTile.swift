@@ -82,7 +82,12 @@ struct PaywallPlanTile: View {
             }
         }
         .overlay(alignment: .top) { tagLabel }
-        .animation(.easeOut(duration: 0.2), value: isSelected)
+        // The chosen tile lifts and glows; the others settle back a touch,
+        // so picking a plan reads as moving it forward, not only re-ringing it.
+        .shadow(color: selected.opacity(isSelected ? 0.35 : 0), radius: 16, y: 6)
+        .scaleEffect(isSelected ? 1.03 : 0.97)
+        .opacity(isSelected ? 1 : 0.85)
+        .animation(.spring(duration: 0.35, bounce: 0.3), value: isSelected)
     }
 
     private var selectedWash: Double { selection == .filled ? 0.32 : 0.10 }
@@ -160,12 +165,11 @@ struct PaywallPlanTile: View {
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
                 .background(tagColors(tag).background, in: .capsule)
-                // A ring of near-black cuts the badge out of the tile's border
-                // instead of sitting on the line (a sentence-case capsule
-                // before 4.13, which read heavy over three tiles).
-                .padding(2)
-                .background(Color.black.opacity(0.55), in: .capsule)
-                .offset(y: -10)
+                // A soft shadow lifts it off the tile's border (a sentence-case
+                // capsule before 4.13, which read heavy over three tiles; a dark
+                // ring cut into the border read as a black outline).
+                .shadow(color: .black.opacity(0.25), radius: 4, y: 2)
+                .offset(y: -9)
         }
     }
 

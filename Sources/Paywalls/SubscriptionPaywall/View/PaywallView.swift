@@ -182,16 +182,27 @@ public struct PaywallView: View {
     private var content: some View {
         if let embeddedMinHeight {
             column(compact: isCompact(embeddedMinHeight))
+                .modifier(PaywallShimmer(isActive: awaitsPlans))
                 .frame(minHeight: embeddedMinHeight)
         } else {
             GeometryReader { geo in
                 ScrollView {
                     column(compact: isCompact(geo.size.height))
+                        .modifier(PaywallShimmer(isActive: awaitsPlans))
                         .frame(minHeight: geo.size.height)
                 }
                 .scrollBounceBehavior(.basedOnSize)
             }
         }
+    }
+
+    /// The store hasn't answered yet: the whole page is a shimmering
+    /// skeleton, the copy that is already known included, so it reads as one
+    /// screen arriving rather than tiles loading under a finished page. A
+    /// failed fetch stops it (the CTA turns into Retry). Only the full layer
+    /// shimmers, so a tabbed paywall's layers don't sweep twice.
+    private var awaitsPlans: Bool {
+        layer == .full && viewModel.plans.isEmpty && !viewModel.loadFailed
     }
 
     /// `configuration.compactHeight`: a screen shorter than it (an iPhone SE)
@@ -208,7 +219,10 @@ public struct PaywallView: View {
         // With a mark the header is the tallest block on the page, so it
         // starts lower and the mark sits below the status bar rather than
         // beside the corner close.
-        let top: CGFloat = compact ? 24 : (showsMark ? 56 : 44)
+        // Without a mark the headline clears the corner pills (close, Restore,
+        // Redeem code: 30 pt at 16 from the top) by a comfortable gap; at 44
+        // it sat right under them.
+        let top: CGFloat = compact ? 24 : (showsMark ? 56 : 72)
         return VStack(spacing: 0) {
             if let headerGap = configuration.headerSpacing {
                 Spacer(minLength: top)
@@ -360,9 +374,24 @@ public struct PaywallView: View {
     /// cross-fade in a fixed-height ZStack instead of morphing one Text.
     private var footnoteLabel: some View {
         ZStack {
-            trialFootnote
-                .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor, quiet: configuration.footnote == .trial))
-                .opacity(showsTrialFootnote ? 1 : 0)
+            // Beside the store-assurance pair the trial line takes that row's
+            // look — the check, the size, the grey — so switching plans swaps
+            // the words under the button, not the style.
+            if configuration.showsStoreAssurance {
+                // Without "· then $X": the yearly tile shows the price. Weaker
+                // under App Review 3.1.2 than stating it here (Pavel's call,
+                // 2026-10-23).
+                assurance(Text("No payment due now", bundle: .module), systemImage: "checkmark")
+                    .font(.footnote.weight(.medium))
+                    .foregroundStyle(configuration.textColor.opacity(0.7))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    .opacity(showsTrialFootnote ? 1 : 0)
+            } else {
+                trialFootnote
+                    .modifier(PaywallOfferFootnoteStyle(textColor: configuration.textColor, quiet: configuration.footnote == .trial))
+                    .opacity(showsTrialFootnote ? 1 : 0)
+            }
             // Mounted only where it can show, and never empty while mounted:
             // a hidden line of another size still sets the stack's height, and
             // one there for one plan but not the next made the page jump.
@@ -404,8 +433,7 @@ public struct PaywallView: View {
     /// line that reassures about the button. Guideline 3.1.2 wants the charge after
     /// a free trial stated before the purchase, and the row's price alone leaves
     /// the reader to connect the two.
-    @ViewBuilder
-    private var trialFootnote: some View {
+    private var trialFootnote: Text {
         if let then = viewModel.selectedPlan?.localizedPricePerPeriod {
             Text("No payment due now · then \(then)", bundle: .module)
         } else {
@@ -718,5 +746,40 @@ private struct PaywallPartVisibility: ViewModifier {
             .opacity(isVisible ? 1 : 0)
             .allowsHitTesting(isVisible)
             .accessibilityHidden(!isVisible)
+    }
+}
+
+/// The loading skeleton: the content redacted into placeholder shapes, with a
+/// soft band of light sweeping across them. Turns off with a short fade.
+private struct PaywallShimmer: ViewModifier {
+    let isActive: Bool
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var phase: CGFloat = 0
+
+    func body(content: Content) -> some View {
+        content
+            .redacted(reason: isActive ? .placeholder : [])
+            .overlay {
+                if isActive && !reduceMotion {
+                    GeometryReader { geo in
+                        LinearGradient(
+                            colors: [.clear, .white.opacity(0.35), .clear],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(width: geo.size.width * 0.5)
+                        .rotationEffect(.degrees(12))
+                        .offset(x: -geo.size.width * 0.5 + phase * geo.size.width * 1.5)
+                    }
+                    .mask(content.redacted(reason: .placeholder))
+                    .allowsHitTesting(false)
+                    .transition(.opacity)
+                }
+            }
+            .animation(.easeOut(duration: 0.3), value: isActive)
+            .onAppear {
+                withAnimation(.linear(duration: 1.3).repeatForever(autoreverses: false)) { phase = 1 }
+            }
     }
 }
